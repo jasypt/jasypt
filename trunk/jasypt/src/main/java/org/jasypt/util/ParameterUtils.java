@@ -3,8 +3,7 @@ package org.jasypt.util;
 public class ParameterUtils {
     
     
-    public static String getParameterizedValue(String systemPropertyName, 
-            String envVariableName) {
+    public static String getSystemProperty(String systemPropertyName) {
         
         try {
             String systemValue = 
@@ -16,6 +15,13 @@ public class ParameterUtils {
             // do nothing
         }
 
+        return null;
+        
+    }
+
+    
+    public static String getEnvVariable(String envVariableName) {
+        
         try {
             String envValue = 
                 System.getenv(envVariableName);
