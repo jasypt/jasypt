@@ -115,8 +115,8 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
             this.password = password;
             initialized = false;
             passwordInitialized = false;
-            passwordSetFromDefault = false;
         }
+        passwordSetFromDefault = false;
     }
     
     
@@ -224,8 +224,10 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
             try {
                 
                 String algorithm = new String(CIPHER_ALGORITHM_PATTERN);
-                algorithm = algorithm.replaceFirst("<digest>", digestAlgorithm);
-                algorithm = algorithm.replaceFirst("<encryption>", encryptionAlgorithm);
+                algorithm = 
+                    algorithm.replaceFirst("<digest>", digestAlgorithm);
+                algorithm = 
+                    algorithm.replaceFirst("<encryption>", encryptionAlgorithm);
                 
                 PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray());
                 SecretKeyFactory factory =
@@ -233,9 +235,11 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
                 SecretKey key = factory.generateSecret(pbeKeySpec);
                 
                 encryptCipher = Cipher.getInstance(algorithm);
-                encryptCipher.init(Cipher.ENCRYPT_MODE, key, PBE_PARAMETER_SPEC);
+                encryptCipher.init(
+                        Cipher.ENCRYPT_MODE, key, PBE_PARAMETER_SPEC);
                 decryptCipher = Cipher.getInstance(algorithm);
-                decryptCipher.init(Cipher.DECRYPT_MODE, key, PBE_PARAMETER_SPEC);
+                decryptCipher.init(
+                        Cipher.DECRYPT_MODE, key, PBE_PARAMETER_SPEC);
                 
             } catch (Throwable t) {
                 throw new EncryptionInitializationException(t);
