@@ -1,22 +1,34 @@
 package org.jasypt.encryption;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.naming.ParameterNaming;
 import org.jasypt.util.ParameterUtils;
 
-// TODO: Add name for it to be configurable
-// TODO: Get password from env or system props
+// TODO: Review algorithm: maybe remove the extra random chars?
+// TODO: Review factory methods
+// TODO: Create Unit tests
 public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
 
+    private static final Log log = 
+        LogFactory.getLog(BasicPasswordBasedEncryptor.class);
+    
     public static final boolean DEFAULT_BASE64_ENCODED = true;
     public static final String DEFAULT_DIGEST_ALGORITHM = "MD5";
     public static final String DEFAULT_ENCRYPTION_ALGORITHM = "DES";
+    public static final String DEFAULT_NAME = 
+        ClassUtils.getShortClassName(BasicPasswordBasedEncryptor.class);
     
     private static final String CIPHER_ALGORITHM_PATTERN =
         "PBEWith<digest>And<encryption>";
@@ -33,11 +45,15 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
         new PBEParameterSpec(PBE_SALT, PBE_ITERARION_COUNT);
     
     private boolean initialized = false;
+    private boolean passwordInitialized = false;
+    private boolean passwordSetFromDefault = false;
     
     private String digestAlgorithm = DEFAULT_DIGEST_ALGORITHM;
     private String encryptionAlgorithm = DEFAULT_ENCRYPTION_ALGORITHM;
     private String password = null;
     private boolean base64Encoded = DEFAULT_BASE64_ENCODED;
+    
+    private String name = DEFAULT_NAME;
 
     private Cipher encryptCipher = null;
     private Cipher decryptCipher = null;
@@ -46,25 +62,28 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
     
     private static String defaultPassword = null;
 
-
     
     static {
-
         defaultPassword =
-            ParameterUtils.getParameterizedValue(
-                    ParameterNaming.PBE_PASSWORD_SYSTEM_PROPERTY,
-                    ParameterNaming.PBE_PASSWORD_ENV_VARIABLE);
-        if (defaultPassword == null) {
-            defaultPassword = DEFAULT_PASSWORD;
+            ParameterUtils.getSystemProperty(
+                    ParameterNaming.PBE_PASSWORD_SYSTEM_PROPERTY);
+        if (defaultPassword != null) {
+            log.info("[jasypt] Default password for basic password-" +
+                    "based encryptors initialized from system property " +
+                    "\'" + ParameterNaming.PBE_PASSWORD_SYSTEM_PROPERTY + "\'");
+        } else {
+            defaultPassword =
+                ParameterUtils.getEnvVariable(
+                        ParameterNaming.PBE_PASSWORD_ENV_VARIABLE);
+            if (defaultPassword != null) {
+                log.info("[jasypt] Default password for basic password-" +
+                        "based encryptors initialized from environment " +
+                        "variable \'" + 
+                        ParameterNaming.PBE_PASSWORD_ENV_VARIABLE + "\'");
+            }
         }
-        
     }
 
-    
-    
-    public BasicPasswordBasedEncryptor() {
-        this.password = defaultPassword;
-    }
     
     
     public synchronized void setBase64Encoded(boolean base64Encoded) {
@@ -95,8 +114,23 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
         if ((this.password == null) || (!this.password.equals(password))) {
             this.password = password;
             initialized = false;
+            passwordInitialized = false;
+            passwordSetFromDefault = false;
         }
     }
+    
+    
+    public synchronized void setName(String name) {
+        Validate.notEmpty(name);
+        if (!this.name.equals(name)) {
+            this.name = name;
+            initialized = false;
+            if (passwordSetFromDefault) {
+                passwordInitialized = false;
+            }
+        }
+    }
+    
 
     public boolean isBase64Encoded() {
         return base64Encoded;
@@ -109,20 +143,84 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
     public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
-
-    public String getPassword() {
-        return password;
+    
+    public String getName() {
+        return name;
     }
+    
 
-/*
+    
+    private synchronized void initializePassword() {
+        
+        if (password == null) {
+
+            if (!DEFAULT_NAME.equals(name)) {
+                    
+                String systemPropertyName = 
+                    ParameterNaming.PBE_PASSWORD_SYSTEM_PROPERTY_PREFIX +
+                    name.toLowerCase() +
+                    ParameterNaming.PBE_PASSWORD_SYSTEM_PROPERTY_SUFFIX;
+                
+                password =
+                    ParameterUtils.getSystemProperty(systemPropertyName);
+    
+                if (password != null) {
+                    log.info("[jasypt] Password for basic password-" +
+                            "based encryptor with name \'" + name + "\' " +
+                            "initialized from system property " +
+                            "\'" + systemPropertyName + "\'");
+                } else {
+                
+                    String envVariableName = 
+                        ParameterNaming.PBE_PASSWORD_ENV_VARIABLE_PREFIX +
+                        name.toUpperCase() +
+                        ParameterNaming.PBE_PASSWORD_ENV_VARIABLE_SUFFIX;
+                    
+                    password =
+                        ParameterUtils.getEnvVariable(envVariableName);
+    
+                    if (password != null) {
+                        log.info("[jasypt] Password for basic password-" +
+                                "based encryptor with name \'" + name + "\' " +
+                                "initialized from environment variable \'" + 
+                                envVariableName + "\'");
+                    }
+                    
+                }
+                
+            }
+            
+            
+            if (password == null) {
+                if (defaultPassword != null) {
+                    password = defaultPassword;
+                } else {
+                    throw new EncryptionInitializationException(
+                            "Encryption password not set for " +
+                            "basic password-based encryptor" +
+                            ((DEFAULT_NAME.equals(name))?
+                                "" : " with name \'" + name + "\'"));
+                }
+            }
+            
+            passwordSetFromDefault = true;
+        }
+        
+        passwordInitialized = true;
+        log.info("[jasypt] Password initialized for basic password-based " +
+                "encryptor with name \'" + name + "\'");
+        
+    }
+    
+    
     private synchronized void initialize() {
         
         if (!initialized) {
-            
-            if (password == null) {
-                throw new InternalErrorException("Encryption password not set");
+        
+            if (!passwordInitialized) {
+                initializePassword();
             }
-                
+            
             try {
                 
                 String algorithm = new String(CIPHER_ALGORITHM_PATTERN);
@@ -139,14 +237,14 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
                 decryptCipher = Cipher.getInstance(algorithm);
                 decryptCipher.init(Cipher.DECRYPT_MODE, key, PBE_PARAMETER_SPEC);
                 
-            } catch (Exception e) {
-                throw new InternalErrorException(e);
+            } catch (Throwable t) {
+                throw new EncryptionInitializationException(t);
             }
             initialized = true;
         }
     }
 
-    
+/*    
     public static BasicPbeEncryptor getInitializedInstance(
             String password) {
         BasicPbeEncryptor encryptor = 
@@ -182,8 +280,7 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
 */    
     public synchronized String encrypt(String message) 
             throws EncryptionOperationNotPossibleException {
-        return null;
-/*        
+        
         Validate.notNull(message);
         if (!initialized) {
             initialize();
@@ -200,7 +297,7 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
             encryptedBytes = 
                 encryptCipher.doFinal(messageBuffer.toString().getBytes());
         } catch (Exception e) {
-            throw new EncryptionNotPossibleException();
+            throw new EncryptionOperationNotPossibleException();
         }
  
         if (base64Encoded) {
@@ -208,14 +305,13 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
         } else {
             return new String(encryptedBytes);
         }
-*/        
+        
     }
-/*
-*/    
+
+    
     public synchronized String decrypt(String encryptedMessage) 
             throws EncryptionOperationNotPossibleException {
-        return null;
-/*        
+        
         Validate.notNull(encryptedMessage);
         if (!initialized) {
             initialize();
@@ -232,15 +328,14 @@ public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
         try {
             decryptedBytes = decryptCipher.doFinal(messageBytes);  
         } catch (Exception e) {
-            throw new DecryptionNotPossibleException();
+            throw new EncryptionOperationNotPossibleException();
         }
 
         if (decryptedBytes.length < 2) {
-            throw new DecryptionNotPossibleException();
+            throw new EncryptionOperationNotPossibleException();
         }
         String decryptedMessage = new String(decryptedBytes);
         return decryptedMessage.substring(1, decryptedMessage.length() - 1);
-*/        
     }    
 
     
