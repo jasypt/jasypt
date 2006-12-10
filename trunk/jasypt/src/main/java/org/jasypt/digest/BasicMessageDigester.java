@@ -5,17 +5,12 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 // TODO: Create unit tests
 public class BasicMessageDigester implements MessageDigester {
 
-    private static final Log log = 
-        LogFactory.getLog(BasicMessageDigester.class);
-    
     public static final boolean DEFAULT_BASE64_ENCODED = true;
     public static final String DEFAULT_ALGORITHM = "MD5";
 
@@ -69,7 +64,6 @@ public class BasicMessageDigester implements MessageDigester {
             throw new EncryptionOperationNotPossibleException(e);
         }
         initialized = true;
-        log.info("[jasypt] Basic message digester initialized.");
     }
     
     
