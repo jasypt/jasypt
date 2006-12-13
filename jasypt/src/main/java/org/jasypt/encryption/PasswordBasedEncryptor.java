@@ -15,13 +15,13 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 // TODO: Review algorithm: maybe remove the extra random chars?
 // TODO: Review factory methods
 // TODO: Create Unit tests
-public class BasicPasswordBasedEncryptor implements EncryptorAndDecryptor {
+public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
     
     public static final boolean DEFAULT_BASE64_ENCODED = true;
     public static final String DEFAULT_DIGEST_ALGORITHM = "MD5";
     public static final String DEFAULT_ENCRYPTION_ALGORITHM = "DES";
     public static final String DEFAULT_NAME = 
-        ClassUtils.getShortClassName(BasicPasswordBasedEncryptor.class);
+        ClassUtils.getShortClassName(PasswordBasedEncryptor.class);
     
     private static final String CIPHER_ALGORITHM_PATTERN =
         "PBEWith<digest>And<encryption>";
