@@ -7,21 +7,17 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.Validate;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 // TODO: Review algorithm: maybe remove the extra random chars?
 // TODO: Review factory methods
-// TODO: Create Unit tests
 public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
     
     public static final boolean DEFAULT_BASE64_ENCODED = true;
     public static final String DEFAULT_DIGEST_ALGORITHM = "MD5";
     public static final String DEFAULT_ENCRYPTION_ALGORITHM = "DES";
-    public static final String DEFAULT_NAME = 
-        ClassUtils.getShortClassName(PasswordBasedEncryptor.class);
     
     private static final String CIPHER_ALGORITHM_PATTERN =
         "PBEWith<digest>And<encryption>";
@@ -44,12 +40,10 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
     private String password = null;
     private boolean base64Encoded = DEFAULT_BASE64_ENCODED;
     
-    private String name = DEFAULT_NAME;
 
     private Cipher encryptCipher = null;
     private Cipher decryptCipher = null;
     private Base64 base64 = new Base64();
-
     
 
     
@@ -85,15 +79,6 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
         }
     }
     
-    
-    public synchronized void setName(String name) {
-        Validate.notEmpty(name);
-        if (!this.name.equals(name)) {
-            this.name = name;
-            initialized = false;
-        }
-    }
-    
 
     public boolean isBase64Encoded() {
         return base64Encoded;
@@ -107,11 +92,6 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
         return encryptionAlgorithm;
     }
     
-    public String getName() {
-        return name;
-    }
-    
-
     
     
     private synchronized void initialize() {

@@ -8,7 +8,6 @@ import org.apache.commons.lang.Validate;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
-// TODO: Create unit tests
 public class MessageDigester implements Digester {
 
     public static final boolean DEFAULT_BASE64_ENCODED = true;
@@ -22,16 +21,7 @@ public class MessageDigester implements Digester {
     private MessageDigest md = null;
     private Base64 base64 = new Base64();
 
-    
-    public static MessageDigester 
-            createMessageDigester(String algorithm, boolean base64Encoded) {
-        MessageDigester encryptor = new MessageDigester();
-        encryptor.setAlgorithm(algorithm);
-        encryptor.setBase64Encoded(base64Encoded);
-        return encryptor;
-    }
-    
-    
+
     
     public synchronized void setBase64Encoded(boolean base64Encoded) {
         if (this.base64Encoded != base64Encoded) {
