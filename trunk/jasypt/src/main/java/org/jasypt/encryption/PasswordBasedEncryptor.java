@@ -11,8 +11,6 @@ import org.apache.commons.lang.Validate;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-// TODO: Review algorithm: maybe remove the extra random chars?
-// TODO: Review factory methods
 public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
     
     public static final boolean DEFAULT_BASE64_ENCODED = true;
@@ -100,6 +98,11 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
             
             try {
                 
+                if (password == null) {
+                    throw new EncryptionInitializationException(
+                            "Password not set for Password Based Encryptor");
+                }
+                
                 String algorithm = new String(CIPHER_ALGORITHM_PATTERN);
                 algorithm = 
                     algorithm.replaceFirst("<digest>", digestAlgorithm);
@@ -114,10 +117,13 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
                 encryptCipher = Cipher.getInstance(algorithm);
                 encryptCipher.init(
                         Cipher.ENCRYPT_MODE, key, PBE_PARAMETER_SPEC);
+                
                 decryptCipher = Cipher.getInstance(algorithm);
                 decryptCipher.init(
                         Cipher.DECRYPT_MODE, key, PBE_PARAMETER_SPEC);
                 
+            } catch (EncryptionInitializationException e) {
+                throw e;
             } catch (Throwable t) {
                 throw new EncryptionInitializationException(t);
             }
@@ -125,40 +131,7 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
         }
     }
 
-/*    
-    public static BasicPbeEncryptor getInitializedInstance(
-            String password) {
-        BasicPbeEncryptor encryptor = 
-            new BasicPbeEncryptor();
-        encryptor.setPassword(password);
-        encryptor.initialize();
-        return encryptor;
-    }
-    
-    public static BasicPbeEncryptor getInitializedInstance(
-            String password, boolean base64Encoded) {
-        BasicPbeEncryptor encryptor = 
-            new BasicPbeEncryptor();
-        encryptor.setPassword(password);
-        encryptor.setBase64Encoded(base64Encoded);
-        encryptor.initialize();
-        return encryptor;
-    }
-    
-    public static BasicPbeEncryptor getInitializedInstance(
-            String password, String digestAlgorithm, 
-            String encryptionAlgorithm, boolean base64Encoded) {
-        BasicPbeEncryptor encryptor = 
-            new BasicPbeEncryptor();
-        encryptor.setPassword(password);
-        encryptor.setDigestAlgorithm(digestAlgorithm);
-        encryptor.setEncryptionAlgorithm(encryptionAlgorithm);
-        encryptor.setBase64Encoded(base64Encoded);
-        encryptor.initialize();
-        return encryptor;
-    }
-    
-*/    
+
     public synchronized String encrypt(String message) 
             throws EncryptionOperationNotPossibleException {
         
@@ -167,16 +140,10 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
             initialize();
         }
 
-        // Add two random characters to make encryption stronger
-        StringBuffer messageBuffer = new StringBuffer();
-        messageBuffer.append((char) (Math.random()*256));
-        messageBuffer.append(message);
-        messageBuffer.append((char) (Math.random()*256));
-    
         byte[] encryptedBytes = null;
         try {
             encryptedBytes = 
-                encryptCipher.doFinal(messageBuffer.toString().getBytes());
+                encryptCipher.doFinal(message.getBytes());
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
@@ -212,11 +179,7 @@ public class PasswordBasedEncryptor implements EncryptorAndDecryptor {
             throw new EncryptionOperationNotPossibleException();
         }
 
-        if (decryptedBytes.length < 2) {
-            throw new EncryptionOperationNotPossibleException();
-        }
-        String decryptedMessage = new String(decryptedBytes);
-        return decryptedMessage.substring(1, decryptedMessage.length() - 1);
+        return new String(decryptedBytes);
     }    
 
     
