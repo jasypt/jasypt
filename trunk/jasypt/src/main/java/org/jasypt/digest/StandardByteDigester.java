@@ -11,7 +11,8 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
 
-// TODO: Add error messages on "Validate" sentences
+// TODO: Add comments
+// TODO: Add Javadoc
 public final class StandardByteDigester implements ByteDigester {
 
     public static final String DEFAULT_ALGORITHM = "MD5";
