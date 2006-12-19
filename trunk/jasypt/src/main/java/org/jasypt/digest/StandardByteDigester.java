@@ -16,11 +16,11 @@ import org.jasypt.salt.SaltGeneration;
 public final class StandardByteDigester implements ByteDigester {
 
     public static final String DEFAULT_ALGORITHM = "MD5";
-    public static final int DEFAULT_RANDOM_SALT_SIZE_BYTES = 8;
+    public static final int DEFAULT_SALT_SIZE_BYTES = 8;
     public static final int DEFAULT_ITERATIONS = 1000;
 
     private String algorithm = DEFAULT_ALGORITHM;
-    private int saltSizeBytes = DEFAULT_RANDOM_SALT_SIZE_BYTES;
+    private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
     private int iterations = DEFAULT_ITERATIONS;
     
     private boolean initialized = false;
