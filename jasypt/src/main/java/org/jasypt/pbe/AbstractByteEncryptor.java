@@ -17,6 +17,8 @@ import org.jasypt.salt.SaltGeneration;
 // TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
+// TODO: Obtain randoms from: SecureRandom sr = SecureRandom.getInstance("SHA1PRNG"); sr.nextBytes(salt);
+// TODO: Test PBEWithMD5AndTripleDES with JDK 5
 public abstract class AbstractByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
