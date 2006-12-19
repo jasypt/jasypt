@@ -6,18 +6,18 @@ import junit.framework.TestCase;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
+public class PBEWithSHA1AndRC2_40ByteEncryptorTest extends TestCase {
 
     public void testEncryptAndDecrypt() throws Exception {
-        
+
         String password = "A PASSWORD BEING SET";
         String password2 = "A PASSWORD BEING SET ";
         
         String message = "This is a message";
         byte[] messageBytes = message.getBytes("UTF-8");
         
-        PBEWithSHA1AndDESedeByteEncryptor encryptor = 
-            new PBEWithSHA1AndDESedeByteEncryptor();
+        PBEWithSHA1AndRC2_40ByteEncryptor encryptor = 
+            new PBEWithSHA1AndRC2_40ByteEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -33,8 +33,8 @@ public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
                             encryptor.encrypt(messageBytes)));
         }
         
-        PBEWithSHA1AndDESedeByteEncryptor encryptor2 = 
-            new PBEWithSHA1AndDESedeByteEncryptor();
+        PBEWithSHA1AndRC2_40ByteEncryptor encryptor2 = 
+            new PBEWithSHA1AndRC2_40ByteEncryptor();
         encryptor2.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -54,6 +54,7 @@ public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
                 assertTrue(true);
             }
         }
+
     }
 
 }
