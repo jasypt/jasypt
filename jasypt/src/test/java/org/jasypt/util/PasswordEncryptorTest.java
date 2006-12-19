@@ -1,4 +1,4 @@
-package org.jasypt.uitl;
+package org.jasypt.util;
 
 
 import junit.framework.TestCase;

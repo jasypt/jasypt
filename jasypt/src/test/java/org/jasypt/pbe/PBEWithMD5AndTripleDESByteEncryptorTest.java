@@ -2,22 +2,22 @@ package org.jasypt.pbe;
 
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
+import junit.framework.TestCase;
+
+public class PBEWithMD5AndTripleDESByteEncryptorTest extends TestCase {
 
     public void testEncryptAndDecrypt() throws Exception {
-        
+
         String password = "A PASSWORD BEING SET";
         String password2 = "A PASSWORD BEING SET ";
         
         String message = "This is a message";
         byte[] messageBytes = message.getBytes("UTF-8");
         
-        PBEWithSHA1AndDESedeByteEncryptor encryptor = 
-            new PBEWithSHA1AndDESedeByteEncryptor();
+        PBEWithMD5AndTripleDESByteEncryptor encryptor = 
+            new PBEWithMD5AndTripleDESByteEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -33,8 +33,8 @@ public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
                             encryptor.encrypt(messageBytes)));
         }
         
-        PBEWithSHA1AndDESedeByteEncryptor encryptor2 = 
-            new PBEWithSHA1AndDESedeByteEncryptor();
+        PBEWithMD5AndTripleDESByteEncryptor encryptor2 = 
+            new PBEWithMD5AndTripleDESByteEncryptor();
         encryptor2.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
