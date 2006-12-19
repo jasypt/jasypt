@@ -1,9 +1,9 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption.pbe;
 
 
-public final class PBEWithSHA1AndDESedeByteEncryptor extends AbstractPBEByteEncryptor {
+public final class PBEWithMD5AndDESByteEncryptor extends AbstractPBEByteEncryptor {
     
-    private static final String ALGORITHM = "PBEWithSHA1AndDESede";
+    private static final String ALGORITHM = "PBEWithMD5AndDES";
     private static final int SALT_SIZE_BYTES = 8;
     
     

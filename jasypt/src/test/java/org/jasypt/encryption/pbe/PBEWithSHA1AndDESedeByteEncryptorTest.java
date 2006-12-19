@@ -1,9 +1,10 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption.pbe;
 
 import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.jasypt.encryption.pbe.PBEWithSHA1AndDESedeByteEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 public class PBEWithSHA1AndDESedeByteEncryptorTest extends TestCase {
