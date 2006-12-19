@@ -7,8 +7,8 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 public final class StandardStringDigester implements StringDigester {
 
-    private static final String MESSAGE_DECODING_CHARSET = "UTF-8";
-    private static final String DIGEST_ENCODING_CHARSET = "US-ASCII";
+    private static final String MESSAGE_CHARSET = "UTF-8";
+    private static final String DIGEST_CHARSET = "US-ASCII";
 
     private StandardByteDigester byteDigester = null;
     private Base64 base64 = null;
@@ -53,10 +53,10 @@ public final class StandardStringDigester implements StringDigester {
         
         try {
 
-            byte[] messageBytes = message.getBytes(MESSAGE_DECODING_CHARSET);
+            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
             byte[] digest = base64.encode(byteDigester.digest(messageBytes));
             
-            return new String(digest, DIGEST_ENCODING_CHARSET);
+            return new String(digest, DIGEST_CHARSET);
         
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
@@ -73,8 +73,8 @@ public final class StandardStringDigester implements StringDigester {
         
         try {
             
-            byte[] messageBytes = message.getBytes(MESSAGE_DECODING_CHARSET);
-            byte[] digestBytes = digest.getBytes(DIGEST_ENCODING_CHARSET);
+            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
+            byte[] digestBytes = digest.getBytes(DIGEST_CHARSET);
             
             return byteDigester.matches(
                     messageBytes, 
