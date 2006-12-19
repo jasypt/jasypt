@@ -17,7 +17,7 @@ import org.jasypt.salt.SaltGeneration;
 // TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
-public class BytePBEWithMD5AndDESEncryptor implements BytePBEncryptor {
+public final class PBEWithMD5AndDESByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
 
@@ -77,6 +77,7 @@ public class BytePBEWithMD5AndDESEncryptor implements BytePBEncryptor {
             }
             initialized = true;
         }
+        
     }
 
 
