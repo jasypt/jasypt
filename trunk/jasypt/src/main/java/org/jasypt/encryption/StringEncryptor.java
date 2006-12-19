@@ -1,6 +1,6 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption;
 
-public interface PBEStringEncryptor {
+public interface StringEncryptor {
     
     public String encrypt(String message);
     

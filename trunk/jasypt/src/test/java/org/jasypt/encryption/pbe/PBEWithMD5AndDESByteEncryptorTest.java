@@ -1,12 +1,13 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption.pbe;
 
 import java.util.Arrays;
 
+import org.jasypt.encryption.pbe.PBEWithMD5AndDESByteEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 import junit.framework.TestCase;
 
-public class PBEWithMD5AndTripleDESByteEncryptorTest extends TestCase {
+public class PBEWithMD5AndDESByteEncryptorTest extends TestCase {
 
     public void testEncryptAndDecrypt() throws Exception {
 
@@ -16,8 +17,8 @@ public class PBEWithMD5AndTripleDESByteEncryptorTest extends TestCase {
         String message = "This is a message";
         byte[] messageBytes = message.getBytes("UTF-8");
         
-        PBEWithMD5AndTripleDESByteEncryptor encryptor = 
-            new PBEWithMD5AndTripleDESByteEncryptor();
+        PBEWithMD5AndDESByteEncryptor encryptor = 
+            new PBEWithMD5AndDESByteEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -33,8 +34,8 @@ public class PBEWithMD5AndTripleDESByteEncryptorTest extends TestCase {
                             encryptor.encrypt(messageBytes)));
         }
         
-        PBEWithMD5AndTripleDESByteEncryptor encryptor2 = 
-            new PBEWithMD5AndTripleDESByteEncryptor();
+        PBEWithMD5AndDESByteEncryptor encryptor2 = 
+            new PBEWithMD5AndDESByteEncryptor();
         encryptor2.setPassword(password);
         
         for (int i = 0; i < 100; i++) {

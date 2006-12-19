@@ -1,6 +1,6 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption;
 
-public interface PBEByteEncryptor {
+public interface ByteEncryptor {
 
     public byte[] encrypt(byte[] message);
     

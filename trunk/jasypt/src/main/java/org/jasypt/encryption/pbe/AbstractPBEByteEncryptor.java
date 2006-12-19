@@ -1,4 +1,4 @@
-package org.jasypt.pbe;
+package org.jasypt.encryption.pbe;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -8,6 +8,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
+import org.jasypt.encryption.ByteEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
@@ -18,7 +19,7 @@ import org.jasypt.salt.SaltGeneration;
 // TODO: Add comments
 // TODO: Add javadoc
 // TODO: Obtain randoms from: SecureRandom sr = SecureRandom.getInstance("SHA1PRNG"); sr.nextBytes(salt);
-public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
+public abstract class AbstractPBEByteEncryptor implements ByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
 
