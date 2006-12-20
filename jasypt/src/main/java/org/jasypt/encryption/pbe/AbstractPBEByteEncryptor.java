@@ -12,7 +12,6 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
-// TODO: Correct null and empty string/byte array input behaviour in encryptors
 // TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
@@ -86,7 +85,9 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     public synchronized byte[] encrypt(byte[] message) 
             throws EncryptionOperationNotPossibleException {
         
-        Validate.notNull(message);
+        if (message == null) {
+            return null;
+        }
         
         if (!initialized) {
             initialize();
@@ -118,7 +119,9 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     public synchronized byte[] decrypt(byte[] encryptedMessage) 
             throws EncryptionOperationNotPossibleException {
         
-        Validate.notNull(encryptedMessage);
+        if (encryptedMessage == null) {
+            return null;
+        }
         
         if (!initialized) {
             initialize();
