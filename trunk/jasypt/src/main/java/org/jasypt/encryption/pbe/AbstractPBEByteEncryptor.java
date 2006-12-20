@@ -12,7 +12,6 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
-// TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
 // TODO: Create *Configurer classes? (for instance, they can be delegates to obtain passwords)
@@ -33,7 +32,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
 
     public synchronized void setPassword(String password) {
-        Validate.notEmpty(password);
+        Validate.notEmpty(password, "Password cannot be set empty");
         if ((this.password == null) || (!this.password.equals(password))) {
             this.password = password;
             initialized = false;
@@ -41,7 +40,8 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     }
     
     public synchronized void setIterations(int iterations) {
-        Validate.isTrue(iterations > 0);
+        Validate.isTrue(iterations > 0, 
+                "Number of iterations must be greater than zero");
         this.iterations = iterations;
     }
     
