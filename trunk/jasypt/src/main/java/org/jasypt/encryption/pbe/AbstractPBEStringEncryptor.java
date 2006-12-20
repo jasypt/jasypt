@@ -1,7 +1,6 @@
 package org.jasypt.encryption.pbe;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.Validate;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
@@ -37,7 +36,9 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
     
     public synchronized String encrypt(String message) {
         
-        Validate.notNull(message);
+        if (message == null) {
+            return null;
+        }
         
         try {
 
@@ -60,7 +61,9 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
     
     public synchronized String decrypt(String encryptedMessage) {
         
-        Validate.notNull(encryptedMessage);
+        if (encryptedMessage == null) {
+            return null;
+        }
         
         try {
             
