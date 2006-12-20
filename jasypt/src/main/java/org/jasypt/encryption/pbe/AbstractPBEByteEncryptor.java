@@ -8,16 +8,16 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
-import org.jasypt.encryption.ByteEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
+// TODO: Correct null and empty string/byte array input behaviour in encryptors
 // TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
 // TODO: Create *Configurer classes? (for instance, they can be delegates to obtain passwords)
-public abstract class AbstractPBEByteEncryptor implements ByteEncryptor {
+public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
 

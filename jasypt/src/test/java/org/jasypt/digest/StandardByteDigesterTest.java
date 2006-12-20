@@ -15,6 +15,17 @@ public class StandardByteDigesterTest extends TestCase {
         byte[] messageBytes = message.getBytes("UTF-8");
         
         StandardByteDigester digester = new StandardByteDigester();
+        
+        assertTrue(digester.digest(null) == null);
+        assertTrue(digester.digest(new byte[0]) != null);
+        
+        byte[] digestOfEmpty = digester.digest(new byte[0]);
+        assertTrue(digester.matches(new byte[0], digestOfEmpty));
+
+        assertTrue(digester.matches(null, null));
+        assertFalse(digester.matches(null, new byte[0]));
+        assertFalse(digester.matches(new byte[0], null));
+        
         byte[] digest = digester.digest(messageBytes);
         
         for (int i = 0; i < 100; i++) {

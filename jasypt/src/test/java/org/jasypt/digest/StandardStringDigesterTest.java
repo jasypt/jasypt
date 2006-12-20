@@ -15,6 +15,19 @@ public class StandardStringDigesterTest extends TestCase {
         
         StandardStringDigester digester = new StandardStringDigester();
         String digest = digester.digest(message);
+        
+        assertTrue(digester.digest(null) == null);
+        assertTrue(digester.digest("") != null);
+        
+        String digestOfEmpty = digester.digest("");
+        assertTrue(digester.matches("", digestOfEmpty));
+
+        assertTrue(digester.matches(null, null));
+        assertFalse(digester.matches(null, ""));
+        assertFalse(digester.matches("", null));
+
+        assertTrue(digester.matches(null, null));
+        
         assertTrue(Base64.isArrayByteBase64(digest.getBytes("US-ASCII")));
         
         for (int i = 0; i < 100; i++) {

@@ -2,12 +2,11 @@ package org.jasypt.encryption.pbe;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
-import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
-public abstract class AbstractPBEStringEncryptor implements StringEncryptor {
+public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
 
     private static final String MESSAGE_CHARSET = "UTF-8";
     private static final String ENCRYPTED_MESSAGE_CHARSET = "US-ASCII";

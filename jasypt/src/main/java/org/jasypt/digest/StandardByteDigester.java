@@ -77,7 +77,9 @@ public final class StandardByteDigester implements ByteDigester {
     
     public synchronized byte[] digest(byte[] message) {
         
-        Validate.notNull(message);
+        if (message == null) {
+            return null;
+        }
         
         if (!initialized) {
             initialize();
@@ -129,9 +131,12 @@ public final class StandardByteDigester implements ByteDigester {
     
     
     public synchronized boolean matches(byte[] message, byte[] digest) {
-        
-        Validate.notNull(message);
-        Validate.notNull(digest);
+
+        if (message == null) {
+            return (digest == null);
+        } else if (digest == null) {
+            return false;
+        }
         
         if (!initialized) {
             initialize();

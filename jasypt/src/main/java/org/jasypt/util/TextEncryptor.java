@@ -1,28 +1,11 @@
 package org.jasypt.util;
 
-import org.jasypt.encryption.pbe.PBEWithMD5AndDESStringEncryptor;
+public interface TextEncryptor {
 
-public final class TextEncryptor {
+    public void setPassword(String password);
 
-    
-    private PBEWithMD5AndDESStringEncryptor encryptor = null;
-    
-    
-    public TextEncryptor() {
-        this.encryptor = new PBEWithMD5AndDESStringEncryptor();
-    }
-    
-    public synchronized void setPassword(String password) {
-        encryptor.setPassword(password);
-    }
+    public String encrypt(String message);
 
-    
-    public synchronized String encrypt(String message) {
-        return encryptor.encrypt(message);
-    }
-    
-    public synchronized String decrypt(String encryptedMessage) {
-        return encryptor.decrypt(encryptedMessage);
-    }
-    
+    public String decrypt(String encryptedMessage);
+
 }
