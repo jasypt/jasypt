@@ -49,7 +49,9 @@ public final class StandardStringDigester implements StringDigester {
     
     public synchronized String digest(String message) {
         
-        Validate.notNull(message);
+        if (message == null) {
+            return null;
+        }
         
         try {
 
@@ -67,9 +69,12 @@ public final class StandardStringDigester implements StringDigester {
     
     
     public synchronized boolean matches(String message, String digest) {
-        
-        Validate.notNull(message);
-        Validate.notNull(digest);
+
+        if (message == null) {
+            return (digest == null);
+        } else if (digest == null) {
+            return false;
+        }
         
         try {
             
