@@ -1,7 +1,6 @@
 package org.jasypt.digest;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.Validate;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
