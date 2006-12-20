@@ -13,12 +13,10 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
-// TODO: Create StringEncryptor classes
-// TODO: Create TextEncryptor util class based on MD5WihDES
 // TODO: Add messages to Validate actions
 // TODO: Add comments
 // TODO: Add javadoc
-// TODO: Obtain randoms from: SecureRandom sr = SecureRandom.getInstance("SHA1PRNG"); sr.nextBytes(salt);
+// TODO: Create *Configurer classes? (for instance, they can be delegates to obtain passwords)
 public abstract class AbstractPBEByteEncryptor implements ByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;

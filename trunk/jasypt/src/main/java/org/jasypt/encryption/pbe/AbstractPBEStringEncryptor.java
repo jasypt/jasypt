@@ -3,6 +3,7 @@ package org.jasypt.encryption.pbe;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
@@ -48,6 +49,8 @@ public abstract class AbstractPBEStringEncryptor implements StringEncryptor {
             return new String(encryptedMessage, 
                     ENCRYPTED_MESSAGE_CHARSET);
         
+        } catch (EncryptionInitializationException e) {
+            throw e;
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
@@ -71,6 +74,8 @@ public abstract class AbstractPBEStringEncryptor implements StringEncryptor {
             
             return new String(message, MESSAGE_CHARSET);
         
+        } catch (EncryptionInitializationException e) {
+            throw e;
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
