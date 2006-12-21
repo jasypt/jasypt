@@ -11,6 +11,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
 
+// TODO: Add configurator
 // TODO: Add comments
 // TODO: Add Javadoc
 public final class StandardByteDigester implements ByteDigester {
@@ -28,7 +29,7 @@ public final class StandardByteDigester implements ByteDigester {
     
     private MessageDigest md = null;
 
-
+    
 
     public synchronized void setAlgorithm(String algorithm) {
         Validate.notEmpty(algorithm, "Algorithm cannot be empty");
@@ -63,25 +64,31 @@ public final class StandardByteDigester implements ByteDigester {
     public int getSaltSizeBytes() {
         return saltSizeBytes;
     }
+    
+    private synchronized boolean isInitialized() {
+        return initialized;
+    }
 
     private synchronized void initialize() {
-        try {
-            md = MessageDigest.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            throw new EncryptionInitializationException(e);
+        if (!initialized) {
+            try {
+                md = MessageDigest.getInstance(algorithm);
+            } catch (NoSuchAlgorithmException e) {
+                throw new EncryptionInitializationException(e);
+            }
+            initialized = true;
         }
-        initialized = true;
     }
     
     
     
-    public synchronized byte[] digest(byte[] message) {
+    public byte[] digest(byte[] message) {
         
         if (message == null) {
             return null;
         }
         
-        if (!initialized) {
+        if (!isInitialized()) {
             initialize();
         }
         
@@ -90,36 +97,42 @@ public final class StandardByteDigester implements ByteDigester {
             salt = SaltGeneration.generateSalt(saltSizeBytes);
         }
         
-        return digest (message, salt);
+        return digest(message, salt);
         
     }
 
     
     
-    private synchronized byte[] digest(byte[] message, byte[] salt) {
+    private byte[] digest(byte[] message, byte[] salt) {
         
         try {
             
             byte[] encryptedMessage = new byte[0];
-        
+
+            if (salt != null) {
+                encryptedMessage = ArrayUtils.addAll(encryptedMessage, salt);
+            }
+
+            byte[] digest = null;
+            
             synchronized (md) {
                 
                 md.reset();
+                
                 if (salt != null) {
-                    encryptedMessage = ArrayUtils.addAll(encryptedMessage, salt);
                     md.update(salt);
                 }
                 md.update(message);
                 
-                byte[] digest = md.digest();
+                digest = md.digest();
                 for (int i = 0; i < (iterations - 1); i++) {
                     md.reset();
                     digest = md.digest(digest);
                 }
                 
-                encryptedMessage = ArrayUtils.addAll(encryptedMessage, digest);
-                
             }
+            
+            encryptedMessage = ArrayUtils.addAll(encryptedMessage, digest);
             
             return encryptedMessage;
         
@@ -130,7 +143,7 @@ public final class StandardByteDigester implements ByteDigester {
     }
     
     
-    public synchronized boolean matches(byte[] message, byte[] digest) {
+    public boolean matches(byte[] message, byte[] digest) {
 
         if (message == null) {
             return (digest == null);
@@ -138,7 +151,7 @@ public final class StandardByteDigester implements ByteDigester {
             return false;
         }
         
-        if (!initialized) {
+        if (!isInitialized()) {
             initialize();
         }
         

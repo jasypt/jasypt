@@ -13,11 +13,11 @@ public final class PasswordEncryptor {
     }
     
     
-    public synchronized String encryptPassword(String password) {
+    public String encryptPassword(String password) {
         return digester.digest(password);
     }
     
-    public synchronized boolean checkEncryptedPassword(String plainPassword, 
+    public boolean checkEncryptedPassword(String plainPassword, 
             String encryptedPassword) {
         return digester.matches(plainPassword, encryptedPassword);
     }
