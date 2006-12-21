@@ -21,9 +21,11 @@ public final class SaltGeneration {
     }
     
     
-    public static synchronized byte[] generateSalt(int lengthBytes) {
+    public static byte[] generateSalt(int lengthBytes) {
         byte[] salt = new byte[lengthBytes];
-        random.nextBytes(salt);
+        synchronized (random) {
+            random.nextBytes(salt);
+        }
         return salt;
     }
     

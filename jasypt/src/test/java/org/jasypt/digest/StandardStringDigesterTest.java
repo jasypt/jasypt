@@ -57,6 +57,5 @@ public class StandardStringDigesterTest extends TestCase {
         }
         
     }
-
     
 }

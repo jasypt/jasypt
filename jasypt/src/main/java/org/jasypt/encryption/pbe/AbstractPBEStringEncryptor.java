@@ -23,18 +23,18 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
     protected abstract AbstractPBEByteEncryptor createByteEncryptorInstance();
     
     
-    public synchronized void setPassword(String password) {
+    public void setPassword(String password) {
         byteEncryptor.setPassword(password);
     }
     
 
-    public synchronized void setIterations(int iterations) {
+    public void setIterations(int iterations) {
         byteEncryptor.setIterations(iterations);
     }
     
     
     
-    public synchronized String encrypt(String message) {
+    public String encrypt(String message) {
         
         if (message == null) {
             return null;
@@ -43,8 +43,12 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
         try {
 
             byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
-            byte[] encryptedMessage = 
-                base64.encode(byteEncryptor.encrypt(messageBytes));
+            
+            byte[] encryptedMessage = byteEncryptor.encrypt(messageBytes);
+            
+            synchronized (base64) {
+                encryptedMessage = base64.encode(encryptedMessage);
+            }
             
             return new String(encryptedMessage, 
                     ENCRYPTED_MESSAGE_CHARSET);
@@ -59,7 +63,7 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
 
     
     
-    public synchronized String decrypt(String encryptedMessage) {
+    public String decrypt(String encryptedMessage) {
         
         if (encryptedMessage == null) {
             return null;
@@ -67,10 +71,12 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
         
         try {
             
-            byte[] encryptedMessageBytes =
-                base64.decode(
-                    encryptedMessage.getBytes(
-                            ENCRYPTED_MESSAGE_CHARSET));
+            byte[] encryptedMessageBytes = 
+                encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
+            
+            synchronized (base64) {
+                encryptedMessageBytes = base64.decode(encryptedMessageBytes);
+            }
             
             byte[] message = byteEncryptor.decrypt(encryptedMessageBytes);
             

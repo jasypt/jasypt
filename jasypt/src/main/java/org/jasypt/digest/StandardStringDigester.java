@@ -19,15 +19,15 @@ public final class StandardStringDigester implements StringDigester {
     }
     
     
-    public synchronized void setAlgorithm(String algorithm) {
+    public void setAlgorithm(String algorithm) {
         byteDigester.setAlgorithm(algorithm);
     }
     
-    public synchronized void setSaltSizeBytes(int saltSizeBytes) {
+    public void setSaltSizeBytes(int saltSizeBytes) {
         byteDigester.setSaltSizeBytes(saltSizeBytes);
     }
 
-    public synchronized void setIterations(int iterations) {
+    public void setIterations(int iterations) {
         byteDigester.setIterations(iterations);
     }
     
@@ -46,7 +46,7 @@ public final class StandardStringDigester implements StringDigester {
     
     
     
-    public synchronized String digest(String message) {
+    public String digest(String message) {
         
         if (message == null) {
             return null;
@@ -55,7 +55,12 @@ public final class StandardStringDigester implements StringDigester {
         try {
 
             byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
-            byte[] digest = base64.encode(byteDigester.digest(messageBytes));
+            
+            byte[] digest = byteDigester.digest(messageBytes);
+            
+            synchronized (base64) {
+                digest = base64.encode(digest);
+            }
             
             return new String(digest, DIGEST_CHARSET);
         
@@ -67,7 +72,7 @@ public final class StandardStringDigester implements StringDigester {
 
     
     
-    public synchronized boolean matches(String message, String digest) {
+    public boolean matches(String message, String digest) {
 
         if (message == null) {
             return (digest == null);
@@ -80,9 +85,11 @@ public final class StandardStringDigester implements StringDigester {
             byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
             byte[] digestBytes = digest.getBytes(DIGEST_CHARSET);
             
-            return byteDigester.matches(
-                    messageBytes, 
-                    base64.decode(digestBytes)); 
+            synchronized (base64) {
+                digestBytes = base64.decode(digestBytes);
+            }
+            
+            return byteDigester.matches(messageBytes, digestBytes); 
         
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();

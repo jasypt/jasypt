@@ -12,16 +12,16 @@ public final class NormalTextEncryptor implements TextEncryptor {
         this.encryptor = new PBEWithMD5AndDESStringEncryptor();
     }
     
-    public synchronized void setPassword(String password) {
+    public void setPassword(String password) {
         encryptor.setPassword(password);
     }
 
     
-    public synchronized String encrypt(String message) {
+    public String encrypt(String message) {
         return encryptor.encrypt(message);
     }
     
-    public synchronized String decrypt(String encryptedMessage) {
+    public String decrypt(String encryptedMessage) {
         return encryptor.decrypt(encryptedMessage);
     }
     

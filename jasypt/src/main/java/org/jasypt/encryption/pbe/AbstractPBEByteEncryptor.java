@@ -50,6 +50,10 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
     protected abstract int getSaltSizeBytes(); 
     
+    
+    private synchronized boolean isInitialized() {
+        return initialized;
+    }
 
     private synchronized void initialize() {
         
@@ -82,14 +86,14 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     }
 
 
-    public synchronized byte[] encrypt(byte[] message) 
+    public byte[] encrypt(byte[] message) 
             throws EncryptionOperationNotPossibleException {
         
         if (message == null) {
             return null;
         }
         
-        if (!initialized) {
+        if (!isInitialized()) {
             initialize();
         }
         
@@ -116,14 +120,14 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
 
     
     
-    public synchronized byte[] decrypt(byte[] encryptedMessage) 
+    public byte[] decrypt(byte[] encryptedMessage) 
             throws EncryptionOperationNotPossibleException {
         
         if (encryptedMessage == null) {
             return null;
         }
         
-        if (!initialized) {
+        if (!isInitialized()) {
             initialize();
         }
     
@@ -137,14 +141,15 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
                 new PBEParameterSpec(salt, iterations);
 
             byte[] decryptedMessage = null;
+            
+            byte[] encryptedMessageKernel = 
+                ArrayUtils.subarray(encryptedMessage,getSaltSizeBytes(), 
+                        encryptedMessage.length);
+                 
             synchronized (decryptCipher) {
                 decryptCipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
                 decryptedMessage = 
-                    decryptCipher.doFinal(
-                            ArrayUtils.subarray(
-                                    encryptedMessage, 
-                                    getSaltSizeBytes(), 
-                                    encryptedMessage.length));
+                    decryptCipher.doFinal(encryptedMessageKernel);
             }
             
             return decryptedMessage;
