@@ -24,9 +24,9 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
         private AtomicInteger runningThreads = null;
         private int numThreads = 0;
         
-        public int launch(int numThreads, int numIters) throws Exception {
+        public int launch(int numOfThreads, int numIters) throws Exception {
             
-            this.numThreads = numThreads;
+            this.numThreads = numOfThreads;
             
             PBEStringEncryptor encryptor = createEncryptor();
             
@@ -39,7 +39,7 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
             StopWatch watch = new StopWatch();
             watch.start();
             
-            for (int i = 0; i < numThreads; i++) {
+            for (int i = 0; i < numOfThreads; i++) {
                 TesterRunnable tester = 
                     new TesterRunnable(encryptor, numIters, errors, 
                             runningThreads, this);
@@ -49,13 +49,13 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
             
             while (continueWaiting()) {
                 synchronized (this) {
-                    this.wait();
+                    this.wait(numIters * 1000);
                 }
             }
             
             watch.split();
             
-            System.out.println("Threads: " + numThreads + " Iterations: " + numIters + " Errors: " + errors + " Time: " + watch.toSplitString());
+            System.out.println("Threads: " + numOfThreads + " Iterations: " + numIters + " Errors: " + errors + " Time: " + watch.toSplitString());
 
             return errors.get();
             

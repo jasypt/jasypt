@@ -5,24 +5,11 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.jasypt.digest.config.SimpleDigesterConfig;
-
 public class StandardByteDigesterTest extends TestCase {
 
     
     
     public void testDigest() throws Exception {
-
-        StandardByteDigester digesterWithConfig = new StandardByteDigester();
-        SimpleDigesterConfig config = new SimpleDigesterConfig();
-        config.setAlgorithm("SHA-1");
-        config.setIterations(new Integer(50000));
-        digesterWithConfig.setConfig(config);
-        assertEquals("SHA-1", digesterWithConfig.getAlgorithm());
-        assertEquals(50000, digesterWithConfig.getIterations());
-        digesterWithConfig.setAlgorithm("MD5");
-        assertEquals("MD5", digesterWithConfig.getAlgorithm());
-        assertEquals(50000, digesterWithConfig.getIterations());
         
         String message = "This is a Message";
         byte[] messageBytes = message.getBytes("UTF-8");

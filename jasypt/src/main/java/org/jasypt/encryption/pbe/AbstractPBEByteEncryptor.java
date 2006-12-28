@@ -8,19 +8,26 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
+import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
 // TODO: Add comments
 // TODO: Add javadoc
-// TODO: Create *Configurer classes? (for instance, they can be delegates to obtain passwords)
+// TODO: Really needed key and ciphers to be object-scope? test with threads
+// TODO: If key and ciphers not needed... password could be obtained every time
+//       when encrypting/decrypting? (setStorePassword)
 public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
 
     private String password = null;
     private int iterations = DEFAULT_ITERATIONS;
+    private PBEConfig config = null;
+    
+    private boolean passwordSet = false;
+    private boolean iterationsSet = false;
     
     private boolean initialized = false;
     
@@ -31,18 +38,30 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
 
     
 
+    public synchronized void setConfig(PBEConfig config) {
+        if (this.config != config) {
+            this.config = config;
+        }
+        this.initialized = false;
+    }
+
     public synchronized void setPassword(String password) {
         Validate.notEmpty(password, "Password cannot be set empty");
         if ((this.password == null) || (!this.password.equals(password))) {
             this.password = password;
-            initialized = false;
+            this.initialized = false;
         }
+        this.passwordSet = true;
     }
     
     public synchronized void setIterations(int iterations) {
         Validate.isTrue(iterations > 0, 
                 "Number of iterations must be greater than zero");
-        this.iterations = iterations;
+        if (this.iterations != iterations) {
+            this.iterations = iterations;
+            this.initialized = false;
+        }
+        this.iterationsSet = true;
     }
     
     
@@ -52,35 +71,47 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
     
     private synchronized boolean isInitialized() {
-        return initialized;
+        return this.initialized;
     }
 
     private synchronized void initialize() {
         
-        if (!initialized) {
+        if (!this.initialized) {
+            
+            if (this.config != null) {
+                String configPassword = config.getPassword();
+                Integer configIterations = config.getIterations();
+                this.password = 
+                    ((this.passwordSet) || (configPassword == null))?
+                            this.password : configPassword;
+                this.iterations = 
+                    ((this.iterationsSet) || (configIterations == null))?
+                            this.iterations : configIterations.intValue();
+            }
             
             try {
                 
-                if (password == null) {
+                if (this.password == null) {
                     throw new EncryptionInitializationException(
                             "Password not set for Password Based Encryptor");
                 }
                 
-                PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray());
+                PBEKeySpec pbeKeySpec = 
+                    new PBEKeySpec(this.password.toCharArray());
                 SecretKeyFactory factory =
                     SecretKeyFactory.getInstance(getAlgorithm());
                 
-                key = factory.generateSecret(pbeKeySpec);
+                this.key = factory.generateSecret(pbeKeySpec);
                 
-                encryptCipher = Cipher.getInstance(getAlgorithm());
-                decryptCipher = Cipher.getInstance(getAlgorithm());
+                this.encryptCipher = Cipher.getInstance(getAlgorithm());
+                this.decryptCipher = Cipher.getInstance(getAlgorithm());
                 
             } catch (EncryptionInitializationException e) {
                 throw e;
             } catch (Throwable t) {
                 throw new EncryptionInitializationException(t);
             }
-            initialized = true;
+            this.initialized = true;
         }
         
     }
@@ -102,12 +133,13 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
             byte[] salt = SaltGeneration.generateSalt(getSaltSizeBytes());
             
             PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, iterations);
+                new PBEParameterSpec(salt, this.iterations);
 
             byte[] encyptedMessage = null;
-            synchronized (encryptCipher) {
-                encryptCipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
-                encyptedMessage = encryptCipher.doFinal(message);
+            synchronized (this.encryptCipher) {
+                this.encryptCipher.init(
+                        Cipher.ENCRYPT_MODE, this.key, parameterSpec);
+                encyptedMessage = this.encryptCipher.doFinal(message);
             }
             
             return ArrayUtils.addAll(salt, encyptedMessage);
@@ -138,7 +170,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
 
             
             PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, iterations);
+                new PBEParameterSpec(salt, this.iterations);
 
             byte[] decryptedMessage = null;
             
@@ -146,10 +178,11 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
                 ArrayUtils.subarray(encryptedMessage,getSaltSizeBytes(), 
                         encryptedMessage.length);
                  
-            synchronized (decryptCipher) {
-                decryptCipher.init(Cipher.DECRYPT_MODE, key, parameterSpec);
+            synchronized (this.decryptCipher) {
+                this.decryptCipher.init(
+                        Cipher.DECRYPT_MODE, this.key, parameterSpec);
                 decryptedMessage = 
-                    decryptCipher.doFinal(encryptedMessageKernel);
+                    this.decryptCipher.doFinal(encryptedMessageKernel);
             }
             
             return decryptedMessage;

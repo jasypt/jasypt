@@ -75,28 +75,6 @@ public final class StandardByteDigester implements ByteDigester {
     }
     
 
-    public String getAlgorithm() {
-        if (!isInitialized()) {
-            initialize();
-        }
-        return algorithm;
-    }
-    
-    public int getIterations() {
-        if (!isInitialized()) {
-            initialize();
-        }
-        return iterations;
-    }
-
-    public int getSaltSizeBytes() {
-        if (!isInitialized()) {
-            initialize();
-        }
-        return saltSizeBytes;
-    }
-
-    
     private synchronized boolean isInitialized() {
         return this.initialized;
     }
@@ -142,8 +120,8 @@ public final class StandardByteDigester implements ByteDigester {
         }
         
         byte[] salt = null;
-        if (useSalt) {
-            salt = SaltGeneration.generateSalt(saltSizeBytes);
+        if (this.useSalt) {
+            salt = SaltGeneration.generateSalt(this.saltSizeBytes);
         }
         
         return digest(message, salt);
@@ -164,19 +142,19 @@ public final class StandardByteDigester implements ByteDigester {
 
             byte[] digest = null;
             
-            synchronized (md) {
+            synchronized (this.md) {
                 
-                md.reset();
+                this.md.reset();
                 
                 if (salt != null) {
-                    md.update(salt);
+                    this.md.update(salt);
                 }
-                md.update(message);
+                this.md.update(message);
                 
-                digest = md.digest();
-                for (int i = 0; i < (iterations - 1); i++) {
-                    md.reset();
-                    digest = md.digest(digest);
+                digest = this.md.digest();
+                for (int i = 0; i < (this.iterations - 1); i++) {
+                    this.md.reset();
+                    digest = this.md.digest(digest);
                 }
                 
             }
@@ -207,8 +185,8 @@ public final class StandardByteDigester implements ByteDigester {
         try {
 
             byte[] salt = null;
-            if (useSalt) {
-                salt = ArrayUtils.subarray(digest, 0, saltSizeBytes);
+            if (this.useSalt) {
+                salt = ArrayUtils.subarray(digest, 0, this.saltSizeBytes);
             }
             
             byte[] encryptedMessage = digest(message, salt);
