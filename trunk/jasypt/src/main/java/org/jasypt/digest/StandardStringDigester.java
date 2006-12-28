@@ -31,19 +31,6 @@ public final class StandardStringDigester implements StringDigester {
         byteDigester.setIterations(iterations);
     }
     
-
-    public String getAlgorithm() {
-        return byteDigester.getAlgorithm();
-    }
-    
-    public int getIterations() {
-        return byteDigester.getIterations();
-    }
-
-    public int getSaltSizeBytes() {
-        return byteDigester.getSaltSizeBytes();
-    }
-    
     
     
     public String digest(String message) {
