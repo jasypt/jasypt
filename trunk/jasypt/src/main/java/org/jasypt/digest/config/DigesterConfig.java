@@ -1,6 +1,6 @@
 package org.jasypt.digest.config;
 
-public interface StandardDigesterConfigurator {
+public interface DigesterConfig {
 
     public String getAlgorithm();
     

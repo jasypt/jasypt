@@ -1,7 +1,7 @@
 package org.jasypt.digest.config;
 
-public class SimpleStandardDigesterConfigurator 
-        implements StandardDigesterConfigurator {
+public class SimpleDigesterConfig 
+        implements DigesterConfig {
 
     private String algorithm = null;
     private Integer iterations = null;
@@ -9,11 +9,11 @@ public class SimpleStandardDigesterConfigurator
     
 
     
-    public SimpleStandardDigesterConfigurator() {
+    public SimpleDigesterConfig() {
     }
     
-    public SimpleStandardDigesterConfigurator(
-            StandardDigesterConfigurator source) {
+    public SimpleDigesterConfig(
+            DigesterConfig source) {
         this.algorithm = source.getAlgorithm();
         this.iterations = source.getIterations();
         this.saltSizeBytes = source.getSaltSizeBytes();
