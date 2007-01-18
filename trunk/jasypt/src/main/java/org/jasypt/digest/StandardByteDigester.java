@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
 import org.jasypt.digest.config.DigesterConfig;
+import org.jasypt.digest.config.SimpleDigesterConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
@@ -25,6 +26,7 @@ public final class StandardByteDigester implements ByteDigester {
     private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
     private int iterations = DEFAULT_ITERATIONS;
     private DigesterConfig config = null;
+    private boolean cacheConfig = true;
 
     private boolean algorithmSet = false;
     private boolean saltSizeBytesSet = false;
@@ -38,10 +40,15 @@ public final class StandardByteDigester implements ByteDigester {
     
 
     public synchronized void setConfig(DigesterConfig config) {
-        if (this.config != config) {
-            this.config = config;
-        }
+        this.config = config;
         this.initialized = false;
+    }
+    
+    public synchronized void setCacheConfig(boolean cacheConfig) {
+        if (this.cacheConfig != cacheConfig) {
+            this.cacheConfig = cacheConfig;
+            this.initialized = false;
+        }
     }
     
     public synchronized void setAlgorithm(String algorithm) {
@@ -84,6 +91,11 @@ public final class StandardByteDigester implements ByteDigester {
         if (!this.initialized) {
             
             if (this.config != null) {
+                
+                if (this.cacheConfig) { 
+                    this.config = new SimpleDigesterConfig(this.config);
+                }
+                
                 String configAlgorithm = config.getAlgorithm();
                 Integer configSaltSizeBytes = config.getSaltSizeBytes();
                 Integer configIterations = config.getIterations();
@@ -96,6 +108,7 @@ public final class StandardByteDigester implements ByteDigester {
                 this.iterations = 
                     ((this.iterationsSet) || (configIterations == null))?
                             this.iterations : configIterations.intValue();
+                
             }
             
             try {
