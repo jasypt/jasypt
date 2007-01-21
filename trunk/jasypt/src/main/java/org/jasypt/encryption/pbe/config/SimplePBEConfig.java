@@ -22,8 +22,8 @@ public class SimplePBEConfig
         this.password = password;
     }
 
-    public void setIterations(Integer iterations) {
-        this.iterations = iterations;
+    public void setIterations(int iterations) {
+        this.iterations = new Integer(iterations);
     }
 
     public String getPassword() {
