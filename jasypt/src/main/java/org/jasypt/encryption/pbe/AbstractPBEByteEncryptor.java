@@ -40,7 +40,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     public static final int DEFAULT_ITERATIONS = 1000;
 
     private String password = null;
-    private int iterations = DEFAULT_ITERATIONS;
+    private int keyObtentionIterations = DEFAULT_ITERATIONS;
     private PBEConfig config = null;
     
     private boolean passwordSet = false;
@@ -72,13 +72,15 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         this.passwordSet = true;
     }
     
-    public synchronized void setIterations(int iterations) {
-        Validate.isTrue(iterations > 0, 
-                "Number of iterations must be greater than zero");
+    public synchronized void setKeyObtentionIterations(
+            int keyObtentionIterations) {
+        Validate.isTrue(keyObtentionIterations > 0, 
+                "Number of iterations for key obtention must be " +
+                "greater than zero");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
-        this.iterations = iterations;
+        this.keyObtentionIterations = keyObtentionIterations;
         this.iterationsSet = true;
     }
     
@@ -88,25 +90,28 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     protected abstract int getSaltSizeBytes(); 
     
     
-    private synchronized boolean isInitialized() {
+    public synchronized boolean isInitialized() {
         return this.initialized;
     }
 
-    private synchronized void initialize() {
+    public synchronized void initialize() {
         
         if (!this.initialized) {
             
             if (this.config != null) {
                 
                 String configPassword = config.getPassword();
-                Integer configIterations = config.getIterations();
+                Integer configKeyObtentionIterations = 
+                    config.getKeyObtentionIterations();
                 
                 this.password = 
                     ((this.passwordSet) || (configPassword == null))?
                             this.password : configPassword;
-                this.iterations = 
-                    ((this.iterationsSet) || (configIterations == null))?
-                            this.iterations : configIterations.intValue();
+                this.keyObtentionIterations = 
+                    ((this.iterationsSet) || 
+                     (configKeyObtentionIterations == null))?
+                            this.keyObtentionIterations : 
+                            configKeyObtentionIterations.intValue();
             }
             
             try {
@@ -153,7 +158,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
             byte[] salt = SaltGeneration.generateSalt(getSaltSizeBytes());
             
             PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, this.iterations);
+                new PBEParameterSpec(salt, this.keyObtentionIterations);
 
             byte[] encyptedMessage = null;
             synchronized (this.encryptCipher) {
@@ -190,7 +195,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
 
             
             PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, this.iterations);
+                new PBEParameterSpec(salt, this.keyObtentionIterations);
 
             byte[] decryptedMessage = null;
             

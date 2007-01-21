@@ -48,7 +48,7 @@ public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
     
 
     public void setIterations(int iterations) {
-        byteEncryptor.setIterations(iterations);
+        byteEncryptor.setKeyObtentionIterations(iterations);
     }
     
     

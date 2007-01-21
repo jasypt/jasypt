@@ -97,12 +97,12 @@ public final class StandardByteDigester implements ByteDigester {
     }
     
 
-    private synchronized boolean isInitialized() {
+    public synchronized boolean isInitialized() {
         return this.initialized;
     }
     
 
-    private synchronized void initialize() {
+    public synchronized void initialize() {
         if (!this.initialized) {
             
             if (this.config != null) {
