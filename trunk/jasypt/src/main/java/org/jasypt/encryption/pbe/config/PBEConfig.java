@@ -23,6 +23,6 @@ public interface PBEConfig {
 
     public String getPassword();
     
-    public Integer getIterations();
+    public Integer getKeyObtentionIterations();
     
 }

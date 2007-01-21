@@ -23,34 +23,27 @@ public class SimplePBEConfig
         implements PBEConfig {
 
     private String password = null;
-    private Integer iterations = null;
+    private Integer keyObtentionIterations = null;
     
 
     
     public SimplePBEConfig() {
     }
-    
-    public SimplePBEConfig(
-            PBEConfig source) {
-        this.password = source.getPassword();
-        this.iterations = source.getIterations();
-    }
-    
         
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setIterations(int iterations) {
-        this.iterations = new Integer(iterations);
+    public void setKeyObtentionIterations(int keyObtentionIterations) {
+        this.keyObtentionIterations = new Integer(keyObtentionIterations);
     }
 
     public String getPassword() {
         return password;
     }
 
-    public Integer getIterations() {
-        return iterations;
+    public Integer getKeyObtentionIterations() {
+        return keyObtentionIterations;
     }
 
     
