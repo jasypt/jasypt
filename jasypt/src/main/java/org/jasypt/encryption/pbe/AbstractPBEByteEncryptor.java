@@ -9,15 +9,13 @@ import javax.crypto.spec.PBEParameterSpec;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
 import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
 // TODO: Add comments
 // TODO: Add javadoc
-// TODO: Really needed key and ciphers to be object-scope? test with threads
-// TODO: If key and ciphers not needed... password could be obtained every time
-//       when encrypting/decrypting? (setStorePassword)
 public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
@@ -39,28 +37,29 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     
 
     public synchronized void setConfig(PBEConfig config) {
-        if (this.config != config) {
-            this.config = config;
+        Validate.notNull(config, "Config cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
-        this.initialized = false;
+        this.config = config;
     }
 
     public synchronized void setPassword(String password) {
         Validate.notEmpty(password, "Password cannot be set empty");
-        if ((this.password == null) || (!this.password.equals(password))) {
-            this.password = password;
-            this.initialized = false;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.password = password;
         this.passwordSet = true;
     }
     
     public synchronized void setIterations(int iterations) {
         Validate.isTrue(iterations > 0, 
                 "Number of iterations must be greater than zero");
-        if (this.iterations != iterations) {
-            this.iterations = iterations;
-            this.initialized = false;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.iterations = iterations;
         this.iterationsSet = true;
     }
     
@@ -79,8 +78,10 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         if (!this.initialized) {
             
             if (this.config != null) {
+                
                 String configPassword = config.getPassword();
                 Integer configIterations = config.getIterations();
+                
                 this.password = 
                     ((this.passwordSet) || (configPassword == null))?
                             this.password : configPassword;
