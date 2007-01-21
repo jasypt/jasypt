@@ -12,13 +12,6 @@ public class SimpleDigesterConfig
     public SimpleDigesterConfig() {
     }
     
-    public SimpleDigesterConfig(
-            DigesterConfig source) {
-        this.algorithm = source.getAlgorithm();
-        this.iterations = source.getIterations();
-        this.saltSizeBytes = source.getSaltSizeBytes();
-    }
-    
         
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;

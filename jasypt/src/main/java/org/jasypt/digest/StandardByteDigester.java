@@ -7,13 +7,12 @@ import java.util.Arrays;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
 import org.jasypt.digest.config.DigesterConfig;
-import org.jasypt.digest.config.SimpleDigesterConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
 
-// TODO: Add configurator
 // TODO: Add comments
 // TODO: Add Javadoc
 public final class StandardByteDigester implements ByteDigester {
@@ -25,14 +24,15 @@ public final class StandardByteDigester implements ByteDigester {
     private String algorithm = DEFAULT_ALGORITHM;
     private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
     private int iterations = DEFAULT_ITERATIONS;
+    
     private DigesterConfig config = null;
-    private boolean cacheConfig = true;
 
     private boolean algorithmSet = false;
     private boolean saltSizeBytesSet = false;
     private boolean iterationsSet = false;
     
     private boolean initialized = false;
+    
     private boolean useSalt = true;
     
     private MessageDigest md = null;
@@ -40,44 +40,40 @@ public final class StandardByteDigester implements ByteDigester {
     
 
     public synchronized void setConfig(DigesterConfig config) {
-        this.config = config;
-        this.initialized = false;
-    }
-    
-    public synchronized void setCacheConfig(boolean cacheConfig) {
-        if (this.cacheConfig != cacheConfig) {
-            this.cacheConfig = cacheConfig;
-            this.initialized = false;
+        Validate.notNull(config, "Config cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.config = config;
     }
     
     public synchronized void setAlgorithm(String algorithm) {
         Validate.notEmpty(algorithm, "Algorithm cannot be empty");
-        if (!this.algorithm.equals(algorithm)) {
-            this.algorithm = algorithm;
-            this.initialized = false;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.algorithm = algorithm;
         this.algorithmSet = true;
     }
     
     public synchronized void setSaltSizeBytes(int saltSizeBytes) {
         Validate.isTrue(saltSizeBytes >= 0, 
                 "Salt size in bytes must be non-negative");
-        if (this.saltSizeBytes != saltSizeBytes) {
-            this.saltSizeBytes = saltSizeBytes;
-            this.useSalt = (saltSizeBytes > 0);
-            this.initialized = false;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.saltSizeBytes = saltSizeBytes;
+        this.useSalt = (saltSizeBytes > 0);
         this.saltSizeBytesSet = true;
     }
 
     public synchronized void setIterations(int iterations) {
         Validate.isTrue(iterations > 0, 
                 "Number of iterations must be greater than zero");
-        if (this.iterations != iterations) {
-            this.iterations = iterations;
-            this.initialized = false;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
         }
+        this.iterations = iterations;
         this.iterationsSet = true;
     }
     
@@ -92,13 +88,10 @@ public final class StandardByteDigester implements ByteDigester {
             
             if (this.config != null) {
                 
-                if (this.cacheConfig) { 
-                    this.config = new SimpleDigesterConfig(this.config);
-                }
-                
                 String configAlgorithm = config.getAlgorithm();
                 Integer configSaltSizeBytes = config.getSaltSizeBytes();
                 Integer configIterations = config.getIterations();
+                
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
                             this.algorithm : configAlgorithm;

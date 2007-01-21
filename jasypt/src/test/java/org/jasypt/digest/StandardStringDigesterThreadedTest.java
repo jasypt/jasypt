@@ -14,7 +14,7 @@ public class StandardStringDigesterThreadedTest extends TestCase {
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(100,100) == 0);
+        assertTrue(launcher.launch(100,1000) == 0);
     }
     
     
