@@ -6,9 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.time.StopWatch;
 
-// TODO: Remove watch and console output
 public class StandardStringDigesterThreadedTest extends TestCase {
 
     
@@ -31,9 +29,6 @@ public class StandardStringDigesterThreadedTest extends TestCase {
             AtomicInteger errors = new AtomicInteger(0);
             runningThreads = new AtomicInteger(0);
             
-            StopWatch watch = new StopWatch();
-            watch.start();
-            
             for (int i = 0; i < numOfThreads; i++) {
                 TesterRunnable tester = 
                     new TesterRunnable(digester, numIters, errors, 
@@ -47,10 +42,6 @@ public class StandardStringDigesterThreadedTest extends TestCase {
                     this.wait(numIters * 1000);
                 }
             }
-            
-            watch.split();
-            
-            System.out.println("Threads: " + numOfThreads + " Iterations: " + numIters + " Errors: " + errors + " Time: " + watch.toSplitString());
 
             return errors.get();
             
