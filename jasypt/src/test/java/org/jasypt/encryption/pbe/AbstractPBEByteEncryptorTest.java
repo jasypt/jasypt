@@ -71,12 +71,13 @@ public abstract class AbstractPBEByteEncryptorTest extends TestCase {
             assertTrue(Arrays.equals(decryptedMessage, messageBytes));
         }
         
-        encryptor2.setPassword(password2);
+        PBEByteEncryptor encryptor3 = createPBEByteEncryptor();
+        encryptor3.setPassword(password2);
         
         for (int i = 0; i < 100; i++) {
             byte[] encryptedMessage = encryptor.encrypt(messageBytes);
             try {
-                byte[] decryptedMessage = encryptor2.decrypt(encryptedMessage);
+                byte[] decryptedMessage = encryptor3.decrypt(encryptedMessage);
                 assertFalse(Arrays.equals(decryptedMessage, messageBytes));
             } catch (EncryptionOperationNotPossibleException e) {
                 assertTrue(true);

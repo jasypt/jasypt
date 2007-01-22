@@ -19,12 +19,16 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
+
 
 public class PBEWithSHA1AndDESedeByteEncryptorTest 
         extends AbstractPBEByteEncryptorTest {
 
     protected PBEByteEncryptor createPBEByteEncryptor() {
-        return new PBEWithSHA1AndDESedeByteEncryptor();
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
+        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_SHA1_AND_DESEDE);
+        return encryptor;
     }
 
 }

@@ -19,12 +19,16 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
+
 
 public class PBEWithMD5AndDESByteEncryptorTest 
         extends AbstractPBEByteEncryptorTest {
 
     protected PBEByteEncryptor createPBEByteEncryptor() {
-        return new PBEWithMD5AndDESByteEncryptor();
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
+        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        return encryptor;
     }
 
 
