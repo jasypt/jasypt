@@ -24,7 +24,7 @@
   <artifactId>jasypt</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
-  <name>JASYPT: Java Simple Encryption</name>
+  <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
   
   <build>
