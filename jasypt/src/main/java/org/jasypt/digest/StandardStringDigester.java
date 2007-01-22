@@ -20,6 +20,7 @@
 package org.jasypt.digest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
@@ -37,6 +38,9 @@ public final class StandardStringDigester implements StringDigester {
         this.base64 = new Base64();
     }
     
+    public void setConfig(DigesterConfig config) {
+        byteDigester.setConfig(config);
+    }
     
     public void setAlgorithm(String algorithm) {
         byteDigester.setAlgorithm(algorithm);
