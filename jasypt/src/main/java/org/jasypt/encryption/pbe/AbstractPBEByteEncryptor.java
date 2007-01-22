@@ -101,8 +101,19 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
             if (this.config != null) {
                 
                 String configPassword = config.getPassword();
+                if (configPassword != null) {
+                    Validate.notEmpty(configPassword, 
+                            "Password cannot be set empty");
+                }
+                
                 Integer configKeyObtentionIterations = 
                     config.getKeyObtentionIterations();
+                if (configKeyObtentionIterations != null) {
+                    Validate.isTrue(configKeyObtentionIterations.intValue() > 0, 
+                            "Number of iterations for key obtention must be " +
+                            "greater than zero");
+                }
+                
                 
                 this.password = 
                     ((this.passwordSet) || (configPassword == null))?
