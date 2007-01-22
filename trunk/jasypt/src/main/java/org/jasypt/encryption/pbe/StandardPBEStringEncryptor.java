@@ -56,6 +56,14 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
     
+    public boolean isInitialized() {
+        return byteEncryptor.isInitialized();
+    }
+    
+    public void initialize() {
+        byteEncryptor.initialize();
+    }
+    
     
     
     public String encrypt(String message) {

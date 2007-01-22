@@ -54,6 +54,13 @@ public final class StandardStringDigester implements StringDigester {
         byteDigester.setIterations(iterations);
     }
     
+    public boolean isInitialized() {
+        return byteDigester.isInitialized();
+    }
+    
+    public void initialize() {
+        byteDigester.initialize();
+    }
     
     
     public String digest(String message) {
