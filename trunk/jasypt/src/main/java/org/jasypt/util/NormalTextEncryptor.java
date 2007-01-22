@@ -19,16 +19,18 @@
  */
 package org.jasypt.util;
 
-import org.jasypt.encryption.pbe.PBEWithMD5AndDESStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 public final class NormalTextEncryptor implements TextEncryptor {
 
     
-    private PBEWithMD5AndDESStringEncryptor encryptor = null;
+    private StandardPBEStringEncryptor encryptor = null;
     
     
     public NormalTextEncryptor() {
-        this.encryptor = new PBEWithMD5AndDESStringEncryptor();
+        this.encryptor = new StandardPBEStringEncryptor();
+        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
     }
     
     public void setPassword(String password) {

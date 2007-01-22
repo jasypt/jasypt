@@ -19,12 +19,16 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
+
 
 public class PBEWithSHA1AndRC2_40ByteEncryptorTest 
         extends AbstractPBEByteEncryptorTest {
 
     protected PBEByteEncryptor createPBEByteEncryptor() {
-        return new PBEWithSHA1AndRC2_40ByteEncryptor();
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
+        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_SHA1_AND_RC2_40);
+        return encryptor;
     }
 
 }

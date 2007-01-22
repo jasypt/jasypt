@@ -19,12 +19,16 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
+
 
 public class PBEWithMD5AndTripleDESStringEncryptorTest 
         extends AbstractPBEStringEncryptorTest {
 
     protected PBEStringEncryptor createPBEStringEncryptor() {
-        return new PBEWithMD5AndTripleDESStringEncryptor();
+        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        return encryptor;
     }
 
 }

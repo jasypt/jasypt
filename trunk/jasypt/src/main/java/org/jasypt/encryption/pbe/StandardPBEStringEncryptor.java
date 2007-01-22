@@ -20,35 +20,40 @@
 package org.jasypt.encryption.pbe;
 
 import org.apache.commons.codec.binary.Base64;
+import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
-public abstract class AbstractPBEStringEncryptor implements PBEStringEncryptor {
+public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
 
     private static final String MESSAGE_CHARSET = "UTF-8";
     private static final String ENCRYPTED_MESSAGE_CHARSET = "US-ASCII";
 
-    private AbstractPBEByteEncryptor byteEncryptor = null;
+    private StandardPBEByteEncryptor byteEncryptor = null;
     private Base64 base64 = null;
 
     
-    public AbstractPBEStringEncryptor() {
-        this.byteEncryptor = createByteEncryptorInstance();
+    public StandardPBEStringEncryptor() {
+        this.byteEncryptor = new StandardPBEByteEncryptor();
         this.base64 = new Base64();
     }
-
     
-    protected abstract AbstractPBEByteEncryptor createByteEncryptorInstance();
+    public void setConfig(PBEConfig config) {
+        byteEncryptor.setConfig(config);
+    }
     
+    public void setAlgorithm(String algorithm) {
+        byteEncryptor.setAlgorithm(algorithm);
+    }
     
     public void setPassword(String password) {
         byteEncryptor.setPassword(password);
     }
     
 
-    public void setIterations(int iterations) {
-        byteEncryptor.setKeyObtentionIterations(iterations);
+    public void setKeyObtentionIterations(int keyObtentionIterations) {
+        byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
     
     

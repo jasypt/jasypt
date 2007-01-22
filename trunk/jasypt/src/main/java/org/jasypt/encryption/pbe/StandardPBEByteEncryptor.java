@@ -27,6 +27,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
+import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -35,14 +36,19 @@ import org.jasypt.salt.SaltGeneration;
 
 // TODO: Add comments
 // TODO: Add javadoc
-public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
+public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     
     public static final int DEFAULT_ITERATIONS = 1000;
 
+    private String algorithm = null;
     private String password = null;
     private int keyObtentionIterations = DEFAULT_ITERATIONS;
-    private PBEConfig config = null;
+
+    private int saltSizeBytes = 0;
     
+    private PBEConfig config = null;
+
+    private boolean algorithmSet = false;
     private boolean passwordSet = false;
     private boolean iterationsSet = false;
     
@@ -63,6 +69,18 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         this.config = config;
     }
 
+    
+    public synchronized void setAlgorithm(String algorithm) {
+        Validate.notEmpty(algorithm, "Algorithm cannot be set empty");
+        PBEAlgorithms.validateAlgorithm(algorithm);
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.algorithm = algorithm;
+        this.algorithmSet = true;
+    }
+    
+    
     public synchronized void setPassword(String password) {
         Validate.notEmpty(password, "Password cannot be set empty");
         if (isInitialized()) {
@@ -85,11 +103,6 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
     }
     
     
-    protected abstract String getAlgorithm();
-    
-    protected abstract int getSaltSizeBytes(); 
-    
-    
     public synchronized boolean isInitialized() {
         return this.initialized;
     }
@@ -99,6 +112,14 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         if (!this.initialized) {
             
             if (this.config != null) {
+                
+                String configAlgorithm = config.getAlgorithm();
+                if (configAlgorithm != null) {
+                    Validate.notEmpty(password, 
+                            "Algorithm cannot be set empty");
+                    PBEAlgorithms.validateAlgorithm(algorithm);
+                }
+                
                 
                 String configPassword = config.getPassword();
                 if (configPassword != null) {
@@ -114,7 +135,9 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
                             "greater than zero");
                 }
                 
-                
+                this.algorithm = 
+                    ((this.algorithmSet) || (configAlgorithm == null))?
+                            this.algorithm : configAlgorithm;
                 this.password = 
                     ((this.passwordSet) || (configPassword == null))?
                             this.password : configPassword;
@@ -123,7 +146,13 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
                      (configKeyObtentionIterations == null))?
                             this.keyObtentionIterations : 
                             configKeyObtentionIterations.intValue();
+                
             }
+            
+            PBEAlgorithms.Parameters parameters =
+                PBEAlgorithms.getParameters(this.algorithm);
+            
+            this.saltSizeBytes = parameters.getSaltSizeBytes();
             
             try {
                 
@@ -135,12 +164,12 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
                 PBEKeySpec pbeKeySpec = 
                     new PBEKeySpec(this.password.toCharArray());
                 SecretKeyFactory factory =
-                    SecretKeyFactory.getInstance(getAlgorithm());
+                    SecretKeyFactory.getInstance(this.algorithm);
                 
                 this.key = factory.generateSecret(pbeKeySpec);
                 
-                this.encryptCipher = Cipher.getInstance(getAlgorithm());
-                this.decryptCipher = Cipher.getInstance(getAlgorithm());
+                this.encryptCipher = Cipher.getInstance(this.algorithm);
+                this.decryptCipher = Cipher.getInstance(this.algorithm);
                 
             } catch (EncryptionInitializationException e) {
                 throw e;
@@ -166,7 +195,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         
         try {
             
-            byte[] salt = SaltGeneration.generateSalt(getSaltSizeBytes());
+            byte[] salt = SaltGeneration.generateSalt(this.saltSizeBytes);
             
             PBEParameterSpec parameterSpec = 
                 new PBEParameterSpec(salt, this.keyObtentionIterations);
@@ -202,7 +231,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
         try {
             
             byte[] salt = 
-                ArrayUtils.subarray(encryptedMessage, 0, getSaltSizeBytes());
+                ArrayUtils.subarray(encryptedMessage, 0, this.saltSizeBytes);
 
             
             PBEParameterSpec parameterSpec = 
@@ -211,7 +240,7 @@ public abstract class AbstractPBEByteEncryptor implements PBEByteEncryptor {
             byte[] decryptedMessage = null;
             
             byte[] encryptedMessageKernel = 
-                ArrayUtils.subarray(encryptedMessage,getSaltSizeBytes(), 
+                ArrayUtils.subarray(encryptedMessage, this.saltSizeBytes, 
                         encryptedMessage.length);
                  
             synchronized (this.decryptCipher) {

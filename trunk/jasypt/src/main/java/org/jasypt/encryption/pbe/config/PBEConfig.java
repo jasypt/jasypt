@@ -21,6 +21,8 @@ package org.jasypt.encryption.pbe.config;
 
 public interface PBEConfig {
 
+    public String getAlgorithm();
+    
     public String getPassword();
     
     public Integer getKeyObtentionIterations();

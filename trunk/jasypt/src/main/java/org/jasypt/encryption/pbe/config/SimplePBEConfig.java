@@ -22,6 +22,7 @@ package org.jasypt.encryption.pbe.config;
 public class SimplePBEConfig 
         implements PBEConfig {
 
+    private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
     
@@ -29,13 +30,21 @@ public class SimplePBEConfig
     
     public SimplePBEConfig() {
     }
-        
+    
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
+    }
+    
     public void setPassword(String password) {
         this.password = password;
     }
 
     public void setKeyObtentionIterations(int keyObtentionIterations) {
         this.keyObtentionIterations = new Integer(keyObtentionIterations);
+    }
+    
+    public String getAlgorithm() {
+        return algorithm;
     }
 
     public String getPassword() {

@@ -66,12 +66,13 @@ public abstract class AbstractPBEStringEncryptorTest extends TestCase {
             assertEquals(decryptedMessage, message);
         }
         
-        encryptor2.setPassword(password2);
+        PBEStringEncryptor encryptor3 = createPBEStringEncryptor();
+        encryptor3.setPassword(password2);
         
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = encryptor.encrypt(message);
             try {
-                String decryptedMessage = encryptor2.decrypt(encryptedMessage);
+                String decryptedMessage = encryptor3.decrypt(encryptedMessage);
                 assertFalse(message.equals(decryptedMessage));
             } catch (EncryptionOperationNotPossibleException e) {
                 assertTrue(true);
