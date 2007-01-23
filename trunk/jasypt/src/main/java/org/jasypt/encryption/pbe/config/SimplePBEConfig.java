@@ -26,10 +26,6 @@ public class SimplePBEConfig
     private String password = null;
     private Integer keyObtentionIterations = null;
     
-
-    
-    public SimplePBEConfig() {
-    }
     
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;

@@ -28,9 +28,6 @@ public class SimpleDigesterConfig
     
 
     
-    public SimpleDigesterConfig() {
-    }
-    
         
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
