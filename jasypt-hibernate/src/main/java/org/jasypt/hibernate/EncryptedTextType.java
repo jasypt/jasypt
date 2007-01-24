@@ -36,8 +36,10 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 public final class EncryptedTextType implements EnhancedUserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
-    private static int[] sqlTypes = new int[]{nullableType.sqlType()};
+    private static int sqlType = nullableType.sqlType();
+    private static int[] sqlTypes = new int[]{ sqlType };
     
+    private String encryptorName = null;
     private HibernatePBEEncryptor encryptor = null;
 
     
@@ -102,51 +104,69 @@ public final class EncryptedTextType implements EnhancedUserType, ParameterizedT
     
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
             throws HibernateException, SQLException {
-        
-        if (encryptor == null) {
-            throw new EncryptionInitializationException("Encryptor not configured!");
-        }
-        // TODO Auto-generated method stub
-        return null;
+        checkInitialization();
+        String message = rs.getString(names[0]);
+        return rs.wasNull() ? null : this.encryptor.decrypt(message);
     }
 
     
     public void nullSafeSet(PreparedStatement st, Object value, int index)
             throws HibernateException, SQLException {
-        
-        if (encryptor == null) {
-            throw new EncryptionInitializationException("Encryptor not configured!");
+        checkInitialization();
+        if (value == null) {
+            st.setNull(index, sqlType);
+        } else {
+            st.setString(index, this.encryptor.encrypt((String) value));
         }
-        // TODO Auto-generated method stub
-        
     }
 
     
+    // TODO: Check this... if we don't get the same encryption value always... this is not possible
+    //       Maybe not an EnhancedType?
     public String objectToSQLString(Object value) {
-        // TODO Auto-generated method stub
-        return null;
+        checkInitialization();
+        return this.encryptor.encrypt((String) value);
     }
 
     
     public Object fromXMLString(String xmlValue) {
-        // TODO Auto-generated method stub
+
+        checkInitialization();
         return null;
+        
     }
 
 
     public String toXMLString(Object value) {
-        // TODO Auto-generated method stub
+        
+        checkInitialization();
         return null;
+        
     }
 
     
     public void setParameterValues(Properties parameters) {
-        String encryptorName = parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        HibernatePBEEncryptorRegistry registry = 
-            HibernatePBEEncryptorRegistry.getInstance();
-        this.encryptor = registry.getHibernatePBEEncryptor(encryptorName);
+        this.encryptorName = 
+            parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
     }
 
+    
+    private void checkInitialization() {
+        if (this.encryptorName == null) {
+            throw new EncryptionInitializationException(
+                    "Encryptor name not configured in hibernate type");
+        }
+        if (this.encryptor == null) {
+            HibernatePBEEncryptorRegistry registry = 
+                HibernatePBEEncryptorRegistry.getInstance();
+            this.encryptor = registry.getHibernatePBEEncryptor(encryptorName);
+            if (this.encryptor == null) {
+                throw new EncryptionInitializationException(
+                        "No encryptor registered for hibernate with name \"" +
+                        encryptorName + "\"");
+            }
+        }
+    }
     
     
 }
