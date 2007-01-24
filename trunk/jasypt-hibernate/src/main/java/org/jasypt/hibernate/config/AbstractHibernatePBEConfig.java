@@ -21,7 +21,7 @@ package org.jasypt.hibernate.config;
 
 import org.jasypt.encryption.pbe.config.PBEConfig;
 
-public abstract class HibernatePBEConfig implements PBEConfig {
+public abstract class AbstractHibernatePBEConfig implements PBEConfig {
 
     private String name = null;
     
