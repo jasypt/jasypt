@@ -25,25 +25,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.hibernate.EntityMode;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.SessionFactoryImplementor;
 import org.hibernate.type.NullableType;
 import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.util.EqualsHelper;
-import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
-import org.jasypt.hibernate.config.ParameterNaming;
 
 public final class EncryptedTextType implements EnhancedUserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
     private static int[] sqlTypes = new int[]{nullableType.sqlType()};
     
-    private PBEStringEncryptor encryptor = null;
+    private HibernatePBEEncryptor encryptor = null;
 
     
     public int[] sqlTypes() {
@@ -146,8 +141,10 @@ public final class EncryptedTextType implements EnhancedUserType, ParameterizedT
 
     
     public void setParameterValues(Properties parameters) {
-        String configName = parameters.getProperty(ParameterNaming.CONFIG_NAME);
-System.out.println(configName);
+        String encryptorName = parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
+        HibernatePBEEncryptorRegistry registry = 
+            HibernatePBEEncryptorRegistry.getInstance();
+        this.encryptor = registry.getHibernatePBEEncryptor(encryptorName);
     }
 
     
