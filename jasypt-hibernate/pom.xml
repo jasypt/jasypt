@@ -40,7 +40,7 @@
   </build>
   <dependencies>
     <dependency>
-      <groupId>jasypt</groupId>
+      <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
       <version>1.0</version>
       <scope>compile</scope>

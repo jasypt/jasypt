@@ -41,13 +41,13 @@ public class HibernatePBEConfigRegistry {
  
 
     public synchronized void registerHibernatePBEConfig(
-            HibernatePBEConfig config) {
+            AbstractHibernatePBEConfig config) {
         this.configs.put(config.getName(), config);
     }
 
     public synchronized void registerPBEConfig(String name, PBEConfig config) {
-        if (config instanceof HibernatePBEConfig) {
-            ((HibernatePBEConfig) config).setName(name);
+        if (config instanceof AbstractHibernatePBEConfig) {
+            ((AbstractHibernatePBEConfig) config).setName(name);
         } else {
             this.configs.put(name, config);
         }

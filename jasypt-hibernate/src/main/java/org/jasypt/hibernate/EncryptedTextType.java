@@ -25,85 +25,131 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.hibernate.EntityMode;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.type.NullableType;
 import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.ParameterizedType;
+import org.hibernate.util.EqualsHelper;
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
+import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.hibernate.config.ParameterNaming;
 
-public class EncryptedTextType implements EnhancedUserType, ParameterizedType {
+public final class EncryptedTextType implements EnhancedUserType, ParameterizedType {
+
+    private static NullableType nullableType = Hibernate.STRING;
+    private static int[] sqlTypes = new int[]{nullableType.sqlType()};
+    
+    private PBEStringEncryptor encryptor = null;
 
     
-    public Object assemble(Serializable cached, Object owner) throws HibernateException {
-        // TODO Auto-generated method stub
-        return null;
+    public int[] sqlTypes() {
+        return sqlTypes;
     }
 
-    public Object deepCopy(Object value) throws HibernateException {
-        // TODO Auto-generated method stub
-        return null;
+    
+    public Class returnedClass() {
+        return String.class;
     }
 
-    public Serializable disassemble(Object value) throws HibernateException {
-        // TODO Auto-generated method stub
-        return null;
+    
+    public boolean equals(Object x, Object y) 
+            throws HibernateException {
+        return EqualsHelper.equals(x, y);
+    }
+    
+    
+    public Object deepCopy(Object value)
+            throws HibernateException {
+        return value;
+    }
+    
+    
+    public Object assemble(Serializable cached, Object owner)
+            throws HibernateException {
+        if (cached == null) {
+            return null;
+        } else {
+            return deepCopy(cached);
+        }
     }
 
-    public boolean equals(Object x, Object y) throws HibernateException {
-        // TODO Auto-generated method stub
-        return false;
+    
+    public Serializable disassemble(Object value) 
+            throws HibernateException {
+        if (value == null) {
+            return null;
+        } else {
+            return (Serializable) deepCopy(value);
+        }
     }
 
-    public Object fromXMLString(String xmlValue) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public int hashCode(Object x) throws HibernateException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
+    
     public boolean isMutable() {
-        // TODO Auto-generated method stub
         return false;
     }
 
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
+
+    public int hashCode(Object x)
+            throws HibernateException {
+        return x.hashCode();
+    }
+
+    
+    public Object replace(Object original, Object target, Object owner) 
+            throws HibernateException {
+        return original;
+    }
+
+    
+    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+            throws HibernateException, SQLException {
+        
+        if (encryptor == null) {
+            throw new EncryptionInitializationException("Encryptor not configured!");
+        }
         // TODO Auto-generated method stub
         return null;
     }
 
-    public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+    
+    public void nullSafeSet(PreparedStatement st, Object value, int index)
+            throws HibernateException, SQLException {
+        
+        if (encryptor == null) {
+            throw new EncryptionInitializationException("Encryptor not configured!");
+        }
         // TODO Auto-generated method stub
         
     }
 
+    
     public String objectToSQLString(Object value) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Object replace(Object original, Object target, Object owner) throws HibernateException {
+    
+    public Object fromXMLString(String xmlValue) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Class returnedClass() {
-        return String.class;
-    }
-
-    public void setParameterValues(Properties parameters) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public int[] sqlTypes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public String toXMLString(Object value) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    
+    public void setParameterValues(Properties parameters) {
+        String configName = parameters.getProperty(ParameterNaming.CONFIG_NAME);
+System.out.println(configName);
+    }
+
+    
+    
 }

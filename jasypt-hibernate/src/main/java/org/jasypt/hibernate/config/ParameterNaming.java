@@ -19,36 +19,12 @@
  */
 package org.jasypt.hibernate.config;
 
-public class HibernateSimplePBEConfig extends AbstractHibernatePBEConfig {
+public class ParameterNaming {
 
-    private String algorithm = null;
-    private String password = null;
-    private Integer keyObtentionIterations = null;
+    public static final String CONFIG_NAME = "configName";
     
     
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
-    }
     
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setKeyObtentionIterations(int keyObtentionIterations) {
-        this.keyObtentionIterations = new Integer(keyObtentionIterations);
-    }
-    
-    public String getAlgorithm() {
-        return algorithm;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Integer getKeyObtentionIterations() {
-        return keyObtentionIterations;
-    }
-
+    private ParameterNaming() {}
     
 }
