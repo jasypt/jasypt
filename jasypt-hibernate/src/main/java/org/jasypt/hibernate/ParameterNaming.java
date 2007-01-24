@@ -17,26 +17,14 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.config;
+package org.jasypt.hibernate;
 
-import org.jasypt.encryption.pbe.config.PBEConfig;
+public class ParameterNaming {
 
-public abstract class AbstractHibernatePBEConfig implements PBEConfig {
-
-    private String name = null;
+    public static final String ENCRYPTOR_NAME = "encryptorName";
     
-    public final synchronized void setName(String name) {
-        if (this.name != null) {
-            HibernatePBEConfigRegistry.getInstance().
-                    unregisterPBEConfig(this.name);
-        }
-        this.name = name;
-        HibernatePBEConfigRegistry.getInstance().
-                registerHibernatePBEConfig(this);
-    }
     
-    public final String getName() {
-        return name;
-    }
+    
+    private ParameterNaming() {}
     
 }

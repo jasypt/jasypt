@@ -17,48 +17,48 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.config;
+package org.jasypt.hibernate;
 
 import java.util.HashMap;
 
-import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
 
-public class HibernatePBEConfigRegistry {
+public class HibernatePBEEncryptorRegistry {
 
     
-    private static HibernatePBEConfigRegistry instance = 
-        new HibernatePBEConfigRegistry();
+    private static HibernatePBEEncryptorRegistry instance = 
+        new HibernatePBEEncryptorRegistry();
     
     
     private HashMap configs = new HashMap();
     
     
-    public static HibernatePBEConfigRegistry getInstance() {
+    public static HibernatePBEEncryptorRegistry getInstance() {
         return instance;
     }
     
-    private HibernatePBEConfigRegistry() { }
+    private HibernatePBEEncryptorRegistry() { }
  
 
-    public synchronized void registerHibernatePBEConfig(
-            AbstractHibernatePBEConfig config) {
-        this.configs.put(config.getName(), config);
+    public synchronized void registerPBEEncryptor(
+            String name, PBEStringEncryptor encryptor) {
+        HibernatePBEEncryptor hibernateEncryptor = 
+            new HibernatePBEEncryptor(name, encryptor);
+        this.configs.put(name, hibernateEncryptor);
     }
 
-    public synchronized void registerPBEConfig(String name, PBEConfig config) {
-        if (config instanceof AbstractHibernatePBEConfig) {
-            ((AbstractHibernatePBEConfig) config).setName(name);
-        } else {
-            this.configs.put(name, config);
-        }
+    synchronized void registerHibernatePBEEncryptor(
+            HibernatePBEEncryptor hibernateEncryptor) {
+        this.configs.put(hibernateEncryptor.getName(), hibernateEncryptor);
     }
     
-    synchronized void unregisterPBEConfig(String name) {
+    synchronized void unregisterHibernatePBEEncryptor(String name) {
         this.configs.remove(name);
     }
     
-    public synchronized PBEConfig getPBEConfig(String name) {
-        return (PBEConfig) configs.get(name);
+    public synchronized HibernatePBEEncryptor getHibernatePBEEncryptor(
+            String name) {
+        return (HibernatePBEEncryptor) configs.get(name);
     }
     
 }
