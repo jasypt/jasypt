@@ -22,6 +22,10 @@ package org.jasypt.hibernate;
 public class ParameterNaming {
 
     public static final String ENCRYPTOR_NAME = "encryptorName";
+    public static final String ALGORITHM = "algorithm";
+    public static final String PASSWORD = "password";
+    public static final String KEY_OBTENTION_ITERATIONS = 
+        "keyObtentionIterations";
     
     
     
