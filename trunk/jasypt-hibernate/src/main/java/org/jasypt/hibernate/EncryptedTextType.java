@@ -28,18 +28,22 @@ import java.util.Properties;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.type.NullableType;
-import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.ParameterizedType;
+import org.hibernate.usertype.UserType;
 import org.hibernate.util.EqualsHelper;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
-public final class EncryptedTextType implements EnhancedUserType, ParameterizedType {
+public final class EncryptedTextType implements UserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
     private static int sqlType = nullableType.sqlType();
     private static int[] sqlTypes = new int[]{ sqlType };
     
     private String encryptorName = null;
+    private String algorithm = null;
+    private String password = null;
+    private int keyObtentionIterations = 0;
+    
     private HibernatePBEEncryptor encryptor = null;
 
     
@@ -121,33 +125,18 @@ public final class EncryptedTextType implements EnhancedUserType, ParameterizedT
     }
 
     
-    // TODO: Check this... if we don't get the same encryption value always... this is not possible
-    //       Maybe not an EnhancedType?
-    public String objectToSQLString(Object value) {
-        checkInitialization();
-        return this.encryptor.encrypt((String) value);
-    }
-
-    
-    public Object fromXMLString(String xmlValue) {
-
-        checkInitialization();
-        return null;
-        
-    }
-
-
-    public String toXMLString(Object value) {
-        
-        checkInitialization();
-        return null;
-        
-    }
-
-    
     public void setParameterValues(Properties parameters) {
-        this.encryptorName = 
+        String paramEncryptorName =
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
+        String paramAlgorithm =
+            parameters.getProperty(ParameterNaming.ALGORITHM);
+        String paramPassword =
+            parameters.getProperty(ParameterNaming.PASSWORD);
+        String paramKeyObtentionIterations =
+            parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
+        // TODO: fill all the parameters: either you use encryptorName or you 
+        //       use the others (exclusive)
+        this.encryptorName = paramEncryptorName;
     }
 
     
