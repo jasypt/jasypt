@@ -38,9 +38,11 @@ import org.jasypt.salt.SaltGeneration;
 // TODO: Add javadoc
 public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     
+    public static final String DEFAULT_ALGORITHM = 
+        PBEAlgorithms.PBE_WITH_MD5_AND_DES;
     public static final int DEFAULT_ITERATIONS = 1000;
 
-    private String algorithm = null;
+    private String algorithm = DEFAULT_ALGORITHM;
     private String password = null;
     private int keyObtentionIterations = DEFAULT_ITERATIONS;
 
