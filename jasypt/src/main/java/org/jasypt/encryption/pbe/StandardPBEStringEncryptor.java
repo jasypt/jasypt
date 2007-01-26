@@ -87,6 +87,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         
         } catch (EncryptionInitializationException e) {
             throw e;
+        } catch (EncryptionOperationNotPossibleException e) {
+            throw e;
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
@@ -115,6 +117,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             return new String(message, MESSAGE_CHARSET);
         
         } catch (EncryptionInitializationException e) {
+            throw e;
+        } catch (EncryptionOperationNotPossibleException e) {
             throw e;
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
