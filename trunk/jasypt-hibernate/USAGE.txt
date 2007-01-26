@@ -1,0 +1,23 @@
+ 
+ Using JASYPT-HIBERNATE from Maven 2
+ -----------------------------------
+ 
+ To use it in your Maven 2 applications, you will need to add it as
+ a dependency with:
+
+     <dependency>
+       <groupId>org.jasypt</groupId>
+       <artifactId>jasypt-hibernate</artifactId>
+       <version>{version}</version>
+       <scope>compile</scope>
+     </dependency>
+
+ In order for this to work correctly, you need to have previously installed
+ jasypt-hibernate in your local repository (as explained in BUILD.txt) or have a
+ working internet connection to let maven automatically download 
+ jasypt-hibernate binaries from Maven 2's central repositories.
+ 
+ 
+ IMPORTANT: Adding jasypt-hibernate as a dependency to your maven 2 project will
+ automatically add a dependency on jasypt, even if you do not specify so.
+ 
