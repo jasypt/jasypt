@@ -51,6 +51,12 @@ public class HibernatePBEEncryptor {
         
     }
     
+    
+    public PBEStringEncryptor getEncryptor() {
+        return encryptor;
+    }
+    
+    
     public String getName() {
         return name;
     }
