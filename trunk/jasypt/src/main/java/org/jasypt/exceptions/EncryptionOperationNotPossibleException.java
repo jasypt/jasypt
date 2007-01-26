@@ -34,4 +34,8 @@ public class EncryptionOperationNotPossibleException
         super(t);
     }
     
+    public EncryptionOperationNotPossibleException(String message) {
+        super(message);
+    }
+    
 }

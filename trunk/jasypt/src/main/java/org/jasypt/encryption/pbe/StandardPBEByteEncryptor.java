@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe;
 
+import java.security.InvalidKeyException;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -211,6 +213,9 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             
             return ArrayUtils.addAll(salt, encyptedMessage);
             
+        } catch (InvalidKeyException e) {
+            handleInvalidKeyException();
+            throw new EncryptionOperationNotPossibleException();
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
@@ -254,12 +259,35 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             
             return decryptedMessage;
             
+            
+        } catch (InvalidKeyException e) {
+            handleInvalidKeyException();
+            throw new EncryptionOperationNotPossibleException();
         } catch (Exception e) {
             throw new EncryptionOperationNotPossibleException();
         }
         
     }    
 
+    
+    private void handleInvalidKeyException() {
+        
+        String vmVendor = System.getProperty("java.vm.vendor");
+        if ((this.algorithm.equals(
+                PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES)) &&
+            (vmVendor != null) && 
+            (vmVendor.toUpperCase().contains("SUN"))) {
+            
+            throw new EncryptionOperationNotPossibleException(
+                    "Encryption raised an exception. A possible cause is " +
+                    "you are using strong encryption algorithms and " +
+                    "you have not installed the Java Cryptography " + 
+                    "Extension (JCE) Unlimited Strength Jurisdiction " +
+                    "Policy Files in this Java Virtual Machine");
+            
+        }
+        
+    }
     
 }
 
