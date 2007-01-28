@@ -31,33 +31,224 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGeneration;
 
-
-// TODO: Add comments
-// TODO: Add Javadoc
+/**
+ * <p>
+ * Standard implementation of the {@link PBEByteDigester} interface.
+ * This class lets the user specify the algorithm to be used for 
+ * creating digests, the size of the random salt to be applied, and
+ * the number of times the hash function will be applied (iterations).
+ * </p>
+ * <p>
+ * This class is <i>thread-safe</i>.
+ * </p>
+ * <p>
+ * <br/><b><u>Configuration</u></b>
+ * </p>
+ * <p>
+ * The algorithm, salt size and iterations can take values in any of these
+ * ways:
+ * <ul>
+ *   <li>Using its default values.</li>
+ *   <li>Setting a <tt>DigesterConfig</tt> object which provides new 
+ *       configuration values.</li>
+ *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
+ *       <tt>setSaltSizeBytes</tt> or <tt>setIterations</tt> methods.</li>
+ * </ul>
+ * And the actual values to be used for initialization will be established
+ * by applying the following priorities:
+ * <ol>
+ *   <li>First, the default values are considered.</li>
+ *   <li>Then, if a <tt>DigesterConfig</tt> object has been set with
+ *       <tt>setConfig</tt>, the non-null values returned by its
+ *       <tt>getX</tt> methods override the default values.</li>
+ *   <li>Finally, if the corresponding <tt>setX</tt> method has been called
+ *       on the digester itself for any of the configuration parameters, the 
+ *       values set by these calls override all of the above.</li>
+ * </ol>
+ * </p>
+ * 
+ * <p>
+ * <br/><b><u>Initialization</u></b>
+ * </p>
+ * <p>
+ * Before it is ready to create digests, an object of this class has to be
+ * <i>initialized</i>. Initialization happens:
+ * <ul>
+ *   <li>When <tt>initialize</tt> is called.</li>
+ *   <li>When <tt>digest</tt> or <tt>matches</tt> are called for the
+ *       first time, if <tt>initialize</tt> has not been called before.</li>
+ * </ul>
+ * Once a digester has been initialized, trying to
+ * change its configuration (algorithm, salt size or iterations) will
+ * result in an <tt>AlreadyInitializedException</tt> being thrown.
+ * </p>
+ * 
+ * <p>
+ * <br/><b><u>Usage</u></b>
+ * </p>
+ * <p>
+ * A digester may be used in two different ways:
+ * <ul>
+ *   <li>For <i>creating digests</i>, by calling the <tt>digest</tt> method.
+ *   <li>For <i>matching digests</i>, this is, checking whether a digest
+ *       corresponds adequately to a digest (as in password checking) or not, by
+ *       calling the <tt>matches</tt> method.</li> 
+ * </ul>
+ * The steps taken for creating digests are:
+ * <ol>
+ *   <li>A random salt of the specified size is generated (see 
+ *       {@link SaltGeneration}). If salt size is zero, no salt will be
+ *       used.</li>
+ *   <li>The salt bytes are added to the message.</li>
+ *   <li>The hash function is applied to the salt and message altogether, 
+ *       and then to the
+ *       results of the function itself, as many times as specified
+ *       (iterations).</li>
+ *   <li>The <i>undigested</i> salt and the final result of the hash
+ *       function are concatenated and returned as a result</li>
+ * </ol>
+ * Put schematically:
+ * <ul>
+ *   <li>
+ *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
+ *       <ul>
+ *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+ *         <li><tt>ssb</tt>: salt size in bytes.</li>
+ *         <li><tt><b>X</b></tt>: bytes resulting from hashing (see below).</li>
+ *       </ul>
+ *   </li>
+ *   <li>
+ *     <tt>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt> = 
+ *     <tt><i>H</i>(<i>H</i>(<i>H</i>(..(it)..<i>H</i>(<b>Z</b>|<b>Z</b>|<b>Z</b>|...|<b>Z</b>|))))</tt>
+ *     <ul>
+ *       <li><tt><i>H</i></tt>: Hash function (algorithm).</li>
+ *       <li><tt>it</tt>: Number of iterations.</li>
+ *       <li><tt><b>Z</b></tt>: Input for hashing (see below).</li> 
+ *     </ul>
+ *   </li>
+ *   <li>
+ *     <tt>|<b>Z</b>|<b>Z</b>|<b>Z</b>|...|<b>Z</b>|</tt> =
+ *     <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>M</b>|<b>M</b>|<b>M</b>...|<b>M</b>|</tt>
+ *     <ul>
+ *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+ *         <li><tt>ssb</tt>: salt size in bytes.</li>
+ *         <li><tt><b>X</b></tt>: message bytes.</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ * <b>Two digests created for the same message will always be different
+ * (except in the case of random salt coincidence).</b>
+ * Because of this, the result of the <tt>digest</tt> method contains 
+ * both the <i>undigested</i> salt and the digest of the (salt + message), 
+ * so that another digest operation can be performed with the same salt 
+ * on a different message to check if both messages match (all of which will 
+ * be managed automatically by the <tt>matches</tt> method).
+ * </p>
+ * <p>     
+ * To learn more about the mechanisms involved in digest creation, read
+ * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
+ * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public final class StandardByteDigester implements ByteDigester {
 
+    /**
+     * Default digest algorithm will be MD5 
+     */
     public static final String DEFAULT_ALGORITHM = "MD5";
+    /**
+     * The minimum recommended size for salt is 8 bytes 
+     */
     public static final int DEFAULT_SALT_SIZE_BYTES = 8;
+    /**
+     * The minimum recommended iterations for hashing are 1000
+     */
     public static final int DEFAULT_ITERATIONS = 1000;
 
+    // Algorithm to be used for hashing
     private String algorithm = DEFAULT_ALGORITHM;
+    // Size of salt to be applied
     private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
+    // Number of hash iterations to be applied
     private int iterations = DEFAULT_ITERATIONS;
     
+    /*
+     * Config: this object can set a configuration (algorithm, salt size and
+     * number of iterations) by bringing the values in whichever way the
+     * developer wants (it only has to implement the DigesterConfig interface).
+     * 
+     * Calls to setX methods OVERRIDE the values brought by this config.
+     */
     private DigesterConfig config = null;
 
+    /*
+     * Set of booleans which indicate whether the config or default values
+     * have to be overriden because of the setX methods having been
+     * called.
+     */
     private boolean algorithmSet = false;
     private boolean saltSizeBytesSet = false;
     private boolean iterationsSet = false;
-    
+
+    /*
+     * Flag which indicates whether the digester has been initialized or not.
+     * 
+     * Once initialized, no further modifications to its configuration will
+     * be allowed.
+     */
     private boolean initialized = false;
-    
+
+    /*
+     * If the salt size is set to a value higher than zero, this flag will
+     * indicate that the salt mecanism has to be used.
+     */
     private boolean useSalt = true;
-    
+
+    /*
+     * MessageDigest to be used. 
+     * 
+     * IMPORTANT: MessageDigest is not a thread-safe class, and thus any
+     * use of this variable will have to be adequately synchronized. 
+     */
     private MessageDigest md = null;
 
     
 
+    
+    /**
+     * Creates a new instance of <tt>StandardByteDigester</tt>.
+     */
+    public StandardByteDigester() {
+        super();
+    }
+    
+    
+    /**
+     * <p>
+     * Sets a <tt>DigesterConfig</tt> object for the digester. If this config
+     * object is set, it will be asked values for:
+     * </p>
+     * 
+     * <ul>
+     *   <li>Algorithm</li>
+     *   <li>Salt size</li>
+     *   <li>Hash iterations</li>
+     * </ul>
+     * 
+     * <p>
+     * The non-null values it returns will override the default ones, 
+     * <i>and will be overriden by any values specified with a <tt>setX</tt>
+     * method</i>.
+     * </p>
+     * 
+     * @param config the <tt>DigesterConfig</tt> object to be used as the 
+     *               source for configuration parameters.
+     */
     public synchronized void setConfig(DigesterConfig config) {
         Validate.notNull(config, "Config cannot be set null");
         if (isInitialized()) {
@@ -66,6 +257,25 @@ public final class StandardByteDigester implements ByteDigester {
         this.config = config;
     }
     
+    
+    /**
+     * <p>
+     * Sets the algorithm to be used for hashing, like "MD5" or "SHA-1".
+     * </p>
+     * 
+     * <p>
+     * This algorithm has to be supported by your Java Virtual Machine, and
+     * it should be allowed as an algorithm for creating
+     * java.security.MessageDigest instances.
+     * </p>
+     * 
+     * @param algorithm the name of the algorithm to be used. See Appendix A 
+     *                  in the <a target="_blank" 
+     *                  href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
+     *                  Cryptography Architecture API Specification & 
+     *                  Reference</a>
+     *                  for information about standard algorithm names.
+     */
     public synchronized void setAlgorithm(String algorithm) {
         Validate.notEmpty(algorithm, "Algorithm cannot be empty");
         if (isInitialized()) {
@@ -75,6 +285,21 @@ public final class StandardByteDigester implements ByteDigester {
         this.algorithmSet = true;
     }
     
+    
+    /**
+     * <p>
+     * Sets the size of the random salt to be used to compute the digest.
+     * This mechanism is explained in 
+     * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
+     * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
+     * </p>
+     * 
+     * <p>
+     * If salt size is set to zero, then no salt will be used.
+     * </p>
+     * 
+     * @param saltSizeBytes the size of the random salt to be used, in bytes.
+     */
     public synchronized void setSaltSizeBytes(int saltSizeBytes) {
         Validate.isTrue(saltSizeBytes >= 0, 
                 "Salt size in bytes must be non-negative");
@@ -86,6 +311,22 @@ public final class StandardByteDigester implements ByteDigester {
         this.saltSizeBytesSet = true;
     }
 
+    
+    /**
+     * <p>
+     * Set the number of times the hash function will be applied recursively.
+     * <br/>
+     * The hash function will be applied to its own results as many times as 
+     * specified: <i>h(h(...h(x)...))</i>
+     * </p>
+     * <p>
+     * This mechanism is explained in 
+     * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
+     * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
+     * </p>
+     * 
+     * @param iterations the number of iterations.
+     */
     public synchronized void setIterations(int iterations) {
         Validate.isTrue(iterations > 0, 
                 "Number of iterations must be greater than zero");
@@ -97,14 +338,67 @@ public final class StandardByteDigester implements ByteDigester {
     }
     
 
+    /**
+     * <p>
+     *   Returns true if the digester has already been initialized, false if
+     *   not.<br/> 
+     *   Initialization happens:
+     * </p>
+     * <ul>
+     *   <li>When <tt>initialize</tt> is called.</li>
+     *   <li>When <tt>digest</tt> or <tt>matches</tt> are called for the
+     *       first time, if <tt>initialize</tt> has not been called before.</li>
+     * </ul>
+     * <p>
+     *   Once a digester has been initialized, trying to
+     *   change its configuration (algorithm, salt size or iterations) will
+     *   result in an <tt>AlreadyInitializedException</tt> being thrown.
+     * </p>
+     * 
+     * @return true if the digester has already been initialized, false if
+     *   not.
+     */
     public synchronized boolean isInitialized() {
         return this.initialized;
     }
     
 
+    /**
+     * <p>
+     * Initialize the digester.
+     * </p>
+     * <p>
+     * This operation will consist in determining the actual configuration 
+     * values to be used, and then initializing the digester using them.
+     * <br/>
+     * These values are decided by applying the following priorities:
+     * </p>
+     * <ol>
+     *   <li>First, the default values are considered.</li>
+     *   <li>Then, if a <tt>DigesterConfig</tt> object has been set with
+     *       <tt>setConfig</tt>, the non-null values returned by its
+     *       <tt>getX</tt> methods override the default values.</li>
+     *   <li>Finally, if the corresponding <tt>setX</tt> method has been called
+     *       on the digester itself for any of the configuration parameters, the 
+     *       values set by these calls override all of the above.</li>
+     * </ol>
+     * <p>
+     *   Once a digester has been initialized, trying to
+     *   change its configuration (algorithm, salt size or iterations) will
+     *   result in an <tt>AlreadyInitializedException</tt> being thrown.
+     * </p>
+     *
+     */
     public synchronized void initialize() {
+        
+        // Double-check to avoid synchronization issues
         if (!this.initialized) {
-            
+
+            /*
+             * If a DigesterConfig object has been set, we need to 
+             * consider the values it returns (if, for each value, the
+             * corresponding "setX" method has not been called).
+             */
             if (this.config != null) {
                 
                 String configAlgorithm = config.getAlgorithm();
@@ -136,45 +430,126 @@ public final class StandardByteDigester implements ByteDigester {
                             this.iterations : configIterations.intValue();
                 
             }
-            
+
+            /*
+             * MessageDigest is initialized the usual way, and the digester
+             * is marked as "initialized" so that configuration cannot be
+             * changed in the future.
+             */
             try {
                 this.md = MessageDigest.getInstance(this.algorithm);
             } catch (NoSuchAlgorithmException e) {
                 throw new EncryptionInitializationException(e);
             }
             this.initialized = true;
+            
         }
+        
     }
     
-    
-    
+
+    /**
+     * <p>
+     * Performs a digest operation on a byte array message.
+     * </p>
+     * <p>
+     * The steps taken for creating the digest are:
+     * <ol>
+     *   <li>A random salt of the specified size is generated (see 
+     *       {@link SaltGeneration}).</li>
+     *   <li>The salt bytes are added to the message.</li>
+     *   <li>The hash function is applied to the salt and message altogether, 
+     *       and then to the
+     *       results of the function itself, as many times as specified
+     *       (iterations).</li>
+     *   <li>The <i>undigested</i> salt and the final result of the hash
+     *       function are concatenated and returned as a result</li>
+     * </ol>
+     * Put schematically:
+     * <ul>
+     *   <li>
+     *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
+     *       <ul>
+     *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+     *         <li><tt>ssb</tt>: salt size in bytes.</li>
+     *         <li><tt><b>X</b></tt>: bytes resulting from hashing (see below).</li>
+     *       </ul>
+     *   </li>
+     *   <li>
+     *     <tt>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt> = 
+     *     <tt><i>H</i>(<i>H</i>(<i>H</i>(..(it)..<i>H</i>(<b>Z</b>|<b>Z</b>|<b>Z</b>|...|<b>Z</b>|))))</tt>
+     *     <ul>
+     *       <li><tt><i>H</i></tt>: Hash function (algorithm).</li>
+     *       <li><tt>it</tt>: Number of iterations.</li>
+     *       <li><tt><b>Z</b></tt>: Input for hashing (see below).</li> 
+     *     </ul>
+     *   </li>
+     *   <li>
+     *     <tt>|<b>Z</b>|<b>Z</b>|<b>Z</b>|...|<b>Z</b>|</tt> =
+     *     <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>M</b>|<b>M</b>|<b>M</b>...|<b>M</b>|</tt>
+     *     <ul>
+     *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+     *         <li><tt>ssb</tt>: salt size in bytes.</li>
+     *         <li><tt><b>X</b></tt>: message bytes.</li>
+     *     </ul>
+     *   </li>
+     * </ul>
+     * </p>
+     * <p>
+     * <b>Two digests created for the same message will always be different
+     * (except in the case of random salt coincidence).</b>
+     * Because of this, the result of the <tt>digest</tt> method contains 
+     * both the <i>undigested</i> salt and the digest of the (salt + message), 
+     * so that another digest operation can be performed with the same salt 
+     * on a different message to check if both messages match (all of which will 
+     * be managed automatically by the <tt>matches</tt> method).     
+     * </p>
+     * 
+     * @param message the byte array to be digested 
+     * @return the digest result
+     * @throws EncryptionOperationNotPossibleException if the digest operation
+     *         fails, ommitting any further information about the cause for
+     *         security reasons.
+     */
     public byte[] digest(byte[] message) {
         
         if (message == null) {
             return null;
         }
-        
+
+        // Check initialization
         if (!isInitialized()) {
             initialize();
         }
         
+        // Create random salt
         byte[] salt = null;
         if (this.useSalt) {
             salt = SaltGeneration.generateSalt(this.saltSizeBytes);
         }
-        
+
+        // Create digest
         return digest(message, salt);
         
     }
 
     
-    
+    /*
+     * This method truly performs the digest operation, assuming that a salt
+     * has already been created (if needed) and the digester has already been
+     * initialized.
+     */
     private byte[] digest(byte[] message, byte[] salt) {
         
         try {
             
             byte[] encryptedMessage = new byte[0];
 
+            /*
+             * Add the salt to the result, as it have to be stored with the 
+             * digest itself so that we are able to create a new digest with
+             * the same salt for other message and compare them properly.
+             */
             if (salt != null) {
                 encryptedMessage = ArrayUtils.addAll(encryptedMessage, salt);
             }
@@ -186,6 +561,7 @@ public final class StandardByteDigester implements ByteDigester {
                 this.md.reset();
                 
                 if (salt != null) {
+                    // The random salt is added to the digest
                     this.md.update(salt);
                 }
                 this.md.update(message);
@@ -197,18 +573,45 @@ public final class StandardByteDigester implements ByteDigester {
                 }
                 
             }
-            
+
+            // Finally we build an array containing both the undigested salt
+            // and the digest of the (salt + message).
             encryptedMessage = ArrayUtils.addAll(encryptedMessage, digest);
             
             return encryptedMessage;
         
         } catch (Exception e) {
+            // If digest fails, it is more secure not to return any information
+            // about the cause in nested exceptions. Simply fail.
             throw new EncryptionOperationNotPossibleException();
         }
         
     }
     
     
+    /**
+     * <p>
+     * Checks a message against a given digest.
+     * </p>
+     * <p>
+     * This method tells whether a message corresponds to a specific digest
+     * or not by getting the salt with which the digest was created and
+     * applying it to a digest operation performed on the message. If 
+     * new and existing digest match, the message is said to match the digest.
+     * </p>
+     * <p>
+     * This method will be used, for instance, for password checking in
+     * authentication processes.
+     * </p>
+     * 
+     * @param message the message to be compared to the digest.
+     * @param digest the digest. 
+     * @return true if the specified message matches the digest, false
+     *         if not.
+     * @throws EncryptionOperationNotPossibleException if the digest matching
+     *         operation fails, ommitting any further information about the 
+     *         cause for security reasons.
+     */
     public boolean matches(byte[] message, byte[] digest) {
 
         if (message == null) {
@@ -217,22 +620,28 @@ public final class StandardByteDigester implements ByteDigester {
             return false;
         }
         
+        // Check initialization
         if (!isInitialized()) {
             initialize();
         }
         
         try {
 
+            // If we are using a salt, extract it to use it.
             byte[] salt = null;
             if (this.useSalt) {
                 salt = ArrayUtils.subarray(digest, 0, this.saltSizeBytes);
             }
             
+            // Digest the message with the extracted digest.
             byte[] encryptedMessage = digest(message, salt);
             
+            // If, using the same salt, digests match, then messages too. 
             return (Arrays.equals(encryptedMessage, digest));
         
         } catch (Exception e) {
+            // If digest fails, it is more secure not to return any information
+            // about the cause in nested exceptions. Simply fail.
             throw new EncryptionOperationNotPossibleException();
         }
         
