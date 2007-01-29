@@ -58,7 +58,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StrongTextEncryptor implements TextEncryptor {
+public final class StrongTextEncryptor {
 
     
     // The internal encryptor 
