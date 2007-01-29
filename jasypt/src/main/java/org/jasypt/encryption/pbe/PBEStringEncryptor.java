@@ -21,6 +21,14 @@ package org.jasypt.encryption.pbe;
 
 import org.jasypt.encryption.StringEncryptor;
 
+/**
+ *
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface PBEStringEncryptor extends StringEncryptor {
 
     public void setPassword(String password);
