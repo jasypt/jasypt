@@ -35,7 +35,9 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </p>
  * <p>
  * This class is mainly intended for use from Spring Framework or some other
- * IoC container, by performing the following steps:
+ * IoC container (if you are not using a container of this kind, please see 
+ * {@link HibernatePBEEncryptorRegistry}). The steps to be performed are 
+ * the following:
  * <ol>
  *   <li>Create an object of this class (declaring it).</li>
  *   <li>Set its <tt>registeredName</tt> and <tt>encryptor</tt> properties.</li>
