@@ -111,7 +111,7 @@ import org.jasypt.salt.SaltGeneration;
  *   <li>The result of the concatenation is encoded in BASE64
  *       and returned as an ASCII String.</li>
  * </ol>
- * Put schematically:
+ * Put schematically in bytes:
  * <ul>
  *   <li>
  *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
@@ -397,7 +397,7 @@ public final class StandardStringDigester implements StringDigester {
      *   <li>The result of the concatenation is encoded in BASE64
      *       and returned as an ASCII String.</li>
      * </ol>
-     * Put schematically:
+     * Put schematically in bytes:
      * <ul>
      *   <li>
      *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
