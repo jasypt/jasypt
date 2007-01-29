@@ -21,6 +21,14 @@ package org.jasypt.encryption.pbe;
 
 import org.jasypt.encryption.ByteEncryptor;
 
+/**
+ *
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface PBEByteEncryptor extends ByteEncryptor {
 
     public void setPassword(String password);
