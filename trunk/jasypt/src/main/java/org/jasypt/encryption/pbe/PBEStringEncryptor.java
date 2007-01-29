@@ -24,7 +24,7 @@ import org.jasypt.encryption.StringEncryptor;
 /**
  * <p>
  * Common interface for all Password Based Encryptors which receive a 
- * Strig message and return a String result.
+ * String message and return a String result.
  * </p>
  * <p>
  * For a default implementation, see {@link StandardPBEStringEncryptor}.
