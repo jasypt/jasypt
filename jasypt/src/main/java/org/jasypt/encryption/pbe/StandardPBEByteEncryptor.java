@@ -598,6 +598,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             handleInvalidKeyException();
             throw new EncryptionOperationNotPossibleException();
         } catch (Exception e) {
+            // If decryption fails, it is more secure not to return any 
+            // information about the cause in nested exceptions. Simply fail.
             throw new EncryptionOperationNotPossibleException();
         }
         
