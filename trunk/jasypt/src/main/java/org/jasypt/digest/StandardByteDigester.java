@@ -105,7 +105,7 @@ import org.jasypt.salt.SaltGeneration;
  *       results of the function itself, as many times as specified
  *       (iterations).</li>
  *   <li>The <i>undigested</i> salt and the final result of the hash
- *       function are concatenated and returned as a result</li>
+ *       function are concatenated and returned as a result.</li>
  * </ol>
  * Put schematically:
  * <ul>
@@ -463,7 +463,7 @@ public final class StandardByteDigester implements ByteDigester {
      *       results of the function itself, as many times as specified
      *       (iterations).</li>
      *   <li>The <i>undigested</i> salt and the final result of the hash
-     *       function are concatenated and returned as a result</li>
+     *       function are concatenated and returned as a result.</li>
      * </ol>
      * Put schematically:
      * <ul>
@@ -602,6 +602,9 @@ public final class StandardByteDigester implements ByteDigester {
      * <p>
      * This method will be used, for instance, for password checking in
      * authentication processes.
+     * </p>
+     * <p>
+     * A null message will only match a null digest.
      * </p>
      * 
      * @param message the message to be compared to the digest.
