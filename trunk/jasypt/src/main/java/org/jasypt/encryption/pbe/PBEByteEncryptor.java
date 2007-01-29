@@ -22,7 +22,13 @@ package org.jasypt.encryption.pbe;
 import org.jasypt.encryption.ByteEncryptor;
 
 /**
- *
+ * <p>
+ * Common interface for all Password Based Encryptors which receive a 
+ * byte array message and return a byte array result.
+ * </p>
+ * <p>
+ * For a default implementation, see {@link StandardPBEByteEncryptor}.
+ * </p>
  * 
  * @since 1.0
  * 
@@ -31,6 +37,14 @@ import org.jasypt.encryption.ByteEncryptor;
  */
 public interface PBEByteEncryptor extends ByteEncryptor {
 
+    
+    /**
+     * <p>
+     * Sets a password to be used by the encryptor.
+     * </p>
+     * 
+     * @param password the password to be used.
+     */
     public void setPassword(String password);
     
 }

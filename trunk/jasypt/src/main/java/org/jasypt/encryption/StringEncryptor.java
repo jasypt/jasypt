@@ -19,10 +19,36 @@
  */
 package org.jasypt.encryption;
 
+
+/**
+ * <p>
+ * Common interface for all Encryptors which receive a 
+ * String message and return a String result.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface StringEncryptor {
     
+    
+    /**
+     * Encrypt the input message
+     * 
+     * @param message the message to be encrypted
+     * @return the result of encryption
+     */
     public String encrypt(String message);
     
+    
+    /**
+     * Decrypt an encrypted message
+     * 
+     * @param encryptedMessage the encrypted message to be decrypted
+     * @return the result of decryption
+     */
     public String decrypt(String encryptedMessage);
     
 }

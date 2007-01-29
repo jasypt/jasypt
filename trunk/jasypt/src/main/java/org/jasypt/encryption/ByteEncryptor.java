@@ -19,10 +19,34 @@
  */
 package org.jasypt.encryption;
 
+/**
+ * <p>
+ * Common interface for all Encryptors which receive a 
+ * byte array message and return a byte array result.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface ByteEncryptor {
     
-    public byte[] encrypt(byte[] message);
     
+    /**
+     * Encrypt the input message
+     * 
+     * @param message the message to be encrypted
+     * @return the result of encryption
+     */
+    public byte[] encrypt(byte[] message);
+
+    /**
+     * Decrypt an encrypted message
+     * 
+     * @param encryptedMessage the encrypted message to be decrypted
+     * @return the result of decryption
+     */
     public byte[] decrypt(byte[] encryptedMessage);
     
 }

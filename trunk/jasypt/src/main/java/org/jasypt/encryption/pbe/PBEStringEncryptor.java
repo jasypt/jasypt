@@ -22,7 +22,13 @@ package org.jasypt.encryption.pbe;
 import org.jasypt.encryption.StringEncryptor;
 
 /**
- *
+ * <p>
+ * Common interface for all Password Based Encryptors which receive a 
+ * Strig message and return a String result.
+ * </p>
+ * <p>
+ * For a default implementation, see {@link StandardPBEStringEncryptor}.
+ * </p>
  * 
  * @since 1.0
  * 
@@ -31,6 +37,13 @@ import org.jasypt.encryption.StringEncryptor;
  */
 public interface PBEStringEncryptor extends StringEncryptor {
 
+    /**
+     * <p>
+     * Sets a password to be used by the encryptor.
+     * </p>
+     * 
+     * @param password the password to be used.
+     */
     public void setPassword(String password);
     
 }
