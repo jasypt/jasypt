@@ -28,7 +28,11 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * </p>
  * <p>
  * This class internally holds a {@link StandardPBEStringEncryptor} 
- * configured to use the <tt>PBEWithMD5AndDES</tt> algorithm.
+ * configured this way:
+ * <ul>
+ *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
+ *   <li>Key obtention iterations: <tt>1000</tt>.</li>
+ * </ul>
  * </p>
  * <p>
  * The required steps to use it are:
