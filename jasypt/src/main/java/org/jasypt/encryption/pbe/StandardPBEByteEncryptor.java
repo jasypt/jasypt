@@ -542,7 +542,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * is no other way of knowing it).
      * </p>
      * 
-     * @param message the byte array message to be decrypted
+     * @param encryptedMessage the byte array message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
      *         operation fails, ommitting any further information about the
