@@ -35,12 +35,12 @@ package org.jasypt.digest.config;
  * Providing this interface lets the user create new <tt>DigesterConfig</tt>
  * classes which retrieve values for this parameters from different
  * (and maybe more secure) sources (remote servers, LDAP, other databases...),
- * and do this transparently for the digester. 
+ * and do this transparently for the digester object. 
  * </p>
  * <p>
  * The config objects passed to a digester <u>will only be queried once</u>
- * for a value for each configuration parameters, and this will happen 
- * during the initialization of the digester. 
+ * for each configuration parameter, and this will happen 
+ * during the initialization of the digester object. 
  * </p>
  * <p>
  * For a default implementation, see {@link SimpleDigesterConfig}.

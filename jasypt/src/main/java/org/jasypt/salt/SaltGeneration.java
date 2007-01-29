@@ -24,6 +24,20 @@ import java.security.SecureRandom;
 
 import org.jasypt.exceptions.EncryptionInitializationException;
 
+/**
+ * <p>
+ * This class holds a secure random generator which can be used for generating
+ * random salts for encryption or digesting.
+ * </p>
+ * <p>
+ * This class is <i>thread-safe</i>.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public final class SaltGeneration {
     
     private static String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
@@ -39,7 +53,13 @@ public final class SaltGeneration {
         }
     }
     
-    
+
+    /**
+     * Generate a random salt of the specified length in bytes.
+     * 
+     * @param lengthBytes length in bytes.
+     * @return the generated salt. 
+     */
     public static byte[] generateSalt(int lengthBytes) {
         byte[] salt = new byte[lengthBytes];
         synchronized (random) {

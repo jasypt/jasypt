@@ -21,6 +21,22 @@ package org.jasypt.exceptions;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
+/**
+ * <p>
+ * General exception thrown when any errors are raised during encryption,
+ * digesting, etc.
+ * </p>
+ * <p>
+ * It is intended to provide very little information (if any) of the error
+ * causes, so that encryption internals are not revealed through error
+ * messages.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public class EncryptionOperationNotPossibleException 
         extends NestableRuntimeException {
 
