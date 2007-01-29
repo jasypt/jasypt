@@ -27,7 +27,12 @@ import org.jasypt.digest.StandardStringDigester;
  * </p>
  * <p>
  * This class internally holds a {@link StandardStringDigester} 
- * configured to use the <tt>MD5</tt> algorithm.
+ * configured this way:
+ * <ul>
+ *   <li>Algorithm: <tt>MD5</tt>.</li>
+ *   <li>Salt size: <tt>8 bytes</tt>.</li>
+ *   <li>Iterations: <tt>1000</tt>.</li>
+ * </ul>
  * </p>
  * <p>
  * The required steps to use it are:
