@@ -38,17 +38,17 @@ public class PasswordEncryptorTest extends TestCase {
         assertTrue(Base64.isArrayByteBase64(encryptedPassword.getBytes("US-ASCII")));
         
         for (int i = 0; i < 100; i++) {
-            assertTrue(passwordEncryptor.checkEncryptedPassword(password, encryptedPassword));
+            assertTrue(passwordEncryptor.checkPassword(password, encryptedPassword));
         }
         
         String password2 = "This is a  Password";
         for (int i = 0; i < 100; i++) {
-            assertFalse(passwordEncryptor.checkEncryptedPassword(password2, encryptedPassword));
+            assertFalse(passwordEncryptor.checkPassword(password2, encryptedPassword));
         }
 
         PasswordEncryptor digester2 = new PasswordEncryptor();
         for (int i = 0; i < 100; i++) {
-            assertTrue(digester2.checkEncryptedPassword(password, encryptedPassword));
+            assertTrue(digester2.checkPassword(password, encryptedPassword));
         }
         
         for (int i = 0; i < 100; i++) {
@@ -61,7 +61,7 @@ public class PasswordEncryptorTest extends TestCase {
         encryptedPassword = digester3.encryptPassword(password);
         
         for (int i = 0; i < 100; i++) {
-            assertTrue(digester3.checkEncryptedPassword(password, encryptedPassword));
+            assertTrue(digester3.checkPassword(password, encryptedPassword));
         }
         
     }
