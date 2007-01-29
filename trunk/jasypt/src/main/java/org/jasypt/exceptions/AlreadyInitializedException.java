@@ -21,6 +21,16 @@ package org.jasypt.exceptions;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
+/**
+ * Exception thrown when an attempt is made to change the configuration
+ * of an entity once it has been initialized.
+ * 
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public class AlreadyInitializedException extends NestableRuntimeException {
     
     private static final long serialVersionUID = 4592515503937873874L;

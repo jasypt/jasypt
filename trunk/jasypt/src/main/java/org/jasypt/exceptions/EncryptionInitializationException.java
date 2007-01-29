@@ -21,6 +21,15 @@ package org.jasypt.exceptions;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
+/**
+ * Exception thrown when an error is raised during initialization of
+ * an entity.
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public class EncryptionInitializationException 
         extends NestableRuntimeException {
     
