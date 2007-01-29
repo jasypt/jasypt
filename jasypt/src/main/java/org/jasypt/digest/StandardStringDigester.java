@@ -234,7 +234,7 @@ public final class StandardStringDigester implements StringDigester {
      * <ul>
      *   <li>Algorithm</li>
      *   <li>Salt size</li>
-     *   <li>Hash iterations</li>
+     *   <li>Hashing iterations</li>
      * </ul>
      * 
      * <p>
@@ -254,7 +254,8 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
-     * Sets the algorithm to be used for hashing, like "MD5" or "SHA-1".
+     * Sets the algorithm to be used for hashing, like <tt>MD5</tt> or 
+     * <tt>SHA-1</tt>.
      * </p>
      * 
      * <p>
@@ -365,6 +366,10 @@ public final class StandardStringDigester implements StringDigester {
      *   change its configuration (algorithm, salt size or iterations) will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
+     * 
+     * @throws EncryptionInitializationException if initialization could not
+     *         be correctly done (for example, if the digest algorithm chosen
+     *         cannot be used.
      *
      */
     public void initialize() {
@@ -437,6 +442,9 @@ public final class StandardStringDigester implements StringDigester {
      * @throws EncryptionOperationNotPossibleException if the digest operation
      *         fails, ommitting any further information about the cause for
      *         security reasons.
+     * @throws EncryptionInitializationException if initialization could not
+     *         be correctly done (for example, if the digest algorithm chosen
+     *         cannot be used.
      */
     public String digest(String message) {
         
@@ -502,6 +510,9 @@ public final class StandardStringDigester implements StringDigester {
      * @throws EncryptionOperationNotPossibleException if the digest matching
      *         operation fails, ommitting any further information about the 
      *         cause for security reasons.
+     * @throws EncryptionInitializationException if initialization could not
+     *         be correctly done (for example, if the digest algorithm chosen
+     *         cannot be used.
      */
     public boolean matches(String message, String digest) {
 
