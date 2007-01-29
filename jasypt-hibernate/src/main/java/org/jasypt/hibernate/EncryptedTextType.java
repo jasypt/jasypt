@@ -71,6 +71,30 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * {@link HibernatePBEEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
+ * Or, if you prefer to avoid registration of encryptors, you can configure
+ * your encryptor directly in the mapping file (although not recommended), 
+ * like this:
+ * </p>
+ * <p>
+ * <pre>
+ *  &lt;hibernate-mapping package="myapp">
+ *    ...
+ *    &lt;typedef name="<b>encrypted</b>" class="org.jasypt.hibernate.EncryptedTextType">
+ *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
+ *      &lt;param name="password"><b><i>jasypt</i></b>&lt;/param>
+ *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
+ *    &lt;/typedef>
+ *    ...
+ *    &lt;class name="UserData" table="USER_DATA">
+ *      ...
+ *      &lt;property name="address" column="ADDRESS" type="<b>encrypted</b>" />
+ *      ...
+ *    &lt;class>
+ *    ...
+ *  &lt;hibernate-mapping>
+ * </pre>
+ * </p>
+ * <p>
  * To learn more about usage of user-defined types, please refer to the
  * <a href="http://www.hibernate.org" target="_blank">Hibernate Reference
  * Documentation</a>.
