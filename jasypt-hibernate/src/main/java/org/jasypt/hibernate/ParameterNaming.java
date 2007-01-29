@@ -21,7 +21,7 @@ package org.jasypt.hibernate;
 
 /**
  * <p>
- * Constant parameter names that can be used by an
+ * Constant names of the parameters that can be used by an
  * {@link EncryptedTextType} typedef declaration in a Hibernate mapping.
  * </p>
  * 
@@ -33,24 +33,44 @@ package org.jasypt.hibernate;
 public class ParameterNaming {
 
     /**
+     * <p>
      * The registered name of an encryptor previously registered at the 
      * {@link HibernatePBEEncryptorRegistry}.
+     * </p>
+     * <p>
+     * Value = <tt>encryptorRegisteredName</tt>
+     * </p>
      */
     public static final String ENCRYPTOR_NAME = "encryptorRegisteredName";
     
     /**
+     * <p>
      * The encryption algorithm.
+     * </p>
+     * <p>
+     * Value = <tt>algorithm</tt>
+     * </p>
      */
     public static final String ALGORITHM = "algorithm";
     
     /**
+     * <p>
      * The encryption password.
+     * </p>
+     * <p>
+     * Value = <tt>password</tt>
+     * </p>
      */
     public static final String PASSWORD = "password";
     
     /**
+     * <p>
      * The number of hashing iterations to be applied for obtaining the 
      * encryption key.
+     * </p>
+     * <p>
+     * Value = <tt>keyObtentionIterations</tt>
+     * </p>
      */
     public static final String KEY_OBTENTION_ITERATIONS = 
         "keyObtentionIterations";

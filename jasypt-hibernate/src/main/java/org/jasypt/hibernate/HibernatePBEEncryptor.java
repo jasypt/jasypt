@@ -22,51 +22,161 @@ package org.jasypt.hibernate;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
+/**
+ * <p>
+ * Placeholder class for <tt>PBEStringEncryptor</tt> objects which are
+ * eligible for use from Hibernate. 
+ * </p>
+ * <p>
+ * This class acts as a wrapper on a <tt>PBEStringEncryptor</tt>, allowing
+ * to be set a <b>registered name</b> (see {@link #setRegisteredName(String)})
+ * and performing the needed registry operations against the 
+ * {@link HibernatePBEEncryptorRegistry}.
+ * </p>
+ * <p>
+ * This class is mainly intended for use from Spring Framework or some other
+ * IoC container, by performing the following steps:
+ * <ol>
+ *   <li>Create an object of this class (declaring it).</li>
+ *   <li>Set its <tt>registeredName</tt> and <tt>encryptor</tt> properties.</li>
+ *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
+ *       <tt>encryptorRegisteredName</tt> parameter the same value specified
+ *       to this object in <tt>registeredName</tt>.</li>
+ * </ol>
+ * </p>
+ * <p>
+ * This in a Spring config file would look like:
+ * </p>
+ * <p>
+ * <pre> 
+ *  &lt;bean id="strongEncryptor"
+ *    class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+ *    &lt;property name="algorithm">
+ *        &lt;value>PBEWithMD5AndTripleDES&lt;/value>
+ *    &lt;/property>
+ *    &lt;property name="password">
+ *        &lt;value>jasypt&lt;/value>
+ *    &lt;/property>
+ *  &lt;/bean>
+ *  
+ *  &lt;bean id="hibernateEncryptor"
+ *    class="org.jasypt.hibernate.HibernatePBEEncryptor">
+ *    &lt;property name="registeredName">
+ *        &lt;value><b>strongHibernateEncryptor</b>&lt;/value>
+ *    &lt;/property>
+ *    &lt;property name="encryptor">
+ *        &lt;ref bean="strongEncryptor" />
+ *    &lt;/property>
+ *  &lt;/bean>
+ * </pre>
+ * </p>
+ * <p>
+ * And then in the Hibernate mapping file:
+ * </p>
+ * <p>
+ * <pre>
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
+ *      &lt;param name="encryptorRegisteredName"><b>strongHibernateEncryptor</b>&lt;/param>
+ *    &lt;/typedef>
+ * </pre>
+ * </p>
+ * <p>
+ * An important thing to note is that, when using <tt>HibernatePBEEncryptor</tt>
+ * objects this way to wrap <tt>PBEStringEncryptor</tt>s, <u>it is not
+ * necessary to deal with {@link HibernatePBEEncryptorRegistry}</u>, 
+ * because <tt>HibernatePBEEncryptor</tt> objects get automatically registered
+ * in the encryptor registry when their {@link #setRegisteredName(String)}
+ * method is called.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public class HibernatePBEEncryptor {
 
 
-    private String name = null;
+    private String registeredName = null;
     private PBEStringEncryptor encryptor = null;
     
     
     
+    /**
+     * Creates a new instance of <tt>HibernatePBEEncryptor</tt> 
+     */
     public HibernatePBEEncryptor() {
+        super();
     }
 
-    
-    HibernatePBEEncryptor(String name, PBEStringEncryptor encryptor) {
-        this.name = name;
+
+    /*
+     * For internal use only, by the Registry, when a PBEStringEncryptor
+     * is registered programmatically.
+     */
+    HibernatePBEEncryptor(String registeredName, PBEStringEncryptor encryptor) {
+        this.registeredName = registeredName;
         this.encryptor = encryptor;
     }
 
-    
-    public void setName(String name) {
-        if (this.name != null) {
+
+    /**
+     * Sets the registered name of the encryptor and adds it to the registry.
+     * 
+     * @param registeredName the name with which the encryptor will be
+     *                       registered.
+     */
+    public void setRegisteredName(String registeredName) {
+        if (this.registeredName != null) {
+            // It had another name before, we have to clean
             HibernatePBEEncryptorRegistry.getInstance().
-                    unregisterHibernatePBEEncryptor(this.name);
+                    unregisterHibernatePBEEncryptor(this.registeredName);
         }
-        this.name = name;
+        this.registeredName = registeredName;
         HibernatePBEEncryptorRegistry.getInstance().
                 registerHibernatePBEEncryptor(this);
         
     }
     
-    
+
+    /**
+     * Returns the encryptor which this object wraps.
+     * 
+     * @return the encryptor.
+     */
     public PBEStringEncryptor getEncryptor() {
         return encryptor;
     }
     
-    
-    public String getName() {
-        return name;
+
+    /**
+     * Returns the name with which the wrapped encryptor is registered at
+     * the registry.
+     * 
+     * @return the registered name.
+     */
+    public String getRegisteredName() {
+        return registeredName;
     }
     
     
+    /**
+     * Sets the <tt>PBEStringEncryptor</tt> to be held (wrapped) by this
+     * object.
+     * 
+     * @param encryptor the encryptor.
+     */
     public void setEncryptor(PBEStringEncryptor encryptor) {
         this.encryptor = encryptor;
     }
 
-    
+
+    /**
+     * Encrypts a message, delegating to wrapped encryptor.
+     * 
+     * @param message the message to be encrypted.
+     * @return the encryption result.
+     */
     public String encrypt(String message) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
@@ -76,6 +186,12 @@ public class HibernatePBEEncryptor {
     }
 
     
+    /**
+     * Decypts a message, delegating to wrapped encryptor
+     * 
+     * @param encryptedMessage the message to be decrypted.
+     * @return the result of decryption.
+     */
     public String decrypt(String encryptedMessage) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
