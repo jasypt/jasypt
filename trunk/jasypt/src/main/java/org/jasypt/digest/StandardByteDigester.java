@@ -91,7 +91,7 @@ import org.jasypt.salt.SaltGeneration;
  * <p>
  * A digester may be used in two different ways:
  * <ul>
- *   <li>For <i>creating digests</i>, by calling the <tt>digest</tt> method.
+ *   <li>For <i>creating digests</i>, by calling the <tt>digest</tt> method.</li>
  *   <li>For <i>matching digests</i>, this is, checking whether a digest
  *       corresponds adequately to a digest (as in password checking) or not, by
  *       calling the <tt>matches</tt> method.</li> 
@@ -373,7 +373,7 @@ public final class StandardByteDigester implements ByteDigester {
      * </p>
      * <p>
      * This operation will consist in determining the actual configuration 
-     * values to be used, and then initializing the digester using them.
+     * values to be used, and then initializing the digester with them.
      * <br/>
      * These values are decided by applying the following priorities:
      * </p>
@@ -396,7 +396,7 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, if the digest algorithm chosen
-     *         cannot be used.
+     *         cannot be used).
      *
      */
     public synchronized void initialize() {
@@ -522,7 +522,7 @@ public final class StandardByteDigester implements ByteDigester {
      *         security reasons.
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, if the digest algorithm chosen
-     *         cannot be used.
+     *         cannot be used).
      *         
      */
     public byte[] digest(byte[] message) {
@@ -630,7 +630,7 @@ public final class StandardByteDigester implements ByteDigester {
      *         cause for security reasons.
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, if the digest algorithm chosen
-     *         cannot be used.
+     *         cannot be used).
      */
     public boolean matches(byte[] message, byte[] digest) {
 
