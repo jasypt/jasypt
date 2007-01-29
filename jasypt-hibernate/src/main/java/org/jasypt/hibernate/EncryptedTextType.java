@@ -35,6 +35,53 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
+/**
+ * <p>
+ * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
+ * encryption of text values during persistence of entities.
+ * </p>
+ * <p>
+ * <i>This class is intended only for declarative use from a Hibernate mapping
+ * file. Do not use it directly from your <tt>.java</tt> files.</i>
+ * </p>
+ * <p>
+ * To use this Hibernate type in one of your Hibernate mappings, you can
+ * add it like this:
+ * </p>
+ * <p>
+ * <pre>
+ *  &lt;hibernate-mapping package="myapp">
+ *    ...
+ *    &lt;typedef name="<b>encrypted</b>" class="org.jasypt.hibernate.EncryptedTextType">
+ *      &lt;param name="encryptorRegisteredName"><b><i>strongHibernateEncryptor</i></b>&lt;/param>
+ *    &lt;/typedef>
+ *    ...
+ *    &lt;class name="UserData" table="USER_DATA">
+ *      ...
+ *      &lt;property name="address" column="ADDRESS" type="<b>encrypted</b>" />
+ *      ...
+ *    &lt;class>
+ *    ...
+ *  &lt;hibernate-mapping>
+ * </pre>
+ * </p>
+ * <p>
+ * ...where an encryptor should have been previously registered to be used
+ * from Hibernate with name <tt>strongHibernateEncryptor</tt> (see
+ * {@link HibernatePBEEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
+ * </p>
+ * <p>
+ * To learn more about usage of user-defined types, please refer to the
+ * <a href="http://www.hibernate.org" target="_blank">Hibernate Reference
+ * Documentation</a>.
+ * </p>
+ * 
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public final class EncryptedTextType implements UserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;

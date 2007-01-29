@@ -39,6 +39,11 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <organization>
+    <name>The JASYPT team</name>
+    <url>http://www.jasypt.org</url>
+  </organization>
   
   <scm>
     <url>http://jasypt.cvs.sourceforge.net/jasypt/</url>
@@ -50,7 +55,7 @@
     <developer>
       <id>dfernandez</id>
       <name>Daniel Fernandez Garrido</name>
-      <email>daniel.fernandez.garrido@gmail.com</email>
+      <email>dfernandez AT users.sourceforge.net</email>
       <roles>
         <role>Project admin</role>
       </roles>
@@ -85,8 +90,19 @@
           <wtpversion>1.0</wtpversion>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <noqualifier>java.lang</noqualifier>
+          <overview>${basedir}/src/main/javadoc/overview.html</overview>
+          <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
+          <reportOutputDirectory>${project.reporting.outputDirectory}/api/${artifactId}/apidocs</reportOutputDirectory>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+  
   <dependencies>
     <dependency>
       <groupId>org.jasypt</groupId>
