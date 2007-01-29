@@ -109,7 +109,7 @@ import org.jasypt.salt.SaltGeneration;
  *   <li>The <i>undigested</i> salt and the final result of the hash
  *       function are concatenated and returned as a result.</li>
  * </ol>
- * Put schematically:
+ * Put schematically in bytes:
  * <ul>
  *   <li>
  *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
@@ -475,7 +475,7 @@ public final class StandardByteDigester implements ByteDigester {
      *   <li>The <i>undigested</i> salt and the final result of the hash
      *       function are concatenated and returned as a result.</li>
      * </ol>
-     * Put schematically:
+     * Put schematically in bytes:
      * <ul>
      *   <li>
      *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
