@@ -19,10 +19,43 @@
  */
 package org.jasypt.digest;
 
+/**
+ * <p>
+ * Common interface for all digesters which receive a String message and 
+ * return a String digest.
+ * </p>
+ * <p>
+ * For a default implementation, see {@link StandardStringDigester}.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface StringDigester {
-    
+
+    /**
+     * <p>
+     * Create a digest of the input message.
+     * </p>
+     * 
+     * @param message the message to be digested
+     * @return the digest
+     */
     public String digest(String message);
     
+    
+    /**
+     * <p>
+     * Check whether a message matches a digest, managing aspects like
+     * salt, hashing iterations, etc. (if applicable).
+     * </p>
+     * 
+     * @param message the message to check
+     * @param digest the digest to check
+     * @return TRUE if the message matches the digest, FALSE if not.
+     */
     public boolean matches(String message, String digest);
 
 }

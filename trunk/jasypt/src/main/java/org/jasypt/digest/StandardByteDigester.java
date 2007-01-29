@@ -33,7 +33,7 @@ import org.jasypt.salt.SaltGeneration;
 
 /**
  * <p>
- * Standard implementation of the {@link PBEByteDigester} interface.
+ * Standard implementation of the {@link ByteDigester} interface.
  * This class lets the user specify the algorithm to be used for 
  * creating digests, the size of the random salt to be applied, and
  * the number of times the hash function will be applied (iterations).
@@ -49,7 +49,8 @@ import org.jasypt.salt.SaltGeneration;
  * ways:
  * <ul>
  *   <li>Using its default values.</li>
- *   <li>Setting a <tt>DigesterConfig</tt> object which provides new 
+ *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
+ *       object which provides new 
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
  *       <tt>setSaltSizeBytes</tt> or <tt>setIterations</tt> methods.</li>
@@ -58,7 +59,8 @@ import org.jasypt.salt.SaltGeneration;
  * by applying the following priorities:
  * <ol>
  *   <li>First, the default values are considered.</li>
- *   <li>Then, if a <tt>DigesterConfig</tt> object has been set with
+ *   <li>Then, if a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
+ *       object has been set with
  *       <tt>setConfig</tt>, the non-null values returned by its
  *       <tt>getX</tt> methods override the default values.</li>
  *   <li>Finally, if the corresponding <tt>setX</tt> method has been called
@@ -230,7 +232,8 @@ public final class StandardByteDigester implements ByteDigester {
     
     /**
      * <p>
-     * Sets a <tt>DigesterConfig</tt> object for the digester. If this config
+     * Sets a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> object 
+     * for the digester. If this config
      * object is set, it will be asked values for:
      * </p>
      * 
@@ -375,7 +378,9 @@ public final class StandardByteDigester implements ByteDigester {
      * </p>
      * <ol>
      *   <li>First, the default values are considered.</li>
-     *   <li>Then, if a <tt>DigesterConfig</tt> object has been set with
+     *   <li>Then, if a 
+     *       <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
+     *       object has been set with
      *       <tt>setConfig</tt>, the non-null values returned by its
      *       <tt>getX</tt> methods override the default values.</li>
      *   <li>Finally, if the corresponding <tt>setX</tt> method has been called
