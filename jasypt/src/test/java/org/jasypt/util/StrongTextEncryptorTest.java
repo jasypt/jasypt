@@ -33,7 +33,7 @@ public class StrongTextEncryptorTest extends TestCase {
         String message = "This is a Message";
         String password = "APASSWORD";
         
-        TextEncryptor textEncryptor = new StrongTextEncryptor();
+        StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
         textEncryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -42,7 +42,7 @@ public class StrongTextEncryptorTest extends TestCase {
             assertEquals(textEncryptor.decrypt(encryptedMessage), message);
         }
         
-        TextEncryptor textEncryptor2 = new StrongTextEncryptor();
+        StrongTextEncryptor textEncryptor2 = new StrongTextEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
