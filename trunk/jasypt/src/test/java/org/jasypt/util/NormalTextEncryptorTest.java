@@ -33,7 +33,7 @@ public class NormalTextEncryptorTest extends TestCase {
         String message = "This is a Message";
         String password = "APASSWORD";
         
-        NormalTextEncryptor textEncryptor = new NormalTextEncryptor();
+        TextEncryptor textEncryptor = new TextEncryptor();
         textEncryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -42,7 +42,7 @@ public class NormalTextEncryptorTest extends TestCase {
             assertEquals(textEncryptor.decrypt(encryptedMessage), message);
         }
         
-        NormalTextEncryptor textEncryptor2 = new NormalTextEncryptor();
+        TextEncryptor textEncryptor2 = new TextEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
