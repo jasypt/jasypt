@@ -19,16 +19,108 @@
  */
 package org.jasypt.digest.config;
 
+/**
+ * <p>
+ * Common interface for config classes applicable to 
+ * {@link org.jasypt.digest.StandardByteDigester} or 
+ * {@link org.jasypt.digest.StandardStringDigester} objects. 
+ * </p>
+ * <p>
+ * Objects of classes implementing this interface will provide values for:
+ * <ul>
+ *   <li>Algorithm.</li>
+ *   <li>Salt size (in bytes).</li>
+ *   <li>Hashing iterations.</li>
+ * </ul>
+ * Providing this interface lets the user create new <tt>DigesterConfig</tt>
+ * classes which retrieve values for this parameters from different
+ * (and maybe more secure) sources (remote servers, LDAP, other databases...),
+ * and do this transparently for the digester. 
+ * </p>
+ * <p>
+ * The config objects passed to a digester <u>will only be queried once</u>
+ * for a value for each configuration parameters, and this will happen 
+ * during the initialization of the digester. 
+ * </p>
+ * <p>
+ * For a default implementation, see {@link SimpleDigesterConfig}.
+ * </p>
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ */
 public interface DigesterConfig {
 
-    /* 
-     * FOR DOC: If these are null, the current object values are respected 
+    /**
+     * <p>
+     * Returns the name of an algorithm to be used for hashing, like "MD5" or 
+     * "SHA-1".
+     * </p>
+     * <p>
+     * This algorithm has to be supported by your Java Virtual Machine, and
+     * it should be allowed as an algorithm for creating
+     * java.security.MessageDigest instances.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore the config object
+     * when deciding the algorithm to be used.
+     * </p>
+     * 
+     * @return the name of the algorithm to be used, or null if this object
+     *         will not want to set an algorithm. See Appendix A 
+     *         in the <a target="_blank" 
+     *         href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
+     *         Cryptography Architecture API Specification & 
+     *         Reference</a>
+     *         for information about standard algorithm names.
      */
-    
     public String getAlgorithm();
+
     
+    /**
+     * <p>
+     * Returns the size of the random salt to be used to compute the digest.
+     * This mechanism is explained in 
+     * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
+     * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
+     * </p>
+     * <p>
+     * If salt size is set to zero, then no salt will be used.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore the config object
+     * when deciding the size of the random salt to be used.
+     * </p>
+     * 
+     * @return the size of the random salt to be used, in bytes, or null if
+     *         this object will not want to set a size for salt.
+     */
     public Integer getSaltSizeBytes();
+
     
+    /**
+     * <p>
+     * Returns the number of times the hash function will be applied recursively.
+     * <br/>
+     * The hash function will be applied to its own results as many times as 
+     * specified: <i>h(h(...h(x)...))</i>
+     * </p>
+     * <p>
+     * This mechanism is explained in 
+     * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
+     * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore the config object
+     * when deciding the number of hashing iterations.
+     * </p>
+     * 
+     * @return the number of iterations, or null if this object will not want
+     *         to set the number of iterations.
+     */
     public Integer getIterations();
+
     
 }
