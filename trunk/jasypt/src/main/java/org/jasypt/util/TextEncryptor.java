@@ -19,12 +19,41 @@
  */
 package org.jasypt.util;
 
+
+/**
+ * Common interface for <i>easy</i> encryptors.
+ *
+ * 
+ * @since 1.0
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ * 
+ * 
+ */
 public interface TextEncryptor {
 
+    
+    /**
+     * Sets a password.
+     * 
+     * @param password the password to be set.
+     */
     public void setPassword(String password);
 
+    
+    /**
+     * Encrypts a message.
+     * 
+     * @param message the message to be encrypted.
+     */
     public String encrypt(String message);
 
+    
+    /**
+     * Decrypts a message.
+     * 
+     * @param encryptedMessage the message to be decrypted.
+     */
     public String decrypt(String encryptedMessage);
 
 }
