@@ -20,6 +20,13 @@ Integrating jasypt with Hibernate 3
   For encryption at Hibernate, jasypt uses its <password-based encryption>
   capabilities, and <<any object implementing PBEStringEncryptor>> can be set
   to encrypt data, even encryptors created by the user.
+  
+  But <<encryption sets a limitation on your Hibernate usage>>: security 
+  standards establish that two
+  different encryption operations on the same data should not return the same
+  value (due to the use of a random salt). Because of this, none of the fields that
+  are set to be encrypted when persisted can be a part of a WHERE clause in
+  your search queries for the entity they belong to.
 
   Setting jasypt-hibernate to encrypt data requires two separate actions:
 

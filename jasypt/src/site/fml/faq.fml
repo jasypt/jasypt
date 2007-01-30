@@ -3,6 +3,20 @@
 
   <part id="common-errors">
     <title>Common Errors</title>
+    
+    <faq id="jasypt-not-in-maven-2">
+      <question><b>Why do I get a NOT FOUND error when trying to add jasypt to my project using maven 2?</b></question>
+      <answer>
+        <p>
+          This is just a temporary issue.
+          The upload of jasypt binaries to the central Maven 2 repositories has
+          already been requested, but it has not been performed yet.
+          If you wish to know when it becomes available, you can check
+          the <a href="http://jira.codehaus.org/browse/MAVENUPLOAD-1353">JIRA
+          MAVENUPLOAD issue</a>.
+        </p>
+      </answer>
+    </faq>
    
     <faq id="no-unlimited-strength">
       <question><b>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <tt>PBEWithMD5AndTripleDES</tt> algorithm, but other algorithms work alright.</b></question>
@@ -18,5 +32,24 @@
     
   </part>
 
+
+
+  <part id="behaviour">
+    <title>Behaviour</title>
+    
+    <faq id="encrypted-fields-not-in-where">
+      <question><b>I do not get correct results when querying a Hibernate-mapped entity with encrypted fields when I set conditions on some of those fields.</b></question>
+      <answer>
+        <p>
+          This is normal. Security standards establish that two
+          different encryption operations on the same data should not return the same
+          value (due to the use of a random salt). Because of this, none of the fields that
+          are set to be encrypted when persisted can be a part of a WHERE clause in
+          your search queries for the entity they belong to.
+        </p>
+      </answer>
+    </faq>
+    
+  </part>  
   
 </faqs>
