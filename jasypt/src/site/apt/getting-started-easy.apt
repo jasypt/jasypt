@@ -1,0 +1,68 @@
+
+  This is a brief Getting Started guide. For more complete information about 
+  each class and its usage, please visit the JavaDoc documentation for 
+  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
+  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+
+Getting Started with JASYPT easy encryption tools
+
+  Jasypt provides three <easy> encryption tools. These are classes which
+  allow, with little or no configuration, and with no need of knowing what
+  is happening "behind the scenes", to perform some of the most common
+  encryption tasks in many projects.
+  
+  These tools are:
+  
+      * <<org.jasypt.util.PasswordEncryptor>> which can be used to 
+        both encrypt passwords when users sign up and check input passwords
+        when users sign in.
+
+----------------
+...
+PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+String encryptedPassword = passwordEncryptor.encryptPassword(usersPassword);
+...
+if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
+  // correct!
+} else {
+  // bad login!
+}
+...
+----------------
+
+
+      * <<org.jasypt.util.TextEncryptor>> which will allow the user to
+        encrypt and decrypt text data using a normal-strength algorithm. In
+        order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+TextEncryptor textEncryptor = new TextEncryptor();
+textEncryptor.setPassword("jasypt");
+...
+String encryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
+
+
+      * <<org.jasypt.util.StrongTextEncryptor>> which will allow the user to
+        encrypt and decrypt text data using a high-strength algorithm. 
+        (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+        Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it).
+        In order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+TextEncryptor textEncryptor = new TextEncryptor();
+textEncryptor.setPassword("jasypt");
+...
+String encryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
+
