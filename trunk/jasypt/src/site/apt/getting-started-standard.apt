@@ -1,0 +1,142 @@
+
+  This is a brief Getting Started guide. For more complete information about 
+  each class and its usage, please visit the JavaDoc documentation for 
+  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
+  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+
+Getting Started with JASYPT standard encryption tools
+
+* Digesters
+
+  Digesters are classes specialized in creating <<message digests>> from
+  input.
+  
+  Message digests are the results of <hash> functions, and they are
+  <<unidirectional>>, this is, starting from a message digest, the original message
+  cannot be reconstructed.
+  
+  Because of this, message digests are very adecuate for <<pasword encryption>>.
+  In fact, in some countries, it is illegal to store a user's password in
+  an unencrypted way, and even encrypted in a reversible (bi-directional) way.
+  
+  Digesters in jasypt live in the <<org.jasypt.digest>> package, which is
+  composed of the following interfaces:
+  
+      * <<ByteDigester>> for creating digests from byte array input.
+      
+      * <<StringDigester>> for creating digests from String input.
+      
+  And the following default implementations:
+  
+      * <<StandardByteDigester>>: very configurable and extremely secure 
+      implementation of ByteDigester, implemented following the directives
+      given in {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
+      
+      * <<StandardStringDigester>>: String counterpart to StandardByteDigester,
+      receiving String input and returning charset-safe, BASE64 encoded
+      String output.
+
+
+  It's basic usage can be very simple:
+  
+------------------
+...
+StandardStringDigester digester = new StandardStringDigester();
+digester.setAlgorithm("SHA-1");   // optionally set the algorithm
+digester.setIterations("50000");  // increase security by performing 50000 hashing iterations
+...
+String digest = digester.digest(myMessage);
+...
+------------------
+
+  Standard*Digesters implement a coherent and secure set of default configuration values, 
+  but they can be additionally configured in two ways:
+  
+      * By calling to its <<<set>>> methods (setAlgorith, setSaltSizeBytes, setIterations)
+      
+      * By setting a <<DigesterConfig>> object which configures the
+        digester. A default <bean> implementation of this interface is supplied
+        (<<<SimpleDigesterConfig>>>), but the user can create his/her own
+        one to be able to retrieve configuration parameters in whichever
+        ways he/she needs.
+
+  Please refer to the {{{http://www.jasypt.org/api/jasypt/apidocs}JavaDoc}}
+  for more information about usage and functionality.
+
+
+
+
+* Encryptors
+
+  Encryptors are classes specialized in performing <<bi-directional>> encryption
+  operations. This is, they can both encrypt plain data and decrypt encrypted
+  data.
+  
+  The relevant interfaces for encryption in jasypt live in the
+  <<org.jasypt.encryption>> package, and are:
+  
+      * <<ByteEncryptor>> for encryption and decryption of byte arrays.
+      
+      * <<StringEncryptor>> for encryption and decryption of Strings.
+
+  
+  Jasypt provides implementations for one type of 
+  encryption: <<Password-Based Encryption (PBE)>>.
+  
+** Password-Based Encryption (PBE)
+
+  Password-Based encryption is performed by means of generating an
+  <encryption key> from a user-supplied <<password>>, and feeding
+  an encryption algorithm with both the input and the generated key. 
+  Keys are usually obtained by applying some hash function to the password.
+  
+  So, <<all PBE encryptors in jasypt will need to be set a password>> before
+  being used for encryption or decryption operations.
+  
+  The relevant interfaces for PBE in jasypt live in the
+  <<org.jasypt.encryption.pbe>> package, and are:
+  
+      * <<PBEByteEncryptor>> for password-based encryption and decryption of byte arrays.
+      
+      * <<PBEStringEncryptor>> for password-based encryption and decryption of Strings.
+
+  And the default implementations provided are:
+  
+      * <<StandardPBEByteEncryptor>>: very configurable and extremely secure 
+      implementation of PBEByteEncryptor, implemented following the directives
+      given in {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
+      
+      * <<StandardPBEStringEncryptor>>: String counterpart to StandardPBEByteEncryptor,
+      receiving String input and returning charset-safe, BASE64 encoded
+      String output as encryption results.
+  
+
+  It's basic usage can be very simple:
+  
+------------------
+...
+StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+encryptor.setPassword("jasypt");                     // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+...
+String encryptedText = encryptor.encrypt(myText);
+...
+String plainText = encryptor.decrypt(encryptedText);  // encryptedText.equals(plainText)
+...
+------------------
+    
+
+  As with digesters, Standard*Encryptors implement a coherent and secure set 
+  of default configuration values (except for the password), but they can also be additionally configured in two ways:
+  
+      * By calling to its <<<set>>> methods (setAlgorith, setPassword, setKeyObtentionIterations)
+      
+      * By setting a <<PBEConfig>> object which configures the
+        digester. A default <bean> implementation of this interface is supplied
+        (<<<SimplePBEConfig>>>), but the user can create his/her own
+        one to be able to retrieve configuration parameters in whichever
+        ways he/she needs (for instance, retrieve the password from a remote server).
+
+  Please refer to the {{{http://www.jasypt.org/api/jasypt/apidocs}JavaDoc}}
+  for more information about usage and functionality.
+  

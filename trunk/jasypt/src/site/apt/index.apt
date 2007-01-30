@@ -1,0 +1,42 @@
+
+
+What is Jasypt?
+
+  Jasypt is a java library which allows 
+  the developer to add basic encryption capabilities to his/her 
+  projects with minimum effort, and without the need of having 
+  deep knowledge on how cryptography works.
+
+Features
+
+     * Provides <<easy encryption tools>> for little adoption effort.
+
+     []
+     
+     * Also provides <<highly configurable standard encryption tools>>, 
+       for power-users.
+
+     []
+     
+     * All encryption tools comply with
+       <<encryption best practices and security recommendations>>. They
+       are also <<thread-safe>> to avoid concurrency problems even in
+       multi-threaded environments like web applications.
+
+     []
+       
+     * {{{http://www.jasypt.org/hibernate3.html}Jasypt-hibernate}} provides a transparent mechanism for
+       <<persisting data in an encrypted form>> using Hibernate.
+
+     []
+     
+       
+     * All encryption tools are designed to be <<easily integrable into
+       IoC containers>> like the {{{http://www.jasypt.org/spring.html}Spring Framework}}, although, 
+       of course, it can be used without one.
+
+
+Current version: 1.0
+
+  <<Released>>: January 30th, 2007
+       

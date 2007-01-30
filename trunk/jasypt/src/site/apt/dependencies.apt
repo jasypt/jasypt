@@ -1,0 +1,21 @@
+
+  If you are using Maven 2, there is no need to consider these dependencies,
+  as they will be automatically managed by the Maven 2 repository.
+
+Dependencies for jasypt
+
+  Jasypt depends on the following external libraries:
+  
+    * Apache Jakarta Commons Lang 2.1
+    
+    * Apache Jakarta Commons Codec 1.1
+  
+
+Dependencies for jasypt-hibernate
+
+  Jasypt-hibernate depends on the following external libraries:
+
+    * Jasypt (same version as jasypt-hibernate)
+    
+    * Hibernate 3.1
+    

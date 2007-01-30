@@ -1,0 +1,33 @@
+
+Using jasypt from Maven 2
+
+  Adding jasypt or jasypt-hiberante to your Maven 2 project is very easy:
+  you just need to add the following dependencies to your pom.xml:
+  
+      * For jasypt:
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+---------
+  
+      * For jasypt-hibernate (you will also need jasypt):
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-hibernate</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+---------

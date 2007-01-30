@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Jasypt: Java simplified encryption">
+
+  <bannerLeft>
+    <name>Jasypt: Java simplified encryption</name>
+    <src>images/jasypt.png</src>
+    <href>http://www.jasypt.org/</href>
+  </bannerLeft>
+  
+  <bannerRight>
+    <name></name>
+    <src>images/jasypt_advantages3.png</src>
+  </bannerRight>
+  
+  <body>
+  
+    <links>
+      <item name="Main" href="/index.html" />
+      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=183612" />
+      <item name="Source Repository" href="/source-repository.html" />
+      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
+      <item name="Sourceforge.net Project Page" href="http://www.sourceforge.net/projects/jasypt" />
+    </links>
+
+    <menu name="The Jasypt Project">
+      <item name="Main" href="index.html"/>
+      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=183612"/>
+      <item name="License" href="/license.html"/>
+      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
+      <item name="Forums" href="http://sourceforge.net/forum/?group_id=183612"/>
+      <item name="Team" href="/team.html"/>
+    </menu>
+
+    <menu name="Documentation">
+      <item name="FAQ" href="/faq.html" />
+      <item name="Dependencies" href="/dependencies.html" />
+      <item name="JavaDocs">
+        <item name="jasypt" href="/api/jasypt/apidocs" />
+        <item name="jasypt-hibernate" href="/api/jasypt-hibernate/apidocs" />
+      </item>
+      <item name="Getting Started">
+        <item name="Easy tools" href="/getting-started-easy.html" />
+        <item name="Standard tools" href="/getting-started-standard.html" />
+      </item>
+      <item name="Jasypt + Maven 2" href="/maven2.html"/>
+      <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
+      <item name="Jasypt + Spring" href="/spring.html"/>
+    </menu>
+
+  </body>
+  
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="common-errors">
+    <title>Common Errors</title>
+   
+    <faq id="no-unlimited-strength">
+      <question><b>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <tt>PBEWithMD5AndTripleDES</tt> algorithm, but other algorithms work alright.</b></question>
+      <answer>
+        <p>
+          This probably happens because you need download and install the
+          <a href="http://java.sun.com/javase/downloads" target="_blank">Java 
+          Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy 
+          Files</a> in order to be able to use strong-encryption algorithms like TripleDES.
+        </p>
+      </answer>
+    </faq>
+    
+  </part>
+
+  
+</faqs>

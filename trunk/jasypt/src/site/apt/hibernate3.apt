@@ -1,0 +1,131 @@
+
+  For further information about each class and its usage, please visit the JavaDoc documentation for 
+  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
+  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+
+Integrating jasypt with Hibernate 3
+
+  Jasypt-hibernate is an integration package for jasypt which provides a
+  Hibernate <<UserType>> implementation to allow one or several of the text 
+  (String) properties in a mapped
+  Hibernate entity to be declared as being of <encrypted type>.
+ 
+  This way, persistence of those properties will be done in an encrypted manner,
+  but <<in a completely transparent way>> for the application.
+
+  This can be useful for encrypting personal data, user messages, etc, so that
+  it is avoided that anyone with read access to the "critical" tables can
+  read all of its contents. 
+
+  For encryption at Hibernate, jasypt uses its <password-based encryption>
+  capabilities, and <<any object implementing PBEStringEncryptor>> can be set
+  to encrypt data, even encryptors created by the user.
+
+  Setting jasypt-hibernate to encrypt data requires two separate actions:
+
+     [[1]] <<Configuring the Hibernate mapping>>.
+     
+     [[2]] <<Providing the encryptor to Hibernate>>.
+     
+
+* Configuring the Hibernate mapping
+
+  The Hibernate mapping file can be configured in two different ways:
+  
+       [[A]] <<By extension>>, declaring the encryptor parameters in the
+             mapping itself (password, algorithm). This is not very recommended
+             (the mapping file does not seem like a right place for a password)
+             but can be useful in some situations.
+             When this method is selected, the encryptor implementation used
+             is always a <<StandardPBEStringEncryptor>>.
+
+-------------------             
+  <hibernate-mapping package="myapp">
+    ...
+    <typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
+      <param name="algorithm">PBEWithMD5AndTripleDES</param>
+      <param name="password">jasypt</param>
+      <param name="keyObtentionIterations">1000</param>
+    </typedef>
+    ...
+    <class name="UserData" table="USER_DATA">
+      ...
+      <property name="address" column="ADDRESS" type="encrypted" />
+      ...
+    <class>
+    ...
+  <hibernate-mapping>
+-------------------             
+
+             Note: only "password" is a required parameter.\
+             If this configuration method is used, it is not necessary to <provide> an
+             encryptor to Hibernate (like explained below).
+             
+             
+       [[B]] <<By using a registered encryptor>>, which will be registered
+             some way (see below) with a specific <name>. All we will have
+             to use in the mapping file, thus, is this name (<<<encryptorRegisteredName>>>).
+             
+-------------------             
+  <hibernate-mapping package="myapp">
+    ...
+    <typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
+      <param name="encryptorRegisteredName">strongHibernateEncryptor</param>
+    </typedef>
+    ...
+    <class name="UserData" table="USER_DATA">
+      ...
+      <property name="address" column="ADDRESS" type="encrypted" />
+      ...
+    <class>
+    ...
+  <hibernate-mapping>
+-------------------             
+
+
+
+* Providing the encryptor to Hibernate
+
+  If we have chosen to use the <encryptorRegisteredName> parameter in our Hibernate 
+  mapping file, we will need to bind somehow an encryptor object to that name.
+
+  This can be done in two different manners, depending on whether we are using
+  an IoC container like Spring or not.
+
+       * <<Using Spring>> we simply need to create our encryptor, and then a
+         <HibernatePBEEncryptor> object to wrap it and set a <registered name>
+         to it:
+         
+-------------------             
+  <bean id="strongEncryptor"
+    class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+    <property name="algorithm">
+        <value>PBEWithMD5AndTripleDES</value>
+    </property>
+    <property name="password">
+        <value>jasypt</value>
+    </property>
+  </bean>
+  
+  <bean id="hibernateEncryptor"
+    class="org.jasypt.hibernate.HibernatePBEEncryptor">
+    <property name="registeredName">
+        <value>strongHibernateEncryptor</value>
+    </property>
+    <property name="encryptor">
+        <ref bean="strongEncryptor" />
+    </property>
+  </bean>
+-------------------             
+         
+
+       * <<Without Spring>>, we will have to use the <HibernatePBEEncryptorRegistry>
+          singleton directly, registering our encryptor like this:
+          
+-------------------             
+  StandardPBEStringEncryptor strongEncryptor = new StandardPBEStringEncryptor();
+  ...
+  HibernatePBEEncryptorRegistry registry =
+      HibernatePBEEncryptorRegistry.getInstance();
+  registry.registerPBEEncryptor("strongHibernateEncryptor", strongEncryptor);
+-------------------             
