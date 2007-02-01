@@ -136,7 +136,7 @@ import org.jasypt.salt.SaltGeneration;
  *     <ul>
  *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
  *         <li><tt>ssb</tt>: salt size in bytes.</li>
- *         <li><tt><b>X</b></tt>: message bytes.</li>
+ *         <li><tt><b>M</b></tt>: message bytes.</li>
  *     </ul>
  *   </li>
  * </ul>
@@ -422,7 +422,7 @@ public final class StandardStringDigester implements StringDigester {
      *     <ul>
      *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
      *         <li><tt>ssb</tt>: salt size in bytes.</li>
-     *         <li><tt><b>X</b></tt>: message bytes.</li>
+     *         <li><tt><b>M</b></tt>: message bytes.</li>
      *     </ul>
      *   </li>
      * </ul>
