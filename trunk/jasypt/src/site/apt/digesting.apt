@@ -127,7 +127,7 @@ Digesting Correctly (and why you should use jasypt)
   but the accumulated cost for a brute force attacker generating millions of
   digests will be very considerable. Remember that the best way to protect your
   encrypted data is making the cost of breaking your security too high to
-  deserve the effort.
+  be worth the effort.
 
   
 ** Dictionary attacks
