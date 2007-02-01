@@ -42,6 +42,9 @@
         <item name="Easy tools" href="/getting-started-easy.html" />
         <item name="Standard tools" href="/getting-started-standard.html" />
       </item>
+      <item name="Guides">
+        <item name="Digesting Correctly" href="/digesting.html" />
+      </item>
       <item name="Jasypt + Maven 2" href="/maven2.html"/>
       <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
       <item name="Jasypt + Spring" href="/spring.html"/>
