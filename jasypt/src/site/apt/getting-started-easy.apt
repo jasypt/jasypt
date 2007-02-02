@@ -57,7 +57,7 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
         
 ----------------
 ...
-TextEncryptor textEncryptor = new TextEncryptor();
+StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
 textEncryptor.setPassword("jasypt");
 ...
 String encryptedText = textEncryptor.encrypt(myText);
