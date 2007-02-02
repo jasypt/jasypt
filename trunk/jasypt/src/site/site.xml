@@ -34,20 +34,21 @@
     <menu name="Documentation">
       <item name="FAQ" href="/faq.html" />
       <item name="Dependencies" href="/dependencies.html" />
-      <item name="JavaDocs">
+      <item name="Getting Started">
+        <item name="Jasypt at a Glance" href="/ataglance.html" />
+        <item name="Easy Tools" href="/getting-started-easy.html" />
+        <item name="Standard Tools" href="/getting-started-standard.html" />
+      </item>
+      <item name="Guides">
+        <item name="Digesting Correctly (and encrypting passwords)" href="/digesting.html" />
+        <item name="Jasypt + Maven 2" href="/maven2.html"/>
+        <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
+        <item name="Jasypt + Spring" href="/spring.html"/>
+      </item>
+      <item name="JavaDoc">
         <item name="jasypt" href="/api/jasypt/apidocs" />
         <item name="jasypt-hibernate" href="/api/jasypt-hibernate/apidocs" />
       </item>
-      <item name="Getting Started">
-        <item name="Easy tools" href="/getting-started-easy.html" />
-        <item name="Standard tools" href="/getting-started-standard.html" />
-      </item>
-      <item name="Guides">
-        <item name="Digesting Correctly" href="/digesting.html" />
-      </item>
-      <item name="Jasypt + Maven 2" href="/maven2.html"/>
-      <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
-      <item name="Jasypt + Spring" href="/spring.html"/>
     </menu>
 
   </body>

@@ -1,5 +1,10 @@
 
-Digesting Correctly (and why you should use jasypt)
+Digesting Correctly (and encrypting passwords)
+
+  This guide is about creating message digests the correct way, and
+  why you should consider using jasypt for encrypting passwords.
+
+=============
 
   Today, most applications (specially web applications) use some message digesting
   technique for encrypting user passwords. This is just one of the uses

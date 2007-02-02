@@ -8,32 +8,48 @@ What is Jasypt?
   deep knowledge on how cryptography works.
 
 Features
+ 
+     * Follows the <<RSA standards>> for password-based cryptography.
+     
+     []
+     
+     * Completely <<thread-safe>>
+     
+     []
 
-     * Provides <<easy encryption tools>> for little adoption effort.
+     * Provides <<easy, no-configuration encryption tools>> for users new to encryption.
 
      []
      
-     * Also provides <<highly configurable standard encryption tools>>, 
-       for power-users.
+     * Provides <<highly configurable standard encryption tools>>, for power-users.
 
      []
      
-     * All encryption tools comply with
-       <<encryption best practices and security recommendations>>. They
-       are also <<thread-safe>> to avoid concurrency problems even in
-       multi-threaded environments like web applications.
+     * Provides <<comprehensive guides and javadoc documentation>>, to allow
+     developers to better understand what they are really doing to their data.
 
      []
        
-     * {{{http://www.jasypt.org/hibernate3.html}Jasypt-hibernate}} provides a transparent mechanism for
-       <<persisting data in an encrypted form>> using Hibernate.
+     * Provides a Hibernate integration add-on ({{{http://www.jasypt.org/hibernate3.html}jasypt-hibernate}})
+     for persisting fields of your mapped entities in an encrypted manner.
+     <<Encryption of fields is defined in the Hibernate mapping files>>, and
+     it remains transparent for the rest of the application (useful for
+     sensitive personal data, databases with many read-enabled users...)
 
      []
      
+     * Can be {{{http://www.jasypt.org/spring.html}perfectly integrated into a Spring}} application. All the 
+       digesters and encryptors in jasypt are designed to be easily used 
+       (instantiated, dependency-injected...) from an IoC container like 
+       Spring. And, because of it being thread-safe, they can be used without 
+       worries in a singleton-oriented environment like Spring.
        
-     * All encryption tools are designed to be <<easily integrable into
-       IoC containers>> like the {{{http://www.jasypt.org/spring.html}Spring Framework}}, although, 
-       of course, it can be used without one.
+     []
+     
+     * Allows a very high level of configurability: The developer can 
+     implement tricks like instructing an "encryptor" to ask a, for example,
+     remote HTTPS server for the password to be used for encryption. <<It lets
+     you meet your security needs>>.
 
 
 Current version: 1.0

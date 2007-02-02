@@ -12,6 +12,15 @@
           Simply use <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/util/PasswordEncryptor.html">org.jasypt.util.PasswordEncryptor</a>.
           There is nothing more you need to know (if you don't want to :-)).
         </p>
+        <p>
+          If you want more power (such as deciding which algorithm to use),
+          then you can have a look at <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">org.jasypt.digest.StandardStringDigester</a>.
+        </p>
+        <p>
+          And if you want to know more, have a look at
+          the <a href="http://www.jasypt.org/digesting.html">Digesting Correctly</a>
+          guide to learn about how a password should be encrypted.
+        </p>
       </answer>
     </faq>
     
