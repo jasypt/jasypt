@@ -41,8 +41,21 @@ Features
      * Can be {{{http://www.jasypt.org/spring.html}perfectly integrated into a Spring}} application. All the 
        digesters and encryptors in jasypt are designed to be easily used 
        (instantiated, dependency-injected...) from an IoC container like 
-       Spring. And, because of it being thread-safe, they can be used without 
-       worries in a singleton-oriented environment like Spring.
+       Spring. And, because of it being thread-safe, they <<can be used without 
+       worries in a singleton-oriented environment like Spring>>.
+     
+     []
+     
+     * Implements robust charset support, designed to adequately encrypt and digest
+     texts whichever the original charset is. <<Complete support for
+     languages like Japanese, Korean, Arabic...>> with no encoding or 
+     platform issues.
+       
+     []
+     
+     * Provides <<binary encryption support>>. Besides texts, it allows the
+     digest and encryption of binaries (byte arrays). Encrypt your objects
+     when needed (for being sent over the net, for example).
        
      []
      
