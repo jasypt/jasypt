@@ -2,11 +2,75 @@
 <faqs title="Frequently Asked Questions">
 
 
-  <part id="Functionality">
-    <title>Behaviour</title>
+  <part id="general">
+    <title>General</title>
+    
+    <faq id="what-is-jasypt-useful-for">
+      <question>What is jasypt useful for? Give me some examples of use, please...</question>
+      <answer>
+        <p>
+          Jasypt is useful for many encryption tasks associated with applications, for example:
+        </p>
+        <ul>
+          <li>Encrypting passwords.</li>
+          <li>Encrypting sensitive information.</li>
+          <li>Encrypting data communications.</li>
+          <li>Creating sums for integrity checking of data.</li>
+          <li>...and many more.</li>
+        </ul>
+      </answer>
+    </faq>
+
+    <faq id="i-am-already-using-X-for-encrypting-passwords">
+      <question>I am already using X for encrypting passwords. Why would I want to use jasypt instead?</question>
+      <answer>
+        <p>
+          Well, first of all, if you are simply using a <tt>Message.digest()</tt> 
+          or a <tt>DigestUtils.md5()</tt>
+          call to encrypt your passwords and store them in a database, you should know
+          that your password system is much weaker than you think, and that
+          acquiring access to your application could be even quite easy for any attackers.
+          And it even becomes worse as the number of users in your application increases.
+        </p>
+        <p>
+          If you want to learn why this happens and how you could try to avoid it,
+          have a look at the <a href="http://www.jasypt.org/digesting.html">Digesting
+          Correctly Guide</a>.
+        </p>
+        <p>
+          ...and, if you are not using such calls but some other APIs or 
+          techniques, maybe you should consider reading
+          it anyway to know if jasypt can help you do things better.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="i-dont-use-hibernate">
+      <question>I don't use Hibernate at all. Can I use jasypt anyway?</question>
+      <answer>
+        <p>
+          Yes, you can. Jasypt provides an <b>optional</b> integration package for
+          Hibernate, but <b>it does not need Hibernate for normal operation</b>. It 
+          won't add a dependency on Hibernate to your project unless
+          you explicitly add the <i>jasypt-hibernate</i> package.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="i-dont-use-spring">
+      <question>I don't use Spring at all. Can I use jasypt anyway?</question>
+      <answer>
+        <p>
+          Yes, you can. Jasypt is designed to be seamlessly integrated into
+          a Spring-based application if required, but <b>it does not depend on Spring</b>
+          in any way. It won't add a dependency on Spring to your project nor
+          will force you to develop in an IoC-friendly manner.
+        </p>
+      </answer>
+    </faq>
     
     <faq id="i-want-to-encrypt-a-password">
-      <question><b>I want to encrypt passwords and I know NOTHING about encryption. What do I have to do?</b></question>
+      <question>I want to encrypt passwords and I know NOTHING about encryption. What do I have to do?</question>
       <answer>
         <p>
           Simply use <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/util/PasswordEncryptor.html">org.jasypt.util.PasswordEncryptor</a>.
@@ -24,8 +88,14 @@
       </answer>
     </faq>
     
+  </part>
+
+
+  <part id="behaviour">
+    <title>Behaviour</title>
+    
     <faq id="what-does-jasypt-do-to-create-digests">
-      <question><b>What does jasypt do to create digests, exactly? They are so different to the ones I create manually with a MessageDigest object...</b></question>
+      <question>What does jasypt do to create digests, exactly? They are so different to the ones I create manually with a MessageDigest object...</question>
       <answer>
         <p>
           Jasypt follows the RSA standards for the creation of digests 
@@ -54,7 +124,7 @@
     </faq>
     
     <faq id="if-i-create-two-digests-of-the-same-message">
-      <question><b>If I create two digests of the same message, results differ. Is that normal?</b></question>
+      <question>If I create two digests of the same message, results differ. Is that normal?</question>
       <answer>
         <p>
           Yes, it is. It is normal, and it is good for you. This is due to the use of a <b>random salt</b>.
@@ -76,7 +146,7 @@
       </answer>
     </faq>
     <faq id="I-see-jasypt-uses-salt-and-iteration-count">
-      <question><b>I see jasypt uses salt and iteration count for creating digests. Does it also use them for generating keys for password-based encryption?</b></question>
+      <question>I see jasypt uses salt and iteration count for creating digests. Does it also use them for generating keys for password-based encryption?</question>
       <answer>
         <p>
           Of course. You see the use of salt and iteration count 
@@ -106,7 +176,7 @@
     <title>Problems</title>
 
     <faq id="encrypted-fields-not-in-where">
-      <question><b>I do not get correct results when querying a Hibernate-mapped entity with encrypted fields when I set conditions on some of those fields.</b></question>
+      <question>I do not get correct results when querying a Hibernate-mapped entity with encrypted fields when I set conditions on some of those fields.</question>
       <answer>
         <p>
           This is normal. Security standards establish that two
@@ -119,7 +189,7 @@
     </faq>
    
     <faq id="no-unlimited-strength">
-      <question><b>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <tt>PBEWithMD5AndTripleDES</tt> algorithm, but other algorithms work alright.</b></question>
+      <question>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <tt>PBEWithMD5AndTripleDES</tt> algorithm, but other algorithms work alright.</question>
       <answer>
         <p>
           This probably happens because you need download and install the
@@ -131,7 +201,7 @@
     </faq>
     
     <faq id="jasypt-not-in-maven-2">
-      <question><b>Why do I get a NOT FOUND error when trying to add jasypt to my project using maven 2?</b></question>
+      <question>Why do I get a NOT FOUND error when trying to add jasypt to my project using maven 2?</question>
       <answer>
         <p>
           This is just a temporary issue.
