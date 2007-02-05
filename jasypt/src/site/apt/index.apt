@@ -64,6 +64,11 @@ Features
      remote HTTPS server for the password to be used for encryption. <<It lets
      you meet your security needs>>.
 
+  Do you want to know more? Check {{{/ataglance.html}Jasypt at a Glance}} or the 
+  {{{/faq.html}Frequently Asked Questions}} page.
+  
+  Do you want to encrypt passwords and need to know what jasypt can do for you? Check the
+  {{{/faq.html}FAQ}} or have a look at the {{{/digesting.html}Digesting Correcly Guide}}.
 
 Current version: 1.0
 
