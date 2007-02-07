@@ -20,6 +20,8 @@
   <publishDate format="dd MMM yyyy" position="left" />
   
   <version position="left" />
+
+
   
   <body>
   
@@ -60,7 +62,17 @@
       </item>
     </menu>
 
+    <head>
+      <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+      <script type="text/javascript">
+        _uacct = "UA-1276954-1";
+        urchinTracker();
+      </script>
+    </head>
+
   </body>
+
+
 
   <poweredBy>   
        <logo name="Build with Maven 2" href="http://maven.apache.org" img="images/logos/maven-feather.png" />    
