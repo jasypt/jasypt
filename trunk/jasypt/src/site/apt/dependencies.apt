@@ -1,6 +1,6 @@
 
   If you are using Maven 2, there is no need to consider these dependencies,
-  as they will be automatically managed by the Maven 2 repository.
+  as they will be automatically managed as transitive dependencies.
 
 
 Java Virtual Machine

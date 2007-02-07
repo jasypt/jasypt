@@ -25,11 +25,11 @@ Jasypt at a glance
   If you want to learn more about the advantages of implementing security standards,
   you can have a look at:
   
-      * {{{/digesting.html}Digesting Correctly (and encrypting passwords)}}: learn how passwords <<should>> be encrypted.
+      * {{{/ecrypting-passwords.html}Encrypting passwords}}: learn how passwords <<should>> be encrypted.
 
   And if you want to learn about integrating jasypt with other tools, visit:
   
-      * {{{/maven2.html}Jasypt + Maven 2}}: Adding jasypt as a maven dependency in your projects.
+      * {{{/maven.html}Jasypt + Maven}}: Adding jasypt as a maven dependency in your projects.
       
       []
       

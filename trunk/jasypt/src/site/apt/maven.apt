@@ -1,0 +1,106 @@
+
+Using jasypt from Maven 2
+
+  Adding jasypt or jasypt-hiberante to your Maven 2 project is very easy:
+  you just need to add the following dependencies to your pom.xml:
+  
+      * For jasypt:
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+---------
+  
+      * For jasypt-hibernate (you will also need jasypt):
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-hibernate</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
+---------
+
+
+Using jasypt from Maven 1.x
+
+  Adding jasypt or jasypt-hiberante to your Maven 1.x project is almost as easy
+  as it is for Maven 2, except for the lack of support for transitive dependencies:
+  you need to add the following dependencies to your project.xml:
+  
+      * For jasypt:
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- 
+       If you already have dependencies on commons-lang or commons-codec,
+       you should skip the following ones.
+    -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+---------
+  
+      * For jasypt-hibernate (you will also need jasypt):
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-hibernate</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- 
+       If you already have dependencies on commons-lang or commons-codec,
+       you should skip the following ones.
+    -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <!--
+      You should also have already configured all dependencies for the
+      Hibernate version you are using.
+    -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.1</version>
+    </dependency>
+    ...
+    ...
+    ...
+---------
