@@ -1,4 +1,12 @@
 
+1.1
+=======
+
+- Added org.jasypt.util.StrongPasswordEncryptor
+- Objects of class org.jasypt.util.PasswordEncryptor now initialize their
+  internal StandardStringDigester at instance creation.
+
+
 1.0
 =======
 - First release of jasypt
