@@ -21,30 +21,6 @@
       </answer>
     </faq>
 
-    <faq id="i-am-already-using-X-for-encrypting-passwords">
-      <question>I am already using X for encrypting passwords. Why would I want to use jasypt instead?</question>
-      <answer>
-        <p>
-          Well, first of all, if you are simply using a <tt>Message.digest()</tt> 
-          or a <tt>DigestUtils.md5()</tt>
-          call to encrypt your passwords and store them in a database, you should know
-          that your password system is much weaker than you think, and that
-          acquiring access to your application could be even quite easy for any attackers.
-          And it even becomes worse as the number of users in your application increases.
-        </p>
-        <p>
-          If you want to learn why this happens and how you could try to avoid it,
-          have a look at the <a href="http://www.jasypt.org/digesting.html">Digesting
-          Correctly Guide</a>.
-        </p>
-        <p>
-          ...and, if you are not using such calls but some other APIs or 
-          techniques, maybe you should consider reading
-          it anyway to know if jasypt can help you do things better.
-        </p>
-      </answer>
-    </faq>
-
     <faq id="i-dont-use-hibernate">
       <question>I don't use Hibernate at all. Can I use jasypt anyway?</question>
       <answer>
@@ -69,6 +45,58 @@
       </answer>
     </faq>
     
+    <faq id="which-is-the-difference">
+      <question>Which is the difference between digests and password-based encryption?</question>
+      <answer>
+        <p>
+          Digests are the results of applying <b>cryptographic hash functions</b>
+          such as MD5,
+          and are a type of <i>one-way encryption</i>. This means that an original
+          input cannot be reconstructed from its digest, once it has been
+          generated.
+        </p>
+        <p>
+          Password-based encryption is a type of <i>bidirectional encryption</i>, which
+          means that encrypted data can be decypted to reconstruct the original
+          input. Encryption is done by generating an <i>encryption key</i>, and passing it
+          to an <b>encryption algorithm</b> such as DES. This key, in password-based
+          encryption, is derived from a password set by the user 
+          (usually by a applying a digest algorithm to it).
+        </p>
+      </answer>
+    </faq>
+    
+  </part>
+
+
+
+  <part id="passwords">
+    <title>Encrypting paswords</title>
+
+    <faq id="i-am-already-using-X-for-encrypting-passwords">
+      <question>I am already using X for encrypting passwords. Why would I want to use jasypt instead?</question>
+      <answer>
+        <p>
+          Well, first of all, if you are simply using a <tt>Message.digest()</tt> 
+          or a <tt>DigestUtils.md5()</tt>
+          call to encrypt your passwords and store them in a database, you should know
+          that your password system is much weaker than you think, and that
+          acquiring access to your application could be even quite easy for any attackers.
+          And it even becomes worse as the number of users in your application increases.
+        </p>
+        <p>
+          If you want to learn why this happens and how you could try to avoid it,
+          have a look at the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting 
+          Passwords Guide</a>.
+        </p>
+        <p>
+          ...and, if you are not using such calls but some other APIs or 
+          techniques, maybe you should consider reading
+          it anyway to know if jasypt can help you do things better.
+        </p>
+      </answer>
+    </faq>
+    
     <faq id="i-want-to-encrypt-a-password">
       <question>I want to encrypt passwords and I know NOTHING about encryption. What do I have to do?</question>
       <answer>
@@ -82,11 +110,35 @@
         </p>
         <p>
           And if you want to know more, have a look at
-          the <a href="http://www.jasypt.org/digesting.html">Digesting Correctly</a>
+          the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a>
           guide to learn about how a password should be encrypted.
         </p>
       </answer>
     </faq>
+    
+    <faq id="can-i-decrypt-an-encrypted-password">
+      <question>Can I decrypt an encrypted password?</question>
+      <answer>
+        <p>
+          If you have encrypted it using a message digesting technique, 
+          which is precisely what you should have done (by using 
+          <tt>PasswordEncryptor</tt>, <tt>StandardStringDigester</tt>...), <b>you cannot</b>.
+        </p>
+        <p>
+          This is because digests are a <i>one-way</i> technique. Once you have
+          created the digest, there is no way to reconstruct the original message
+          (or password) back. To check if an input password matches a stored digest, 
+          the password is digested itself and then both digests are matched.
+        </p>
+        <p>
+          And why should passwords be encrypted in a way they cannot be decrypted?
+          Because this is safest way to ensure that a password is known only
+          to the user that created it, and that <i>no one, not even system or database 
+          administrators, can know it</i>.
+        </p>
+      </answer>
+    </faq>
+    
     
   </part>
 
@@ -94,8 +146,8 @@
   <part id="behaviour">
     <title>Behaviour</title>
     
-    <faq id="what-does-jasypt-do-to-create-digests">
-      <question>What does jasypt do to create digests, exactly? They are so different to the ones I create manually with a MessageDigest object...</question>
+    <faq id="what-does-jasypt-do-to-create-password-digests">
+      <question>What does jasypt do to create message/password digests, exactly? They are so different to the ones I create manually with a MessageDigest object...</question>
       <answer>
         <p>
           Jasypt follows the RSA standards for the creation of digests 
@@ -108,30 +160,33 @@
           how many times the hash function will be applied to the message.
         </p>
         <p>
-          This means that the process of digesting your message with jasypt 
+          This means that the process of digesting your passwords (or any other 
+          messages) with jasypt 
           is not as simple (internally speaking) as just using 
           MessageDigest, and because of this results look quite different.
         </p>
         <p>
-          For learning more about how digesting works in jasypt, see
-          <a href="http://www.jasypt.org/digesting.html">Digesting Correctly</a> or the
+          For learning more about how password/message digesting works in jasypt, see
+          <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a> or the
           <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">javadoc for StandardStringDigester</a>.
         </p>
         <p>
-          For more info about the standard, see <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127">PKCS #5: Password-Based Cryptography Standard</a>.
+          For more info about the RSA standard, see <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127">PKCS #5: Password-Based Cryptography Standard</a>.
         </p>
       </answer>
     </faq>
     
     <faq id="if-i-create-two-digests-of-the-same-message">
-      <question>If I create two digests of the same message, results differ. Is that normal?</question>
+      <question>If I create two digests of the same message (or I encrypt the same password twice), results differ. Is that normal?</question>
       <answer>
         <p>
-          Yes, it is. It is normal, and it is good for you. This is due to the use of a <b>random salt</b>.
+          Yes, it is. It is normal and, specially if you are
+          encrypting a password, it is good for you. This is due to the use 
+          of a <b>random salt</b>.
         </p>
         <p>
           Using this random salt offers you several important security advantages
-          as you can read in <a href="http://www.jasypt.org/digesting.html">Digesting Correctly</a>,
+          as you can read in <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a>,
           but if it is important for you that two digests of the same message
           be equal, you can set the salt size to 0 bytes. This will force
           jasypt to avoid the use of a salt when digesting.
@@ -140,7 +195,7 @@
           As a random salt is also used for the obtention
           of keys for password-based encryption, two password-based encryption
           results for the same original input will also differ. Nevertheless, 
-          this behaviour can not be avoided in password-based encryption, as
+          this behaviour cannot be avoided in password-based encryption, as
           a salt is required by the PBE Java API itself.
         </p>
       </answer>
@@ -196,20 +251,6 @@
           <a href="http://java.sun.com/javase/downloads" target="_blank">Java 
           Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy 
           Files</a> in order to be able to use strong-encryption algorithms like TripleDES.
-        </p>
-      </answer>
-    </faq>
-    
-    <faq id="jasypt-not-in-maven-2">
-      <question>Why do I get a NOT FOUND error when trying to add jasypt to my project using maven 2?</question>
-      <answer>
-        <p>
-          This is just a temporary issue.
-          The upload of jasypt binaries to the central Maven 2 repositories has
-          already been requested, but it has not been performed yet.
-          If you wish to know when it becomes available, you can check
-          the <a href="http://jira.codehaus.org/browse/MAVENUPLOAD-1353">JIRA
-          MAVENUPLOAD issue</a>.
         </p>
       </answer>
     </faq>

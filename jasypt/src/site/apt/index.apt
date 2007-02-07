@@ -1,4 +1,6 @@
 
+  <Important update (Feb 6th, 2007)>: jasypt has been added to the central <<Maven>> repositories. Now you can add
+  it as a dependency for your Maven 1.x or Maven 2 projects. {{{/maven.html}Learn More.}}
 
 What is Jasypt?
 
@@ -68,7 +70,7 @@ Features
   {{{/faq.html}Frequently Asked Questions}} page.
   
   Do you want to encrypt passwords and need to know what jasypt can do for you? Check the
-  {{{/faq.html}FAQ}} or have a look at the {{{/digesting.html}Digesting Correcly Guide}}.
+  {{{/faq.html}FAQ}} or have a look at the {{{/encrypting-passwords.html}Encrypting Passwords Guide}}.
 
 Current version: 1.0
 
