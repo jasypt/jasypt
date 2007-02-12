@@ -39,6 +39,7 @@
       <item name="License" href="/license.html"/>
       <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
       <item name="Forums" href="http://sourceforge.net/forum/?group_id=183612"/>
+      <item name="Mailing Lists" href="http://sourceforge.net/mail/?group_id=183612"/>
       <item name="Team" href="/team.html"/>
     </menu>
 
@@ -75,7 +76,7 @@
 
 
   <poweredBy>   
-       <logo name="Build with Maven 2" href="http://maven.apache.org" img="images/logos/maven-feather.png" />    
+       <logo name="Built with Maven 2" href="http://maven.apache.org" img="images/logos/maven-feather.png" />    
        <logo name="Hosted on SourceForge.net" href="http://sourceforge.net" img="http://sflogo.sourceforge.net/sflogo.php?group_id=183612&amp;type=1"/>
   </poweredBy>    
   
