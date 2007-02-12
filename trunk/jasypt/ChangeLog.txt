@@ -3,6 +3,7 @@
 =======
 
 - Added org.jasypt.util.StrongPasswordEncryptor
+- Added org.jasypt.util.MessageDigester
 - Objects of class org.jasypt.util.PasswordEncryptor now initialize their
   internal StandardStringDigester at instance creation.
 

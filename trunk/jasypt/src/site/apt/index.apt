@@ -1,13 +1,15 @@
 
-  <Important update (Feb 6th, 2007)>: jasypt has been added to the central <<Maven>> repositories. Now you can add
-  it as a dependency for your Maven 1.x or Maven 2 projects. {{{/maven.html}Learn More.}}
-
 What is Jasypt?
 
   Jasypt is a java library which allows 
   the developer to add basic encryption capabilities to his/her 
   projects with minimum effort, and without the need of having 
   deep knowledge on how cryptography works.
+
+  <<Current version>>: 1.0 (Released: January 30th, 2007)
+  
+  If you want to keep informed about new releases, you can subscribe the
+  {{{https://lists.sourceforge.net/lists/listinfo/jasypt-announce}jasypt-announce mailing list}} (very low traffic).
 
 Features
  
@@ -72,8 +74,5 @@ Features
   Do you want to encrypt passwords and need to know what jasypt can do for you? Check the
   {{{/faq.html}FAQ}} or have a look at the {{{/encrypting-passwords.html}Encrypting Passwords Guide}}.
 
-Current version: 1.0
-
-  <<Released>>: January 30th, 2007
 
   
