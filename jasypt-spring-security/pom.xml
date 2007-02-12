@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--   Copyright (c) 2007, The JASYPT team (http://www.jasypt.org)           -->
+<!--                                                                         -->
+<!--   Licensed under the Apache License, Version 2.0 (the "License");       -->
+<!--   you may not use this file except in compliance with the License.      -->
+<!--   You may obtain a copy of the License at                               -->
+<!--                                                                         -->
+<!--       http://www.apache.org/licenses/LICENSE-2.0                        -->
+<!--                                                                         -->
+<!--   Unless required by applicable law or agreed to in writing, software   -->
+<!--   distributed under the License is distributed on an "AS IS" BASIS,     -->
+<!--   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or       -->
+<!--   implied. See the License for the specific language governing          -->
+<!--   permissions and limitations under the License.                        -->
+<!--                                                                         -->
+<!-- ======================================================================= -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jasypt</groupId>
+  <artifactId>jasypt-spring-security</artifactId>
+  <packaging>jar</packaging>
+  <version>1.1</version>
+  <name>JASYPT-SPRING-SECURITY: Spring Security (ACEGI) integration package for JASYPT</name>
+  <url>http://www.jasypt.org</url>
+
+  <description>Jasypt integration with Spring Security (ACEGI).</description>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>The JASYPT team</name>
+    <url>http://www.jasypt.org</url>
+  </organization>
+  
+  <scm>
+    <url>http://jasypt.cvs.sourceforge.net/jasypt/</url>
+    <connection>scm:cvs:pserver:anonymous@jasypt.cvs.sourceforge.net:/cvsroot/jasypt</connection>
+    <developerConnection>scm:cvs:ext:developername@jasypt.cvs.sourceforge.net:/cvsroot/jasypt</developerConnection>
+  </scm>
+  
+  <developers>
+    <developer>
+      <id>dfernandez</id>
+      <name>Daniel Fernandez Garrido</name>
+      <email>dfernandez AT users.sourceforge.net</email>
+      <roles>
+        <role>Project admin</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <wtpversion>1.0</wtpversion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <noqualifier>java.lang</noqualifier>
+          <overview>${basedir}/src/main/javadoc/overview.html</overview>
+          <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
+          <reportOutputDirectory>${project.reporting.outputDirectory}/api/${artifactId}/apidocs</reportOutputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.acegisecurity</groupId>
+      <artifactId>acegi-security</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
