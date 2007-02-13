@@ -24,3 +24,9 @@ Integrating jasypt with Spring Framework
   means that they can be safely treated as singletons, the default behaviour
   of Spring's bean container. This avoids concurrency problems in multi-threaded
   environments like web applications.
+
+Integration jasypt with Spring Security (Acegi Security)
+
+  For details on how to integrate jasypt with Acegi, the standard security framework
+  for Spring, please have a look at {{{/springsecurity}this guide}}.
+  

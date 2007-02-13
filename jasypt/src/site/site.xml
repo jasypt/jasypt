@@ -17,7 +17,7 @@
     <artifactId>maven-default-skin</artifactId>
   </skin>
   
-  <publishDate format="dd MMM yyyy" position="left" />
+  <publishDate format="MMM dd yyyy" position="left" />
   
   <version position="left" />
 
@@ -51,15 +51,15 @@
         <item name="Easy Tools" href="/getting-started-easy.html" />
         <item name="Standard Tools" href="/getting-started-standard.html" />
       </item>
-      <item name="Guides" href="/guides.html">
-        <item name="Encrypting passwords" href="/encrypting-passwords.html" />
-        <item name="Jasypt + Maven" href="/maven.html"/>
-        <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
-        <item name="Jasypt + Spring" href="/spring.html"/>
-      </item>
+      <item name="Encrypting passwords" href="/encrypting-passwords.html" />
+      <item name="Jasypt + Maven" href="/maven.html"/>
+      <item name="Jasypt + Hibernate 3" href="/hibernate3.html"/>
+      <item name="Jasypt + Spring" href="/spring.html"/>
+      <item name="Jasypt + Acegi" href="/springsecurity.html"/>
       <item name="JavaDoc" href="/javadoc.html">
         <item name="jasypt" href="/api/jasypt/apidocs" />
         <item name="jasypt-hibernate" href="/api/jasypt-hibernate/apidocs" />
+        <item name="jasypt-spring-security" href="/api/jasypt-spring-security/apidocs" />
       </item>
     </menu>
 

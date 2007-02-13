@@ -16,9 +16,9 @@ Dependencies for jasypt
 
   Jasypt depends on the following external libraries:
   
-    * Apache Jakarta Commons Lang 2.1 or higher
+    * {{{http://jakarta.apache.org/commons/lang/}Apache Jakarta Commons Lang}} 2.1 or higher
     
-    * Apache Jakarta Commons Codec 1.1 or higher
+    * {{{http://jakarta.apache.org/commons/codec/}Apache Jakarta Commons Codec}} 1.1 or higher
   
 
 Dependencies for jasypt-hibernate
@@ -27,7 +27,7 @@ Dependencies for jasypt-hibernate
 
     * Jasypt (same version as jasypt-hibernate)
     
-    * Hibernate 3.1 or higher
+    * {{{http://www.hibernate.org}Hibernate}} 3.1 or higher
 
 Dependencies for jasypt-spring-security
 
@@ -35,5 +35,5 @@ Dependencies for jasypt-spring-security
 
     * Jasypt (same version as jasypt-spring-security)
     
-    * Acegi Security 1.0.0 or higher
+    * {{{http://www.acegisecurity.org}Acegi Security}} 1.0.0 or higher
     

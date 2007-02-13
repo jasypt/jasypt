@@ -6,73 +6,85 @@ What is Jasypt?
   projects with minimum effort, and without the need of having 
   deep knowledge on how cryptography works.
 
-  <<Current version>>: 1.0 (Released: January 30th, 2007)
+  <<Current version>>: 1.1 (Released: February 14th, 2007) [{{{/changelog.html}ChangeLog}}]
   
   If you want to keep informed about new releases, you can subscribe the
   {{{https://lists.sourceforge.net/lists/listinfo/jasypt-announce}jasypt-announce mailing list}} (very low traffic).
 
 Features
  
-     * Follows the <<RSA standards>> for password-based cryptography.
+     * Jasypt follows the <<RSA standards>> for password-based cryptography, and 
+     provides you with both unidirectional and bidirectional encryption
+     techniques. 
      
      []
      
-     * Completely <<thread-safe>>
+     * <<Higher security for your users' passwords>>.
+     {{{http://www.jasypt.org/encrypting-passwords.html}Learn more}}.
+       
+     []
+     
+     * <<Binary encryption support>>. Besides texts, it allows the
+     digest and encryption of binaries (byte arrays). Encrypt your objects
+     when needed (for being sent over the net, for example).
+     
+     []
+     
+     * Completely <<thread-safe>>.
      
      []
 
-     * Provides <<easy, no-configuration encryption tools>> for users new to encryption.
+     * <<Easy, no-configuration encryption tools>> for users new to encryption.
 
      []
      
-     * Provides <<highly configurable standard encryption tools>>, for power-users.
-
-     []
-     
-     * Provides <<comprehensive guides and javadoc documentation>>, to allow
-     developers to better understand what they are really doing to their data.
+     * <<Highly configurable standard encryption tools>>, for power-users.
 
      []
        
-     * Provides a Hibernate integration add-on ({{{http://www.jasypt.org/hibernate3.html}jasypt-hibernate}})
+     * {{{http://www.hibernate.org}Hibernate 3}} integration add-on (jasypt-hibernate)
      for persisting fields of your mapped entities in an encrypted manner.
      <<Encryption of fields is defined in the Hibernate mapping files>>, and
      it remains transparent for the rest of the application (useful for
-     sensitive personal data, databases with many read-enabled users...)
+     sensitive personal data, databases with many read-enabled users...). {{{http://www.jasypt.org/hibernate3.html}Learn more}}.
 
      []
      
-     * Can be {{{http://www.jasypt.org/spring.html}perfectly integrated into a Spring}} application. All the 
+     * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application. All the 
        digesters and encryptors in jasypt are designed to be easily used 
        (instantiated, dependency-injected...) from an IoC container like 
        Spring. And, because of it being thread-safe, they <<can be used without 
-       worries in a singleton-oriented environment like Spring>>.
-     
+       worries in a singleton-oriented environment like Spring>>. {{{http://www.jasypt.org/spring.html}Learn more}}.
+
      []
      
-     * Implements robust charset support, designed to adequately encrypt and digest
+     * {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} add-on (jasypt-spring-security)
+     for performing password encryption and matching tasks for the security
+     framework, improving the security of your users' passwords by using
+     <<safer password encryption mechanisms>> and providing you with a
+     higher degree of <<configuration and control>>. {{{http://www.jasypt.org/springsecurity.html}Learn more}}.
+
+     []
+     
+     * <<Comprehensive guides and javadoc documentation>>, to allow
+     developers to better understand what they are really doing to their data.
+          
+     []
+     
+     * Robust charset support, designed to adequately encrypt and digest
      texts whichever the original charset is. <<Complete support for
      languages like Japanese, Korean, Arabic...>> with no encoding or 
      platform issues.
        
      []
      
-     * Provides <<binary encryption support>>. Besides texts, it allows the
-     digest and encryption of binaries (byte arrays). Encrypt your objects
-     when needed (for being sent over the net, for example).
-       
-     []
-     
-     * Allows a very high level of configurability: The developer can 
+     * Very high level of configuration capabilities: The developer can 
      implement tricks like instructing an "encryptor" to ask a, for example,
      remote HTTPS server for the password to be used for encryption. <<It lets
      you meet your security needs>>.
 
   Do you want to know more? Check {{{/ataglance.html}Jasypt at a Glance}} or the 
   {{{/faq.html}Frequently Asked Questions}} page.
-  
-  Do you want to encrypt passwords and need to know what jasypt can do for you? Check the
-  {{{/faq.html}FAQ}} or have a look at the {{{/encrypting-passwords.html}Encrypting Passwords Guide}}.
 
 
   
