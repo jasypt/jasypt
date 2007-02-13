@@ -1,0 +1,13 @@
+
+Changes from 1.0 to 1.1
+
+     * [jasypt-spring-security] Added the {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} integration module.
+     
+     * [jasypt] Added org.jasypt.util.StrongPasswordEncryptor
+     
+     * [jasypt] Added org.jasypt.util.MessageDigester
+     
+     * [jasypt] Objects of class org.jasypt.util.PasswordEncryptor now initialize their
+     internal StandardStringDigester at instance creation.
+     
+     
