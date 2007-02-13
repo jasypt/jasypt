@@ -2,7 +2,8 @@
   This is a brief Getting Started guide. For more complete information about 
   each class and its usage, please visit the JavaDoc documentation for 
   {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
-  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}
+  and {{{http://www.jasypt.org/api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
 
 Getting Started with JASYPT standard encryption tools
 

@@ -1,15 +1,16 @@
 
   This is a brief Getting Started guide. For more complete information about 
   each class and its usage, please visit the JavaDoc documentation for 
-  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
-  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}}, 
+  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}
+  and {{{http://www.jasypt.org/api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
 
 Getting Started with JASYPT easy encryption tools
 
-  Jasypt provides three <easy> encryption tools. These are classes which
-  allow, with little or no configuration, and with no need of knowing what
-  is happening "behind the scenes", to perform some of the most common
-  encryption tasks in many projects.
+  Jasypt provides several <easy> encryption tools. These are classes which
+  allow (with little or no configuration, and with no need of knowing what
+  is happening "behind the scenes") the execution of some of the most common
+  encryption tasks.
   
   These tools are:
   
@@ -20,6 +21,26 @@ Getting Started with JASYPT easy encryption tools
 ----------------
 ...
 PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+String encryptedPassword = passwordEncryptor.encryptPassword(usersPassword);
+...
+if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
+  // correct!
+} else {
+  // bad login!
+}
+...
+----------------
+
+  
+      * <<org.jasypt.util.StrongPasswordEncryptor>> which implements
+        much higher password security than PasswordEncryptor (at a higher computational
+        cost), and also can be used to 
+        both encrypt passwords when users sign up and check input passwords
+        when users sign in.
+
+----------------
+...
+StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 String encryptedPassword = passwordEncryptor.encryptPassword(usersPassword);
 ...
 if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
@@ -66,3 +87,18 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
 ----------------
 
+  
+      * <<org.jasypt.util.MessageDigester>> which performs message digesting
+        at a binary level, and which results are equivalent to the ones obtained
+        from a <<<java.security.MessageDigest>>> object, although acting in a
+        thread-safe way and implementing an interface more suitable for use
+        in a bean-centric environment.
+
+----------------
+...
+MessageDigester digester = new MessageDigester();
+digester.setAlgorithm("SHA-1");
+...
+byte[] digest = digester.digest(message);
+...
+----------------
