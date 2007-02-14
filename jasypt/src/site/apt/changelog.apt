@@ -3,11 +3,19 @@ Changes from 1.0 to 1.1
 
      * [jasypt-spring-security] Added the {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} integration module.
      
-     * [jasypt] Added org.jasypt.util.StrongPasswordEncryptor
+     * [jasypt] Added <<<org.jasypt.util.StrongPasswordEncryptor>>> as a <util> class for
+     easy password encryption using a stronger algorithm.
      
-     * [jasypt] Added org.jasypt.util.MessageDigester
+     * [jasypt] Added <<<org.jasypt.util.MessageDigester>>> as a <util> class for
+     creating simple binary message digests.
      
-     * [jasypt] Objects of class org.jasypt.util.PasswordEncryptor now initialize their
-     internal StandardStringDigester at instance creation.
+     * [jasypt] Added <<<org.jasypt.digest.config.EnvironmentDigesterConfig>>> and
+     <<<org.jasypt.encryption.pbe.config.EnvironmentPBEConfig>>> for configuration
+     of encryptors and digesters using environment variables and system properties.
      
+     * [jasypt] Objects of class <<<org.jasypt.util.PasswordEncryptor>>> now initialize their
+     internal <<<StandardStringDigester>>> at instance creation.
+     
+     * [jasypt] Made <<<org.jasypt.digest.config.DigesterConfig>>> and 
+     <<<org.jasypt.encryption.pbe.config.PBEConfig>>> extend <<<java.io.Serializable>>>
      

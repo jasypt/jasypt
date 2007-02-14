@@ -2,11 +2,17 @@
 1.1
 =======
 
-- Added org.jasypt.util.StrongPasswordEncryptor
-- Added org.jasypt.util.MessageDigester
+- Added org.jasypt.util.StrongPasswordEncryptor as a util class for
+  easy password encryption using a stronger algorithm.
+- Added org.jasypt.util.MessageDigester as a util class for
+  creating simple binary message digests.
+- Added org.jasypt.digest.config.EnvironmentDigesterConfig and
+  org.jasypt.encryption.pbe.config.EnvironmentPBEConfig for configuration
+  of encryptors and digesters using environment variables and system properties.
 - Objects of class org.jasypt.util.PasswordEncryptor now initialize their
   internal StandardStringDigester at instance creation.
-
+- Made org.jasypt.digest.config.DigesterConfig and 
+  org.jasypt.encryption.pbe.config.PBEConfig extend java.io.Serializable
 
 1.0
 =======
