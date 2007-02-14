@@ -22,10 +22,14 @@ Jasypt at a glance
       (algorithm, key obtention, etc.). {{{/getting-started-standard.html}Learn more}}.
 
 
-  If you want to learn more about the advantages of implementing security standards,
-  you can have a look at:
+  If you want to learn more about jasypt and its capabilities, visit:
   
-      * {{{/ecrypting-passwords.html}Encrypting passwords}}: learn how passwords <<should>> be encrypted.
+      * {{{/encrypting-passwords.html}Encrypting passwords}}: learn how passwords <<should>> be encrypted.
+      
+      []
+
+      * {{{/advancedconfiguration.html}Advanced configuration}}: learn how jasypt's encryptors and digesters can be configured in unusual or user-defined ways.
+      
 
   And if you want to learn about integrating jasypt with other tools, visit:
   
