@@ -91,8 +91,8 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param keyObtentionIterations the number of iterations.
      */
-    public void setKeyObtentionIterations(int keyObtentionIterations) {
-        this.keyObtentionIterations = new Integer(keyObtentionIterations);
+    public void setKeyObtentionIterations(Integer keyObtentionIterations) {
+        this.keyObtentionIterations = keyObtentionIterations;
     }
     
     
