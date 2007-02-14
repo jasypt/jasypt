@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe.config;
 
+import java.io.Serializable;
+
 
 /**
  * <p>
@@ -52,7 +54,7 @@ package org.jasypt.encryption.pbe.config;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEConfig {
+public interface PBEConfig extends Serializable {
 
     
     /**

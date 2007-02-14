@@ -37,9 +37,10 @@ package org.jasypt.encryption.pbe.config;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class SimplePBEConfig 
-        implements PBEConfig {
-
+public class SimplePBEConfig implements PBEConfig {
+    
+    private static final long serialVersionUID = -5536955400809738920L;
+    
     private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;

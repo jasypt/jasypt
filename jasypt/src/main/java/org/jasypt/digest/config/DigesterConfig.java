@@ -19,6 +19,8 @@
  */
 package org.jasypt.digest.config;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * Common interface for config classes applicable to 
@@ -51,7 +53,7 @@ package org.jasypt.digest.config;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface DigesterConfig {
+public interface DigesterConfig extends Serializable {
 
     /**
      * <p>
