@@ -38,6 +38,8 @@ package org.jasypt.digest.config;
  */
 public class SimpleDigesterConfig implements DigesterConfig {
 
+    private static final long serialVersionUID = 7854221035086673697L;
+    
     private String algorithm = null;
     private Integer iterations = null;
     private Integer saltSizeBytes = null; 
