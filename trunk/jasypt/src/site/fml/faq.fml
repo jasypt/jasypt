@@ -44,6 +44,19 @@
         </p>
       </answer>
     </faq>
+
+    <faq id="i-dont-use-spring-security">
+      <question>I don't use Spring Security (Acegi) at all. Can I use jasypt anyway?</question>
+      <answer>
+        <p>
+          Yes, you can. Jasypt provides an <b>optional</b> integration
+          package for Spring Security, but <b>it does not need Spring Security
+          for normal operation</b>.It 
+          won't add a dependency on Spring Security to your project unless
+          you explicitly add the <i>jasypt-spring-security</i> package.
+        </p>
+      </answer>
+    </faq>
     
     <faq id="which-is-the-difference">
       <question>Which is the difference between digests and password-based encryption?</question>
@@ -93,6 +106,49 @@
           ...and, if you are not using such calls but some other APIs or 
           techniques, maybe you should consider reading
           it anyway to know if jasypt can help you do things better.
+        </p>
+        <p>
+          If you are using Spring Security (Acegi Security) for encrypting
+          passwords in your application, check the corresponding question in
+          this FAQ to see what jasypt can do for you.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="i-am-already-using-spring-security-for-encrypting-passwords">
+      <question>I am already using Spring Security / Acegi for encrypting passwords. Why would I want to add jasypt to my security infrastructure?</question>
+      <answer>
+        <p>
+          Before all, please understand that <b>jasypt is not a substitute
+          for Spring Security / Acegi</b>, which is a powerful and very complete
+          security framework (and which use the Jasypt author truly recommends). 
+          Jasypt will instead <b>integrate into Acegi</b>
+          and improve its password encoding capabilities.
+        </p>
+        <p>
+          Some reasons for considering this integration are:
+        </p>
+        <ul>
+          <li>First and most important, because the default standard encryptors (<tt>PasswordEncoder</tt>
+          implementations) shipped with Acegi (as of 1.0.4) are simple
+          message digesters (one hashing iteration, none or user-property based fixed salt...), 
+          and are not as safe as
+          jasypt's password encryptors can be (learn more about random salt and
+          iteration count at the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting 
+          Passwords Guide</a>).</li>
+          <li>Second, because they don't provide the same level of configuration
+          capabilities as jasypt's password encryptors: algorithms, 
+          parameters resolution...</li>
+          <li>And third, because using jasypt will help you decoupling your
+          user management logic (more bussiness-oriented) from the authentication
+          and authorization component represented by Acegi (you won't
+          need to add dependencies on Acegi's <tt>PasswordEncoder</tt>s to
+          your user management logic, and will instead use classes from a more
+          neutral library like jasypt).</li>
+        </ul>
+        <p>
+          For more information on integrating Jasypt into an Acegi-enabled
+          application, please check the <a href="http://www.jasypt.org/springsecurity.html">Jasypt + Acegi</a> guide.
         </p>
       </answer>
     </faq>
