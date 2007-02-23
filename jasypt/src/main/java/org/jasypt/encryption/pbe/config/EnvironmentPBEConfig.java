@@ -211,7 +211,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * Set the config object to use the specified environment variable to
      * load the value for the password.
      * 
-     * @param saltSizeBytesEnvName the name of the environment variable
+     * @param passwordEnvName the name of the environment variable
      */
     public void setPasswordEnvName(String passwordEnvName) {
         this.passwordEnvName = passwordEnvName;
