@@ -29,7 +29,7 @@ Features
      
      * <<Binary encryption support>>. Besides texts, it allows the
      digest and encryption of binaries (byte arrays). Encrypt your objects
-     when needed (for being sent over the net, for example).
+     or files when needed (for being sent over the net, for example).
      
      []
      
