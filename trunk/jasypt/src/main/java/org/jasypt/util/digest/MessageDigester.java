@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.digest;
 
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -48,10 +48,7 @@ import org.jasypt.exceptions.AlreadyInitializedException;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.digest.MessageDigester} and
- *             will be removed in version 1.3. 
- * @see org.jasypt.util.digest.MessageDigester
- * @since 1.1
+ * @since 1.2 (class existed in org.jasypt.util package since 1.1)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 

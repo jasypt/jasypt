@@ -17,20 +17,21 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.text;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
+
 /**
  * <p>
- * Utility class for easily performing high-strength encryption of texts.
+ * Utility class for easily performing normal-strength encryption of texts.
  * </p>
  * <p>
  * This class internally holds a {@link StandardPBEStringEncryptor} 
  * configured this way:
  * <ul>
- *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
+ *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
  *   <li>Key obtention iterations: <tt>1000</tt>.</li>
  * </ul>
  * </p>
@@ -44,38 +45,28 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * </ol> 
  * </p>
  * <p>
- * To use this class, you may need to download and install the
- * <a href="http://java.sun.com/javase/downloads" target="_blank"><i>Java
- * Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy 
- * Files</i></a>. 
- * </p>
- * <p>
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.text.StrongTextEncryptor}
- *             and will be removed in version 1.3. 
- * @see org.jasypt.util.text.StrongTextEncryptor
- * @since 1.0
+ * @since 1.2 (class existed as org.jasypt.util.TextEncryptor since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StrongTextEncryptor {
+public final class StandardTextEncryptor implements TextEncryptor {
 
-    
+
     // The internal encryptor 
     private StandardPBEStringEncryptor encryptor = null;
     
     
-
     /**
-     * Creates a new instance of <tt>StrongTextEncryptor</tt>.
+     * Creates a new instance of <tt>StandardTextEncryptor</tt>.
      */
-    public StrongTextEncryptor() {
+    public StandardTextEncryptor() {
         super();
         this.encryptor = new StandardPBEStringEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
     }
 
     
@@ -98,8 +89,8 @@ public final class StrongTextEncryptor {
     public String encrypt(String message) {
         return encryptor.encrypt(message);
     }
-    
 
+    
     /**
      * Decrypts a message.
      * 
