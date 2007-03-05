@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.password;
 
 import org.jasypt.digest.StandardStringDigester;
 
@@ -47,25 +47,22 @@ import org.jasypt.digest.StandardStringDigester;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.password.StandardPasswordEncryptor}
- *             and will be removed in version 1.3. 
- * @see org.jasypt.util.password.StandardPasswordEncryptor
- * @since 1.0
+ * @since 1.2 (class existed as org.jasypt.util.PasswordEncryptor since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class PasswordEncryptor {
+public final class StandardPasswordEncryptor implements PasswordEncryptor {
 
     // The internal digester used
     private StandardStringDigester digester = null;
     
     
     /**
-     * Creates a new instance of <tt>PasswordEncryptor</tt>
+     * Creates a new instance of <tt>StandardPasswordEncryptor</tt>
      *
      */
-    public PasswordEncryptor() {
+    public StandardPasswordEncryptor() {
         super();
         this.digester = new StandardStringDigester();
         this.digester.initialize();

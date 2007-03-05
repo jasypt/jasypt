@@ -17,21 +17,21 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.password;
 
 import org.jasypt.digest.StandardStringDigester;
 
 /**
  * <p>
- * Utility class for easily performing password digesting and checking.
+ * Utility class for easily performing high-strength password digesting and checking.
  * </p>
  * <p>
  * This class internally holds a {@link StandardStringDigester} 
  * configured this way:
  * <ul>
- *   <li>Algorithm: <tt>MD5</tt>.</li>
- *   <li>Salt size: <tt>8 bytes</tt>.</li>
- *   <li>Iterations: <tt>1000</tt>.</li>
+ *   <li>Algorithm: <tt>SHA-256</tt>.</li>
+ *   <li>Salt size: <tt>16 bytes</tt>.</li>
+ *   <li>Iterations: <tt>100000</tt>.</li>
  * </ul>
  * </p>
  * <p>
@@ -47,27 +47,27 @@ import org.jasypt.digest.StandardStringDigester;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.password.StandardPasswordEncryptor}
- *             and will be removed in version 1.3. 
- * @see org.jasypt.util.password.StandardPasswordEncryptor
- * @since 1.0
+ * @since 1.2 (class existed in org.jasypt.util package since 1.1)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class PasswordEncryptor {
+public final class StrongPasswordEncryptor implements PasswordEncryptor {
 
     // The internal digester used
     private StandardStringDigester digester = null;
     
     
     /**
-     * Creates a new instance of <tt>PasswordEncryptor</tt>
+     * Creates a new instance of <tt>StrongPasswordEncryptor</tt>
      *
      */
-    public PasswordEncryptor() {
+    public StrongPasswordEncryptor() {
         super();
         this.digester = new StandardStringDigester();
+        this.digester.setAlgorithm("SHA-256");
+        this.digester.setIterations(100000);
+        this.digester.setSaltSizeBytes(16);
         this.digester.initialize();
     }
     

@@ -47,6 +47,9 @@ import org.jasypt.digest.StandardStringDigester;
  * This class is <i>thread-safe</i>
  * </p>
  * 
+ * @deprecated Replaced by {@link org.jasypt.util.password.StrongPasswordEncryptor}
+ *             and will be removed in version 1.3. 
+ * @see org.jasypt.util.password.StrongPasswordEncryptor
  * @since 1.1
  * 
  * @author Daniel Fern&aacute;ndez Garrido

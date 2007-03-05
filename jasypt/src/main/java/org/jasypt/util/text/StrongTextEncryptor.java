@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.text;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
@@ -53,15 +53,12 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.text.StrongTextEncryptor}
- *             and will be removed in version 1.3. 
- * @see org.jasypt.util.text.StrongTextEncryptor
- * @since 1.0
+ * @since 1.2 (class existed in org.jasypt.util package since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StrongTextEncryptor {
+public final class StrongTextEncryptor implements TextEncryptor {
 
     
     // The internal encryptor 
