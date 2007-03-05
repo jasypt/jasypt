@@ -1,3 +1,15 @@
+1.2
+=======
+
+- Refactored the org.jasypt.util package: created util.digest, util.password,
+  and util.text packages, and moved existing util classes to their corresponding
+  packages. Also created PasswordEncryptor and TextEncryptor interfaces,
+  to unify both standard- and strong-encryption implementations.
+- Added org.jasypt.util.password.ConfigurablePasswordEncryptor for a more
+  configurable (yet easy) way of using a password encryptor.
+- Added binary utils for easy encryption of binaries.
+
+
 
 1.1
 =======
