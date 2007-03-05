@@ -17,14 +17,14 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.text;
 
 
 import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class NormalTextEncryptorTest extends TestCase {
+public class StrongTextEncryptorTest extends TestCase {
 
     
     
@@ -33,7 +33,7 @@ public class NormalTextEncryptorTest extends TestCase {
         String message = "This is a Message";
         String password = "APASSWORD";
         
-        TextEncryptor textEncryptor = new TextEncryptor();
+        StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
         textEncryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -42,7 +42,7 @@ public class NormalTextEncryptorTest extends TestCase {
             assertEquals(textEncryptor.decrypt(encryptedMessage), message);
         }
         
-        TextEncryptor textEncryptor2 = new TextEncryptor();
+        StrongTextEncryptor textEncryptor2 = new StrongTextEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
