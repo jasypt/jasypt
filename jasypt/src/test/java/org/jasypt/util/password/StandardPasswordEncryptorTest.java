@@ -17,15 +17,14 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.password;
 
 
 import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
-import org.jasypt.util.PasswordEncryptor;
 
-public class PasswordEncryptorTest extends TestCase {
+public class StandardPasswordEncryptorTest extends TestCase {
 
     
     
@@ -33,7 +32,7 @@ public class PasswordEncryptorTest extends TestCase {
         
         String password = "This is a Password";
         
-        PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+        StandardPasswordEncryptor passwordEncryptor = new StandardPasswordEncryptor();
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
         assertTrue(Base64.isArrayByteBase64(encryptedPassword.getBytes("US-ASCII")));
         
@@ -46,7 +45,7 @@ public class PasswordEncryptorTest extends TestCase {
             assertFalse(passwordEncryptor.checkPassword(password2, encryptedPassword));
         }
 
-        PasswordEncryptor digester2 = new PasswordEncryptor();
+        StandardPasswordEncryptor digester2 = new StandardPasswordEncryptor();
         for (int i = 0; i < 100; i++) {
             assertTrue(digester2.checkPassword(password, encryptedPassword));
         }
@@ -57,7 +56,7 @@ public class PasswordEncryptorTest extends TestCase {
                             passwordEncryptor.encryptPassword(password)));
         }
         
-        PasswordEncryptor digester3 = new PasswordEncryptor();
+        StandardPasswordEncryptor digester3 = new StandardPasswordEncryptor();
         encryptedPassword = digester3.encryptPassword(password);
         
         for (int i = 0; i < 100; i++) {

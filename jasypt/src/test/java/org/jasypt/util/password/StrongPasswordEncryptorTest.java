@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.password;
 
 
 import junit.framework.TestCase;
