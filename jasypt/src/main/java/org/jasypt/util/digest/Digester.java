@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util;
+package org.jasypt.util.digest;
 
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -48,15 +48,12 @@ import org.jasypt.exceptions.AlreadyInitializedException;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.digest.Digester} and
- *             will be removed in version 1.3. 
- * @see org.jasypt.util.digest.MessageDigester
- * @since 1.1
+ * @since 1.2 (class existed as org.jasypt.util.MessageDigester since 1.1)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class MessageDigester {
+public final class Digester {
 
     
     /**
@@ -75,12 +72,12 @@ public final class MessageDigester {
     
     
     /**
-     * Creates a new instance of <tt>MessageDigester</tt>. It will use
+     * Creates a new instance of <tt>Digester</tt>. It will use
      * the default algorithm unless one is specified with 
      * {@link #setAlgorithm(String)}. 
      *
      */
-    public MessageDigester() {
+    public Digester() {
         super();
         this.digester = new StandardByteDigester();
         this.digester.setIterations(ITERATIONS);
@@ -89,7 +86,7 @@ public final class MessageDigester {
     
     /**
      * <p>
-     * Creates a new instance of <tt>MessageDigester</tt>, specifying
+     * Creates a new instance of <tt>Digester</tt>, specifying
      * the algorithm to be used.
      * </p>
      * <p>
@@ -100,7 +97,7 @@ public final class MessageDigester {
      * </p>
      *
      */
-    public MessageDigester(String algorithm) {
+    public Digester(String algorithm) {
         super();
         this.digester = new StandardByteDigester();
         this.digester.setIterations(ITERATIONS);
@@ -133,12 +130,12 @@ public final class MessageDigester {
     /**
      * Creates a digest.
      * 
-     * @param message the message to be digested.
+     * @param binary the byte array to be digested.
      * @return the resulting digest.
      * @see StandardByteDigester#digest(byte[])
      */
-    public byte[] digest(byte[] message) {
-        return digester.digest(message);
+    public byte[] digest(byte[] binary) {
+        return digester.digest(binary);
     }
 
     
