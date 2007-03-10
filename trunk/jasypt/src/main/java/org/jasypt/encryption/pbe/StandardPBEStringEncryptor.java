@@ -162,7 +162,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
     private static final String ENCRYPTED_MESSAGE_CHARSET = "US-ASCII";
 
     
-    // The StandardByteDigester that will be internally used.
+    // The StandardPBEByteEncryptor that will be internally used.
     private StandardPBEByteEncryptor byteEncryptor = null;
     
     // BASE64 encoder which will make sure the returned results are
