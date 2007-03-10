@@ -52,17 +52,17 @@ import org.jasypt.digest.StandardStringDigester;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StandardPasswordEncryptor implements PasswordEncryptor {
+public final class BasicPasswordEncryptor implements PasswordEncryptor {
 
     // The internal digester used
     private StandardStringDigester digester = null;
     
     
     /**
-     * Creates a new instance of <tt>StandardPasswordEncryptor</tt>
+     * Creates a new instance of <tt>BasicPasswordEncryptor</tt>
      *
      */
-    public StandardPasswordEncryptor() {
+    public BasicPasswordEncryptor() {
         super();
         this.digester = new StandardStringDigester();
         this.digester.initialize();

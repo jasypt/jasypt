@@ -17,41 +17,40 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util.binary;
+package org.jasypt.util.numeric;
 
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-public class StandardBinaryEncryptorTest extends TestCase {
+public class BasicDecimalEncryptorTest extends TestCase {
 
     
     
     public void testEncrypt() throws Exception {
         
-        byte[] message = "This is a Message".getBytes();
-        String password = "APASSWORD";
+        BigDecimal message = BigDecimal.valueOf(-12321318473812923.2131928700009987123);
+        String password = "A PASSWORD1234";
         
-        StandardBinaryEncryptor textEncryptor = new StandardBinaryEncryptor();
-        textEncryptor.setPassword(password);
+        BasicDecimalEncryptor encryptor = new BasicDecimalEncryptor();
+        encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
-            byte[] encryptedMessage = textEncryptor.encrypt(message);
-            assertTrue(Arrays.equals(textEncryptor.decrypt(encryptedMessage), message));
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
+            assertTrue(encryptor.decrypt(encryptedMessage).equals(message));
         }
         
-        StandardBinaryEncryptor textEncryptor2 = new StandardBinaryEncryptor();
+        BasicDecimalEncryptor textEncryptor2 = new BasicDecimalEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
-            byte[] encryptedMessage = textEncryptor.encrypt(message);
-            assertTrue(Arrays.equals(textEncryptor2.decrypt(encryptedMessage), message));
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
+            assertTrue(textEncryptor2.decrypt(encryptedMessage).equals(message));
         }
         
         for (int i = 0; i < 100; i++) {
-            assertFalse(Arrays.equals(
-                    textEncryptor.encrypt(message),
-                            textEncryptor.encrypt(message)));
+            assertFalse(encryptor.encrypt(message).equals(
+                            encryptor.encrypt(message)));
         }
         
     }

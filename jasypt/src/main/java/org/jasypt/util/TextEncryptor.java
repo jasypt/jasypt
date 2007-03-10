@@ -48,9 +48,9 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @deprecated Replaced by {@link org.jasypt.util.text.StandardTextEncryptor}
+ * @deprecated Replaced by {@link org.jasypt.util.text.BasicTextEncryptor}
  *             and will be removed in version 1.3. 
- * @see org.jasypt.util.text.StandardTextEncryptor
+ * @see org.jasypt.util.text.BasicTextEncryptor
  * @since 1.0
  * 
  * @author Daniel Fern&aacute;ndez Garrido

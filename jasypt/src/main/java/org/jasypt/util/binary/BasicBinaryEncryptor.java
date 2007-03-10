@@ -17,18 +17,19 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util.text;
+package org.jasypt.util.binary;
 
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 /**
  * <p>
- * Utility class for easily performing normal-strength encryption of texts.
+ * Utility class for easily performing normal-strength encryption of 
+ * binaries (byte arrays).
  * </p>
  * <p>
- * This class internally holds a {@link StandardPBEStringEncryptor} 
+ * This class internally holds a {@link StandardPBEByteEncryptor} 
  * configured this way:
  * <ul>
  *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
@@ -40,32 +41,32 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * <ol>
  *   <li>Create an instance (using <tt>new</tt>).</li>
  *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt>).</li>
- *   <li>Perform the desired <tt>{@link #encrypt(String)}</tt> or 
- *       <tt>{@link #decrypt(String)}</tt> operations.</li> 
+ *   <li>Perform the desired <tt>{@link #encrypt(byte[])}</tt> or 
+ *       <tt>{@link #decrypt(byte[])}</tt> operations.</li> 
  * </ol> 
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @since 1.2 (class existed as org.jasypt.util.TextEncryptor since 1.0)
+ * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StandardTextEncryptor implements TextEncryptor {
+public final class BasicBinaryEncryptor implements BinaryEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEStringEncryptor encryptor = null;
+    private StandardPBEByteEncryptor encryptor = null;
     
     
     /**
-     * Creates a new instance of <tt>StandardTextEncryptor</tt>.
+     * Creates a new instance of <tt>BasicBinaryEncryptor</tt>.
      */
-    public StandardTextEncryptor() {
+    public BasicBinaryEncryptor() {
         super();
-        this.encryptor = new StandardPBEStringEncryptor();
+        this.encryptor = new StandardPBEByteEncryptor();
         this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
     }
 
@@ -81,24 +82,26 @@ public final class StandardTextEncryptor implements TextEncryptor {
 
     
     /**
-     * Encrypts a message.
+     * Encrypts a byte array
      * 
-     * @param message the message to be encrypted.
-     * @see StandardPBEStringEncryptor#encrypt(String)
+     * @param binary the byte array to be encrypted.
+     * @see StandardPBEByteEncryptor#encrypt(byte[])
      */
-    public String encrypt(String message) {
-        return encryptor.encrypt(message);
+    public byte[] encrypt(byte[] binary) {
+        return encryptor.encrypt(binary);
     }
 
     
     /**
-     * Decrypts a message.
+     * Decrypts a byte array.
      * 
-     * @param encryptedMessage the message to be decrypted.
-     * @see StandardPBEStringEncryptor#decrypt(String)
+     * @param encryptedBinary the byte array to be decrypted.
+     * @see StandardPBEByteEncryptor#decrypt(byte[])
      */
-    public String decrypt(String encryptedMessage) {
-        return encryptor.decrypt(encryptedMessage);
+    public byte[] decrypt(byte[] encryptedBinary) {
+        return encryptor.decrypt(encryptedBinary);
     }
+
+
     
 }
