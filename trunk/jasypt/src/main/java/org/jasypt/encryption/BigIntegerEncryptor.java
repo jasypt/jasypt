@@ -41,7 +41,7 @@ import java.math.BigInteger;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface IntegerEncryptor {
+public interface BigIntegerEncryptor {
     
     
     /**

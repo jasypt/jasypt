@@ -22,12 +22,12 @@ package org.jasypt.encryption.pbe;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
-public class PBEWithMD5AndTripleDESIntegerEncryptorTest 
-        extends AbstractPBEIntegerEncryptorTest {
+public class PBEWithMD5AndDESBigDecimalEncryptorTest 
+        extends AbstractPBEBigDecimalEncryptorTest {
 
-    protected PBEIntegerEncryptor createPBEIntegerEncryptor() {
-        StandardPBEIntegerEncryptor encryptor = new StandardPBEIntegerEncryptor();
-        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+    protected PBEBigDecimalEncryptor createPBEDecimalEncryptor() {
+        StandardPBEBigDecimalEncryptor encryptor = new StandardPBEBigDecimalEncryptor();
+        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
         return encryptor;
     }
 

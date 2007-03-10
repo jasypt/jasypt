@@ -19,33 +19,34 @@
  */
 package org.jasypt.encryption.pbe;
 
-import java.math.BigInteger;
+
+import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-public abstract class AbstractPBEIntegerEncryptorTest extends TestCase {
+public abstract class AbstractPBEBigDecimalEncryptorTest extends TestCase {
 
     public void testEncryptAndDecrypt() throws Exception {
 
         String password = "A PASSWORD BEING SET";
         String password2 = "A PASSWORD BEING SET ";
         
-        BigInteger message = BigInteger.valueOf(-123534452L);
-
-        PBEIntegerEncryptor encryptor = createPBEIntegerEncryptor();
+        BigDecimal message = BigDecimal.valueOf(-123534452.231433);
+        
+        PBEBigDecimalEncryptor encryptor = createPBEDecimalEncryptor();
         encryptor.setPassword(password);
         
         assertTrue(encryptor.encrypt(null) == null);
         assertTrue(encryptor.decrypt(null) == null);
         
-        BigInteger encryptOfEmpty = encryptor.encrypt(BigInteger.valueOf(0));
-        assertTrue(encryptor.decrypt(encryptOfEmpty).equals(BigInteger.valueOf(0)));
+        BigDecimal encryptOfEmpty = encryptor.encrypt(BigDecimal.valueOf(0.0));
+        assertTrue(encryptor.decrypt(encryptOfEmpty).equals(BigDecimal.valueOf(0.0)));
         
         for (int i = 0; i < 1000; i++) {
-            BigInteger encryptedMessage = encryptor.encrypt(message);
-            BigInteger decryptedMessage = encryptor.decrypt(encryptedMessage);
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
+            BigDecimal decryptedMessage = encryptor.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
@@ -55,24 +56,24 @@ public abstract class AbstractPBEIntegerEncryptorTest extends TestCase {
                         encryptor.encrypt(message)));
         }
         
-        PBEIntegerEncryptor encryptor2 = createPBEIntegerEncryptor();
+        PBEBigDecimalEncryptor encryptor2 = createPBEDecimalEncryptor();
         encryptor2.setPassword(password);
 
-        assertEquals(encryptor2.decrypt(encryptOfEmpty),BigInteger.valueOf(0));
+        assertEquals(encryptor2.decrypt(encryptOfEmpty),BigDecimal.valueOf(0.0));
         
         for (int i = 0; i < 1000; i++) {
-            BigInteger encryptedMessage = encryptor.encrypt(message);
-            BigInteger decryptedMessage = encryptor2.decrypt(encryptedMessage);
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
+            BigDecimal decryptedMessage = encryptor2.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
-        PBEIntegerEncryptor encryptor3 = createPBEIntegerEncryptor();
+        PBEBigDecimalEncryptor encryptor3 = createPBEDecimalEncryptor();
         encryptor3.setPassword(password2);
         
         for (int i = 0; i < 100; i++) {
-            BigInteger encryptedMessage = encryptor.encrypt(message);
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
             try {
-                BigInteger decryptedMessage = encryptor3.decrypt(encryptedMessage);
+                BigDecimal decryptedMessage = encryptor3.decrypt(encryptedMessage);
                 assertFalse(message.equals(decryptedMessage));
             } catch (EncryptionOperationNotPossibleException e) {
                 assertTrue(true);
@@ -83,6 +84,6 @@ public abstract class AbstractPBEIntegerEncryptorTest extends TestCase {
     }
 
     
-    protected abstract PBEIntegerEncryptor createPBEIntegerEncryptor();
+    protected abstract PBEBigDecimalEncryptor createPBEDecimalEncryptor();
     
 }

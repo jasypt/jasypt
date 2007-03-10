@@ -19,7 +19,7 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.IntegerEncryptor;
+import org.jasypt.encryption.BigIntegerEncryptor;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ import org.jasypt.encryption.IntegerEncryptor;
  * has been provided.
  * </p>
  * <p>
- * For a default implementation, see {@link StandardPBEIntegerEncryptor}.
+ * For a default implementation, see {@link StandardPBEBigIntegerEncryptor}.
  * </p>
  * 
  * @since 1.2
@@ -43,7 +43,7 @@ import org.jasypt.encryption.IntegerEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEIntegerEncryptor extends IntegerEncryptor {
+public interface PBEBigIntegerEncryptor extends BigIntegerEncryptor {
 
     
     /**

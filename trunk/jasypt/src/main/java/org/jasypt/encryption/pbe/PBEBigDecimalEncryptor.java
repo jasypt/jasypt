@@ -17,16 +17,14 @@
  * 
  * =============================================================================
  */
-package org.jasypt.encryption;
+package org.jasypt.encryption.pbe;
 
-import java.math.BigDecimal;
-
-
+import org.jasypt.encryption.BigDecimalEncryptor;
 
 /**
  * <p>
- * Common interface for all Encryptors which receive a 
- * BigDecimal (arbitrary precision) message and return a BigDecimal result.
+ * Common interface for all Password Based Encryptors which receive a 
+ * BigDecimal message and return a BigDecimal result.
  * </p>
  * <p>
  * <b>Important</b>: The size of the result of encrypting a number, depending
@@ -36,30 +34,25 @@ import java.math.BigDecimal;
  * problems if the encrypted values are to be stored and not enough room 
  * has been provided.
  * </p>
+ * <p>
+ * For a default implementation, see {@link StandardPBEBigDecimalEncryptor}.
+ * </p>
  * 
  * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface DecimalEncryptor {
-    
-    
-    /**
-     * Encrypt the input message
-     * 
-     * @param message the message to be encrypted
-     * @return the result of encryption
-     */
-    public BigDecimal encrypt(BigDecimal message);
-    
+public interface PBEBigDecimalEncryptor extends BigDecimalEncryptor {
+
     
     /**
-     * Decrypt an encrypted message
+     * <p>
+     * Sets a password to be used by the encryptor.
+     * </p>
      * 
-     * @param encryptedMessage the encrypted message to be decrypted
-     * @return the result of decryption
+     * @param password the password to be used.
      */
-    public BigDecimal decrypt(BigDecimal encryptedMessage);
+    public void setPassword(String password);
     
 }
