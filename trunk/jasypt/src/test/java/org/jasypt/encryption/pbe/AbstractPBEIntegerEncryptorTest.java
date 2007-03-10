@@ -19,33 +19,33 @@
  */
 package org.jasypt.encryption.pbe;
 
+import java.math.BigInteger;
+
 import junit.framework.TestCase;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-public abstract class AbstractPBEStringEncryptorTest extends TestCase {
+public abstract class AbstractPBEIntegerEncryptorTest extends TestCase {
 
     public void testEncryptAndDecrypt() throws Exception {
 
         String password = "A PASSWORD BEING SET";
         String password2 = "A PASSWORD BEING SET ";
         
-        String message = "This is a message";
-        
-        PBEStringEncryptor encryptor = createPBEStringEncryptor();
+        BigInteger message = BigInteger.valueOf(-123534452L);
+
+        PBEIntegerEncryptor encryptor = createPBEIntegerEncryptor();
         encryptor.setPassword(password);
         
         assertTrue(encryptor.encrypt(null) == null);
         assertTrue(encryptor.decrypt(null) == null);
         
-        assertTrue(encryptor.encrypt("") != null);
-        
-        String encryptOfEmpty = encryptor.encrypt("");
-        assertEquals(encryptor.decrypt(encryptOfEmpty),"");
+        BigInteger encryptOfEmpty = encryptor.encrypt(BigInteger.valueOf(0));
+        assertTrue(encryptor.decrypt(encryptOfEmpty).equals(BigInteger.valueOf(0)));
         
         for (int i = 0; i < 1000; i++) {
-            String encryptedMessage = encryptor.encrypt(message);
-            String decryptedMessage = encryptor.decrypt(encryptedMessage);
+            BigInteger encryptedMessage = encryptor.encrypt(message);
+            BigInteger decryptedMessage = encryptor.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
@@ -55,32 +55,34 @@ public abstract class AbstractPBEStringEncryptorTest extends TestCase {
                         encryptor.encrypt(message)));
         }
         
-        PBEStringEncryptor encryptor2 = createPBEStringEncryptor();
+        PBEIntegerEncryptor encryptor2 = createPBEIntegerEncryptor();
         encryptor2.setPassword(password);
 
-        assertEquals(encryptor2.decrypt(encryptOfEmpty),"");
+        assertEquals(encryptor2.decrypt(encryptOfEmpty),BigInteger.valueOf(0));
         
         for (int i = 0; i < 1000; i++) {
-            String encryptedMessage = encryptor.encrypt(message);
-            String decryptedMessage = encryptor2.decrypt(encryptedMessage);
+            BigInteger encryptedMessage = encryptor.encrypt(message);
+            BigInteger decryptedMessage = encryptor2.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
-        PBEStringEncryptor encryptor3 = createPBEStringEncryptor();
+        PBEIntegerEncryptor encryptor3 = createPBEIntegerEncryptor();
         encryptor3.setPassword(password2);
         
-        for (int i = 0; i < 1000; i++) {
-            String encryptedMessage = encryptor.encrypt(message);
+        for (int i = 0; i < 100; i++) {
+            BigInteger encryptedMessage = encryptor.encrypt(message);
             try {
-                String decryptedMessage = encryptor3.decrypt(encryptedMessage);
+                BigInteger decryptedMessage = encryptor3.decrypt(encryptedMessage);
                 assertFalse(message.equals(decryptedMessage));
             } catch (EncryptionOperationNotPossibleException e) {
                 assertTrue(true);
             }
         }
+        
+        
     }
 
     
-    protected abstract PBEStringEncryptor createPBEStringEncryptor();
+    protected abstract PBEIntegerEncryptor createPBEIntegerEncryptor();
     
 }

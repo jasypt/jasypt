@@ -34,7 +34,7 @@ public class MessageDigesterTest extends TestCase {
         
         byte[] message = "This is a Message".getBytes("UTF-8");
         
-        MessageDigester messageDigester = new MessageDigester();
+        Digester messageDigester = new Digester();
         byte[] encryptedMessage = messageDigester.digest(message);
         
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -48,7 +48,7 @@ public class MessageDigesterTest extends TestCase {
             assertFalse(ArrayUtils.isEquals(md.digest(message2), encryptedMessage));
         }
         
-        MessageDigester messageDigester2 = new MessageDigester();
+        Digester messageDigester2 = new Digester();
         messageDigester2.setAlgorithm("SHA-1");
         byte[] encryptedMessage2 = messageDigester2.digest(message);
         

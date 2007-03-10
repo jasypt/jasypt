@@ -19,7 +19,10 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.apache.commons.codec.binary.Base64;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
@@ -27,16 +30,19 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 /**
  * <p>
- * Standard implementation of the {@link PBEStringEncryptor} interface.
+ * Standard implementation of the {@link PBEDecimalEncryptor} interface.
  * This class lets the user specify the algorithm to be used for 
  * encryption, the password to use, and
  * the number of hashing iterations that will be applied for obtaining
  * the encryption key.
  * </p>
  * <p>
- * This class avoids byte-conversion problems related to the fact of 
- * different platforms having different default charsets, and returns 
- * encryption results in the form of BASE64-encoded ASCII Strings.
+ * <b>Important</b>: The size of the result of encrypting a number, depending
+ * on the algorithm, may be much bigger (in bytes) than the size of the 
+ * encrypted number itself. For example, encrypting a 4-byte integer can
+ * result in an encrypted 16-byte number. This can lead the user into 
+ * problems if the encrypted values are to be stored and not enough room 
+ * has been provided.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -108,76 +114,25 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
  * </p>
  * 
- * @since 1.0
+ * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
-
-    /**
-     * <p>
-     * Charset to be used to obtain "encryptable" byte arrays from input 
-     * Strings. <b>Set to UTF-8</b>.
-     * </p>
-     * <p> 
-     * This charset has to be fixed to some value so that we avoid problems 
-     * with different platforms having different "default" charsets. 
-     * </p>
-     * <p>
-     * It is set to <b>UTF-8</b> because it covers the whole spectrum of 
-     * characters representable in Java (which internally uses UTF-16), and 
-     * avoids the size penalty of UTF-16 (which will always use two bytes for
-     * representing each character, even if it is an ASCII one).
-     * </p>
-     * <p>
-     * Setting it to UTF-8 does not mean that Strings that originally come,
-     * for example, from an ISO-8859-1 input, won't be correctly encoded, as we 
-     * only need to use the same charset both when encoding and decoding. That
-     * way the same String will be reconstructed independently of the original
-     * encoding (for encrypting, we only need "a byte representation" of the 
-     * string, not "a readable byte representation").
-     * </p>
-     */
-    private static final String MESSAGE_CHARSET = "UTF-8";
-    
-    /**
-     * <p>
-     * Charset to be used for encoding the encryption results. 
-     * Set to <b>US-ASCII</b>.
-     * </p>
-     * <p>
-     * The result of encrypting some bytes can be any other bytes, and so
-     * the result of encrypting, for example, some LATIN-1 valid String bytes, 
-     * can be bytes that may not conform a "valid" LATIN-1 String.
-     * </p>
-     * <p>
-     * Because of this, encryption results are always encoded in <i>BASE64</i>
-     * after being created, and this ensures that the 
-     * results will make perfectly representable, safe ASCII Strings. Because
-     * of this, the charset used to convert the encrypted bytes to the returned 
-     * String is set to <b>US-ASCII</b>.
-     * </p>
-     */
-    private static final String ENCRYPTED_MESSAGE_CHARSET = "US-ASCII";
+public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
 
     
     // The StandardByteDigester that will be internally used.
     private StandardPBEByteEncryptor byteEncryptor = null;
-    
-    // BASE64 encoder which will make sure the returned results are
-    // valid US-ASCII strings.
-    private Base64 base64 = null;
 
     
     
     /**
-     * Creates a new instance of <tt>StandardPBEStringEncryptor</tt>.
+     * Creates a new instance of <tt>StandardPBEDecimalEncryptor</tt>.
      */
-    public StandardPBEStringEncryptor() {
+    public StandardPBEDecimalEncryptor() {
         super();
         this.byteEncryptor = new StandardPBEByteEncryptor();
-        this.base64 = new Base64();
     }
     
     
@@ -332,8 +287,18 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * <p>
      * Encrypts a message using the specified configuration.
      * </p>
+     * <p>
+     * The resulting
+     * BigDecimal will have the same scale as the original one (although the
+     * total number of bytes will be higher).
      * </p>
-     * The Strings returned by this method are BASE64-encoded ASCII Strings.
+     * <p>
+     * <b>Important</b>: The size of the result of encrypting a number, depending
+     * on the algorithm, may be much bigger (in bytes) than the size of the 
+     * encrypted number itself. For example, encrypting a 4-byte integer can
+     * result in an encrypted 16-byte number. This can lead the user into 
+     * problems if the encrypted values are to be stored and not enough room 
+     * has been provided.
      * </p>
      * <p>
      * The mechanisms applied to perform the encryption operation are described
@@ -357,7 +322,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * piece of encrypted data.
      * </p>
      * 
-     * @param message the String message to be encrypted
+     * @param message the BigDecimal message to be encrypted
      * @return the result of encryption 
      * @throws EncryptionOperationNotPossibleException if the encryption 
      *         operation fails, ommitting any further information about the
@@ -365,31 +330,39 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String encrypt(String message) {
+    public BigDecimal encrypt(BigDecimal message) {
         
         if (message == null) {
             return null;
         }
         
         try {
-
-            // The input String is converted into bytes using MESSAGE_CHARSET
-            // as a fixed charset to avoid problems with different platforms
-            // having different default charsets (see MESSAGE_CHARSET doc).
-            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
+            
+            // Get the scale of the decimal number
+            int scale = message.scale();
+            
+            // Get the number in binary form (without scale)
+            BigInteger unscaledMessage = message.unscaledValue();
+            byte[] messageBytes = unscaledMessage.toByteArray();
             
             // The StandardPBEByteEncryptor does its job.
             byte[] encryptedMessage = byteEncryptor.encrypt(messageBytes);
+
+            // The length of the encrypted message will be stored
+            // with the result itself so that we can correctly rebuild
+            // the complete byte array when decrypting (BigInteger will
+            // ignore all "0x0" bytes in the leftmost side, and also "-0x1" 
+            // in the leftmost side will be translated as signum).
+            byte[] encryptedMessageLengthBytes =
+                NumberUtils.byteArrayFromInt(encryptedMessage.length);
             
-            // We encode the result in BASE64 so that we obtain the safest
-            // result String possible.
-            synchronized (base64) {
-                encryptedMessage = base64.encode(encryptedMessage);
-            }
-            
-            // Finally, the result String is encoded in US-ASCII
-            return new String(encryptedMessage, 
-                    ENCRYPTED_MESSAGE_CHARSET);
+            // Append the length bytes to the encrypted message
+            byte[] encryptionResult = 
+                ArrayUtils.addAll(
+                        encryptedMessage, encryptedMessageLengthBytes);
+
+            // Finally, return a new number built from the encrypted bytes
+            return new BigDecimal(new BigInteger(encryptionResult), scale);
         
         } catch (EncryptionInitializationException e) {
             throw e;
@@ -409,9 +382,6 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * Decrypts a message using the specified configuration.
      * </p>
      * <p>
-     * This method expects to receive a BASE64-encoded ASCII String.
-     * </p>
-     * <p>
      * The mechanisms applied to perform the decryption operation are described
      * in <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
@@ -423,7 +393,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * is no other way of knowing it).
      * </p>
      * 
-     * @param encryptedMessage the String message to be decrypted
+     * @param encryptedMessage the BigDecimal message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
      *         operation fails, ommitting any further information about the
@@ -431,31 +401,33 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String decrypt(String encryptedMessage) {
+    public BigDecimal decrypt(BigDecimal encryptedMessage) {
         
         if (encryptedMessage == null) {
             return null;
         }
         
         try {
+
+            // Get the scale
+            int scale = encryptedMessage.scale();
             
-            // Get the byte array corresponding to the ASCII input.
+            // Get the number (unscaled) in binary form
+            BigInteger unscaledEncryptedMessage = 
+                encryptedMessage.unscaledValue();
             byte[] encryptedMessageBytes = 
-                encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
-            
-            // Convert the BASE64-encoded input back into an unencoded byte 
-            // array.
-            synchronized (base64) {
-                encryptedMessageBytes = base64.decode(encryptedMessageBytes);
-            }
+                unscaledEncryptedMessage.toByteArray();
+
+            // Process the encrypted byte array (check size, pad if needed...)
+            encryptedMessageBytes = 
+                NumberUtils.processBigIntegerEncryptedByteArray(
+                        encryptedMessageBytes, encryptedMessage.signum());
 
             // Let the byte encyptor decrypt
             byte[] message = byteEncryptor.decrypt(encryptedMessageBytes);
-            
-            // Return the resulting decrypted String, using MESSAGE_CHARSET
-            // as charset to maintain between encryption and decyption
-            // processes.
-            return new String(message, MESSAGE_CHARSET);
+
+            // Finally, return a new number built from the decrypted bytes
+            return new BigDecimal(new BigInteger(message), scale);
         
         } catch (EncryptionInitializationException e) {
             throw e;
