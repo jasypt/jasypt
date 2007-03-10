@@ -567,7 +567,6 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             // Obtain unencrypted salt from the beginning of the message
             byte[] salt = 
                 ArrayUtils.subarray(encryptedMessage, 0, this.saltSizeBytes);
-
             
             /*
              * Perform decryption using the Cipher
