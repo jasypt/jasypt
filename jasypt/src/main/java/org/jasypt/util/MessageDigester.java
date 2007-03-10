@@ -50,7 +50,7 @@ import org.jasypt.exceptions.AlreadyInitializedException;
  * 
  * @deprecated Replaced by {@link org.jasypt.util.digest.Digester} and
  *             will be removed in version 1.3. 
- * @see org.jasypt.util.digest.MessageDigester
+ * @see org.jasypt.util.digest.Digester
  * @since 1.1
  * 
  * @author Daniel Fern&aacute;ndez Garrido
