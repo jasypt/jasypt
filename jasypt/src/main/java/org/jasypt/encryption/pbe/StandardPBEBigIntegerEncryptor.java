@@ -19,7 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -30,7 +29,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 /**
  * <p>
- * Standard implementation of the {@link PBEDecimalEncryptor} interface.
+ * Standard implementation of the {@link PBEBigIntegerEncryptor} interface.
  * This class lets the user specify the algorithm to be used for 
  * encryption, the password to use, and
  * the number of hashing iterations that will be applied for obtaining
@@ -119,18 +118,19 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
+public final class StandardPBEBigIntegerEncryptor 
+        implements PBEBigIntegerEncryptor {
 
     
-    // The StandardByteDigester that will be internally used.
+    // The StandardPBEByteEncryptor that will be internally used.
     private StandardPBEByteEncryptor byteEncryptor = null;
 
     
     
     /**
-     * Creates a new instance of <tt>StandardPBEDecimalEncryptor</tt>.
+     * Creates a new instance of <tt>StandardPBEBigIntegerEncryptor</tt>.
      */
-    public StandardPBEDecimalEncryptor() {
+    public StandardPBEBigIntegerEncryptor() {
         super();
         this.byteEncryptor = new StandardPBEByteEncryptor();
     }
@@ -288,11 +288,6 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
      * Encrypts a message using the specified configuration.
      * </p>
      * <p>
-     * The resulting
-     * BigDecimal will have the same scale as the original one (although the
-     * total number of bytes will be higher).
-     * </p>
-     * <p>
      * <b>Important</b>: The size of the result of encrypting a number, depending
      * on the algorithm, may be much bigger (in bytes) than the size of the 
      * encrypted number itself. For example, encrypting a 4-byte integer can
@@ -322,7 +317,7 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
      * piece of encrypted data.
      * </p>
      * 
-     * @param message the BigDecimal message to be encrypted
+     * @param message the BigInteger message to be encrypted
      * @return the result of encryption 
      * @throws EncryptionOperationNotPossibleException if the encryption 
      *         operation fails, ommitting any further information about the
@@ -330,7 +325,7 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public BigDecimal encrypt(BigDecimal message) {
+    public BigInteger encrypt(BigInteger message) {
         
         if (message == null) {
             return null;
@@ -338,12 +333,8 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
         
         try {
             
-            // Get the scale of the decimal number
-            int scale = message.scale();
-            
-            // Get the number in binary form (without scale)
-            BigInteger unscaledMessage = message.unscaledValue();
-            byte[] messageBytes = unscaledMessage.toByteArray();
+            // Get the number in binary form
+            byte[] messageBytes = message.toByteArray();
             
             // The StandardPBEByteEncryptor does its job.
             byte[] encryptedMessage = byteEncryptor.encrypt(messageBytes);
@@ -362,7 +353,7 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
                         encryptedMessage, encryptedMessageLengthBytes);
 
             // Finally, return a new number built from the encrypted bytes
-            return new BigDecimal(new BigInteger(encryptionResult), scale);
+            return new BigInteger(encryptionResult);
         
         } catch (EncryptionInitializationException e) {
             throw e;
@@ -393,7 +384,7 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
      * is no other way of knowing it).
      * </p>
      * 
-     * @param encryptedMessage the BigDecimal message to be decrypted
+     * @param encryptedMessage the BigInteger message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
      *         operation fails, ommitting any further information about the
@@ -401,7 +392,7 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public BigDecimal decrypt(BigDecimal encryptedMessage) {
+    public BigInteger decrypt(BigInteger encryptedMessage) {
         
         if (encryptedMessage == null) {
             return null;
@@ -409,25 +400,19 @@ public final class StandardPBEDecimalEncryptor implements PBEDecimalEncryptor {
         
         try {
 
-            // Get the scale
-            int scale = encryptedMessage.scale();
-            
-            // Get the number (unscaled) in binary form
-            BigInteger unscaledEncryptedMessage = 
-                encryptedMessage.unscaledValue();
-            byte[] encryptedMessageBytes = 
-                unscaledEncryptedMessage.toByteArray();
+            // Get the number in binary form
+            byte[] encryptedMessageBytes = encryptedMessage.toByteArray();
 
             // Process the encrypted byte array (check size, pad if needed...)
             encryptedMessageBytes = 
                 NumberUtils.processBigIntegerEncryptedByteArray(
                         encryptedMessageBytes, encryptedMessage.signum());
-
+            
             // Let the byte encyptor decrypt
             byte[] message = byteEncryptor.decrypt(encryptedMessageBytes);
 
             // Finally, return a new number built from the decrypted bytes
-            return new BigDecimal(new BigInteger(message), scale);
+            return new BigInteger(message);
         
         } catch (EncryptionInitializationException e) {
             throw e;

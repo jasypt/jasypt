@@ -21,7 +21,7 @@ package org.jasypt.util.numeric;
 
 import java.math.BigDecimal;
 
-import org.jasypt.encryption.pbe.StandardPBEDecimalEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
@@ -31,7 +31,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * BigDecimal objects.
  * </p>
  * <p>
- * This class internally holds a {@link StandardPBEDecimalEncryptor} 
+ * This class internally holds a {@link StandardPBEBigDecimalEncryptor} 
  * configured this way:
  * <ul>
  *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
@@ -60,7 +60,7 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEDecimalEncryptor encryptor = null;
+    private StandardPBEBigDecimalEncryptor encryptor = null;
     
     
     /**
@@ -68,7 +68,7 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
      */
     public StrongDecimalEncryptor() {
         super();
-        this.encryptor = new StandardPBEDecimalEncryptor();
+        this.encryptor = new StandardPBEBigDecimalEncryptor();
         this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
     }
 
@@ -87,7 +87,7 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
      * Encrypts a number
      * 
      * @param number the number to be encrypted.
-     * @see StandardPBEDecimalEncryptor#encrypt(BigDecimal)
+     * @see StandardPBEBigDecimalEncryptor#encrypt(BigDecimal)
      */
     public BigDecimal encrypt(BigDecimal number) {
         return encryptor.encrypt(number);
@@ -98,7 +98,7 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
      * Decrypts a number.
      * 
      * @param encryptedNumber the number to be decrypted.
-     * @see StandardPBEDecimalEncryptor#decrypt(BigDecimal)
+     * @see StandardPBEBigDecimalEncryptor#decrypt(BigDecimal)
      */
     public BigDecimal decrypt(BigDecimal encryptedNumber) {
         return encryptor.decrypt(encryptedNumber);

@@ -9,10 +9,10 @@
   configurable (yet easy) way of using a password encryptor.
 - Added binary utils for easy encryption of binaries.
 - Added numeric encryption functionalities (both for integer and decimal
-  numbers). This means new StandardPBEIntegerEncryptor (for BigIntegers) and 
-  StandardPBEDecimalEncryptor (for BigDecimals) in the org.jasypt.encryption.pbe
-  package, and also new util.numeric package with easy utils for numeric
-  encryption.
+  numbers). This means new StandardPBEBigIntegerEncryptor and 
+  StandardPBEBigDecimalEncryptor (for BigDecimals) in the 
+  org.jasypt.encryption.pbe package, and also new util.numeric package with 
+  easy utils for numeric encryption.
 
 
 1.1
