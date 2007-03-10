@@ -20,31 +20,31 @@
 package org.jasypt.util.numeric;
 
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-public class StrongIntegerEncryptorTest extends TestCase {
+public class StrongDecimalNumberEncryptorTest extends TestCase {
 
     
     
     public void testEncrypt() throws Exception {
         
-        BigInteger message = BigInteger.valueOf(-12321318473812923L);
+        BigDecimal message = BigDecimal.valueOf(-12321318473812923.2131928700009987123);
         String password = "A PASSWORD1234";
         
-        StrongIntegerEncryptor encryptor = new StrongIntegerEncryptor();
+        StrongDecimalNumberEncryptor encryptor = new StrongDecimalNumberEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
-            BigInteger encryptedMessage = encryptor.encrypt(message);
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
             assertTrue(encryptor.decrypt(encryptedMessage).equals(message));
         }
         
-        StrongIntegerEncryptor textEncryptor2 = new StrongIntegerEncryptor();
+        StrongDecimalNumberEncryptor textEncryptor2 = new StrongDecimalNumberEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
-            BigInteger encryptedMessage = encryptor.encrypt(message);
+            BigDecimal encryptedMessage = encryptor.encrypt(message);
             assertTrue(textEncryptor2.decrypt(encryptedMessage).equals(message));
         }
         

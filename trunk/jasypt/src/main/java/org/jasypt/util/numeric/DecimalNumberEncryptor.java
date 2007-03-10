@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface DecimalEncryptor {
+public interface DecimalNumberEncryptor {
 
     
     /**

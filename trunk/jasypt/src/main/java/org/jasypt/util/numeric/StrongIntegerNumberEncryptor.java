@@ -24,6 +24,7 @@ import java.math.BigInteger;
 import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
+
 /**
  * <p>
  * Utility class for easily performing normal-strength encryption of 
@@ -33,7 +34,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * This class internally holds a {@link StandardPBEBigIntegerEncryptor} 
  * configured this way:
  * <ul>
- *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
+ *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
  *   <li>Key obtention iterations: <tt>1000</tt>.</li>
  * </ul>
  * </p>
@@ -55,7 +56,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class BasicIntegerEncryptor implements IntegerEncryptor {
+public class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
 
 
     // The internal encryptor 
@@ -63,12 +64,12 @@ public class BasicIntegerEncryptor implements IntegerEncryptor {
     
     
     /**
-     * Creates a new instance of <tt>BasicIntegerEncryptor</tt>.
+     * Creates a new instance of <tt>StrongIntegerNumberEncryptor</tt>.
      */
-    public BasicIntegerEncryptor() {
+    public StrongIntegerNumberEncryptor() {
         super();
         this.encryptor = new StandardPBEBigIntegerEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
     }
 
     
