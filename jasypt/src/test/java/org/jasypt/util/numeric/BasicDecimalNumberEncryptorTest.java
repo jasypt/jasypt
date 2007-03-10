@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 
 import junit.framework.TestCase;
 
-public class BasicDecimalEncryptorTest extends TestCase {
+public class BasicDecimalNumberEncryptorTest extends TestCase {
 
     
     
@@ -33,7 +33,7 @@ public class BasicDecimalEncryptorTest extends TestCase {
         BigDecimal message = BigDecimal.valueOf(-12321318473812923.2131928700009987123);
         String password = "A PASSWORD1234";
         
-        BasicDecimalEncryptor encryptor = new BasicDecimalEncryptor();
+        BasicDecimalNumberEncryptor encryptor = new BasicDecimalNumberEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -41,7 +41,7 @@ public class BasicDecimalEncryptorTest extends TestCase {
             assertTrue(encryptor.decrypt(encryptedMessage).equals(message));
         }
         
-        BasicDecimalEncryptor textEncryptor2 = new BasicDecimalEncryptor();
+        BasicDecimalNumberEncryptor textEncryptor2 = new BasicDecimalNumberEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             BigDecimal encryptedMessage = encryptor.encrypt(message);

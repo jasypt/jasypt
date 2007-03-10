@@ -24,7 +24,7 @@ import java.math.BigInteger;
 
 import junit.framework.TestCase;
 
-public class BasicIntegerEncryptorTest extends TestCase {
+public class StrongIntegerNumberEncryptorTest extends TestCase {
 
     
     
@@ -33,7 +33,7 @@ public class BasicIntegerEncryptorTest extends TestCase {
         BigInteger message = BigInteger.valueOf(-12321318473812923L);
         String password = "A PASSWORD1234";
         
-        BasicIntegerEncryptor encryptor = new BasicIntegerEncryptor();
+        StrongIntegerNumberEncryptor encryptor = new StrongIntegerNumberEncryptor();
         encryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -41,7 +41,7 @@ public class BasicIntegerEncryptorTest extends TestCase {
             assertTrue(encryptor.decrypt(encryptedMessage).equals(message));
         }
         
-        BasicIntegerEncryptor textEncryptor2 = new BasicIntegerEncryptor();
+        StrongIntegerNumberEncryptor textEncryptor2 = new StrongIntegerNumberEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             BigInteger encryptedMessage = encryptor.encrypt(message);

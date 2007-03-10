@@ -55,7 +55,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class BasicDecimalEncryptor implements DecimalEncryptor {
+public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
 
 
     // The internal encryptor 
@@ -63,9 +63,9 @@ public class BasicDecimalEncryptor implements DecimalEncryptor {
     
     
     /**
-     * Creates a new instance of <tt>BasicDecimalEncryptor</tt>.
+     * Creates a new instance of <tt>BasicDecimalNumberEncryptor</tt>.
      */
-    public BasicDecimalEncryptor() {
+    public BasicDecimalNumberEncryptor() {
         super();
         this.encryptor = new StandardPBEBigDecimalEncryptor();
         this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);

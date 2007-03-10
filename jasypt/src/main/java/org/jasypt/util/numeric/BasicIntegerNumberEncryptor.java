@@ -19,22 +19,21 @@
  */
 package org.jasypt.util.numeric;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
-import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
-
 
 /**
  * <p>
  * Utility class for easily performing normal-strength encryption of 
- * BigDecimal objects.
+ * BigInteger objects.
  * </p>
  * <p>
- * This class internally holds a {@link StandardPBEBigDecimalEncryptor} 
+ * This class internally holds a {@link StandardPBEBigIntegerEncryptor} 
  * configured this way:
  * <ul>
- *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
+ *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
  *   <li>Key obtention iterations: <tt>1000</tt>.</li>
  * </ul>
  * </p>
@@ -43,8 +42,8 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * <ol>
  *   <li>Create an instance (using <tt>new</tt>).</li>
  *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt>).</li>
- *   <li>Perform the desired <tt>{@link #encrypt(BigDecimal)}</tt> or 
- *       <tt>{@link #decrypt(BigDecimal)}</tt> operations.</li> 
+ *   <li>Perform the desired <tt>{@link #encrypt(BigInteger)}</tt> or 
+ *       <tt>{@link #decrypt(BigInteger)}</tt> operations.</li> 
  * </ol> 
  * </p>
  * <p>
@@ -56,20 +55,20 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class StrongDecimalEncryptor implements DecimalEncryptor {
+public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEBigDecimalEncryptor encryptor = null;
+    private StandardPBEBigIntegerEncryptor encryptor = null;
     
     
     /**
-     * Creates a new instance of <tt>StrongDecimalEncryptor</tt>.
+     * Creates a new instance of <tt>BasicIntegerNumberEncryptor</tt>.
      */
-    public StrongDecimalEncryptor() {
+    public BasicIntegerNumberEncryptor() {
         super();
-        this.encryptor = new StandardPBEBigDecimalEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        this.encryptor = new StandardPBEBigIntegerEncryptor();
+        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
     }
 
     
@@ -87,9 +86,9 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
      * Encrypts a number
      * 
      * @param number the number to be encrypted.
-     * @see StandardPBEBigDecimalEncryptor#encrypt(BigDecimal)
+     * @see StandardPBEBigIntegerEncryptor#encrypt(BigInteger)
      */
-    public BigDecimal encrypt(BigDecimal number) {
+    public BigInteger encrypt(BigInteger number) {
         return encryptor.encrypt(number);
     }
     
@@ -98,9 +97,9 @@ public class StrongDecimalEncryptor implements DecimalEncryptor {
      * Decrypts a number.
      * 
      * @param encryptedNumber the number to be decrypted.
-     * @see StandardPBEBigDecimalEncryptor#decrypt(BigDecimal)
+     * @see StandardPBEBigIntegerEncryptor#decrypt(BigInteger)
      */
-    public BigDecimal decrypt(BigDecimal encryptedNumber) {
+    public BigInteger decrypt(BigInteger encryptedNumber) {
         return encryptor.decrypt(encryptedNumber);
     }
 
