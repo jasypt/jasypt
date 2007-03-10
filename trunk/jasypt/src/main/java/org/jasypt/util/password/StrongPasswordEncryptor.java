@@ -23,7 +23,8 @@ import org.jasypt.digest.StandardStringDigester;
 
 /**
  * <p>
- * Utility class for easily performing high-strength password digesting and checking.
+ * Utility class for easily performing high-strength password 
+ * digesting and checking.
  * </p>
  * <p>
  * This class internally holds a {@link StandardStringDigester} 

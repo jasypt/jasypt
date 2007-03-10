@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class StandardPasswordEncryptorTest extends TestCase {
+public class BasicPasswordEncryptorTest extends TestCase {
 
     
     
@@ -32,7 +32,7 @@ public class StandardPasswordEncryptorTest extends TestCase {
         
         String password = "This is a Password";
         
-        StandardPasswordEncryptor passwordEncryptor = new StandardPasswordEncryptor();
+        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
         assertTrue(Base64.isArrayByteBase64(encryptedPassword.getBytes("US-ASCII")));
         
@@ -45,7 +45,7 @@ public class StandardPasswordEncryptorTest extends TestCase {
             assertFalse(passwordEncryptor.checkPassword(password2, encryptedPassword));
         }
 
-        StandardPasswordEncryptor digester2 = new StandardPasswordEncryptor();
+        BasicPasswordEncryptor digester2 = new BasicPasswordEncryptor();
         for (int i = 0; i < 100; i++) {
             assertTrue(digester2.checkPassword(password, encryptedPassword));
         }
@@ -56,7 +56,7 @@ public class StandardPasswordEncryptorTest extends TestCase {
                             passwordEncryptor.encryptPassword(password)));
         }
         
-        StandardPasswordEncryptor digester3 = new StandardPasswordEncryptor();
+        BasicPasswordEncryptor digester3 = new BasicPasswordEncryptor();
         encryptedPassword = digester3.encryptPassword(password);
         
         for (int i = 0; i < 100; i++) {

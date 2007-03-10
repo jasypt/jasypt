@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class StandardTextEncryptorTest extends TestCase {
+public class BasicTextEncryptorTest extends TestCase {
 
     
     
@@ -33,7 +33,7 @@ public class StandardTextEncryptorTest extends TestCase {
         String message = "This is a Message";
         String password = "APASSWORD";
         
-        StandardTextEncryptor textEncryptor = new StandardTextEncryptor();
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword(password);
         
         for (int i = 0; i < 100; i++) {
@@ -42,7 +42,7 @@ public class StandardTextEncryptorTest extends TestCase {
             assertEquals(textEncryptor.decrypt(encryptedMessage), message);
         }
         
-        StandardTextEncryptor textEncryptor2 = new StandardTextEncryptor();
+        BasicTextEncryptor textEncryptor2 = new BasicTextEncryptor();
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
