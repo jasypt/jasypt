@@ -17,19 +17,21 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util.binary;
+package org.jasypt.util.numeric;
 
-import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
+import java.math.BigDecimal;
+
+import org.jasypt.encryption.pbe.StandardPBEDecimalEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 /**
  * <p>
- * Utility class for easily performing high-strength encryption of 
- * binaries (byte arrays).
+ * Utility class for easily performing normal-strength encryption of 
+ * BigDecimal objects.
  * </p>
  * <p>
- * This class internally holds a {@link StandardPBEByteEncryptor} 
+ * This class internally holds a {@link StandardPBEDecimalEncryptor} 
  * configured this way:
  * <ul>
  *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
@@ -41,8 +43,8 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * <ol>
  *   <li>Create an instance (using <tt>new</tt>).</li>
  *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt>).</li>
- *   <li>Perform the desired <tt>{@link #encrypt(byte[])}</tt> or 
- *       <tt>{@link #decrypt(byte[])}</tt> operations.</li> 
+ *   <li>Perform the desired <tt>{@link #encrypt(BigDecimal)}</tt> or 
+ *       <tt>{@link #decrypt(BigDecimal)}</tt> operations.</li> 
  * </ol> 
  * </p>
  * <p>
@@ -54,19 +56,19 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StrongBinaryEncryptor implements BinaryEncryptor {
+public class StrongDecimalEncryptor implements DecimalEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEByteEncryptor encryptor = null;
+    private StandardPBEDecimalEncryptor encryptor = null;
     
     
     /**
-     * Creates a new instance of <tt>StrongBinaryEncryptor</tt>.
+     * Creates a new instance of <tt>StrongDecimalEncryptor</tt>.
      */
-    public StrongBinaryEncryptor() {
+    public StrongDecimalEncryptor() {
         super();
-        this.encryptor = new StandardPBEByteEncryptor();
+        this.encryptor = new StandardPBEDecimalEncryptor();
         this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
     }
 
@@ -80,28 +82,26 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
         encryptor.setPassword(password);
     }
 
+
+    /**
+     * Encrypts a number
+     * 
+     * @param number the number to be encrypted.
+     * @see StandardPBEDecimalEncryptor#encrypt(BigDecimal)
+     */
+    public BigDecimal encrypt(BigDecimal number) {
+        return encryptor.encrypt(number);
+    }
+    
     
     /**
-     * Encrypts a byte array
+     * Decrypts a number.
      * 
-     * @param binary the byte array to be encrypted.
-     * @see StandardPBEByteEncryptor#encrypt(byte[])
+     * @param encryptedNumber the number to be decrypted.
+     * @see StandardPBEDecimalEncryptor#decrypt(BigDecimal)
      */
-    public byte[] encrypt(byte[] binary) {
-        return encryptor.encrypt(binary);
+    public BigDecimal decrypt(BigDecimal encryptedNumber) {
+        return encryptor.decrypt(encryptedNumber);
     }
 
-    
-    /**
-     * Decrypts a byte array.
-     * 
-     * @param encryptedBinary the byte array to be decrypted.
-     * @see StandardPBEByteEncryptor#decrypt(byte[])
-     */
-    public byte[] decrypt(byte[] encryptedBinary) {
-        return encryptor.decrypt(encryptedBinary);
-    }
-
-
-    
 }

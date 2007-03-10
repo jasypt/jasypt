@@ -17,22 +17,23 @@
  * 
  * =============================================================================
  */
-package org.jasypt.util.binary;
+package org.jasypt.util.numeric;
 
-import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
+import java.math.BigInteger;
+
+import org.jasypt.encryption.pbe.StandardPBEIntegerEncryptor;
 import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
-
 
 /**
  * <p>
- * Utility class for easily performing high-strength encryption of 
- * binaries (byte arrays).
+ * Utility class for easily performing normal-strength encryption of 
+ * BigInteger objects.
  * </p>
  * <p>
- * This class internally holds a {@link StandardPBEByteEncryptor} 
+ * This class internally holds a {@link StandardPBEIntegerEncryptor} 
  * configured this way:
  * <ul>
- *   <li>Algorithm: <tt>PBEWithMD5AndTripleDES</tt>.</li>
+ *   <li>Algorithm: <tt>PBEWithMD5AndDES</tt>.</li>
  *   <li>Key obtention iterations: <tt>1000</tt>.</li>
  * </ul>
  * </p>
@@ -41,8 +42,8 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * <ol>
  *   <li>Create an instance (using <tt>new</tt>).</li>
  *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt>).</li>
- *   <li>Perform the desired <tt>{@link #encrypt(byte[])}</tt> or 
- *       <tt>{@link #decrypt(byte[])}</tt> operations.</li> 
+ *   <li>Perform the desired <tt>{@link #encrypt(BigInteger)}</tt> or 
+ *       <tt>{@link #decrypt(BigInteger)}</tt> operations.</li> 
  * </ol> 
  * </p>
  * <p>
@@ -54,20 +55,20 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class StrongBinaryEncryptor implements BinaryEncryptor {
+public class StandardIntegerEncryptor implements IntegerEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEByteEncryptor encryptor = null;
+    private StandardPBEIntegerEncryptor encryptor = null;
     
     
     /**
-     * Creates a new instance of <tt>StrongBinaryEncryptor</tt>.
+     * Creates a new instance of <tt>StandardIntegerEncryptor</tt>.
      */
-    public StrongBinaryEncryptor() {
+    public StandardIntegerEncryptor() {
         super();
-        this.encryptor = new StandardPBEByteEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        this.encryptor = new StandardPBEIntegerEncryptor();
+        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
     }
 
     
@@ -80,28 +81,26 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
         encryptor.setPassword(password);
     }
 
+
+    /**
+     * Encrypts a number
+     * 
+     * @param number the number to be encrypted.
+     * @see StandardPBEIntegerEncryptor#encrypt(BigInteger)
+     */
+    public BigInteger encrypt(BigInteger number) {
+        return encryptor.encrypt(number);
+    }
+    
     
     /**
-     * Encrypts a byte array
+     * Decrypts a number.
      * 
-     * @param binary the byte array to be encrypted.
-     * @see StandardPBEByteEncryptor#encrypt(byte[])
+     * @param encryptedNumber the number to be decrypted.
+     * @see StandardPBEIntegerEncryptor#decrypt(BigInteger)
      */
-    public byte[] encrypt(byte[] binary) {
-        return encryptor.encrypt(binary);
+    public BigInteger decrypt(BigInteger encryptedNumber) {
+        return encryptor.decrypt(encryptedNumber);
     }
 
-    
-    /**
-     * Decrypts a byte array.
-     * 
-     * @param encryptedBinary the byte array to be decrypted.
-     * @see StandardPBEByteEncryptor#decrypt(byte[])
-     */
-    public byte[] decrypt(byte[] encryptedBinary) {
-        return encryptor.decrypt(encryptedBinary);
-    }
-
-
-    
 }
