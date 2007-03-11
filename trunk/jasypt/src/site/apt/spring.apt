@@ -28,5 +28,5 @@ Integrating jasypt with Spring Framework
 Integration jasypt with Spring Security (Acegi Security)
 
   For details on how to integrate jasypt with Acegi, the standard security framework
-  for Spring, please have a look at {{{/springsecurity}this guide}}.
+  for Spring, please have a look at {{{springsecurity}this guide}}.
   

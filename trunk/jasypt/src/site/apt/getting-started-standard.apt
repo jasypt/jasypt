@@ -1,9 +1,9 @@
 
   This is a brief Getting Started guide. For more complete information about 
   each class and its usage, please visit the JavaDoc documentation for 
-  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
-  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}
-  and {{{http://www.jasypt.org/api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
+  {{{api/jasypt/apidocs}jasypt}} and 
+  {{{api/jasypt-hibernate/apidocs}jasypt-hibernate}}
+  and {{{api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
 
 Getting Started with JASYPT standard encryption tools
 
@@ -61,7 +61,7 @@ String digest = digester.digest(myMessage);
         one to be able to retrieve configuration parameters in whichever
         ways he/she needs.
 
-  Please refer to the {{{http://www.jasypt.org/api/jasypt/apidocs}JavaDoc}}
+  Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
   for more information about usage and functionality.
 
 
@@ -138,6 +138,6 @@ String plainText = encryptor.decrypt(encryptedText);  // encryptedText.equals(pl
         one to be able to retrieve configuration parameters in whichever
         ways he/she needs (for instance, retrieve the password from a remote server).
 
-  Please refer to the {{{http://www.jasypt.org/api/jasypt/apidocs}JavaDoc}}
+  Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
   for more information about usage and functionality.
   

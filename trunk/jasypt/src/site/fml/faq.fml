@@ -20,6 +20,27 @@
         </ul>
       </answer>
     </faq>
+    
+    <faq id="does-jasypt-implement-algorithms">
+      <question>Does Jasypt implement its own encryption algorihms? Is it "simplified encryption" because it is less safe?</question>
+      <answer>
+        <p>
+          No. Jasypt does not implement any encryption algorithms, but instead
+          delegates to the ones already provided by the JCE 
+          (Java Cryptography Extension), adding a layer for ease and 
+          correctness of use, configurability, integration with many 
+          other technologies, etc.
+        </p>
+        <p>
+          If is "simplified encryption" because it is much easier to use
+          and integrate than the standard APIs, but you will
+          get the same encryption power as if you were using JCE directly, 
+          or even more, as jasypt will enforce
+          best practices and use standards that will ensure that you always
+          get the highest level of security from encryption.
+        </p>
+      </answer>
+    </faq>
 
     <faq id="i-dont-use-hibernate">
       <question>I don't use Hibernate at all. Can I use jasypt anyway?</question>
@@ -99,7 +120,7 @@
         </p>
         <p>
           If you want to learn why this happens and how you could try to avoid it,
-          have a look at the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting 
+          have a look at the <a href="encrypting-passwords.html">Encrypting 
           Passwords Guide</a>.
         </p>
         <p>
@@ -134,7 +155,7 @@
           message digesters (one hashing iteration, none or user-property based fixed salt...), 
           and are not as safe as
           jasypt's password encryptors can be (learn more about random salt and
-          iteration count at the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting 
+          iteration count at the <a href="encrypting-passwords.html">Encrypting 
           Passwords Guide</a>).</li>
           <li>Second, because they don't provide the same level of configuration
           capabilities as jasypt's password encryptors: algorithms, 
@@ -148,7 +169,7 @@
         </ul>
         <p>
           For more information on integrating Jasypt into an Acegi-enabled
-          application, please check the <a href="http://www.jasypt.org/springsecurity.html">Jasypt + Acegi</a> guide.
+          application, please check the <a href="springsecurity.html">Jasypt + Acegi</a> guide.
         </p>
       </answer>
     </faq>
@@ -157,16 +178,16 @@
       <question>I want to encrypt passwords and I know NOTHING about encryption. What do I have to do?</question>
       <answer>
         <p>
-          Simply use <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/util/PasswordEncryptor.html">org.jasypt.util.PasswordEncryptor</a>.
+          Simply use <a href="api/jasypt/apidocs/org/jasypt/util/PasswordEncryptor.html">org.jasypt.util.PasswordEncryptor</a>.
           There is nothing more you need to know (if you don't want to :-)).
         </p>
         <p>
           If you want more power (such as deciding which algorithm to use),
-          then you can have a look at <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">org.jasypt.digest.StandardStringDigester</a>.
+          then you can have a look at <a href="api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">org.jasypt.digest.StandardStringDigester</a>.
         </p>
         <p>
           And if you want to know more, have a look at
-          the <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a>
+          the <a href="encrypting-passwords.html">Encrypting Passwords</a>
           guide to learn about how a password should be encrypted.
         </p>
       </answer>
@@ -223,8 +244,8 @@
         </p>
         <p>
           For learning more about how password/message digesting works in jasypt, see
-          <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a> or the
-          <a href="http://www.jasypt.org/api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">javadoc for StandardStringDigester</a>.
+          <a href="encrypting-passwords.html">Encrypting Passwords</a> or the
+          <a href="api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">javadoc for StandardStringDigester</a>.
         </p>
         <p>
           For more info about the RSA standard, see <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127">PKCS #5: Password-Based Cryptography Standard</a>.
@@ -242,7 +263,7 @@
         </p>
         <p>
           Using this random salt offers you several important security advantages
-          as you can read in <a href="http://www.jasypt.org/encrypting-passwords.html">Encrypting Passwords</a>,
+          as you can read in <a href="encrypting-passwords.html">Encrypting Passwords</a>,
           but if it is important for you that two digests of the same message
           be equal, you can set the salt size to 0 bytes. This will force
           jasypt to avoid the use of a salt when digesting.
