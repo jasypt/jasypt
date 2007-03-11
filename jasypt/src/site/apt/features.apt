@@ -1,0 +1,80 @@
+
+Features
+ 
+     * Jasypt follows the <<RSA standards>> for password-based cryptography, and 
+     provides you with both unidirectional and bidirectional encryption
+     techniques. 
+     
+     []
+     
+     * <<Higher security for your users' passwords>>.
+     {{{encrypting-passwords.html}Learn more}}.
+       
+     []
+     
+     * <<Binary encryption support>>. Besides texts, it allows the
+     digest and encryption of binaries (byte arrays). Encrypt your objects
+     or files when needed (for being sent over the net, for example).
+     
+     []
+     
+     * Completely <<thread-safe>>.
+     
+     []
+
+     * Provides <<easy, no-configuration encryption tools>> for users new to 
+     encryption, and also <<highly configurable standard encryption tools>>, 
+     for power-users.
+
+     []
+       
+     * {{{http://www.hibernate.org}Hibernate 3}} integration add-on (jasypt-hibernate)
+     for persisting fields of your mapped entities in an encrypted manner.
+     <<Encryption of fields is defined in the Hibernate mapping files>>, and
+     it remains transparent for the rest of the application (useful for
+     sensitive personal data, databases with many read-enabled users...). {{{hibernate3.html}Learn more}}.
+
+     []
+     
+     * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application. All the 
+       digesters and encryptors in jasypt are designed to be easily used 
+       (instantiated, dependency-injected...) from an IoC container like 
+       Spring. And, because of it being thread-safe, they <<can be used without 
+       worries in a singleton-oriented environment like Spring>>. {{{spring.html}Learn more}}.
+
+     []
+     
+     * {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} add-on (jasypt-spring-security)
+     for performing password encryption and matching tasks for the security
+     framework, improving the security of your users' passwords by using
+     <<safer password encryption mechanisms>> and providing you with a
+     higher degree of <<configuration and control>>. {{{springsecurity.html}Learn more}}.
+
+     []
+     
+     * <<Comprehensive guides and javadoc documentation>>, to allow
+     developers to better understand what they are really doing to their data.
+          
+     []
+     
+     * Robust charset support, designed to adequately encrypt and digest
+     texts whichever the original charset is. <<Complete support for
+     languages like Japanese, Korean, Arabic...>> with no encoding or 
+     platform issues.
+       
+     []
+     
+     * Very high level of configuration capabilities: The developer can 
+     implement tricks like instructing an "encryptor" to ask a, for example,
+     remote HTTPS server for the password to be used for encryption. <<It lets
+     you meet your security needs>>. {{{advancedconfiguration.html}Learn more}}.
+
+
+Want to know more?
+
+  To know more, check {{{ataglance.html}Jasypt at a Glance}} or the 
+  {{{faq.html}Frequently Asked Questions}} page.
+  
+  Do you have any questions, comments or suggestions? Do you want to tell your experience
+  using jasypt? Check the {{{http://sourceforge.net/forum/?group_id=183612}Forums}}.
+     

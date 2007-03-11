@@ -5,6 +5,8 @@
   and util.text packages, and moved existing util classes to their corresponding
   packages. Also created PasswordEncryptor and TextEncryptor interfaces,
   to unify both basic- and strong-encryption implementations.
+  NOTE: the old org.jasypt.util classes have been DEPRECATED, and will be
+  removed in jasypt 1.3.
 - Added org.jasypt.util.password.ConfigurablePasswordEncryptor for a more
   configurable (yet easy) way of using a password encryptor.
 - Added binary utils for easy encryption of binaries.

@@ -1,7 +1,7 @@
 
   For further information about each class and its usage, please visit the JavaDoc documentation for 
-  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}} and 
-  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
+  {{{api/jasypt/apidocs}jasypt}} and 
+  {{{api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
 
 Integrating jasypt with Hibernate 3
 

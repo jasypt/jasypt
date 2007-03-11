@@ -1,9 +1,9 @@
 
   This is a brief Getting Started guide. For more complete information about 
   each class and its usage, please visit the JavaDoc documentation for 
-  {{{http://www.jasypt.org/api/jasypt/apidocs}jasypt}}, 
-  {{{http://www.jasypt.org/api/jasypt-hibernate/apidocs}jasypt-hibernate}}
-  and {{{http://www.jasypt.org/api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
+  {{{/api/jasypt/apidocs}jasypt}}, 
+  {{{api/jasypt-hibernate/apidocs}jasypt-hibernate}}
+  and {{{api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
 
 Getting Started with JASYPT easy encryption tools
 
@@ -21,9 +21,9 @@ Getting Started with JASYPT easy encryption tools
 ----------------
 ...
 PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
-String encryptedPassword = passwordEncryptor.encryptPassword(usersPassword);
+String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
 ...
-if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
+if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
   // correct!
 } else {
   // bad login!
@@ -41,9 +41,9 @@ if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
 ----------------
 ...
 StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
-String encryptedPassword = passwordEncryptor.encryptPassword(usersPassword);
+String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
 ...
-if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
+if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
   // correct!
 } else {
   // bad login!
@@ -60,9 +60,9 @@ if (passwordEncryptor.checkPassword(inputPassword, storedPassword)) {
 ----------------
 ...
 TextEncryptor textEncryptor = new TextEncryptor();
-textEncryptor.setPassword("jasypt");
+textEncryptor.setPassword(myEncryptionPassword);
 ...
-String encryptedText = textEncryptor.encrypt(myText);
+String myEncryptedText = textEncryptor.encrypt(myText);
 ...
 String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
@@ -79,9 +79,9 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ----------------
 ...
 StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
-textEncryptor.setPassword("jasypt");
+textEncryptor.setPassword(myEncryptionPassword);
 ...
-String encryptedText = textEncryptor.encrypt(myText);
+String myEncryptedText = textEncryptor.encrypt(myText);
 ...
 String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
