@@ -2,7 +2,7 @@
 <body>
 <p>
 This document is the API specification for the Jasypt 
-Java Simplified Encryption library, version 1.1.
+Java Simplified Encryption library, version 1.2.
 </p>
 
 <p>
@@ -11,9 +11,12 @@ Java Simplified Encryption library, version 1.1.
 <ul>
   <li><i>Easy</i> encryption entities:
     <ul>
-      <li>{@link org.jasypt.util.PasswordEncryptor}</li>
-      <li>{@link org.jasypt.util.TextEncryptor}</li>
-      <li>{@link org.jasypt.util.StrongTextEncryptor}</li>
+      <li>{@link org.jasypt.util.binary.BinaryEncryptor}</li>
+      <li>{@link org.jasypt.util.digest.Digester}</li>
+      <li>{@link org.jasypt.util.numeric.DecimalNumberEncryptor}</li>
+      <li>{@link org.jasypt.util.numeric.IntegerNumberEncryptor}</li>
+      <li>{@link org.jasypt.util.password.PasswordEncryptor}</li>
+      <li>{@link org.jasypt.util.text.TextEncryptor}</li>
     </ul>
   </li>
   <li>Message Digesting:
@@ -26,6 +29,8 @@ Java Simplified Encryption library, version 1.1.
     <ul>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEByteEncryptor}</li>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEStringEncryptor}</li>
+      <li>{@link org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor}</li>
+      <li>{@link org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor}</li>
     </ul>
   </li>
 </ul>
