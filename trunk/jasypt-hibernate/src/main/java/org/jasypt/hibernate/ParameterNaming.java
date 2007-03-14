@@ -21,8 +21,8 @@ package org.jasypt.hibernate;
 
 /**
  * <p>
- * Constant names of the parameters that can be used by an
- * {@link EncryptedTextType} typedef declaration in a Hibernate mapping.
+ * Constant names of the parameters that can be used by a jasypt type's
+ * typedef declaration in a Hibernate mapping.
  * </p>
  * 
  * @since 1.0
@@ -35,7 +35,7 @@ public class ParameterNaming {
     /**
      * <p>
      * The registered name of an encryptor previously registered at the 
-     * {@link HibernatePBEEncryptorRegistry}.
+     * {@link org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry}.
      * </p>
      * <p>
      * Value = <tt>encryptorRegisteredName</tt>

@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate;
+package org.jasypt.hibernate.type;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -34,11 +34,14 @@ import org.hibernate.util.EqualsHelper;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.hibernate.ParameterNaming;
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
- * encryption of text values during persistence of entities.
+ * encryption of String values during persistence of entities.
  * </p>
  * <p>
  * <i>This class is intended only for declarative use from a Hibernate mapping
@@ -52,13 +55,13 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encrypted</b>" class="org.jasypt.hibernate.EncryptedTextType">
- *      &lt;param name="encryptorRegisteredName"><b><i>strongHibernateEncryptor</i></b>&lt;/param>
+ *    &lt;typedef name="<b>encryptedString</b>" class="org.jasypt.hibernate.type.EncryptedStringType">
+ *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateEncryptor</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="address" column="ADDRESS" type="<b>encrypted</b>" />
+ *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -66,9 +69,10 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </pre>
  * </p>
  * <p>
- * ...where an encryptor should have been previously registered to be used
- * from Hibernate with name <tt>strongHibernateEncryptor</tt> (see
- * {@link HibernatePBEEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
+ * ...where a <tt>HibernatePBEStringEncryptor</tt> object
+ * should have been previously registered to be used
+ * from Hibernate with name <tt>myHibernateEncryptor</tt> (see
+ * {@link HibernatePBEStringEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
  * Or, if you prefer to avoid registration of encryptors, you can configure
@@ -79,15 +83,15 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encrypted</b>" class="org.jasypt.hibernate.EncryptedTextType">
+ *    &lt;typedef name="<b>encrypted</b>" class="org.jasypt.hibernate.type.EncryptedStringType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
- *      &lt;param name="password"><b><i>jasypt</i></b>&lt;/param>
+ *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="address" column="ADDRESS" type="<b>encrypted</b>" />
+ *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -101,14 +105,13 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </p>
  * 
  * 
- * @since 1.0
- * @deprecated Replaced by {@link org.jasypt.hibernate.type.EncryptedStringType}
- *             and will be removed in version 1.3. 
+ * @since 1.2 (substitutes org.jasypt.hibernate.EncryptedTextType 
+ *        which existed since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido 
+ * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedTextType implements UserType, ParameterizedType {
+public final class EncryptedStringType implements UserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
     private static int sqlType = nullableType.sqlType();
@@ -279,14 +282,14 @@ public final class EncryptedTextType implements UserType, ParameterizedType {
 
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                HibernatePBEEncryptor hibernateEncryptor = 
-                    registry.getHibernatePBEEncryptor(encryptorName);
-                if (hibernateEncryptor == null) {
+                PBEStringEncryptor pbeEncryptor = 
+                    registry.getPBEStringEncryptor(encryptorName);
+                if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
-                            "No encryptor registered for hibernate with " +
-                            "name \"" + encryptorName + "\"");
+                            "No string encryptor registered for hibernate " +
+                            "with name \"" + encryptorName + "\"");
                 }
-                this.encryptor = hibernateEncryptor.getEncryptor();
+                this.encryptor = pbeEncryptor;
                 
             } else {
                 
