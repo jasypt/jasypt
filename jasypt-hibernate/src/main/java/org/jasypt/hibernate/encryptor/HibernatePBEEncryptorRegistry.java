@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate;
+package org.jasypt.hibernate.encryptor;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * <p>
  * This class is intended to be directly used in applications where
  * an IoC container (like Spring Framework) is not present. If it is, 
- * it is better to do with {@link HibernatePBEEncryptor} instead.
+ * it is better to do with {@link HibernatePBEStringEncryptor} instead.
  * </p>
  * <p>
  * This <i>registry</i> is a <b>singleton</b> which maintains a registry
@@ -54,11 +54,11 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * </p>
  * <p>
  * <pre>
- *  StandardPBEStringEncryptor strongEncryptor = new StandardPBEStringEncryptor();
+ *  StandardPBEStringEncryptor myEncryptor = new StandardPBEStringEncryptor();
  *  ...
  *  HibernatePBEEncryptorRegistry registry =
  *      HibernatePBEEncryptorRegistry.getInstance();
- *  registry.registerPBEEncryptor("<b>strongHibernateEncryptor</b>", strongEncryptor);
+ *  registry.registerPBEStringEncryptor("<b>myHibernateEncryptor</b>", myEncryptor);
  * </pre>
  * </p>
  * <p>
@@ -66,17 +66,15 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
- *      &lt;param name="encryptorRegisteredName"><b>strongHibernateEncryptor</b>&lt;/param>
+ *    &lt;typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedStringType">
+ *      &lt;param name="encryptorRegisteredName"><b>myHibernateEncryptor</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>
  * </p>
  *
  * 
- * @since 1.0
- * @deprecated Replaced by 
- *         {@link org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry}
- *         and will be removed in version 1.3.
+ * @since 1.2 (class existed as 
+ *            org.jasypt.hibernate.HibernatePBEEncryptorRegistry since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
@@ -90,7 +88,7 @@ public class HibernatePBEEncryptorRegistry {
     
     
     // Registry map
-    private HashMap configs = new HashMap();
+    private HashMap stringEncryptors = new HashMap();
     
     
     /**
@@ -113,26 +111,29 @@ public class HibernatePBEEncryptorRegistry {
      * @param registeredName the registered name.
      * @param encryptor the encryptor to be registered.
      */
-    public synchronized void registerPBEEncryptor(
+    public synchronized void registerPBEStringEncryptor(
             String registeredName, PBEStringEncryptor encryptor) {
-        HibernatePBEEncryptor hibernateEncryptor = 
-            new HibernatePBEEncryptor(registeredName, encryptor);
-        this.configs.put(registeredName, hibernateEncryptor);
+        HibernatePBEStringEncryptor hibernateEncryptor = 
+            new HibernatePBEStringEncryptor(registeredName, encryptor);
+        this.stringEncryptors.put(registeredName, hibernateEncryptor);
     }
 
+
     
-    // Not public: this is used from HibernatePBEEncryptor.setRegisteredName.
-    synchronized void registerHibernatePBEEncryptor(
-            HibernatePBEEncryptor hibernateEncryptor) {
-        this.configs.put(
+    // Not public: this is used from 
+    // HibernatePBEStringEncryptor.setRegisteredName.
+    synchronized void registerHibernatePBEStringEncryptor(
+            HibernatePBEStringEncryptor hibernateEncryptor) {
+        this.stringEncryptors.put(
                 hibernateEncryptor.getRegisteredName(), 
                 hibernateEncryptor);
     }
 
     
-    // Not public: this is used from HibernatePBEEncryptor.setRegisteredName.
-    synchronized void unregisterHibernatePBEEncryptor(String name) {
-        this.configs.remove(name);
+    // Not public: this is used from 
+    // HibernatePBEStringEncryptor.setRegisteredName.
+    synchronized void unregisterHibernatePBEStringEncryptor(String name) {
+        this.stringEncryptors.remove(name);
     }
 
     
@@ -140,13 +141,19 @@ public class HibernatePBEEncryptorRegistry {
      * Returns the <tt>PBEStringEncryptor</tt> registered with the specified
      * name (if exists).
      * 
-     * @param name the name of the desired encryptor.
+     * @param registeredName the name with which the desired encryptor was 
+     *        registered.
      * @return the encryptor, or null if no encryptor has been registered with
      *         that name.
      */
-    public synchronized HibernatePBEEncryptor getHibernatePBEEncryptor(
-            String name) {
-        return (HibernatePBEEncryptor) configs.get(name);
+    public synchronized PBEStringEncryptor getPBEStringEncryptor(
+            String registeredName) {
+        HibernatePBEStringEncryptor hibernateEncryptor = 
+            (HibernatePBEStringEncryptor) stringEncryptors.get(registeredName);
+        if (hibernateEncryptor == null) {
+            return null;
+        }
+        return hibernateEncryptor.getEncryptor();
     }
     
 }
