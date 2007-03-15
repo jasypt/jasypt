@@ -19,7 +19,7 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
 }
 ----------------
   
-  And encrypting and decrypting a text...
+  ...encrypting and decrypting a text...
   
 ----------------
 TextEncryptor textEncryptor = new TextEncryptor();
@@ -29,7 +29,7 @@ String myEncryptedText = textEncryptor.encrypt(myText);
 String plainText = textEncryptor.decrypt(myEncryptedText);
 ----------------
 
-  And what about encrypting some sensitive data directly from Hibernate?
+  ...and what about encrypting some sensitive data directly from Hibernate?
 
 ----------------
 <class name="UserData" table="USER_DATA">
@@ -38,6 +38,10 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   ...
 <class>
 ----------------
+  
+  But of course, besides easy, <<jasypt is highly configurable>>. You will
+  be able to choose encryption algorithms, salt generation and many more
+  advanced features...
   
 
 * Check the features!
