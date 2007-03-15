@@ -21,21 +21,23 @@ package org.jasypt.hibernate.encryptor;
 
 import java.util.HashMap;
 
+import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 
 /**
  * <p>
- * Registry for all the <tt>PBEStringEncryptor</tt> which are eligible for
+ * Registry for all the <tt>PBE*Encryptor</tt> which are eligible for
  * use from Hibernate.
  * </p>
  * <p>
  * This class is intended to be directly used in applications where
  * an IoC container (like Spring Framework) is not present. If it is, 
- * it is better to do with {@link HibernatePBEStringEncryptor} instead.
+ * it is better to use the <tt>HibernatePBE*Encryptor</tt> classes
+ * directly, instead.
  * </p>
  * <p>
  * This <i>registry</i> is a <b>singleton</b> which maintains a registry
- * of <tt>PBEStringEncryptor</tt> objects which can be used from Hibernate,
+ * of <tt>PBE*Encryptor</tt> objects which can be used from Hibernate,
  * by using its <tt>registeredName</tt> to reference them from mappings.
  * </p>
  * <p>
@@ -43,14 +45,14 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * <ol>
  *   <li>Obtain the registry instance ({@link #getInstance()}).</li>
  *   <li>Register the encryptor, giving it a <i>registered name</i> 
- *       ({@link #registerPBEEncryptor(String, PBEStringEncryptor)}).</li>
+ *       (<tt>registerPBE*Encryptor(String, PBE*Encryptor</tt>).</li>
  *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
  *       <tt>encryptorRegisteredName</tt> parameter the same value specified
  *       when registering the encryptor.</li>
  * </ol>
  * </p>
  * <p>
- * This is, first register the encryptor:
+ * This is, first register the encryptor (example with a String encryptor):
  * </p>
  * <p>
  * <pre>
@@ -87,8 +89,9 @@ public class HibernatePBEEncryptorRegistry {
         new HibernatePBEEncryptorRegistry();
     
     
-    // Registry map
+    // Registry maps
     private HashMap stringEncryptors = new HashMap();
+    private HashMap bigIntegerEncryptors = new HashMap();
     
     
     /**
@@ -150,6 +153,46 @@ public class HibernatePBEEncryptorRegistry {
             String registeredName) {
         HibernatePBEStringEncryptor hibernateEncryptor = 
             (HibernatePBEStringEncryptor) stringEncryptors.get(registeredName);
+        if (hibernateEncryptor == null) {
+            return null;
+        }
+        return hibernateEncryptor.getEncryptor();
+    }
+
+    
+
+
+    
+    // Not public: this is used from 
+    // HibernatePBEBigIntegerEncryptor.setRegisteredName.
+    synchronized void registerHibernatePBEBigIntegerEncryptor(
+            HibernatePBEBigIntegerEncryptor hibernateEncryptor) {
+        this.bigIntegerEncryptors.put(
+                hibernateEncryptor.getRegisteredName(), 
+                hibernateEncryptor);
+    }
+
+    
+    // Not public: this is used from 
+    // HibernatePBEBigIntegerEncryptor.setRegisteredName.
+    synchronized void unregisterHibernatePBEBigIntegerEncryptor(String name) {
+        this.bigIntegerEncryptors.remove(name);
+    }
+
+    
+    /**
+     * Returns the <tt>PBEBigIntegerEncryptor</tt> registered with the specified
+     * name (if exists).
+     * 
+     * @param registeredName the name with which the desired encryptor was 
+     *        registered.
+     * @return the encryptor, or null if no encryptor has been registered with
+     *         that name.
+     */
+    public synchronized PBEBigIntegerEncryptor getPBEBigIntegerEncryptor(
+            String registeredName) {
+        HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
+            (HibernatePBEBigIntegerEncryptor) bigIntegerEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }
