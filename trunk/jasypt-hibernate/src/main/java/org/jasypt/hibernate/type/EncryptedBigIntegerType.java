@@ -20,6 +20,8 @@
 package org.jasypt.hibernate.type;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,17 +33,17 @@ import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.hibernate.util.EqualsHelper;
-import org.jasypt.encryption.pbe.PBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.ParameterNaming;
+import org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
- * encryption of String values during persistence of entities.
+ * encryption of BigInteger values during persistence of entities.
  * </p>
  * <p>
  * <i>This class is intended only for declarative use from a Hibernate mapping
@@ -55,13 +57,13 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedString</b>" class="org.jasypt.hibernate.type.EncryptedStringType">
+ *    &lt;typedef name="<b>encryptedBigInteger</b>" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
  *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateEncryptor</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
+ *      &lt;property name="address" column="ADDRESS" type="<b>encryptedBigInteger</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -69,10 +71,10 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * </pre>
  * </p>
  * <p>
- * ...where a <tt>HibernatePBEStringEncryptor</tt> object
+ * ...where a <tt>HibernatePBEBigIntegerEncryptor</tt> object
  * should have been previously registered to be used
  * from Hibernate with name <tt>myHibernateEncryptor</tt> (see
- * {@link HibernatePBEStringEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
+ * {@link HibernatePBEBigIntegerEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
  * Or, if you prefer to avoid registration of encryptors, you can configure
@@ -83,7 +85,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedString</b>" class="org.jasypt.hibernate.type.EncryptedStringType">
+ *    &lt;typedef name="<b>encryptedBigInteger</b>" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
  *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
@@ -91,7 +93,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
+ *      &lt;property name="address" column="ADDRESS" type="<b>encryptedBigInteger</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -105,15 +107,14 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * </p>
  * 
  * 
- * @since 1.2 (substitutes org.jasypt.hibernate.EncryptedTextType 
- *        which existed since 1.0)
+ * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedStringType implements UserType, ParameterizedType {
+public final class EncryptedBigIntegerType implements UserType, ParameterizedType {
 
-    private static NullableType nullableType = Hibernate.STRING;
+    private static NullableType nullableType = Hibernate.BIG_INTEGER;
     private static int sqlType = nullableType.sqlType();
     private static int[] sqlTypes = new int[]{ sqlType };
     
@@ -125,7 +126,7 @@ public final class EncryptedStringType implements UserType, ParameterizedType {
     private String password = null;
     private Integer keyObtentionIterations = null;
     
-    private PBEStringEncryptor encryptor = null;
+    private PBEBigIntegerEncryptor encryptor = null;
 
     
     public int[] sqlTypes() {
@@ -134,7 +135,7 @@ public final class EncryptedStringType implements UserType, ParameterizedType {
 
     
     public Class returnedClass() {
-        return String.class;
+        return BigInteger.class;
     }
 
     
@@ -190,7 +191,13 @@ public final class EncryptedStringType implements UserType, ParameterizedType {
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
             throws HibernateException, SQLException {
         checkInitialization();
-        String message = rs.getString(names[0]);
+        BigDecimal decimalMessage = rs.getBigDecimal(names[0]);
+        if (rs.wasNull()) {
+            return null;
+        }
+        BigInteger message = 
+            decimalMessage.setScale(0, BigDecimal.ROUND_UNNECESSARY).
+                unscaledValue();
         return rs.wasNull() ? null : this.encryptor.decrypt(message);
     }
 
@@ -201,7 +208,9 @@ public final class EncryptedStringType implements UserType, ParameterizedType {
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            st.setString(index, this.encryptor.encrypt((String) value));
+            BigInteger encryptedMessage = 
+                this.encryptor.encrypt((BigInteger) value);
+            st.setBigDecimal(index, new BigDecimal(encryptedMessage));
         }
     }
 
@@ -282,19 +291,19 @@ public final class EncryptedStringType implements UserType, ParameterizedType {
 
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEStringEncryptor pbeEncryptor = 
-                    registry.getPBEStringEncryptor(encryptorName);
+                PBEBigIntegerEncryptor pbeEncryptor = 
+                    registry.getPBEBigIntegerEncryptor(encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
-                            "No string encryptor registered for hibernate " +
+                            "No big integer encryptor registered for hibernate " +
                             "with name \"" + encryptorName + "\"");
                 }
                 this.encryptor = pbeEncryptor;
                 
             } else {
                 
-                StandardPBEStringEncryptor newEncryptor = 
-                    new StandardPBEStringEncryptor();
+                StandardPBEBigIntegerEncryptor newEncryptor = 
+                    new StandardPBEBigIntegerEncryptor();
                 
                 newEncryptor.setPassword(this.password);
                 
