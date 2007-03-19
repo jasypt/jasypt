@@ -75,6 +75,18 @@ public class ParameterNaming {
     public static final String KEY_OBTENTION_ITERATIONS = 
         "keyObtentionIterations";
     
+    /**
+     * <p>
+     * The scale (numbers after the decimal point) to be used when storing
+     * decimal numbers.
+     * </p>
+     * <p>
+     * Value = <tt>decimalScale</tt>
+     * </p>
+     */
+    public static final String DECIMAL_SCALE = 
+        "decimalScale";
+    
     
     
     private ParameterNaming() {}

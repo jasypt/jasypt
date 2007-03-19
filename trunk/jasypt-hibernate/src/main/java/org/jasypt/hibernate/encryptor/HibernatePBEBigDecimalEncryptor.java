@@ -19,18 +19,18 @@
  */
 package org.jasypt.hibernate.encryptor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
-import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
+import org.jasypt.encryption.pbe.PBEBigDecimalEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
  * <p>
- * Placeholder class for <tt>PBEBigIntegerEncryptor</tt> objects which are
+ * Placeholder class for <tt>PBEBigDecimalEncryptor</tt> objects which are
  * eligible for use from Hibernate. 
  * </p>
  * <p>
- * This class acts as a wrapper on a <tt>PBEBigIntegerEncryptor</tt>, allowing
+ * This class acts as a wrapper on a <tt>PBEBigDecimalEncryptor</tt>, allowing
  * to be set a <b>registered name</b> (see {@link #setRegisteredName(String)})
  * and performing the needed registry operations against the 
  * {@link HibernatePBEEncryptorRegistry}.
@@ -53,8 +53,8 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </p>
  * <p>
  * <pre> 
- *  &lt;bean id="bigIntegerEncryptor"
- *    class="org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor">
+ *  &lt;bean id="bigDecimalEncryptor"
+ *    class="org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor">
  *    &lt;property name="algorithm">
  *        &lt;value>PBEWithMD5AndDES&lt;/value>
  *    &lt;/property>
@@ -64,12 +64,12 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  *  &lt;/bean>
  *  
  *  &lt;bean id="hibernateEncryptor"
- *    class="org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor">
+ *    class="org.jasypt.hibernate.encryptor.HibernatePBEBigDecimalEncryptor">
  *    &lt;property name="registeredName">
- *        &lt;value><b>myHibernateBigIntegerEncryptor</b>&lt;/value>
+ *        &lt;value><b>myHibernateBigDecimalEncryptor</b>&lt;/value>
  *    &lt;/property>
  *    &lt;property name="encryptor">
- *        &lt;ref bean="bigIntegerEncryptor" />
+ *        &lt;ref bean="bigDecimalEncryptor" />
  *    &lt;/property>
  *  &lt;/bean>
  * </pre>
@@ -79,16 +79,17 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
- *      &lt;param name="encryptorRegisteredName"><b>myHibernateBigIntegerEncryptor</b>&lt;/param>
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBigDecimalType">
+ *      &lt;param name="encryptorRegisteredName"><b>myHibernateBigDecimalEncryptor</b>&lt;/param>
+ *      &lt;param name="decimalScale"><b>2</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>
  * </p>
  * <p>
- * An important thing to note is that, when using <tt>HibernatePBEBigIntegerEncryptor</tt>
- * objects this way to wrap <tt>PBEBigIntegerEncryptor</tt>s, <u>it is not
+ * An important thing to note is that, when using <tt>HibernatePBEBigDecimalEncryptor</tt>
+ * objects this way to wrap <tt>PBEBigDecimalEncryptor</tt>s, <u>it is not
  * necessary to deal with {@link HibernatePBEEncryptorRegistry}</u>, 
- * because <tt>HibernatePBEBigIntegerEncryptor</tt> objects get automatically registered
+ * because <tt>HibernatePBEBigDecimalEncryptor</tt> objects get automatically registered
  * in the encryptor registry when their {@link #setRegisteredName(String)}
  * method is called.
  * </p>
@@ -98,27 +99,27 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class HibernatePBEBigIntegerEncryptor {
+public class HibernatePBEBigDecimalEncryptor {
 
     private String registeredName = null;
-    private PBEBigIntegerEncryptor encryptor = null;
+    private PBEBigDecimalEncryptor encryptor = null;
     
     
     
     /**
-     * Creates a new instance of <tt>HibernatePBEBigIntegerEncryptor</tt> 
+     * Creates a new instance of <tt>HibernatePBEBigDecimalEncryptor</tt> 
      */
-    public HibernatePBEBigIntegerEncryptor() {
+    public HibernatePBEBigDecimalEncryptor() {
         super();
     }
 
 
     /*
-     * For internal use only, by the Registry, when a PBEBigIntegerEncryptor
+     * For internal use only, by the Registry, when a PBEBigDecimalEncryptor
      * is registered programmatically.
      */
-    HibernatePBEBigIntegerEncryptor(String registeredName, 
-            PBEBigIntegerEncryptor encryptor) {
+    HibernatePBEBigDecimalEncryptor(String registeredName, 
+            PBEBigDecimalEncryptor encryptor) {
         this.encryptor = encryptor;
         this.registeredName = registeredName;
     }
@@ -129,18 +130,18 @@ public class HibernatePBEBigIntegerEncryptor {
      * 
      * @return the encryptor.
      */
-    public PBEBigIntegerEncryptor getEncryptor() {
+    public PBEBigDecimalEncryptor getEncryptor() {
         return encryptor;
     }
     
     
     /**
-     * Sets the <tt>PBEBigIntegerEncryptor</tt> to be held (wrapped) by this
+     * Sets the <tt>PBEBigDecimalEncryptor</tt> to be held (wrapped) by this
      * object.
      * 
      * @param encryptor the encryptor.
      */
-    public void setEncryptor(PBEBigIntegerEncryptor encryptor) {
+    public void setEncryptor(PBEBigDecimalEncryptor encryptor) {
         this.encryptor = encryptor;
     }
 
@@ -151,7 +152,7 @@ public class HibernatePBEBigIntegerEncryptor {
      * @param message the message to be encrypted.
      * @return the encryption result.
      */
-    public BigInteger encrypt(BigInteger message) {
+    public BigDecimal encrypt(BigDecimal message) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -166,7 +167,7 @@ public class HibernatePBEBigIntegerEncryptor {
      * @param encryptedMessage the message to be decrypted.
      * @return the result of decryption.
      */
-    public BigInteger decrypt(BigInteger encryptedMessage) {
+    public BigDecimal decrypt(BigDecimal encryptedMessage) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -186,11 +187,11 @@ public class HibernatePBEBigIntegerEncryptor {
         if (this.registeredName != null) {
             // It had another name before, we have to clean
             HibernatePBEEncryptorRegistry.getInstance().
-                    unregisterHibernatePBEBigIntegerEncryptor(this.registeredName);
+                    unregisterHibernatePBEBigDecimalEncryptor(this.registeredName);
         }
         this.registeredName = registeredName;
         HibernatePBEEncryptorRegistry.getInstance().
-                registerHibernatePBEBigIntegerEncryptor(this);
+                registerHibernatePBEBigDecimalEncryptor(this);
     }
 
     /**

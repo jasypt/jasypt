@@ -21,7 +21,7 @@ package org.jasypt.hibernate.type;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,17 +33,17 @@ import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.hibernate.util.EqualsHelper;
-import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
+import org.jasypt.encryption.pbe.PBEBigDecimalEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.ParameterNaming;
-import org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor;
+import org.jasypt.hibernate.encryptor.HibernatePBEBigDecimalEncryptor;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
- * encryption of BigInteger values during persistence of entities.
+ * encryption of BigDecimal values during persistence of entities.
  * </p>
  * <p>
  * <i>This class is intended only for declarative use from a Hibernate mapping
@@ -58,13 +58,14 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBigInteger</b>" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
- *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateBigIntegerEncryptor</i></b>&lt;/param>
+ *    &lt;typedef name="<b>encryptedBigDecimal</b>" class="org.jasypt.hibernate.type.EncryptedBigDecimalType">
+ *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateBigDecimalEncryptor</i></b>&lt;/param>
+ *      &lt;param name="decimalScale"><b><i>2</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="salary" column="SALARY" type="<b>encryptedBigInteger</b>" />
+ *      &lt;property name="salary" column="SALARY" type="<b>encryptedBigDecimal</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -72,10 +73,10 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * </pre>
  * </p>
  * <p>
- * ...where a <tt>HibernatePBEBigIntegerEncryptor</tt> object
+ * ...where a <tt>HibernatePBEBigDecimalEncryptor</tt> object
  * should have been previously registered to be used
- * from Hibernate with name <tt>myHibernateBigIntegerEncryptor</tt> (see
- * {@link HibernatePBEBigIntegerEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
+ * from Hibernate with name <tt>myHibernateBigDecimalEncryptor</tt> (see
+ * {@link HibernatePBEBigDecimalEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
  * Or, if you prefer to avoid registration of encryptors, you can configure
@@ -86,21 +87,43 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBigInteger</b>" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
+ *    &lt;typedef name="<b>encryptedBigDecimal</b>" class="org.jasypt.hibernate.type.EncryptedBigDecimalType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
  *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
+ *      &lt;param name="decimalScale"><b><i>2</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="address" column="ADDRESS" type="<b>encryptedBigInteger</b>" />
+ *      &lt;property name="address" column="ADDRESS" type="<b>encryptedBigDecimal</b>" />
  *      ...
  *    &lt;class>
  *    ...
  *  &lt;hibernate-mapping>
  * </pre>
  * </p>
+ * <p>
+ * </p>
+ * <b>About the <tt>decimalScale</tt> parameter</b>
+ * <p>
+ * The <tt>decimalScale</tt> parameter is aimed at setting the scale with which
+ * BigDecimal numbers will be set to and retrieved from the database. It is
+ * an important parameter because many DBMSs return BigDecimal numbers with
+ * a scale equal to the amount of decimal positions declared for the field
+ * (e.g. if we store "18.23" (scale=2) in a DECIMAL(15,5) field, we can get a 
+ * "18.23000" (scale=5) back when we retrieve the number). This can affect
+ * correct decryption of encrypted numbers, but specifying a 
+ * <tt>decimalScale</tt> parameter will solve this issue.
+ * </p>
+ * <p>
+ * So, if we set <tt>decimalScale</tt> to 3, and we store "18.23", this 
+ * Hibernate type will send "18.230" to the encryptor, which is the value that
+ * we will get back from the database at retrieval time (a scale of "3" 
+ * will be set again on the value obtained from DB). If it is necessary, a 
+ * <i>DOWN</i> rounding operation is executed on the number. 
+ * </p>
+ * <hr/>
  * <p>
  * To learn more about usage of user-defined types, please refer to the
  * <a href="http://www.hibernate.org" target="_blank">Hibernate Reference
@@ -113,9 +136,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedBigIntegerType implements UserType, ParameterizedType {
+public final class EncryptedBigDecimalType implements UserType, ParameterizedType {
 
-    private static NullableType nullableType = Hibernate.BIG_INTEGER;
+    private static NullableType nullableType = Hibernate.BIG_DECIMAL;
     private static int sqlType = nullableType.sqlType();
     private static int[] sqlTypes = new int[]{ sqlType };
     
@@ -126,8 +149,9 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
     private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
+    private Integer decimalScale = null;
     
-    private PBEBigIntegerEncryptor encryptor = null;
+    private PBEBigDecimalEncryptor encryptor = null;
 
     
     public int[] sqlTypes() {
@@ -136,7 +160,7 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
 
     
     public Class returnedClass() {
-        return BigInteger.class;
+        return BigDecimal.class;
     }
 
     
@@ -192,14 +216,14 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
     public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
             throws HibernateException, SQLException {
         checkInitialization();
-        BigDecimal decimalMessage = rs.getBigDecimal(names[0]);
+        BigDecimal storedEncryptedMessage = rs.getBigDecimal(names[0]);
         if (rs.wasNull()) {
             return null;
         }
-        BigInteger message = 
-            decimalMessage.setScale(0, BigDecimal.ROUND_UNNECESSARY).
-                unscaledValue();
-        return this.encryptor.decrypt(message);
+        BigDecimal scaledEncryptedMessage = 
+            storedEncryptedMessage.setScale(
+                    decimalScale.intValue(), RoundingMode.UNNECESSARY); 
+        return this.encryptor.decrypt(scaledEncryptedMessage);
     }
 
     
@@ -209,9 +233,12 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            BigInteger encryptedMessage = 
-                this.encryptor.encrypt((BigInteger) value);
-            st.setBigDecimal(index, new BigDecimal(encryptedMessage));
+            BigDecimal scaledValue = 
+                ((BigDecimal) value).setScale(
+                        decimalScale.intValue(), RoundingMode.DOWN);
+            BigDecimal encryptedMessage = 
+                this.encryptor.encrypt(scaledValue);
+            st.setBigDecimal(index, encryptedMessage);
         }
     }
 
@@ -226,6 +253,8 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
             parameters.getProperty(ParameterNaming.PASSWORD);
         String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
+        String paramDecimalScale =
+            parameters.getProperty(ParameterNaming.DECIMAL_SCALE);
         
         this.useEncryptorName = false;
         if (paramEncryptorName != null) {
@@ -280,6 +309,27 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
                     "must be specified");
             
         }
+        
+        if (paramDecimalScale != null) {
+            
+            try {
+                this.decimalScale = 
+                    new Integer(Integer.parseInt(paramDecimalScale));
+            } catch (NumberFormatException e) {
+                throw new EncryptionInitializationException(
+                        "Value specified for \"" + 
+                        ParameterNaming.DECIMAL_SCALE + 
+                        "\" is not a valid integer");
+            }
+            
+        } else {
+            
+            throw new EncryptionInitializationException(
+                    ParameterNaming.DECIMAL_SCALE + 
+                    " must be specified");
+            
+        }
+        
     }
 
     
@@ -292,19 +342,19 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
 
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEBigIntegerEncryptor pbeEncryptor = 
-                    registry.getPBEBigIntegerEncryptor(encryptorName);
+                PBEBigDecimalEncryptor pbeEncryptor = 
+                    registry.getPBEBigDecimalEncryptor(encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
-                            "No big integer encryptor registered for hibernate " +
+                            "No big decimal encryptor registered for hibernate " +
                             "with name \"" + encryptorName + "\"");
                 }
                 this.encryptor = pbeEncryptor;
                 
             } else {
                 
-                StandardPBEBigIntegerEncryptor newEncryptor = 
-                    new StandardPBEBigIntegerEncryptor();
+                StandardPBEBigDecimalEncryptor newEncryptor = 
+                    new StandardPBEBigDecimalEncryptor();
                 
                 newEncryptor.setPassword(this.password);
                 
