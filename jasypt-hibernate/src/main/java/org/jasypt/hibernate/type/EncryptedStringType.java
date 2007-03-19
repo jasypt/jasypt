@@ -45,7 +45,8 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * </p>
  * <p>
  * <i>This class is intended only for declarative use from a Hibernate mapping
- * file. Do not use it directly from your <tt>.java</tt> files.</i>
+ * file. Do not use it directly from your <tt>.java</tt> files (although
+ * of course you can use it when mapping entities using annotations).</i>
  * </p>
  * <p>
  * To use this Hibernate type in one of your Hibernate mappings, you can
@@ -56,7 +57,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *  &lt;hibernate-mapping package="myapp">
  *    ...
  *    &lt;typedef name="<b>encryptedString</b>" class="org.jasypt.hibernate.type.EncryptedStringType">
- *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateEncryptor</i></b>&lt;/param>
+ *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateStringEncryptor</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
@@ -71,7 +72,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <p>
  * ...where a <tt>HibernatePBEStringEncryptor</tt> object
  * should have been previously registered to be used
- * from Hibernate with name <tt>myHibernateEncryptor</tt> (see
+ * from Hibernate with name <tt>myHibernateStringEncryptor</tt> (see
  * {@link HibernatePBEStringEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
