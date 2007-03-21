@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Properties;
 
 import org.hibernate.Hibernate;
@@ -41,7 +42,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows 
- * encryption of Boolean values into String (VARCHAR) database fields
+ * encryption of Date values into String (VARCHAR) database fields
  * during persistence of entities.
  * </p>
  * <p>
@@ -57,13 +58,13 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBooleanAsString</b>" class="org.jasypt.hibernate.type.EncryptedBooleanAsStringType">
+ *    &lt;typedef name="<b>encryptedDateAsString</b>" class="org.jasypt.hibernate.type.EncryptedDateAsStringType">
  *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateStringEncryptor</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="active" column="ACTIVE" type="<b>encryptedBooleanAsString</b>" />
+ *      &lt;property name="birth" column="BIRTH" type="<b>encryptedDateAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -85,7 +86,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBooleanAsString</b>" class="org.jasypt.hibernate.type.EncryptedBooleanAsStringType">
+ *    &lt;typedef name="<b>encryptedDateAsString</b>" class="org.jasypt.hibernate.type.EncryptedDateAsStringType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
  *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
@@ -93,7 +94,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="active" column="ACTIVE" type="<b>encryptedBooleanAsString</b>" />
+ *      &lt;property name="birth" column="BIRTH" type="<b>encryptedDateAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -112,7 +113,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedBooleanAsStringType implements UserType, ParameterizedType {
+public final class EncryptedDateAsStringType implements UserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
     private static int sqlType = nullableType.sqlType();
@@ -135,7 +136,7 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
 
     
     public Class returnedClass() {
-        return Boolean.class;
+        return Date.class;
     }
 
     
@@ -192,9 +193,12 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
             throws HibernateException, SQLException {
         checkInitialization();
         String message = rs.getString(names[0]);
-        return rs.wasNull() ? 
-                null : 
-                new Boolean(this.encryptor.decrypt(message));
+        if (rs.wasNull()) {
+            return null;
+        }
+        String decryptedMessage = this.encryptor.decrypt(message);
+        long timeMillis = Long.valueOf(decryptedMessage).longValue();
+        return new Date(timeMillis);
     }
 
     
@@ -204,9 +208,11 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
+            long timeMillis = ((Date) value).getTime();
             st.setString(
                     index, 
-                    this.encryptor.encrypt(((Boolean) value).toString()));
+                    this.encryptor.encrypt(
+                            Long.valueOf(timeMillis).toString()));
         }
     }
 

@@ -23,14 +23,17 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Properties;
+import java.util.TimeZone;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
-import org.hibernate.util.EqualsHelper;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -41,7 +44,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows 
- * encryption of Boolean values into String (VARCHAR) database fields
+ * encryption of Calendar values into String (VARCHAR) database fields
  * during persistence of entities.
  * </p>
  * <p>
@@ -57,13 +60,14 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBooleanAsString</b>" class="org.jasypt.hibernate.type.EncryptedBooleanAsStringType">
+ *    &lt;typedef name="<b>encryptedCalendarAsString</b>" class="org.jasypt.hibernate.type.EncryptedCalendarAsStringType">
  *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateStringEncryptor</i></b>&lt;/param>
+ *      &lt;param name="storeTimeZone"><b><i>true</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="active" column="ACTIVE" type="<b>encryptedBooleanAsString</b>" />
+ *      &lt;property name="birth" column="BIRTH" type="<b>encryptedCalendarAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -77,6 +81,11 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * {@link HibernatePBEStringEncryptor} and {@link HibernatePBEEncryptorRegistry}). 
  * </p>
  * <p>
+ * The boolean <tt>storeTimeZone</tt> parameter allows the Calendar to be 
+ * re-created with the same TimeZone that it was created. This is an 
+ * <b>optional</b> parameter, and its default value is <b>FALSE</b>.
+ * </p>
+ * <p>
  * Or, if you prefer to avoid registration of encryptors, you can configure
  * your encryptor directly in the mapping file (although not recommended), 
  * like this:
@@ -85,15 +94,16 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedBooleanAsString</b>" class="org.jasypt.hibernate.type.EncryptedBooleanAsStringType">
+ *    &lt;typedef name="<b>encryptedCalendarAsString</b>" class="org.jasypt.hibernate.type.EncryptedCalendarAsStringType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
  *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
+ *      &lt;param name="storeTimeZone"><b><i>true</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="active" column="ACTIVE" type="<b>encryptedBooleanAsString</b>" />
+ *      &lt;property name="birth" column="BIRTH" type="<b>encryptedCalendarAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -112,7 +122,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedBooleanAsStringType implements UserType, ParameterizedType {
+public final class EncryptedCalendarAsStringType implements UserType, ParameterizedType {
 
     private static NullableType nullableType = Hibernate.STRING;
     private static int sqlType = nullableType.sqlType();
@@ -125,6 +135,7 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
     private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
+    private Boolean storeTimeZone = null;
     
     private PBEStringEncryptor encryptor = null;
 
@@ -135,13 +146,27 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
 
     
     public Class returnedClass() {
-        return Boolean.class;
+        return Calendar.class;
     }
 
     
     public boolean equals(Object x, Object y) 
             throws HibernateException {
-        return EqualsHelper.equals(x, y);
+        if (x == y) {
+            return true;
+        }
+        if ((x == null) || (y == null)) {
+            return false;
+        }
+        long millisX = ((Calendar) x).getTimeInMillis();
+        long millisY = ((Calendar) y).getTimeInMillis();
+        TimeZone tzX = ((Calendar) x).getTimeZone();
+        TimeZone tzY = ((Calendar) x).getTimeZone();
+        if (millisX == millisY) {
+            return ((storeTimeZone.booleanValue())? (tzX.equals(tzY)) : true);
+        } else {
+            return false;
+        }
     }
     
     
@@ -192,9 +217,23 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
             throws HibernateException, SQLException {
         checkInitialization();
         String message = rs.getString(names[0]);
-        return rs.wasNull() ? 
-                null : 
-                new Boolean(this.encryptor.decrypt(message));
+        if (rs.wasNull()) {
+            return null;
+        }
+        String decryptedMessage = this.encryptor.decrypt(message);
+        String[] decryptedMessages = StringUtils.split(decryptedMessage);
+        long timeMillis = 0L;
+        TimeZone tz = null;
+            timeMillis = Long.valueOf(decryptedMessages[0]).longValue();
+        if (storeTimeZone.booleanValue()) {
+            tz = TimeZone.getTimeZone(decryptedMessages[1]);
+        } else {
+            tz = TimeZone.getDefault();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(tz);
+        cal.setTimeInMillis(timeMillis);
+        return cal;
     }
 
     
@@ -204,9 +243,14 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            st.setString(
-                    index, 
-                    this.encryptor.encrypt(((Boolean) value).toString()));
+            StringBuffer strBuff = new StringBuffer();
+            long timeMillis = ((Calendar) value).getTimeInMillis();
+            strBuff.append(Long.valueOf(timeMillis).toString());
+            if (storeTimeZone.booleanValue()) {
+                strBuff.append(" ");
+                strBuff.append(((Calendar) value).getTimeZone().getID());
+            }
+            st.setString(index, this.encryptor.encrypt(strBuff.toString()));
         }
     }
 
@@ -221,6 +265,8 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
             parameters.getProperty(ParameterNaming.PASSWORD);
         String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
+        String paramStoreTimeZone =
+            parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
         
         this.useEncryptorName = false;
         if (paramEncryptorName != null) {
@@ -275,6 +321,15 @@ public final class EncryptedBooleanAsStringType implements UserType, Parameteriz
                     "must be specified");
             
         }
+        
+        if ((paramStoreTimeZone != null) && 
+                (!paramStoreTimeZone.trim().equals(""))) {
+            storeTimeZone = BooleanUtils.toBooleanObject(paramStoreTimeZone);
+        }
+        if (storeTimeZone == null) {
+            storeTimeZone = Boolean.FALSE;
+        }
+        
     }
 
     
