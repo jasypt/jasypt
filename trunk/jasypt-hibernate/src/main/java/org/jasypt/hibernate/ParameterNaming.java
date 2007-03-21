@@ -87,6 +87,17 @@ public class ParameterNaming {
     public static final String DECIMAL_SCALE = 
         "decimalScale";
     
+    /**
+     * <p>
+     * Whether the calendar time zone should be stored with the date or not.
+     * </p>
+     * <p>
+     * Value = <tt>storeTimeZone</tt>
+     * </p>
+     */
+    public static final String STORE_TIME_ZONE = 
+        "storeTimeZone";
+    
     
     
     private ParameterNaming() {}
