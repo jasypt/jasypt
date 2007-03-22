@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 import org.jasypt.encryption.pbe.PBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
+import org.jasypt.encryption.pbe.PBEByteEncryptor;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 
 /**
@@ -94,6 +95,7 @@ public class HibernatePBEEncryptorRegistry {
     private HashMap stringEncryptors = new HashMap();
     private HashMap bigIntegerEncryptors = new HashMap();
     private HashMap bigDecimalEncryptors = new HashMap();
+    private HashMap byteEncryptors = new HashMap();
     
     
     /**
@@ -237,6 +239,48 @@ public class HibernatePBEEncryptorRegistry {
             String registeredName) {
         HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
             (HibernatePBEBigDecimalEncryptor) bigDecimalEncryptors.get(registeredName);
+        if (hibernateEncryptor == null) {
+            return null;
+        }
+        return hibernateEncryptor.getEncryptor();
+    }
+
+    
+
+    
+
+
+    
+    // Not public: this is used from 
+    // HibernatePBEByteEncryptor.setRegisteredName.
+    synchronized void registerHibernatePBEByteEncryptor(
+            HibernatePBEByteEncryptor hibernateEncryptor) {
+        this.byteEncryptors.put(
+                hibernateEncryptor.getRegisteredName(), 
+                hibernateEncryptor);
+    }
+
+    
+    // Not public: this is used from 
+    // HibernatePBEByteEncryptor.setRegisteredName.
+    synchronized void unregisterHibernatePBEByteEncryptor(String name) {
+        this.byteEncryptors.remove(name);
+    }
+
+    
+    /**
+     * Returns the <tt>PBEByteEncryptor</tt> registered with the specified
+     * name (if exists).
+     * 
+     * @param registeredName the name with which the desired encryptor was 
+     *        registered.
+     * @return the encryptor, or null if no encryptor has been registered with
+     *         that name.
+     */
+    public synchronized PBEByteEncryptor getPBEByteEncryptor(
+            String registeredName) {
+        HibernatePBEByteEncryptor hibernateEncryptor = 
+            (HibernatePBEByteEncryptor) byteEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }
