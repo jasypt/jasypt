@@ -136,3 +136,35 @@ Integrating jasypt with Hibernate 3
       HibernatePBEEncryptorRegistry.getInstance();
   registry.registerPBEEncryptor("strongHibernateEncryptor", strongEncryptor);
 -------------------             
+
+
+
+* Using annotations
+
+  Alternatively, we may have chosen to use annotations for mapping our entities
+  instead of separate XML mapping files. If it has been so, we can still 
+  use jasypt to encrypt our data.
+  
+  All we will have to do is, first, define the encryption type with a <<@TypeDef>> annotation,
+  which could be either inside the persisted entity class or inside a <<@TypeDefs>>
+  declaration in a separate <<<package-info.java>>> file:
+
+-------------------             
+@TypeDef(
+    name="encryptedString", 
+    typeClass=EncryptedTextType.class, 
+    parameters= {
+        @Parameter(name="encryptorRegisteredName", value="myHibernateStringEncryptor")
+    }
+)
+-------------------             
+
+  ...and then simply map our property with the already declared type:
+
+-------------------             
+    @Type(type="encryptedString")
+    public String getAddress() {
+        return address;
+    }
+-------------------             
+  
