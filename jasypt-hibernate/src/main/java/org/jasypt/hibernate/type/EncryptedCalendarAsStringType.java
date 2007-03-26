@@ -19,24 +19,12 @@
  */
 package org.jasypt.hibernate.type;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.type.NullableType;
-import org.hibernate.usertype.ParameterizedType;
-import org.hibernate.usertype.UserType;
-import org.jasypt.encryption.pbe.PBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.ParameterNaming;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
@@ -122,111 +110,19 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class EncryptedCalendarAsStringType implements UserType, ParameterizedType {
+public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStringType{
 
-    private static NullableType nullableType = Hibernate.STRING;
-    private static int sqlType = nullableType.sqlType();
-    private static int[] sqlTypes = new int[]{ sqlType };
-    
-    private boolean initialized = false;
-    private boolean useEncryptorName = false;
-    
-    private String encryptorName = null;
-    private String algorithm = null;
-    private String password = null;
-    private Integer keyObtentionIterations = null;
-    private Boolean storeTimeZone = null;
-    
-    private PBEStringEncryptor encryptor = null;
+    private Boolean storeTimeZone = Boolean.FALSE;
 
-    
-    public int[] sqlTypes() {
-        return sqlTypes;
-    }
-
-    
-    public Class returnedClass() {
-        return Calendar.class;
-    }
-
-    
-    public boolean equals(Object x, Object y) 
-            throws HibernateException {
-        if (x == y) {
-            return true;
-        }
-        if ((x == null) || (y == null)) {
-            return false;
-        }
-        long millisX = ((Calendar) x).getTimeInMillis();
-        long millisY = ((Calendar) y).getTimeInMillis();
-        TimeZone tzX = ((Calendar) x).getTimeZone();
-        TimeZone tzY = ((Calendar) x).getTimeZone();
-        if (millisX == millisY) {
-            return ((storeTimeZone.booleanValue())? (tzX.equals(tzY)) : true);
-        } else {
-            return false;
-        }
-    }
-    
-    
-    public Object deepCopy(Object value)
-            throws HibernateException {
-        return value;
-    }
-    
-    
-    public Object assemble(Serializable cached, Object owner)
-            throws HibernateException {
-        if (cached == null) {
-            return null;
-        } else {
-            return deepCopy(cached);
-        }
-    }
-
-    
-    public Serializable disassemble(Object value) 
-            throws HibernateException {
-        if (value == null) {
-            return null;
-        } else {
-            return (Serializable) deepCopy(value);
-        }
-    }
-
-    
-    public boolean isMutable() {
-        return false;
-    }
-
-
-    public int hashCode(Object x)
-            throws HibernateException {
-        return x.hashCode();
-    }
-
-    
-    public Object replace(Object original, Object target, Object owner) 
-            throws HibernateException {
-        return original;
-    }
-
-    
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
-            throws HibernateException, SQLException {
-        checkInitialization();
-        String message = rs.getString(names[0]);
-        if (rs.wasNull()) {
-            return null;
-        }
-        String decryptedMessage = this.encryptor.decrypt(message);
-        String[] decryptedMessages = StringUtils.split(decryptedMessage);
-        long timeMillis = 0L;
+    /**
+     * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
+     */
+    protected Object convertToObject(String string) {
+        String[] stringTokens = StringUtils.split(string);
         TimeZone tz = null;
-            timeMillis = Long.valueOf(decryptedMessages[0]).longValue();
+        long timeMillis = Long.valueOf(stringTokens[0]).longValue();
         if (storeTimeZone.booleanValue()) {
-            tz = TimeZone.getTimeZone(decryptedMessages[1]);
+            tz = TimeZone.getTimeZone(stringTokens[1]);
         } else {
             tz = TimeZone.getDefault();
         }
@@ -236,146 +132,31 @@ public final class EncryptedCalendarAsStringType implements UserType, Parameteri
         return cal;
     }
 
-    
-    public void nullSafeSet(PreparedStatement st, Object value, int index)
-            throws HibernateException, SQLException {
-        checkInitialization();
-        if (value == null) {
-            st.setNull(index, sqlType);
-        } else {
-            StringBuffer strBuff = new StringBuffer();
-            long timeMillis = ((Calendar) value).getTimeInMillis();
-            strBuff.append(Long.valueOf(timeMillis).toString());
-            if (storeTimeZone.booleanValue()) {
-                strBuff.append(" ");
-                strBuff.append(((Calendar) value).getTimeZone().getID());
-            }
-            st.setString(index, this.encryptor.encrypt(strBuff.toString()));
-        }
-    }
 
+    /**
+     * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToString(java.lang.Object)
+     */
+    protected String convertToString(Object object) {
+        StringBuffer strBuff = new StringBuffer();
+        long timeMillis = ((Calendar) object).getTimeInMillis();
+        strBuff.append(Long.valueOf(timeMillis).toString());
+        if (storeTimeZone.booleanValue()) {
+            strBuff.append(" ");
+            strBuff.append(((Calendar) object).getTimeZone().getID());
+        }
+        return strBuff.toString();
+    }
+ 
     
     public synchronized void setParameterValues(Properties parameters) {
         
-        String paramEncryptorName =
-            parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        String paramAlgorithm =
-            parameters.getProperty(ParameterNaming.ALGORITHM);
-        String paramPassword =
-            parameters.getProperty(ParameterNaming.PASSWORD);
-        String paramKeyObtentionIterations =
-            parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
-        String paramStoreTimeZone =
-            parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
-        
-        this.useEncryptorName = false;
-        if (paramEncryptorName != null) {
-            
-            if ((paramAlgorithm != null) ||
-                (paramPassword != null) ||
-                (paramKeyObtentionIterations != null)) {
-                
-                throw new EncryptionInitializationException(
-                        "If \"" + ParameterNaming.ENCRYPTOR_NAME + 
-                        "\" is specified, none of \"" +
-                        ParameterNaming.ALGORITHM + "\", \"" +
-                        ParameterNaming.PASSWORD + "\" or \"" + 
-                        ParameterNaming.KEY_OBTENTION_ITERATIONS + "\" " +
-                        "can be specified");
-                
-            }
-            this.encryptorName = paramEncryptorName;
-            this.useEncryptorName = true;
-            
-        } else if ((paramPassword != null)) {
-
-            this.password = paramPassword;
-            
-            if (paramAlgorithm != null) {
-                this.algorithm = paramAlgorithm;
-            }
-            
-            if (paramKeyObtentionIterations != null) {
-
-                try {
-                    this.keyObtentionIterations = 
-                        new Integer(
-                                Integer.parseInt(paramKeyObtentionIterations));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(
-                            "Value specified for \"" + 
-                            ParameterNaming.KEY_OBTENTION_ITERATIONS + 
-                            "\" is not a valid integer");
-                }
-                
-            }
-            
-        } else {
-            
-            throw new EncryptionInitializationException(
-                    "If \"" + ParameterNaming.ENCRYPTOR_NAME + 
-                    "\" is not specified, then \"" +
-                    ParameterNaming.PASSWORD + "\" (and optionally \"" +
-                    ParameterNaming.ALGORITHM + "\" and \"" + 
-                    ParameterNaming.KEY_OBTENTION_ITERATIONS + "\") " +
-                    "must be specified");
-            
-        }
-        
-        if ((paramStoreTimeZone != null) && 
-                (!paramStoreTimeZone.trim().equals(""))) {
+      	super.setParameterValues(parameters);
+      	
+        String paramStoreTimeZone = parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
+        if ((paramStoreTimeZone != null) && (!paramStoreTimeZone.trim().equals(""))) {
             storeTimeZone = BooleanUtils.toBooleanObject(paramStoreTimeZone);
         }
-        if (storeTimeZone == null) {
-            storeTimeZone = Boolean.FALSE;
-        }
         
     }
 
-    
-    
-    private synchronized void checkInitialization() {
-        
-        if (!this.initialized) {
-            
-            if (this.useEncryptorName) {
-
-                HibernatePBEEncryptorRegistry registry = 
-                    HibernatePBEEncryptorRegistry.getInstance();
-                PBEStringEncryptor pbeEncryptor = 
-                    registry.getPBEStringEncryptor(encryptorName);
-                if (pbeEncryptor == null) {
-                    throw new EncryptionInitializationException(
-                            "No string encryptor registered for hibernate " +
-                            "with name \"" + encryptorName + "\"");
-                }
-                this.encryptor = pbeEncryptor;
-                
-            } else {
-                
-                StandardPBEStringEncryptor newEncryptor = 
-                    new StandardPBEStringEncryptor();
-                
-                newEncryptor.setPassword(this.password);
-                
-                if (this.algorithm != null) {
-                    newEncryptor.setAlgorithm(this.algorithm);
-                }
-                
-                if (this.keyObtentionIterations != null) {
-                    newEncryptor.setKeyObtentionIterations(
-                            this.keyObtentionIterations.intValue());
-                }
-                
-                newEncryptor.initialize();
-                
-                this.encryptor = newEncryptor;
-                
-            }
-            
-            this.initialized = true;
-        }
-        
-    }
-    
 }
