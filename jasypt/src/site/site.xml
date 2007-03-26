@@ -54,6 +54,9 @@
         <item name="Standard Tools" href="getting-started-standard.html" />
       </item>
       <item name="Encrypting passwords" href="encrypting-passwords.html" />
+      <item name="Encrypting texts" href="encrypting-texts.html" />
+      <item name="Encrypting numbers" href="encrypting-numbers.html" />
+      <item name="Encrypting binaries" href="encrypting-binaries.html" />
       <item name="Advanced configuration" href="advancedconfiguration.html" />
       <item name="Jasypt + Maven" href="maven.html"/>
       <item name="Jasypt + Hibernate 3" href="hibernate3.html"/>

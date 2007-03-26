@@ -1,10 +1,4 @@
 
-  This is a brief Getting Started guide. For more complete information about 
-  each class and its usage, please visit the JavaDoc documentation for 
-  {{{/api/jasypt/apidocs}jasypt}}, 
-  {{{api/jasypt-hibernate/apidocs}jasypt-hibernate}}
-  and {{{api/jasypt-spring-security/apidocs}jasypt-spring-security}}.
-
 Getting Started with JASYPT easy encryption tools
 
   Jasypt provides several <easy> encryption tools. These are classes which
@@ -12,15 +6,59 @@ Getting Started with JASYPT easy encryption tools
   is happening "behind the scenes") the execution of some of the most common
   encryption tasks.
   
-  These tools are:
+  Thses tools are categorized depending on the task they are intended to do:
+
+      * General digesting (<<<org.jasypt.util.digest.*>>>)
+      
+      []
+
+      * Password encryption (digesting) (<<<org.jasypt.util.password.*>>>)
+      
+      []
+
+      * Text encryption (<<<org.jasypt.util.text.*>>>)
+      
+      []
+
+      * Number encryption (<<<org.jasypt.util.numeric.*>>>)
+      
+      []
+
+      * Binary encryption (<<<org.jasypt.util.binary.*>>>)
+
+
+* General digesting
+
   
-      * <<org.jasypt.util.PasswordEncryptor>> which can be used to 
+      * <<org.jasypt.util.digest.Digester>> which performs message digesting
+        at a binary level, and which results are equivalent to the ones obtained
+        from a <<<java.security.MessageDigest>>> object, although acting in a
+        thread-safe way and implementing an interface more suitable for use
+        in a bean-centric environment.
+
+----------------
+...
+Digester digester = new Digester();
+digester.setAlgorithm("SHA-1");
+...
+byte[] digest = digester.digest(message);
+...
+----------------
+
+
+
+* Password encryption (digesting)
+
+      All classes here implement the <<<org.jasypt.util.password.PasswordEncryptor>>>
+      interface, so that they can be used interchangeabily if needed.
+  
+      * <<org.jasypt.util.password.BasicPasswordEncryptor>> which can be used to 
         both encrypt passwords when users sign up and check input passwords
         when users sign in.
 
 ----------------
 ...
-PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
 String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
 ...
 if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
@@ -32,11 +70,9 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
 ----------------
 
   
-      * <<org.jasypt.util.StrongPasswordEncryptor>> which implements
+      * <<org.jasypt.util.password.StrongPasswordEncryptor>> which implements
         much higher password security than PasswordEncryptor (at a higher computational
-        cost), and also can be used to 
-        both encrypt passwords when users sign up and check input passwords
-        when users sign in.
+        cost).
 
 ----------------
 ...
@@ -51,15 +87,43 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
 ...
 ----------------
 
+  
+      * <<org.jasypt.util.password.ConfigurablePasswordEncryptor>> which lets
+      the developer decide the algorithm to be used and whether he/she wants the full
+      secure password encryption mechanism to be applied (as explained 
+      {{{encrypting-passwords.html}here}}) or rather a simple digest to be generated
+      for legacy integration reasons.
 
-      * <<org.jasypt.util.TextEncryptor>> which will allow the user to
+----------------
+...
+ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+passwordEncryptor.setAlgorithm("SHA-1");
+passwordEncryptor.setPlainDigest(true);
+String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
+...
+if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
+  // correct!
+} else {
+  // bad login!
+}
+...
+----------------
+
+
+* Text encryption
+
+      All classes here implement the <<<org.jasypt.util.text.TextEncryptor>>>
+      interface, so that they can be used interchangeabily if needed.
+
+
+      * <<org.jasypt.util.text.BasicTextEncryptor>> which allows the user to
         encrypt and decrypt text data using a normal-strength algorithm. In
         order to be able to encrypt and decrypt, this encryptor has to be
         set a password first.
         
 ----------------
 ...
-TextEncryptor textEncryptor = new TextEncryptor();
+BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 textEncryptor.setPassword(myEncryptionPassword);
 ...
 String myEncryptedText = textEncryptor.encrypt(myText);
@@ -69,7 +133,7 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ----------------
 
 
-      * <<org.jasypt.util.StrongTextEncryptor>> which will allow the user to
+      * <<org.jasypt.util.text.StrongTextEncryptor>> which allows the user to
         encrypt and decrypt text data using a high-strength algorithm. 
         (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
         Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it).
@@ -87,18 +151,125 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
 ----------------
 
-  
-      * <<org.jasypt.util.MessageDigester>> which performs message digesting
-        at a binary level, and which results are equivalent to the ones obtained
-        from a <<<java.security.MessageDigest>>> object, although acting in a
-        thread-safe way and implementing an interface more suitable for use
-        in a bean-centric environment.
 
+* Number encryption
+
+
+      All classes here implement either the <<<org.jasypt.util.numeric.DecimalNumberEncryptor>>>
+      or the <<<org.jasypt.util.numeric.IntegerNumberEncryptor>>> interfaces, 
+      so that they can be used interchangeabily if needed.
+
+
+      * <<org.jasypt.util.numeric.BasicIntegerNumberEncryptor>> which allows the user to
+        encrypt and decrypt BigInteger objects using a normal-strength algorithm. In
+        order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
 ----------------
 ...
-MessageDigester digester = new MessageDigester();
-digester.setAlgorithm("SHA-1");
+BasicIntegerNumberEncryptor integerEncryptor = new BasicIntegerNumberEncryptor();
+integerEncryptor.setPassword(myEncryptionPassword);
 ...
-byte[] digest = digester.digest(message);
+BigInteger myEncryptedNumber = textEncryptor.encrypt(myNumber);
+...
+BigInteger plainNumber = textEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+
+
+      * <<org.jasypt.util.numeric.StrongIntegerNumberEncryptor>> which allows the user to
+        encrypt and decrypt BigInteger objects using a high-strength algorithm. 
+        (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+        Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it).
+        In order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+StrongIntegerNumberEncryptor integerEncryptor = new StrongIntegerNumberEncryptor();
+integerEncryptor.setPassword(myEncryptionPassword);
+...
+BigInteger myEncryptedNumber = integerEncryptor.encrypt(myNumber);
+...
+BigInteger plainNumber = integerEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+
+
+      * <<org.jasypt.util.numeric.BasicDecimalNumberEncryptor>> which allows the user to
+        encrypt and decrypt BigDecimal objects using a normal-strength algorithm. In
+        order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+BasicIntegerNumberEncryptor decimalEncryptor = new BasicIntegerNumberEncryptor();
+decimalEncryptor.setPassword(myEncryptionPassword);
+...
+BigDecimal myEncryptedNumber = decimalEncryptor.encrypt(myNumber);
+...
+BigDecimal plainNumber = decimalEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+
+
+      * <<org.jasypt.util.numeric.StrongDecimalNumberEncryptor>> which allows the user to
+        encrypt and decrypt BigDecimal objects using a high-strength algorithm. 
+        (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+        Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it).
+        In order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+StrongDecimalNumberEncryptor decimalEncryptor = new StrongDecimalNumberEncryptor();
+decimalEncryptor.setPassword(myEncryptionPassword);
+...
+BigDecimal myEncryptedNumber = decimalEncryptor.encrypt(myNumber);
+...
+BigDecimal plainNumber = decimalEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+
+
+
+* Binary encryption
+
+      All classes here implement the <<<org.jasypt.util.binary.BinaryEncryptor>>>
+      interface, so that they can be used interchangeabily if needed.
+
+
+      * <<org.jasypt.util.binary.BasicBinarytEncryptor>> which allows the user to
+        encrypt and decrypt byte[] objects using a normal-strength algorithm. In
+        order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+BasicBinaryEncryptor binaryEncryptor = new BasicBinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+byte[] myEncryptedBinary = binaryEncryptor.encrypt(myBinary);
+...
+String plainBinary = binaryEncryptor.decrypt(myEncryptedBinary);
+...
+----------------
+
+
+      * <<org.jasypt.util.binary.StrongBinaryEncryptor>> which allows the user to
+        encrypt and decrypt byte[] objects using a high-strength algorithm. 
+        (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+        Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it).
+        In order to be able to encrypt and decrypt, this encryptor has to be
+        set a password first.
+        
+----------------
+...
+StrongBinaryEncryptor binaryEncryptor = new StrongBinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+String myEncryptedBinary = binaryEncryptor.encrypt(myBinary);
+...
+String plainBinary = binaryEncryptor.decrypt(myEncryptedBinary);
 ...
 ----------------

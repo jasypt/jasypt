@@ -12,9 +12,16 @@ Features
        
      []
      
-     * <<Binary encryption support>>. Besides texts, it allows the
+     * <<Binary encryption support>>. Jasypt allows the
      digest and encryption of binaries (byte arrays). Encrypt your objects
      or files when needed (for being sent over the net, for example).
+       
+     []
+     
+     * <<Number encryption support>>. Besides texts and binaries, it allows the
+     digest and encryption of numeric values (BigInteger and BigDecimal,
+     other numeric types are supported when encrypting for Hibernate 
+     persistence). {{{encrypting-numbers.html}Learn more}}.
      
      []
      
@@ -22,7 +29,7 @@ Features
      
      []
 
-     * Provides <<easy, no-configuration encryption tools>> for users new to 
+     * Provides both <<easy, no-configuration encryption tools>> for users new to 
      encryption, and also <<highly configurable standard encryption tools>>, 
      for power-users.
 
@@ -32,15 +39,17 @@ Features
      for persisting fields of your mapped entities in an encrypted manner.
      <<Encryption of fields is defined in the Hibernate mapping files>>, and
      it remains transparent for the rest of the application (useful for
-     sensitive personal data, databases with many read-enabled users...). {{{hibernate3.html}Learn more}}.
+     sensitive personal data, databases with many read-enabled users...). 
+     {{{hibernate3.html}Learn more}}.
 
      []
      
      * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application. All the 
        digesters and encryptors in jasypt are designed to be easily used 
-       (instantiated, dependency-injected...) from an IoC container like 
-       Spring. And, because of it being thread-safe, they <<can be used without 
-       worries in a singleton-oriented environment like Spring>>. {{{spring.html}Learn more}}.
+       (instantiated, dependency-injected...) from Spring. And, because of their
+       being thread-safe, they <<can be used without 
+       synchronization worries in a singleton-oriented environment like 
+       Spring>>. {{{spring.html}Learn more}}.
 
      []
      
