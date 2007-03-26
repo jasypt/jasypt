@@ -8,42 +8,60 @@ Jasypt at a glance
       
       []
       
-      * <<Encrypting objects, texts... with a password>>. Example of use: encrypting personal user data.
+      * <<Encrypting texts, numbers or binaries using a password (Password 
+      Based Encryption)>>. Example of use: encrypting personal user data.
 
 
-  For doing this, you can use two different <approaches>:
+  For doing this, you have two different <approaches>:
   
-      * The <<easy>> interface: which makes configuration decisions for you.
-      Based on classes in package <<<org.jasypt.util>>>. {{{/getting-started-easy.html}Learn more}}.
+      * The <<easy>> interface: which makes most configuration decisions for you, 
+      adequate if you have no knowledge of encryption and little interest
+      in learning the concepts and internals.
+      The <easy> interface is conformed of the classes in package 
+      <<<org.jasypt.util>>>. {{{getting-started-easy.html}Learn more}}.
       
       []
       
       * The <<standard>> interface: which lets you take configuration decisions
-      (algorithm, key obtention, etc.). {{{/getting-started-standard.html}Learn more}}.
+      (algorithm, key obtention, etc.), and can be more suitable for environments
+      in which more control and fine-tuning is needed.
+      {{{getting-started-standard.html}Learn more}}.
 
 
-  If you want to learn more about jasypt and its capabilities, visit:
+  If you want to learn more about jasypt and its specific capabilities, visit:
   
-      * {{{/encrypting-passwords.html}Encrypting passwords}}: learn how passwords <<should>> be encrypted.
+      * {{{encrypting-passwords.html}Encrypting passwords}}: learn how passwords <<should>> be encrypted.
+      
+      []
+  
+      * {{{encrypting-texts.html}Encrypting texts}}: explanation on text encryption with jasypt.
+      
+      []
+  
+      * {{{encrypting-numbers.html}Encrypting numbers}}: explanation on number encryption with jasypt.
+      
+      []
+  
+      * {{{encrypting-binaries.html}Encrypting binaries}}: explanation on binary encryption with jasypt.
       
       []
 
-      * {{{/advancedconfiguration.html}Advanced configuration}}: learn how jasypt's encryptors and digesters can be configured in unusual or user-defined ways.
+      * {{{advancedconfiguration.html}Advanced configuration}}: learn how jasypt's encryptors and digesters can be configured in unusual or user-defined ways.
       
 
   And if you want to learn about integrating jasypt with other tools, visit:
   
-      * {{{/maven.html}Jasypt + Maven}}: Adding jasypt as a maven dependency in your projects.
+      * {{{maven.html}Jasypt + Maven}}: Adding jasypt as a maven dependency in your projects.
       
       []
       
-      * {{{/hibernate3.html}Jasypt + Hibernate 3}}: Using jasypt for encrypting your hibernate-persisted data.
+      * {{{hibernate3.html}Jasypt + Hibernate 3}}: Using jasypt for encrypting your hibernate-persisted data.
       
       []
       
-      * {{{/spring.html}Jasypt + Spring}}: Integrating jasypt into your Spring based applications.
+      * {{{spring.html}Jasypt + Spring}}: Integrating jasypt into your Spring based applications.
       
       []
       
-      * {{{/springsecurity.html}Jasypt + Acegi}}: Integrating jasypt into your Spring Security (Acegi) based applications.
+      * {{{springsecurity.html}Jasypt + Acegi}}: Integrating jasypt into your Spring Security (Acegi) based applications.
       

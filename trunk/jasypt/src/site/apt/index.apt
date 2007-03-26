@@ -6,10 +6,23 @@ Java Simplified Encryption
   projects with minimum effort, and without the need of having 
   deep knowledge on how cryptography works.
 
+    * High-security, standards-based encryption techniques, both for unidirectional
+    and bidirectional encryption. Encrypt passwords, texts, numbers, binaries...
+    
+    * Transparent integration with <<Hibernate>>.
+    
+    * Suitable for integration into <<Spring>>-based applications and also
+      transparently integrable with <<ACEGI>> (Spring Security).
+
+    * {{{features.html}...and much more}}
+
+  Have a look at the complete set of <<{{{features.html}Jasypt Features}}>>
+  or have a look at the <<{{{faq.html}FAQ}}>>.
+
   With Jasypt, encrypting and checking a password can be as simple as...
   
 ----------------
-PasswordEncryptor passwordEncryptor = new PasswordEncryptor();
+BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
 String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
 ...
 if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
@@ -22,7 +35,7 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
   ...encrypting and decrypting a text...
   
 ----------------
-TextEncryptor textEncryptor = new TextEncryptor();
+BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 textEncryptor.setPassword(myEncryptionPassword);
 String myEncryptedText = textEncryptor.encrypt(myText);
 ...
@@ -32,9 +45,10 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   ...and what about encrypting some sensitive data directly from Hibernate?
 
 ----------------
-<class name="UserData" table="USER_DATA">
+<class name="Employee" table="EMPLOYEE">
   ...
-  <property name="address" column="ADDRESS" type="encrypted" />
+  <property name="address" column="ADDRESS" type="encryptedString" />
+  <property name="salary" column="SALARY" type="encryptedDecimal" />
   ...
 <class>
 ----------------
@@ -44,25 +58,9 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   advanced features...
   
 
-* Check the features!
-
-    * High-security, standards-based encryption techniques, both for unidirectional
-    and bidirectional encryption. Encrypt passwords, texts, binaries...
-    
-    * Transparent integration with <<Hibernate>>.
-    
-    * Suitable for integration into <<Spring>>-based applications.
-    
-    * Transparent integration with <<ACEGI Security>> (Spring Security).
-
-    * {{{features.html}...and much more}}
-
-  Have a look at the complete set of <<{{{features.html}Jasypt Features}}>>
-  or have a look at the <<{{{faq.html}FAQ}}>>.
-
 * Current version
 
-  Current stable version is <<1.1>> (Released: February 24th, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
+  Current stable version is <<1.2>> (Released: April 2nd, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
 
 
 * Encryption can be simple to use, spread the word!
