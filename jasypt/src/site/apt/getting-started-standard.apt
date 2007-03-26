@@ -10,7 +10,7 @@ Getting Started with JASYPT standard encryption tools
   <<unidirectional>>, this is, starting from a message digest, the original message
   cannot be reconstructed.
   
-  Because of this, message digests are very adecuate for <<pasword encryption>>.
+  Because of this, message digests are very adequate for <<password encryption>>.
   In fact, in some countries, it is illegal to store a user's password in
   an unencrypted way, and even encrypted in a reversible (bi-directional) way.
   
@@ -73,6 +73,10 @@ String digest = digester.digest(myMessage);
       * <<ByteEncryptor>> for encryption and decryption of byte arrays.
       
       * <<StringEncryptor>> for encryption and decryption of Strings.
+      
+      * <<BigIntegerEncryptor>> for encryption and decryption of BigIntegers.
+      
+      * <<BigDecimalEncryptor>> for encryption and decryption of BigDecimals.
 
   
   Jasypt provides implementations for one type of 
@@ -94,6 +98,10 @@ String digest = digester.digest(myMessage);
       * <<PBEByteEncryptor>> for password-based encryption and decryption of byte arrays.
       
       * <<PBEStringEncryptor>> for password-based encryption and decryption of Strings.
+      
+      * <<PBEBigIntegerEncryptor>> for password-based encryption and decryption of BigIntegers.
+      
+      * <<PBEBigDecimalEncryptor>> for password-based encryption and decryption of BigDecimals.
 
   And the default implementations provided are:
   
@@ -104,6 +112,12 @@ String digest = digester.digest(myMessage);
       * <<StandardPBEStringEncryptor>>: String counterpart to StandardPBEByteEncryptor,
       receiving String input and returning charset-safe, BASE64 encoded
       String output as encryption results.
+      
+      * <<StandardPBEBigIntegerEncryptor>>: Equivalent to StandardPBEByteEncryptor,
+      receiving BigInteger input and returning BigInteger output.
+      
+      * <<StandardPBEBigDecimalEncryptor>>: Equivalent to StandardPBEByteEncryptor,
+      receiving BigDecimal input and returning BigDecimal output.
   
 
   It's basic usage can be very simple:
