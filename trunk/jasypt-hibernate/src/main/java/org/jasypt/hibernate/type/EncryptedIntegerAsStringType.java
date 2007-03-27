@@ -105,6 +105,10 @@ public final class EncryptedIntegerAsStringType extends AbstractEncryptedAsStrin
         return new Integer(string);
     }
 
+    public Class returnedClass() {
+        return Integer.class;
+    }
+
  
     
 }

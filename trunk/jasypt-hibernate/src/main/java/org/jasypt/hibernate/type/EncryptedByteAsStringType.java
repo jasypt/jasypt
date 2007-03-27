@@ -105,5 +105,9 @@ public final class EncryptedByteAsStringType extends AbstractEncryptedAsStringTy
        return new Byte(string);
     }
 
+    public Class returnedClass() {
+        return Byte.class;
+    }
+
     
 }

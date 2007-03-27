@@ -107,5 +107,9 @@ public final class EncryptedBigIntegerAsStringType extends AbstractEncryptedAsSt
         return new BigInteger(string);
     }
 
+    public Class returnedClass() {
+        return BigInteger.class;
+    }
+
 
 }

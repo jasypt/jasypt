@@ -159,4 +159,9 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
         
     }
 
+
+    public Class returnedClass() {
+        return Calendar.class;
+    }
+
 }

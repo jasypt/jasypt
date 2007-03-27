@@ -105,6 +105,10 @@ public final class EncryptedShortAsStringType extends AbstractEncryptedAsStringT
         return new Short(string);
     }
 
+    public Class returnedClass() {
+        return Short.class;
+    }
+
     
 
     

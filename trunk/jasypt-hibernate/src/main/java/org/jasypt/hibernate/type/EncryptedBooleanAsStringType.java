@@ -105,5 +105,9 @@ public final class EncryptedBooleanAsStringType extends AbstractEncryptedAsStrin
         return new Boolean(string);
     }
 
+    public Class returnedClass() {
+        return Boolean.class;
+    }
+
  
 }

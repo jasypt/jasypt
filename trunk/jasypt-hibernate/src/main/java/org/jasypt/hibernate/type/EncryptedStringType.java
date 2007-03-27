@@ -104,6 +104,10 @@ public final class EncryptedStringType extends AbstractEncryptedAsStringType{
     protected Object convertToObject(String stringValue) {
         return stringValue;
     }
+
+    public Class returnedClass() {
+        return String.class;
+    }
     
     
 }

@@ -105,5 +105,9 @@ public final class EncryptedFloatAsStringType extends AbstractEncryptedAsStringT
     protected Object convertToObject(String string) {
         return new Float(string);
     }
+
+    public Class returnedClass() {
+        return Float.class;
+    }
     
 }
