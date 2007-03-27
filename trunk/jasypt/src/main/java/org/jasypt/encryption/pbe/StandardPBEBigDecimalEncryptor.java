@@ -96,7 +96,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * <br/><b><u>Usage</u></b>
  * </p>
  * <p>
- * An ecryptor may be used for:
+ * An encryptor may be used for:
  * <ul>
  *   <li><i>Encrypting messages</i>, by calling the <tt>encrypt</tt> method.</li>
  *   <li><i>Decrypting messages</i>, by calling the <tt>decrypt</tt> method.</li> 
