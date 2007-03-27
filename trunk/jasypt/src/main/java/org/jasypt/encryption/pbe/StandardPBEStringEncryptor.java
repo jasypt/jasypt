@@ -52,8 +52,8 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  *   <li>Setting a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
- *       <tt>setPassword</tt> or <tt>setKeyObtentionIterations</tt> 
+ *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
+ *       <tt>setPassword(...)</tt> or <tt>setKeyObtentionIterations(...)</tt> 
  *       methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
@@ -62,9 +62,9 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  *   <li>First, the default values are considered (except for password).</li>
  *   <li>Then, if a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
  *       object has been set with
- *       <tt>setConfig</tt>, the non-null values returned by its
- *       <tt>getX</tt> methods override the default values.</li>
- *   <li>Finally, if the corresponding <tt>setX</tt> method has been called
+ *       <tt>setConfig(...)</tt>, the non-null values returned by its
+ *       <tt>getX()</tt> methods override the default values.</li>
+ *   <li>Finally, if the corresponding <tt>setX(...)</tt> method has been called
  *       on the encryptor itself for any of the configuration parameters, the 
  *       values set by these calls override all of the above.</li>
  * </ol>
@@ -77,9 +77,9 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * Before it is ready to encrypt, an object of this class has to be
  * <i>initialized</i>. Initialization happens:
  * <ul>
- *   <li>When <tt>initialize</tt> is called.</li>
- *   <li>When <tt>encrypt</tt> or <tt>decrypt</tt> are called for the
- *       first time, if <tt>initialize</tt> has not been called before.</li>
+ *   <li>When <tt>initialize()</tt> is called.</li>
+ *   <li>When <tt>encrypt(...)</tt> or <tt>decrypt(...)</tt> are called for the
+ *       first time, if <tt>initialize()</tt> has not been called before.</li>
  * </ul>
  * Once an encryptor has been initialized, trying to
  * change its configuration will
@@ -92,8 +92,8 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * <p>
  * An encryptor may be used for:
  * <ul>
- *   <li><i>Encrypting messages</i>, by calling the <tt>encrypt</tt> method.</li>
- *   <li><i>Decrypting messages</i>, by calling the <tt>decrypt</tt> method.</li> 
+ *   <li><i>Encrypting messages</i>, by calling the <tt>encrypt(...)</tt> method.</li>
+ *   <li><i>Decrypting messages</i>, by calling the <tt>decrypt(...)</tt> method.</li> 
  * </ul>
  * <b>Because of the use of a random salt, two encryption results for 
  * the same message will always be different
