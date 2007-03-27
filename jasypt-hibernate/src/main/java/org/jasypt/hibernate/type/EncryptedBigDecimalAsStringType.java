@@ -107,5 +107,9 @@ public final class EncryptedBigDecimalAsStringType extends AbstractEncryptedAsSt
         return new BigDecimal(string);
     }
 
+    public Class returnedClass() {
+        return BigDecimal.class;
+    }
+
 
 }

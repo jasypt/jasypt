@@ -104,5 +104,9 @@ public final class EncryptedDoubleAsStringType extends AbstractEncryptedAsString
     protected Object convertToObject(String string) {
         return new Double(string);
     }
+
+    public Class returnedClass() {
+        return Double.class;
+    }
     
 }

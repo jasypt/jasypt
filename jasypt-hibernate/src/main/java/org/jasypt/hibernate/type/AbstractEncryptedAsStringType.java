@@ -85,9 +85,7 @@ public abstract class AbstractEncryptedAsStringType
     }
 
     
-    public Class returnedClass() {
-        return String.class;
-    }
+    public abstract Class returnedClass();
 
     
     public boolean equals(Object x, Object y) 

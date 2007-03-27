@@ -117,5 +117,10 @@ public final class EncryptedDateAsStringType extends AbstractEncryptedAsStringTy
         long timeMillis = ((Date) object).getTime();
         return String.valueOf(timeMillis);
     }
+
+
+    public Class returnedClass() {
+        return Date.class;
+    }
     
 }

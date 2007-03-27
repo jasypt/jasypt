@@ -105,6 +105,10 @@ public final class EncryptedLongAsStringType extends AbstractEncryptedAsStringTy
         return new Long(string);
     }
 
+    public Class returnedClass() {
+        return Long.class;
+    }
+
  
     
 }
