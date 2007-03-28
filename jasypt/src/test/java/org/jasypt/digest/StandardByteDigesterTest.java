@@ -53,16 +53,16 @@ public class StandardByteDigesterTest extends TestCase {
         
         String message2 = "This is a  Message";
         byte[] message2Bytes = message2.getBytes("UTF-8");
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertFalse(digester.matches(message2Bytes, digest));
         }
 
         StandardByteDigester digester2 = new StandardByteDigester();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertTrue(digester2.matches(messageBytes, digest));
         }
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertFalse(Arrays.equals(
                     digester.digest(messageBytes), 
                     digester.digest(messageBytes)));
@@ -72,7 +72,7 @@ public class StandardByteDigesterTest extends TestCase {
         digester3.setSaltSizeBytes(0);
         digest = digester3.digest(messageBytes);
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertTrue(digester3.matches(messageBytes, digest));
         }
         

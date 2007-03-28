@@ -43,13 +43,13 @@ public abstract class AbstractPBEStringEncryptorTest extends TestCase {
         String encryptOfEmpty = encryptor.encrypt("");
         assertEquals(encryptor.decrypt(encryptOfEmpty),"");
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             String encryptedMessage = encryptor.encrypt(message);
             String decryptedMessage = encryptor.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertFalse(
                         encryptor.encrypt(message).equals(
                         encryptor.encrypt(message)));
@@ -60,7 +60,7 @@ public abstract class AbstractPBEStringEncryptorTest extends TestCase {
 
         assertEquals(encryptor2.decrypt(encryptOfEmpty),"");
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             String encryptedMessage = encryptor.encrypt(message);
             String decryptedMessage = encryptor2.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
@@ -69,7 +69,7 @@ public abstract class AbstractPBEStringEncryptorTest extends TestCase {
         PBEStringEncryptor encryptor3 = createPBEStringEncryptor();
         encryptor3.setPassword(password2);
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             String encryptedMessage = encryptor.encrypt(message);
             try {
                 String decryptedMessage = encryptor3.decrypt(encryptedMessage);
