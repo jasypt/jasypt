@@ -35,6 +35,8 @@
 1.1
 =======
 
+- Added the ACEGI (Spring Security) integration add-on 
+  (org.jasypt.springsecurity)
 - Added org.jasypt.util.StrongPasswordEncryptor as a util class for
   easy password encryption using a stronger algorithm.
 - Added org.jasypt.util.MessageDigester as a util class for
