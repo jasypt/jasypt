@@ -14,6 +14,23 @@
   org.jasypt.encryption.pbe package
 - Added new org.jasypt.util.numeric package with easy utils for numeric 
   encryption.
+- Refactored org.jasypt.hibernate classes into new "encryptor" and "type" 
+  subpackages.
+- Added HibernatePBEEncryptorRegistry support for BigInteger, BigDecimal and
+  Byte encryptors
+- Added Hibernate type for encryption of binaries (byte[]) into SQL BLOBs
+- Added Hibernate type for encryption of BigIntegers into SQL NUMERICs.
+- Added Hibernate type for encryption of BigDecimals into SQL NUMERICs.
+- Added Hibernate type for encryption of Bytes into SQL VARCHARs.
+- Added Hibernate type for encryption of Shorts into SQL VARCHARs.
+- Added Hibernate type for encryption of Integers into SQL VARCHARs.
+- Added Hibernate type for encryption of Longs into SQL VARCHARs.
+- Added Hibernate type for encryption of Floats into SQL VARCHARs.
+- Added Hibernate type for encryption of Doubles into SQL VARCHARs.
+- Added Hibernate type for encryption of Booleans into SQL VARCHARs.
+- Added Hibernate type for encryption of Dates into SQL VARCHARs.
+- Added Hibernate type for encryption of Calendars into SQL VARCHARs.
+  
 
 1.1
 =======

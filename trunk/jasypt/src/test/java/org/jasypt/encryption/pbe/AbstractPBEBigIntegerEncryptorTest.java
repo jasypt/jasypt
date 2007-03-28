@@ -43,13 +43,13 @@ public abstract class AbstractPBEBigIntegerEncryptorTest extends TestCase {
         BigInteger encryptOfEmpty = encryptor.encrypt(BigInteger.valueOf(0));
         assertTrue(encryptor.decrypt(encryptOfEmpty).equals(BigInteger.valueOf(0)));
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             BigInteger encryptedMessage = encryptor.encrypt(message);
             BigInteger decryptedMessage = encryptor.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
         }
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             assertFalse(
                         encryptor.encrypt(message).equals(
                         encryptor.encrypt(message)));
@@ -60,7 +60,7 @@ public abstract class AbstractPBEBigIntegerEncryptorTest extends TestCase {
 
         assertEquals(encryptor2.decrypt(encryptOfEmpty),BigInteger.valueOf(0));
         
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             BigInteger encryptedMessage = encryptor.encrypt(message);
             BigInteger decryptedMessage = encryptor2.decrypt(encryptedMessage);
             assertEquals(decryptedMessage, message);
