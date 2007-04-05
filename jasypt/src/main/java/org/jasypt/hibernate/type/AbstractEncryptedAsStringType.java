@@ -66,15 +66,15 @@ public abstract class AbstractEncryptedAsStringType
 
     /**
      * Converts given String to its Object form.
-     * @param stringValue
-     * @return
+     * @param string the string value
+     * @return the object form of the passed String
      */
     protected abstract Object convertToObject(String string);
     
     /**
      * Converts given Object to its String form.
-     * @param object
-     * @return
+     * @param object the object value
+     * @return the string form of the passes Object
      */
     protected String convertToString(Object object) {
         return object == null? null : object.toString();
