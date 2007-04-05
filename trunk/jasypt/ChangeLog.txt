@@ -1,6 +1,7 @@
 1.2
 =======
 
+- Merged jasypt-hibernate and jasypt-spring-security into main jasypt package.
 - Package org.jasypt.util refactored. 
 - Created PasswordEncryptor and TextEncryptor interfaces,
   to unify both basic- and strong-encryption implementations.
@@ -30,6 +31,9 @@
 - Added Hibernate type for encryption of Booleans into SQL VARCHARs.
 - Added Hibernate type for encryption of Dates into SQL VARCHARs.
 - Added Hibernate type for encryption of Calendars into SQL VARCHARs.
+- Refactored org.jasypt.springsecurity package: created new PasswordEncoder
+  for use with both org.jasypt.util.password.PasswordEncryptor
+  or org.jasypt.digest.StringDigester implementations.
   
 
 1.1
