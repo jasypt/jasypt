@@ -82,6 +82,8 @@ import org.jasypt.util.StrongPasswordEncryptor;
  * </p>
  * 
  * @since 1.1
+ * @deprecated Replaced by {@link org.jasypt.springsecurity.PasswordEncoder}
+ *             and will be removed in version 1.3. 
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
