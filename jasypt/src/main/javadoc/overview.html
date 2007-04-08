@@ -19,18 +19,33 @@ Java Simplified Encryption library, version 1.2.
       <li>{@link org.jasypt.util.text.TextEncryptor}</li>
     </ul>
   </li>
-  <li>Message Digesting:
+  <li>Message digesting:
     <ul>
       <li>{@link org.jasypt.digest.StandardByteDigester}</li>
       <li>{@link org.jasypt.digest.StandardStringDigester}</li>
     </ul>
   </li>
-  <li>Message Encrypting:
+  <li>Message encrypting:
     <ul>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEByteEncryptor}</li>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEStringEncryptor}</li>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor}</li>
       <li>{@link org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor}</li>
+    </ul>
+  </li>
+  <li>Hibernate transparent encryption:
+    <ul>
+      <li>{@link org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry}</li>
+      <li>{@link org.jasypt.hibernate.encryptor.HibernatePBEByteEncryptor}</li>
+      <li>{@link org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor}</li>
+      <li>{@link org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor}</li>
+      <li>{@link org.jasypt.hibernate.encryptor.HibernatePBEBigDecimalEncryptor}</li>
+    </ul>
+  </li>
+  <li>Spring Security (ACEGI Security) integration:
+    <ul>
+      <li>{@link org.jasypt.springsecurity.PasswordEncoder}</li>
+      <li>{@link org.jasypt.springsecurity.PBEPasswordEncoder}</li>
     </ul>
   </li>
 </ul>
