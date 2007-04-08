@@ -62,11 +62,7 @@
       <item name="Jasypt + Hibernate 3" href="hibernate3.html"/>
       <item name="Jasypt + Spring" href="spring.html"/>
       <item name="Jasypt + Acegi" href="springsecurity.html"/>
-      <item name="JavaDoc" href="javadoc.html">
-        <item name="jasypt" href="api/jasypt/apidocs" />
-        <item name="jasypt-hibernate" href="api/jasypt-hibernate/apidocs" />
-        <item name="jasypt-spring-security" href="api/jasypt-spring-security/apidocs" />
-      </item>
+      <item name="JavaDoc" href="api/jasypt/apidocs/index.html" />
       <item name="External Resources" href="externalresources.html"/>
     </menu>
 

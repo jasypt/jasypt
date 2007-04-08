@@ -20,6 +20,8 @@
 package org.jasypt.hibernate.encryptor;
 
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
+import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
@@ -34,13 +36,24 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * {@link HibernatePBEEncryptorRegistry}.
  * </p>
  * <p>
+ * <b>It is not mandatory that a <tt>PBEByteEncryptor</tt> be explicitly set
+ * with {@link #setEncryptor(PBEByteEncryptor)}</b>. If not, a
+ * <tt>StandardPBEByteEncryptor</tt> object will be created internally
+ * and it will be configurable with the {@link #setPassword(String)},
+ * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)}
+ * and  {@link #setConfig(PBEConfig)} methods.
+ * </p>
+ * <p>
  * This class is mainly intended for use from Spring Framework or some other
  * IoC container (if you are not using a container of this kind, please see 
  * {@link HibernatePBEEncryptorRegistry}). The steps to be performed are 
  * the following:
  * <ol>
  *   <li>Create an object of this class (declaring it).</li>
- *   <li>Set its <tt>registeredName</tt> and <tt>encryptor</tt> properties.</li>
+ *   <li>Set its <tt>registeredName</tt> and, either its 
+ *       wrapped <tt>encryptor</tt> or its <tt>password</tt>, 
+ *       <tt>algorithm</tt>, <tt>keyObtentionIterations</tt> and
+ *       <tt>config</tt> properties.</li>
  *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
  *       <tt>encryptorRegisteredName</tt> parameter the same value specified
  *       to this object in <tt>registeredName</tt>.</li>
@@ -51,6 +64,9 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * </p>
  * <p>
  * <pre> 
+ *  ...
+ *  &lt;-- Optional, as the hibernateEncryptor could be directly set an     -->
+ *  &lt;-- algorithm and password.                                          -->
  *  &lt;bean id="byteEncryptor"
  *    class="org.jasypt.encryption.pbe.StandardPBEByteEncryptor">
  *    &lt;property name="algorithm">
@@ -70,6 +86,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  *        &lt;ref bean="byteEncryptor" />
  *    &lt;/property>
  *  &lt;/bean>
+ *  ...
  * </pre>
  * </p>
  * <p>
@@ -96,18 +113,23 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class HibernatePBEByteEncryptor {
+public final class HibernatePBEByteEncryptor {
 
     private String registeredName = null;
     private PBEByteEncryptor encryptor = null;
+    private boolean encryptorSet = false;
     
     
     
     /**
-     * Creates a new instance of <tt>HibernatePBEByteEncryptor</tt> 
+     * Creates a new instance of <tt>HibernatePBEByteEncryptor</tt> It also
+     * creates a <tt>StandardPBEByteEncryptor</tt> for internal use, which
+     * can be overriden by calling <tt>setEncryptor(...)</tt>. 
      */
     public HibernatePBEByteEncryptor() {
         super();
+        this.encryptor = new StandardPBEByteEncryptor();
+        this.encryptorSet = false;
     }
 
 
@@ -119,6 +141,7 @@ public class HibernatePBEByteEncryptor {
             PBEByteEncryptor encryptor) {
         this.encryptor = encryptor;
         this.registeredName = registeredName;
+        this.encryptorSet = true;
     }
 
 
@@ -134,12 +157,91 @@ public class HibernatePBEByteEncryptor {
     
     /**
      * Sets the <tt>PBEByteEncryptor</tt> to be held (wrapped) by this
-     * object.
+     * object. This method is optional and can be only called once.
      * 
      * @param encryptor the encryptor.
      */
     public void setEncryptor(PBEByteEncryptor encryptor) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
         this.encryptor = encryptor;
+        this.encryptorSet = true;
+    }
+
+
+    /**
+     * Sets the password to be used by the internal encryptor, if a specific
+     * encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @param password the password to be set for the internal encryptor
+     */
+    public void setPassword(String password) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setPassword(password);
+    }
+
+
+    /**
+     * Sets the algorithm to be used by the internal encryptor, if a specific
+     * encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @param algorithm the algorithm to be set for the internal encryptor
+     */
+    public void setAlgorithm(String algorithm) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setAlgorithm(algorithm);
+    }
+    
+
+    /**
+     * Sets the key obtention iterations to be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @param keyObtentionIterations to be set for the internal encryptor
+     */
+    public void setKeyObtentionIterations(int keyObtentionIterations) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setKeyObtentionIterations(
+                keyObtentionIterations);
+    }
+
+
+    /**
+     * Sets the PBEConfig to be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @param config the PBEConfig to be set for the internal encryptor
+     */
+    public void setConfig(PBEConfig config) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setConfig(config);
     }
 
 

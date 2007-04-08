@@ -83,7 +83,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class HibernatePBEEncryptorRegistry {
+public final class HibernatePBEEncryptorRegistry {
 
     
     // The singleton instance
