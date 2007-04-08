@@ -31,9 +31,16 @@
 - Added Hibernate type for encryption of Booleans into SQL VARCHARs.
 - Added Hibernate type for encryption of Dates into SQL VARCHARs.
 - Added Hibernate type for encryption of Calendars into SQL VARCHARs.
+- Added creation of standard encryptor in Hibernate encryptor objects
+  so that setEncryptor() method becomes optional and hibernate encryptors
+  can be directly configured via setPassword, setAlgorithm, etc.
 - Refactored org.jasypt.springsecurity package: created new PasswordEncoder
   for use with both org.jasypt.util.password.PasswordEncryptor
   or org.jasypt.digest.StringDigester implementations.
+- Created new org.jasypt.springsecurity.PBEPasswordEncoder for using
+  org.jasypt.util.text.TextEncryptor or 
+  org.jasypt.pbe.encryptor.PBEStringEncryptor from ACEGI Security.
+  
   
 
 1.1
