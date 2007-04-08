@@ -5,7 +5,7 @@
 
 Jasypt + Spring Security (Acegi Security)
 
-  Jasypt provides an add-on module, <<jasypt-spring-security>>, which
+  Jasypt provides an integration package, org.jasypt.springsecurity, which
   allows the integration of jasypt's powerful password encryption capabilities into 
   a Spring Security-enabled application. Once integrated, jasypt will
   be responsible for managing the check of users' passwords at sign in in
@@ -16,42 +16,50 @@ Jasypt + Spring Security (Acegi Security)
   interface into your <<<AuthenticationProvider>>>.
   
   
-  Jasypt provides three implementations of this <<<PasswordEncoder>>> interface:
+  Jasypt provides two implementations of this <<<PasswordEncoder>>> interface:
   
-      * <<org.jasypt.springsecurity.StandardPasswordEncoder>>, which
-        wraps an <<<org.jasypt.util.PasswordEncryptor>>> object.
+      * <<org.jasypt.springsecurity.PasswordEncoder>>, which
+        is used for uni-directional password encryption (recommended),
+        and which can wrap either an <<org.jasypt.util.password.PasswordEncryptor>> or
+        an <<org.jasypt.digest.StringDigester>> object.
       
       []
       
-      * <<org.jasypt.springsecurity.StrongPasswordEncoder>>, which
-        wraps an <<<org.jasypt.util.StrongPasswordEncryptor>>> object.
+      * <<org.jasypt.springsecurity.PBEPasswordEncoder>>, which
+        is used for bi-directional password encryption (not recommended),
+        and which can wrap either an <<org.jasypt.util.text.TextEncryptor>> or
+        an <<org.jasypt.encryption.pbe.StringEncryptor>> object.
 	
-      []
-      
-      * <<org.jasypt.springsecurity.StringDigesterPasswordEncoder>>, which
-        wraps an <<<org.jasypt.digest.StringDigester>>> object.
-	
+  Please note that <password encryption should be uni-directional>, but
+  bi-directional password encryption (this is, passwords which can be decrypted)
+  is allowed in order to support some legacy and complex inter-application
+  integration scenarios.
 
-StandardPasswordEncoder
 
-  This <<<PasswordEncoder>>> implementation wraps an 
-  <<<org.jasypt.util.PasswordEncryptor>>> object, which can be both set 
-  at creation time (constructor) or by calling
-  the <<<setPasswordEncryptor>>> method.
+* org.jasypt.springsecurity.PasswordEncoder
+
+  This <<<org.acegisecurity.providers.encoding.PasswordEncoder>>> 
+  implementation can wrap either an <<org.jasypt.util.password.PasswordEncryptor>>
+  implementation (<<<BasicPasswordEncryptor>>>, <<<StrongPasswordEncryptor>>>, 
+  <<<ConfigurablePasswordEncryptor>>>,...) or an <<org.jasypt.digest.StringDigester>>
+  implementation (<<<StandardStringDigester>>>,...). This means that all
+  uni-directional encryption methods supported in jasypt can be integrated
+  into ACEGI using this adapter.
   
-  It can be used from your Spring XML resource files like this:
+  It can be used from your Spring XML resource files like this
+  (for a <<<PasswordEncryptor>>>):
   
 ------------  
   ...
   <!-- Your application may use the PasswordEncryptor in several places, --> 
   <!-- like for example at new user sign-up.                             --> 
-  <bean id="jasyptPasswordEncryptor" class="org.jasypt.util.PasswordEncryptor" />
+  <bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
   ...
   ...
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.springsecurity.StandardPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity.PasswordEncoder">
     <property name="passwordEncryptor">
       <ref bean="jasyptPasswordEncryptor" />
     </property>
@@ -69,72 +77,22 @@ StandardPasswordEncoder
   ...
 ------------  
   
-
-StrongPasswordEncoder
-
-  This <<<PasswordEncoder>>> implementation wraps an 
-  <<<org.jasypt.util.StrongPasswordEncryptor>>> object, which can be both set 
-  at creation time (constructor) or by calling
-  the <<<setStrongPasswordEncryptor>>> method.
-  
-  It can be used from your Spring XML resource files like this:
-  
-  
-------------  
-  ...
-  <!-- Your application may use the StrongPasswordEncryptor in several   --> 
-  <!-- places, like for example at new user sign-up.                     --> 
-  <bean id="jasyptStrongPasswordEncryptor" class="org.jasypt.util.StrongPasswordEncryptor" />
-  ...
-  ...
-  <!-- This Spring Security-friendly PasswordEncoder implementation will -->
-  <!-- wrap the StrongPasswordEncryptor instance so that it can be used  -->
-  <!-- from the security framework.                                      -->
-  <bean id="passwordEncoder" class="org.jasypt.springsecurity.StrongPasswordEncoder">
-    <property name="strongPasswordEncryptor">
-      <ref bean="jasyptStrongPasswordEncryptor" />
-    </property>
-  </bean>
-  ...
-  ...
-  <!-- Your DaoAuthenticationProvider will then use it like with any     -->
-  <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
-      <property name="userDetailsService" ref="userDetailsService"/>
-      <property name="passwordEncoder">
-        <ref bean="passwordEncoder" />
-      </property>
-  </bean>
-  ...
-------------  
-  
-  
-StringDigesterPasswordEncoder
-
-  This <<<PasswordEncoder>>> implementation wraps an 
-  <<<org.jasypt.digest.StringDigester>>> object, which can be fully
-  configured (algorithm, iteration count, random salt size...),
-  and which can be both set at creation time (constructor) or by calling
-  the <<<setStringDigester>>> method.
-  
-  It can be used from your Spring XML resource files like this:
-
+  Or like this (for a <<<StringDigester>>>):
   
 ------------  
   ...
   <!-- Your application may use the StringDigester in several places,    --> 
   <!-- like for example at new user sign-up.                             --> 
-  <bean id="jasyptStringDigester" class="org.jasypt.digest.StandardStringDigester">
-    <property name="algorithm">
-      <value>SHA-1&lt;/value>
-    </property>
+  <bean id="jasyptStringDigester" class="org.jasypt.digest.StandardStringDigester" >
+    <property name="algorithm" value="SHA-1" />
+    <property name="iterations" value="100000" />
   </bean>
   ...
   ...
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the StringDigester instance so that it can be used from      -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.springsecurity.StringDigesterPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity.PasswordEncoder">
     <property name="stringDigester">
       <ref bean="jasyptStringDigester" />
     </property>
@@ -151,5 +109,80 @@ StringDigesterPasswordEncoder
   </bean>
   ...
 ------------  
+  
 
+* org.jasypt.springsecurity.PBEPasswordEncoder
 
+  This <<<org.acegisecurity.providers.encoding.PasswordEncoder>>> 
+  implementation can wrap either an <<org.jasypt.util.text.TextEncryptor>>
+  implementation (<<<BasicTextEncryptor>>>, <<<StrongTextEncryptor>>>,...)
+  or an <<org.jasypt.encryption.pbe.PBEStringEncryptor>>
+  implementation (<<<StandardPBEStringEncryptor>>>,...). This means that all
+  bi-directional encryption methods supported in jasypt can be integrated
+  into ACEGI using this adapter.
+  
+  It can be used from your Spring XML resource files like this
+  (for a <<<TextEncryptor>>>):
+  
+------------  
+  ...
+  <!-- Your application may use the TextEncryptor in several places,     --> 
+  <!-- like for example at new user sign-up.                             --> 
+  <bean id="jasyptTextEncryptor" class="org.jasypt.util.text.StrongTextEncryptor" >
+    <property name="password" value="myPassword" />
+  </bean>
+  ...
+  ...
+  <!-- This Spring Security-friendly PasswordEncoder implementation will -->
+  <!-- wrap the TextEncryptor instance so that it can be used from       -->
+  <!-- the security framework.                                           -->
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity.PBEPasswordEncoder">
+    <property name="textEncryptor">
+      <ref bean="jasyptTextEncryptor" />
+    </property>
+  </bean>
+  ...
+  ...
+  <!-- Your DaoAuthenticationProvider will then use it like with any     -->
+  <!-- other implementation of the PasswordEncoder interface.            -->
+  <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+      <property name="userDetailsService" ref="userDetailsService"/>
+      <property name="passwordEncoder">
+        <ref bean="passwordEncoder" />
+      </property>
+  </bean>
+  ...
+------------  
+  
+  Or like this (for a <<<PBEStringEncryptor>>>):
+  
+------------  
+  ...
+  <!-- Your application may use the PBEStringEncryptor in several places,--> 
+  <!-- like for example at new user sign-up.                             --> 
+  <bean id="jasyptPBEStringEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor" >
+    <property name="algorithm" value="PBEWithMD5AndTripleDES" />
+    <property name="password" value="myPassword" />
+  </bean>
+  ...
+  ...
+  <!-- This Spring Security-friendly PasswordEncoder implementation will -->
+  <!-- wrap the PBEStringEncryptor instance so that it can be used from  -->
+  <!-- the security framework.                                           -->
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity.PBEPasswordEncoder">
+    <property name="pbeStringEncryptor">
+      <ref bean="jasyptPBEStringEncryptor" />
+    </property>
+  </bean>
+  ...
+  ...
+  <!-- Your DaoAuthenticationProvider will then use it like with any     -->
+  <!-- other implementation of the PasswordEncoder interface.            -->
+  <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+      <property name="userDetailsService" ref="userDetailsService"/>
+      <property name="passwordEncoder">
+        <ref bean="passwordEncoder" />
+      </property>
+  </bean>
+  ...
+------------  
