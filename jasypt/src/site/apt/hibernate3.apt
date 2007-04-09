@@ -1,25 +1,24 @@
 
-  For further information about each class and its usage, please visit the JavaDoc documentation for 
-  {{{api/jasypt/apidocs}jasypt}} and 
-  {{{api/jasypt-hibernate/apidocs}jasypt-hibernate}}.
-
 Integrating jasypt with Hibernate 3
 
-  Jasypt-hibernate is an integration package for jasypt which provides a
-  Hibernate <<UserType>> implementation to allow one or several of the text 
-  (String) properties in a mapped
-  Hibernate entity to be declared as being of <encrypted type>.
+  Jasypt provides an integration package (<<<org.jasypt.hibernate.type>>>) which 
+  provides several Hibernate <<UserType>> implementations to allow one or 
+  several of the properties in a mapped
+  Hibernate entity to be declared as being of an <encrypted type>. Types
+  allowed to be stored encrypted include strings, binaries (byte arrays), 
+  numeric types, booleans and dates.
  
-  This way, persistence of those properties will be done in an encrypted manner,
+  Persistence of those properties will be done in an encrypted manner,
   but <<in a completely transparent way>> for the application.
 
-  This can be useful for encrypting personal data, user messages, etc, so that
+  This can be useful for encrypting personal data, private messages, etc, so that
   it is avoided that anyone with read access to the "critical" tables can
   read all of its contents. 
 
   For encryption at Hibernate, jasypt uses its <password-based encryption>
-  capabilities, and <<any object implementing PBEStringEncryptor>> can be set
-  to encrypt data, even encryptors created by the user.
+  capabilities, and <<any encryptor object implementing PBEStringEncryptor,
+  PBEByteEncryptor, PBEBigIntegerEncryptor or PBEBigDecimalEncryptor>> can be 
+  used to encrypt data, even encryptors created by the user.
   
   But <<encryption sets a limitation on your Hibernate usage>>: security 
   standards establish that two
@@ -28,14 +27,64 @@ Integrating jasypt with Hibernate 3
   are set to be encrypted when persisted can be a part of a WHERE clause in
   your search queries for the entity they belong to.
 
-  Setting jasypt-hibernate to encrypt data requires two separate actions:
+
+* Encryption types
+
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+||<<Java type>>    ||<<SQL type>>                    ||<<Jasypt Hibernate type>>             || <<Specific features>>                                            |
+||                 ||                                ||(<<<org.jasypt.hibernate.type>>>)     ||                                                                  |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<String>>>      |VARCHAR, CLOB, TEXT              |<<<EncryptedStringType>>>              |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<byte[]>>>      |VARBINARY, BLOB                  |<<<EncryptedBinaryType>>>              |Honors <<<hibernate.jdbc.use_streams_for_binary>>>.                 |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Byte>>>        |VARCHAR, CLOB, TEXT              |<<<EncryptedByteAsStringType>>>        |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Short>>>       |VARCHAR, CLOB, TEXT              |<<<EncryptedShortAsStringType>>>       |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Integer>>>     |VARCHAR, CLOB, TEXT              |<<<EncryptedIntegerAsStringType>>>     |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Long>>>        |VARCHAR, CLOB, TEXT              |<<<EncryptedLongAsStringType>>>        |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<BigInteger>>>  |NUMERIC, NUMBER                  |<<<EncryptedBigIntegerType>>>          |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<BigInteger>>>  |VARCHAR, CLOB, TEXT              |<<<EncryptedBigIntegerAsStringType>>>  |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Float>>>       |VARCHAR, CLOB, TEXT              |<<<EncryptedFloatAsStringType>>>       |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Double>>>      |VARCHAR, CLOB, TEXT              |<<<EncryptedDoubleAsStringType>>>      |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<BigDecimal>>>  |NUMERIC, NUMBER                  |<<<EncryptedBigDecimalType>>>          |Offers an additional <<<decimalScale>>> property.                  |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<BigDecimal>>>  |VARCHAR, CLOB, TEXT              |<<<EncryptedBigDecimalAsStringType>>>  |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Boolean>>>     |VARCHAR, CLOB, TEXT              |<<<EncryptedBoleanAsStringType>>>      |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Date>>>        |VARCHAR, CLOB, TEXT              |<<<EncryptedDateAsStringType>>>        |                                                                   |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+|<<<Calendar>>>    |VARCHAR, CLOB, TEXT              |<<<EncryptedCalendarAsStringType>>>    |Offers an additional <<<storeTimeZone>>> property.                 |
+*------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
+
+  When storing an encrypted field, note that you will need a higher amount of
+  space to store the result of the encryption than the space you would need to
+  store the unencrypted piece of data. This is specially important
+  when encrypting with <<<EncryptedBigIntegerType>>>
+  or <<<EncryptedBigDecimalType>>>, as NUMBER and NUMERIC fields are defined
+  by means of digits, not bytes, and thus the difference of size will be much higher
+  than intuitively expected (normally you won't use a field smaller than a NUMERIC(60) to
+  store an encrypted normal-size BigInteger).
+
+
+* Configuration
+
+  Setting jasypt to encrypt data with hibernate requires two separate actions:
 
      [[1]] <<Configuring the Hibernate mapping>>.
      
      [[2]] <<Providing the encryptor to Hibernate>>.
      
 
-* Configuring the Hibernate mapping
+** Configuring the Hibernate mapping
 
   The Hibernate mapping file can be configured in two different ways:
   
@@ -49,7 +98,7 @@ Integrating jasypt with Hibernate 3
 -------------------             
   <hibernate-mapping package="myapp">
     ...
-    <typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
+    <typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedStringType">
       <param name="algorithm">PBEWithMD5AndTripleDES</param>
       <param name="password">jasypt</param>
       <param name="keyObtentionIterations">1000</param>
@@ -57,7 +106,7 @@ Integrating jasypt with Hibernate 3
     ...
     <class name="UserData" table="USER_DATA">
       ...
-      <property name="address" column="ADDRESS" type="encrypted" />
+      <property name="address" column="ADDRESS" type="encryptedString" />
       ...
     <class>
     ...
@@ -69,14 +118,14 @@ Integrating jasypt with Hibernate 3
              encryptor to Hibernate (like explained below).
              
              
-       [[B]] <<By using a registered encryptor>>, which will be registered
-             some way (see below) with a specific <name>. All we will have
-             to use in the mapping file, thus, is this name (<<<encryptorRegisteredName>>>).
+       [[B]] <<By using a registered encryptor>>, which will be <registered>
+             with a specific <name>. This way, all we will have
+             to use in the mapping file is this name (<<<encryptorRegisteredName>>>).
              
 -------------------             
   <hibernate-mapping package="myapp">
     ...
-    <typedef name="encrypted" class="org.jasypt.hibernate.EncryptedTextType">
+    <typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedStringType">
       <param name="encryptorRegisteredName">strongHibernateEncryptor</param>
     </typedef>
     ...
@@ -91,7 +140,7 @@ Integrating jasypt with Hibernate 3
 
 
 
-* Providing the encryptor to Hibernate
+** Providing the encryptor to Hibernate
 
   If we have chosen to use the <encryptorRegisteredName> parameter in our Hibernate 
   mapping file, we will need to bind somehow an encryptor object to that name.
@@ -101,7 +150,7 @@ Integrating jasypt with Hibernate 3
 
        * <<Using Spring>> we simply need to create our encryptor, and then a
          <HibernatePBEEncryptor> object to wrap it and set a <registered name>
-         to it:
+         for it:
          
 -------------------             
   <bean id="strongEncryptor"
@@ -114,16 +163,35 @@ Integrating jasypt with Hibernate 3
     </property>
   </bean>
   
-  <bean id="hibernateEncryptor"
-    class="org.jasypt.hibernate.HibernatePBEEncryptor">
+  <bean id="hibernateStringEncryptor"
+    class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
     <property name="registeredName">
-        <value>strongHibernateEncryptor</value>
+        <value>strongHibernateStringEncryptor</value>
     </property>
     <property name="encryptor">
         <ref bean="strongEncryptor" />
     </property>
   </bean>
 -------------------             
+         Also, we can do it all in the <hibernateStringEncryptor> declaration, if
+         we don't want to use the <strongEncryptor> outside of Hibernate and we
+         are OK with the standard encryptor implementation:
+  
+-------------------             
+  <bean id="hibernateStringEncryptor"
+    class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
+    <property name="registeredName">
+        <value>strongHibernateStringEncryptor</value>
+    </property>
+    <property name="algorithm">
+        <value>PBEWithMD5AndTripleDES</value>
+    </property>
+    <property name="password">
+        <value>jasypt</value>
+    </property>
+  </bean>
+-------------------             
+  
          
 
        * <<Without Spring>>, we will have to use the <HibernatePBEEncryptorRegistry>
@@ -139,7 +207,7 @@ Integrating jasypt with Hibernate 3
 
 
 
-* Using annotations
+** Using annotations
 
   Alternatively, we may have chosen to use annotations for mapping our entities
   instead of separate XML mapping files. If it has been so, we can still 
@@ -152,7 +220,7 @@ Integrating jasypt with Hibernate 3
 -------------------             
 @TypeDef(
     name="encryptedString", 
-    typeClass=EncryptedTextType.class, 
+    typeClass=EncryptedStringType.class, 
     parameters= {
         @Parameter(name="encryptorRegisteredName", value="myHibernateStringEncryptor")
     }
