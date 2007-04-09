@@ -17,7 +17,8 @@ Advanced configuration for encyptors and digesters
       []
       
       * <<org.jasypt.encryption.pbe.config.PBEConfig>> for the configuration of
-      <<<StandardPBEByteEncryptor>>> and <<<StandardPBEStringEncryptor>>>
+      <<<StandardPBEByteEncryptor>>>, <<<StandardPBEStringEncryptor>>>,
+      <<<StandardPBEBigIntegerEncryptor>>> and <<<StandardPBEBigDecimalEncryptor>>>
       objects (also by calling their respective <<<setConfig()>>> methods).
       
   Jasypt provides at the moment two <<standard implementations>> of the   
