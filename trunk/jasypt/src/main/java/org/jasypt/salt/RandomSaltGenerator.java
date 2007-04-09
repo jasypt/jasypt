@@ -26,25 +26,32 @@ import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
  * <p>
- * This class holds a secure random generator which can be used for generating
- * random salts for encryption or digesting.
+ * This implementation of {@link SaltGenerator} holds a <b>secure</b> random 
+ * generator which can be used for generating random salts for encryption 
+ * or digesting.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @since 1.0
+ * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public final class SaltGeneration {
+public final class RandomSaltGenerator implements SaltGenerator {
     
-    private static String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
-    private static SecureRandom random = null;
+    private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
+    
+    private SecureRandom random = null;
     
     
-    static {
+    /**
+     * Creates a new instance of <tt>RandomSaltGenerator</tt>
+     *
+     */
+    public RandomSaltGenerator() {
+        super();
         try {
             random = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
             random.setSeed(System.currentTimeMillis());
@@ -60,15 +67,25 @@ public final class SaltGeneration {
      * @param lengthBytes length in bytes.
      * @return the generated salt. 
      */
-    public static byte[] generateSalt(int lengthBytes) {
+    public byte[] generateSalt(int lengthBytes) {
         byte[] salt = new byte[lengthBytes];
         synchronized (random) {
             random.nextBytes(salt);
         }
         return salt;
     }
-    
-    
-    private SaltGeneration() {}
+
+
+    /**
+     * This salt generator needs the salt to be included unencrypted in 
+     * encryption results, because of its being random. This method will always 
+     * return true.
+     * 
+     * @return true
+     */
+    public boolean includePlainSaltInEncryptionResults() {
+        return true;
+    }
+
     
 }

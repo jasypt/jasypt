@@ -23,15 +23,16 @@ import org.apache.commons.codec.binary.Base64;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
-import org.jasypt.salt.SaltGeneration;
+import org.jasypt.salt.SaltGenerator;
 
 
 /**
  * <p>
  * Standard implementation of the {@link StringDigester} interface.
  * This class lets the user specify the algorithm to be used for 
- * creating digests, the size of the random salt to be applied, and
- * the number of times the hash function will be applied (iterations).
+ * creating digests, the size of the salt to be applied,
+ * the number of times the hash function will be applied (iterations) and
+ * the salt generator to be used.
  * </p>
  * <p>
  * This class avoids byte-conversion problems related to the fact of 
@@ -45,15 +46,16 @@ import org.jasypt.salt.SaltGeneration;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, salt size and iterations can take values in any of these
- * ways:
+ * The algorithm, salt size, iterations and salt generator can take values 
+ * in any of these ways:
  * <ul>
  *   <li>Using its default values.</li>
  *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
- *       <tt>setSaltSizeBytes</tt> or <tt>setIterations</tt> methods.</li>
+ *       <tt>setSaltSizeBytes</tt>, <tt>setIterations</tt>
+ *       or <tt>setSaltGenerator</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
@@ -81,8 +83,8 @@ import org.jasypt.salt.SaltGeneration;
  *       first time, if <tt>initialize</tt> has not been called before.</li>
  * </ul>
  * Once a digester has been initialized, trying to
- * change its configuration (algorithm, salt size or iterations) will
- * result in an <tt>AlreadyInitializedException</tt> being thrown.
+ * change its configuration (algorithm, salt size, iterations or salt generator)
+ * will result in an <tt>AlreadyInitializedException</tt> being thrown.
  * </p>
  * 
  * <p>
@@ -99,15 +101,17 @@ import org.jasypt.salt.SaltGeneration;
  * The steps taken for creating digests are:
  * <ol>
  *   <li>The String message is converted to a byte array.</li>
- *   <li>A random salt of the specified size is generated (see 
- *       {@link SaltGeneration}).</li>
+ *   <li>A salt of the specified size is generated (see 
+ *       {@link org.jasypt.salt.SaltGenerator}).</li>
  *   <li>The salt bytes are added to the message.</li>
  *   <li>The hash function is applied to the salt and message altogether, 
  *       and then to the
  *       results of the function itself, as many times as specified
  *       (iterations).</li>
- *   <li>The <i>undigested</i> salt and the final result of the hash
- *       function are concatenated.</li>
+ *   <li>If specified by the salt generator (see 
+ *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
+ *       the <i>undigested</i> salt and the final result of the hash
+ *       function are concatenated and returned as a result.</li>
  *   <li>The result of the concatenation is encoded in BASE64
  *       and returned as an ASCII String.</li>
  * </ol>
@@ -116,7 +120,7 @@ import org.jasypt.salt.SaltGeneration;
  *   <li>
  *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
  *       <ul>
- *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+ *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested). <i>(OPTIONAL)</i>.</li>
  *         <li><tt>ssb</tt>: salt size in bytes.</li>
  *         <li><tt><b>X</b></tt>: bytes resulting from hashing (see below).</li>
  *       </ul>
@@ -140,13 +144,15 @@ import org.jasypt.salt.SaltGeneration;
  *     </ul>
  *   </li>
  * </ul>
- * <b>Two digests created for the same message will always be different
+ * <b>If a random salt generator is used, two digests created for the same 
+ * message will always be different
  * (except in the case of random salt coincidence).</b>
- * Because of this, the result of the <tt>digest</tt> method contains 
- * both the <i>undigested</i> salt and the digest of the (salt + message), 
- * so that another digest operation can be performed with the same salt 
- * on a different message to check if both messages match (all of which will 
- * be managed automatically by the <tt>matches</tt> method).
+ * Because of this, in this case the result of the <tt>digest</tt> method 
+ * will contain both the <i>undigested</i> salt and the digest of the 
+ * (salt + message), so that another digest operation can be performed 
+ * with the same salt on a different message to check if both messages 
+ * match (all of which will be managed automatically by the 
+ * <tt>matches</tt> method).
  * </p>
  * <p>     
  * To learn more about the mechanisms involved in digest creation, read
@@ -235,6 +241,7 @@ public final class StandardStringDigester implements StringDigester {
      *   <li>Algorithm</li>
      *   <li>Salt size</li>
      *   <li>Hashing iterations</li>
+     *   <li>Salt generator</li>
      * </ul>
      * 
      * <p>
@@ -278,7 +285,7 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
-     * Sets the size of the random salt to be used to compute the digest.
+     * Sets the size of the salt to be used to compute the digest.
      * This mechanism is explained in 
      * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
@@ -288,7 +295,7 @@ public final class StandardStringDigester implements StringDigester {
      * If salt size is set to zero, then no salt will be used.
      * </p>
      * 
-     * @param saltSizeBytes the size of the random salt to be used, in bytes.
+     * @param saltSizeBytes the size of the salt to be used, in bytes.
      */
     public void setSaltSizeBytes(int saltSizeBytes) {
         byteDigester.setSaltSizeBytes(saltSizeBytes);
@@ -317,6 +324,19 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
+     * Sets the salt generator to be used. If no salt generator is specified,
+     * an instance of {@link org.jasypt.salt.RandomSaltGenerator} will be used. 
+     * </p>
+     * 
+     * @param saltGenerator the salt generator to be used.
+     */
+    public void setSaltGenerator(SaltGenerator saltGenerator) {
+        byteDigester.setSaltGenerator(saltGenerator);
+    }
+
+    
+    /**
+     * <p>
      *   Returns true if the digester has already been initialized, false if
      *   not.<br/> 
      *   Initialization happens:
@@ -328,8 +348,9 @@ public final class StandardStringDigester implements StringDigester {
      * </ul>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, salt size or iterations) will
-     *   result in an <tt>AlreadyInitializedException</tt> being thrown.
+     *   change its configuration (algorithm, salt size, iterations or
+     *   salt generator) will result in an <tt>AlreadyInitializedException</tt>
+     *   being thrown.
      * </p>
      * 
      * @return true if the digester has already been initialized, false if
@@ -363,8 +384,9 @@ public final class StandardStringDigester implements StringDigester {
      * </ol>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, salt size or iterations) will
-     *   result in an <tt>AlreadyInitializedException</tt> being thrown.
+     *   change its configuration (algorithm, salt size, iterations or salt
+     *   generator) will result in an <tt>AlreadyInitializedException</tt> 
+     *   being thrown.
      * </p>
      * 
      * @throws EncryptionInitializationException if initialization could not
@@ -385,15 +407,17 @@ public final class StandardStringDigester implements StringDigester {
      * The steps taken for creating the digest are:
      * <ol>
      *   <li>The String message is converted to a byte array.</li>
-     *   <li>A random salt of the specified size is generated (see 
-     *       {@link SaltGeneration}).</li>
+     *   <li>A salt of the specified size is generated (see 
+     *       {@link org.jasypt.salt.SaltGenerator}).</li>
      *   <li>The salt bytes are added to the message.</li>
      *   <li>The hash function is applied to the salt and message altogether, 
      *       and then to the
      *       results of the function itself, as many times as specified
      *       (iterations).</li>
-     *   <li>The <i>undigested</i> salt and the final result of the hash
-     *       function are concatenated.</li>
+     *   <li>If specified by the salt generator (see 
+     *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
+     *       the <i>undigested</i> salt and the final result of the hash
+     *       function are concatenated and returned as a result.</li>
      *   <li>The result of the concatenation is encoded in BASE64
      *       and returned as an ASCII String.</li>
      * </ol>
@@ -402,7 +426,7 @@ public final class StandardStringDigester implements StringDigester {
      *   <li>
      *     DIGEST = <tt>|<b>S</b>|..(ssb)..|<b>S</b>|<b>X</b>|<b>X</b>|<b>X</b>|...|<b>X</b>|</tt>
      *       <ul>
-     *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested).</li>
+     *         <li><tt><b>S</b></tt>: salt bytes (plain, not digested). <i>(OPTIONAL)</i>.</li>
      *         <li><tt>ssb</tt>: salt size in bytes.</li>
      *         <li><tt><b>X</b></tt>: bytes resulting from hashing (see below).</li>
      *       </ul>
@@ -428,13 +452,15 @@ public final class StandardStringDigester implements StringDigester {
      * </ul>
      * </p>
      * <p>
-     * <b>Two digests created for the same message will always be different
+     * <b>If a random salt generator is used, two digests created for the same 
+     * message will always be different
      * (except in the case of random salt coincidence).</b>
-     * Because of this, the result of the <tt>digest</tt> method contains 
-     * both the <i>undigested</i> salt and the digest of the (salt + message), 
-     * so that another digest operation can be performed with the same salt 
-     * on a different message to check if both messages match (all of which will 
-     * be managed automatically by the <tt>matches</tt> method).     
+     * Because of this, in this case the result of the <tt>digest</tt> method 
+     * will contain both the <i>undigested</i> salt and the digest of the 
+     * (salt + message), so that another digest operation can be performed 
+     * with the same salt on a different message to check if both messages 
+     * match (all of which will be managed automatically by the 
+     * <tt>matches</tt> method).
      * </p>
      * 
      * @param message the String to be digested 

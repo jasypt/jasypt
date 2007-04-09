@@ -24,6 +24,10 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.jasypt.digest.config.SimpleDigesterConfig;
+import org.jasypt.salt.FixedByteArraySaltGenerator;
+import org.jasypt.salt.FixedStringSaltGenerator;
+
 public class StandardByteDigesterTest extends TestCase {
 
     
@@ -74,6 +78,39 @@ public class StandardByteDigesterTest extends TestCase {
         
         for (int i = 0; i < 100; i++) {
             assertTrue(digester3.matches(messageBytes, digest));
+        }
+        
+        String saltString = "Jasypt Salt Testing";
+        byte[] saltByteArray  = saltString.getBytes("UTF-8");
+        FixedByteArraySaltGenerator fixedSaltGen = 
+            new FixedByteArraySaltGenerator();
+        fixedSaltGen.setSalt(saltByteArray);
+        FixedStringSaltGenerator fixedStrSaltGen = 
+            new FixedStringSaltGenerator();
+        fixedStrSaltGen.setSalt(saltString);
+        
+        StandardByteDigester digester4 = new StandardByteDigester();
+        digester4.setSaltGenerator(fixedSaltGen);
+        byte[] digest4 = digester4.digest(messageBytes);
+        
+        StandardByteDigester digester5 = new StandardByteDigester();
+        SimpleDigesterConfig dig5Config = new SimpleDigesterConfig();
+        dig5Config.setSaltGenerator(fixedStrSaltGen);
+        digester5.setConfig(dig5Config);
+        byte[] digest5 = digester5.digest(messageBytes);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester4.matches(messageBytes, digest4));
+        }
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester5.matches(messageBytes, digest5));
+        }
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(Arrays.equals(
+                    digester4.digest(messageBytes),
+                    digester5.digest(messageBytes)));
         }
         
     }
