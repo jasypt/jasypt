@@ -1,7 +1,7 @@
 1.2
 =======
 
-- Merged jasypt-hibernate and jasypt-spring-security into main jasypt package.
+- Merged jasypt-hibernate and jasypt-spring-security into main jasypt trunk.
 - Package org.jasypt.util refactored. 
 - Created PasswordEncryptor and TextEncryptor interfaces,
   to unify both basic- and strong-encryption implementations.

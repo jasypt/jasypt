@@ -60,7 +60,7 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 
 * Current version
 
-  Current stable version is <<1.2>> (Released: April 2nd, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
+  Current stable version is <<1.2>> (Released: April 10th, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
 
 
 * Encryption can be simple to use, spread the word!

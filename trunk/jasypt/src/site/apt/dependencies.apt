@@ -12,7 +12,7 @@ Java Virtual Machine
   Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy 
   Files}}.
 
-Dependencies for jasypt
+Base dependencies for jasypt
 
   Jasypt depends on the following external libraries:
   
@@ -21,19 +21,11 @@ Dependencies for jasypt
     * {{{http://jakarta.apache.org/commons/codec/}Apache Jakarta Commons Codec}} 1.1 or higher
   
 
-Dependencies for jasypt-hibernate
+Optional dependencies
 
-  Jasypt-hibernate depends on the following external libraries:
-
-    * Jasypt (same version as jasypt-hibernate)
+  Jasypt can optionally depend on the following external libraries:
     
     * {{{http://www.hibernate.org}Hibernate}} 3.1 or higher
-
-Dependencies for jasypt-spring-security
-
-  Jasypt-spring-security depends on the following external libraries:
-
-    * Jasypt (same version as jasypt-spring-security)
     
     * {{{http://www.acegisecurity.org}Acegi Security}} 1.0.0 or higher
     
