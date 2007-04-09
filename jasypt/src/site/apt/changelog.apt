@@ -1,4 +1,95 @@
 
+Changes from 1.1 to 1.2
+
+     * <<Merged jasypt-hibernate and jasypt-spring-security into main jasypt trunk>>.
+         
+     * Numeric encryption functionalities: 
+     
+       * New <<<StandardPBEBigIntegerEncryptor>>> and 
+       <<<StandardPBEBigDecimalEncryptor>>> in the 
+       <<<org.jasypt.encryption.pbe>>> package.
+         
+     * Salt generation functionalities: 
+         
+       * Created new salt generation infrastructure, making different 
+         implementations of salt generation possible (including fixed salt).
+         Jasypt now provides three implementations: secure random salt, fixed
+         byte[]-based salt and fixed String-based salt.
+     
+     * Utils:
+     
+       * Refactored util package (<<<org.jasypt.util>>>) into 
+         several subpackages: <<<binary>>>, <<<digest>>>, <<<numeric>>>,
+         <<<password>>> and <<<text>>>.
+         
+       * Created <<<PasswordEncryptor>>> and <<<TextEncryptor>>> interfaces,
+         to unify both basic- and strong-encryption implementations.
+         <NOTE: the old org.jasypt.util classes have been DEPRECATED, and will be
+         removed in jasypt 1.3.>
+         
+       * Added <<<org.jasypt.util.password.ConfigurablePasswordEncryptor>>> for a more
+         configurable way of using the "easy" password encryptor.
+        
+       * Added binary utils (<<<org.jasypt.util.binary>>>) for easy encryption of 
+         binaries.
+       
+       * Added new <<<org.jasypt.util.numeric>>> package with easy utils for numeric 
+         encryption.
+     
+     * Hibernate integration:
+
+       * Refactored <<<org.jasypt.hibernate>>> package into new <<<encryptor>>> and 
+         <<<type>>> subpackages.
+         <NOTE: the old org.jasypt.hibernate classes have been DEPRECATED, and will be
+         removed in jasypt 1.3.>
+         
+       * Added <<<HibernatePBEEncryptorRegistry>>> support for <<<BigInteger>>>, 
+         <<<BigDecimal>>> and <<<Byte>>> encryptors.
+       
+       * Added creation of standard encryptor in Hibernate encryptor objects
+         so that <<<setEncryptor()>>> method becomes optional and hibernate encryptors
+         can be directly configured via <<<setPassword()>>>, <<<setAlgorithm()>>>, etc.
+         
+       * Added Hibernate type for encryption of binaries (byte[]) into SQL BLOBs.
+       
+       * Added Hibernate type for encryption of BigIntegers into SQL NUMERICs.
+       
+       * Added Hibernate type for encryption of BigDecimals into SQL NUMERICs.
+       
+       * Added Hibernate type for encryption of Bytes into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Shorts into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Integers into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Longs into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Floats into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Doubles into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Booleans into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Dates into SQL VARCHARs.
+       
+       * Added Hibernate type for encryption of Calendars into SQL VARCHARs.
+     
+     * Spring Security (ACEGI) integration:
+         
+       * Refactored <<<org.jasypt.springsecurity>>> package: created new 
+         <<<PasswordEncoder>>> class for use with both 
+         <<<org.jasypt.util.password.PasswordEncryptor>>>
+         or <<<org.jasypt.digest.StringDigester>>> implementations.
+         <NOTE: the old org.jasypt.springsecurity classes have been DEPRECATED, and will be
+         removed in jasypt 1.3.>
+       
+       * Created new <<<org.jasypt.springsecurity.PBEPasswordEncoder>>> for using
+         <<<org.jasypt.util.text.TextEncryptor>>> or 
+         <<<org.jasypt.pbe.encryptor.PBEStringEncryptor>>> from ACEGI Security
+         (bi-directional encryption of passwords).
+
+
+
 Changes from 1.0 to 1.1
 
      * [jasypt-spring-security] Added the {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} integration module.

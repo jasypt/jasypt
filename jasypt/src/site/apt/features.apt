@@ -35,11 +35,12 @@ Features
 
      []
        
-     * {{{http://www.hibernate.org}Hibernate 3}} integration add-on (jasypt-hibernate)
+     * {{{http://www.hibernate.org}Hibernate 3}} optional integration 
      for persisting fields of your mapped entities in an encrypted manner.
      <<Encryption of fields is defined in the Hibernate mapping files>>, and
      it remains transparent for the rest of the application (useful for
      sensitive personal data, databases with many read-enabled users...). 
+     Encrypt texts, binaries, numbers, booleans, dates...
      {{{hibernate3.html}Learn more}}.
 
      []
@@ -53,7 +54,8 @@ Features
 
      []
      
-     * {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}} add-on (jasypt-spring-security)
+     * {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}}
+     optional integration
      for performing password encryption and matching tasks for the security
      framework, improving the security of your users' passwords by using
      <<safer password encryption mechanisms>> and providing you with a
