@@ -40,7 +40,8 @@
 - Created new org.jasypt.springsecurity.PBEPasswordEncoder for using
   org.jasypt.util.text.TextEncryptor or 
   org.jasypt.pbe.encryptor.PBEStringEncryptor from ACEGI Security.
-  
+- Created new salt generation infrastructure, making different implementations
+  of salt generation possible (including fixed salt).
   
 
 1.1

@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe.config;
 
+import org.jasypt.salt.SaltGenerator;
+
 
 /**
  * <p>
@@ -44,7 +46,7 @@ public class SimplePBEConfig implements PBEConfig {
     private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
-    
+    private SaltGenerator saltGenerator = null;
 
 
     /**
@@ -95,6 +97,20 @@ public class SimplePBEConfig implements PBEConfig {
         this.keyObtentionIterations = keyObtentionIterations;
     }
     
+    /**
+     * <p>
+     * Sets the salt generator.
+     * </p>
+     * <p>
+     * If not set, null will returned.
+     * </p>
+     * 
+     * @param saltGenerator the salt generator.
+     */
+    public void setSaltGenerator(SaltGenerator saltGenerator) {
+        this.saltGenerator = saltGenerator;
+    }
+
     
     public String getAlgorithm() {
         return algorithm;
@@ -108,6 +124,11 @@ public class SimplePBEConfig implements PBEConfig {
     
     public Integer getKeyObtentionIterations() {
         return keyObtentionIterations;
+    }
+    
+    
+    public SaltGenerator getSaltGenerator() {
+        return saltGenerator;
     }
 
     

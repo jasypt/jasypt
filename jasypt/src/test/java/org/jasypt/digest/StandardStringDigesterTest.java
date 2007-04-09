@@ -23,6 +23,8 @@ package org.jasypt.digest;
 import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
+import org.jasypt.digest.config.SimpleDigesterConfig;
+import org.jasypt.salt.FixedByteArraySaltGenerator;
 
 public class StandardStringDigesterTest extends TestCase {
 
@@ -73,6 +75,37 @@ public class StandardStringDigesterTest extends TestCase {
         
         for (int i = 0; i < 100; i++) {
             assertTrue(digester3.matches(message, digest));
+        }
+        
+        String saltString = "Jasypt Salt Testing";
+        byte[] saltByteArray  = saltString.getBytes("UTF-8");
+        FixedByteArraySaltGenerator fixedSaltGen = 
+            new FixedByteArraySaltGenerator();
+        fixedSaltGen.setSalt(saltByteArray);
+
+        StandardStringDigester digester4 = new StandardStringDigester();
+        digester4.setSaltGenerator(fixedSaltGen);
+        String digest4 = digester4.digest(message);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester4.matches(message, digest4));
+        }
+
+        StandardStringDigester digester5 = new StandardStringDigester();
+        SimpleDigesterConfig dig5Config = new SimpleDigesterConfig();
+        dig5Config.setSaltGenerator(fixedSaltGen);
+        digester5.setConfig(dig5Config);
+        String digest5 = digester5.digest(message);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester5.matches(message, digest5));
+        }
+
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(
+                    digester4.digest(message).equals(
+                    digester5.digest(message)));
         }
         
     }

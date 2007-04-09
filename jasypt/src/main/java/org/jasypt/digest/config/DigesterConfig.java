@@ -21,6 +21,8 @@ package org.jasypt.digest.config;
 
 import java.io.Serializable;
 
+import org.jasypt.salt.SaltGenerator;
+
 /**
  * <p>
  * Common interface for config classes applicable to 
@@ -33,6 +35,7 @@ import java.io.Serializable;
  *   <li>Algorithm.</li>
  *   <li>Salt size (in bytes).</li>
  *   <li>Hashing iterations.</li>
+ *   <li>Salt generator.</li>
  * </ul>
  * Providing this interface lets the user create new <tt>DigesterConfig</tt>
  * classes which retrieve values for this parameters from different
@@ -124,5 +127,19 @@ public interface DigesterConfig extends Serializable {
      */
     public Integer getIterations();
 
+    
+    /**
+     * <p>
+     * Returns a {@link SaltGenerator} implementation to be used by the digester.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore the config object
+     * when deciding the salt generator to be used.
+     * </p>
+     * 
+     * @return the salt generator, or null if this object will not want to set
+     *         a specific SaltGenerator implementation.
+     */
+    public SaltGenerator getSaltGenerator();
     
 }

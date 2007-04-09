@@ -25,7 +25,7 @@ import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 public class PBEWithSHA1AndRC2_40ByteEncryptorTest 
         extends AbstractPBEByteEncryptorTest {
 
-    protected PBEByteEncryptor createPBEByteEncryptor() {
+    protected StandardPBEByteEncryptor createPBEByteEncryptor() {
         StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
         encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_SHA1_AND_RC2_40);
         return encryptor;

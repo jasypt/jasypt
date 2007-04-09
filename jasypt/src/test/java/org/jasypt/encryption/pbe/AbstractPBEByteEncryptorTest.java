@@ -23,7 +23,9 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.jasypt.encryption.pbe.config.SimplePBEConfig;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.salt.FixedStringSaltGenerator;
 
 public abstract class AbstractPBEByteEncryptorTest extends TestCase {
 
@@ -83,9 +85,36 @@ public abstract class AbstractPBEByteEncryptorTest extends TestCase {
                 assertTrue(true);
             }
         }
+        
+        FixedStringSaltGenerator saltGenerator = new FixedStringSaltGenerator();
+        saltGenerator.setSalt("Jasypt salting test");
+        
+        StandardPBEByteEncryptor encryptor4 = createPBEByteEncryptor();
+        encryptor4.setPassword(password2);
+        encryptor4.setSaltGenerator(saltGenerator);
+        byte[] enc4 = encryptor4.encrypt(messageBytes);
+        assertTrue(Arrays.equals(encryptor4.decrypt(enc4), messageBytes));
+        
+        StandardPBEByteEncryptor encryptor5 = createPBEByteEncryptor();
+        SimplePBEConfig simplePBEConfig = new SimplePBEConfig();
+        simplePBEConfig.setSaltGenerator(saltGenerator);
+        encryptor5.setConfig(simplePBEConfig);
+        encryptor5.setPassword(password2);
+        byte[] enc5 = encryptor5.encrypt(messageBytes);
+        assertTrue(Arrays.equals(encryptor5.decrypt(enc4), messageBytes));
+        assertTrue(Arrays.equals(encryptor5.decrypt(enc5), messageBytes));
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(
+                    Arrays.equals(
+                            encryptor4.encrypt(messageBytes),
+                            encryptor5.encrypt(messageBytes))
+                    );
+        }
+
     }
 
     
-    protected abstract PBEByteEncryptor createPBEByteEncryptor();
+    protected abstract StandardPBEByteEncryptor createPBEByteEncryptor();
     
 }

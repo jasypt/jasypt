@@ -34,14 +34,16 @@ import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
-import org.jasypt.salt.SaltGeneration;
+import org.jasypt.salt.RandomSaltGenerator;
+import org.jasypt.salt.SaltGenerator;
 
 /**
  * <p>
  * Standard implementation of the {@link PBEByteEncryptor} interface.
  * This class lets the user specify the algorithm to be used for 
- * encryption, the password to use, and
- * the number of hashing iterations that will be applied for obtaining
+ * encryption, the password to use,
+ * the number of hashing iterations and the salt generator
+ * that will be applied for obtaining
  * the encryption key.
  * </p>
  * <p>
@@ -51,7 +53,7 @@ import org.jasypt.salt.SaltGeneration;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, password and key-obtention iterations can take 
+ * The algorithm, password, key-obtention iterations and salt generator can take 
  * values in any of these ways:
  * <ul>
  *   <li>Using its default values (except for password).</li>
@@ -59,8 +61,8 @@ import org.jasypt.salt.SaltGeneration;
  *       object which provides new 
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
- *       <tt>setPassword(...)</tt> or <tt>setKeyObtentionIterations(...)</tt> 
- *       methods.</li>
+ *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
+ *       <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
@@ -101,9 +103,9 @@ import org.jasypt.salt.SaltGeneration;
  *   <li><i>Encrypting messages</i>, by calling the <tt>encrypt(...)</tt> method.</li>
  *   <li><i>Decrypting messages</i>, by calling the <tt>decrypt(...)</tt> method.</li> 
  * </ul>
- * <b>Because of the use of a random salt, two encryption results for 
+ * <b>If a random salt generator is used, two encryption results for 
  * the same message will always be different
- * (except in the case of random salt coincidence)</b>. This enforces
+ * (except in the case of random salt coincidence)</b>. This may enforce
  * security by difficulting brute force attacks on sets of data at a time
  * and forcing attackers to perform a brute force attack on each separate
  * piece of encrypted data.
@@ -145,12 +147,18 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     // Number of hashing iterations to be applied for obtaining the encryption
     // key from the specified password.
     private int keyObtentionIterations = DEFAULT_KEY_OBTENTION_ITERATIONS;
+    
+    // SaltGenerator to be used. Initialization of a salt generator is costly,
+    // and so default value will be applied only in initialize(), if it finally
+    // becomes necessary.
+    private SaltGenerator saltGenerator = null;
 
-    // Size in bytes of the random salt to be used for obtaining the
+    // Size in bytes of the salt to be used for obtaining the
     // encryption key. This size will depend on the PBE algorithm being used,
     // so instead of being set by the user it will be provided by the
-    //org.jasypt.encryption.pbe.algorithms.PBEAlgorithms registry.
+    // org.jasypt.encryption.pbe.algorithms.PBEAlgorithms registry.
     private int saltSizeBytes = 0;
+    
     
     // Config object set (optionally).
     private PBEConfig config = null;
@@ -163,6 +171,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     private boolean algorithmSet = false;
     private boolean passwordSet = false;
     private boolean iterationsSet = false;
+    private boolean saltGeneratorSet = false;
     
     
     /*
@@ -203,6 +212,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      *   <li>Algorithm</li>
      *   <li>Password</li>
      *   <li>Hashing iterations for obtaining the encryption key</li>
+     *   <li>Salt generator</li>
      * </ul>
      * 
      * <p>
@@ -297,6 +307,24 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         this.keyObtentionIterations = keyObtentionIterations;
         this.iterationsSet = true;
     }
+
+    
+    /**
+     * <p>
+     * Sets the salt generator to be used. If no salt generator is specified,
+     * an instance of {@link org.jasypt.salt.RandomSaltGenerator} will be used. 
+     * </p>
+     * 
+     * @param saltGenerator the salt generator to be used.
+     */
+    public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
+        Validate.notNull(saltGenerator, "Salt generator cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.saltGenerator = saltGenerator;
+        this.saltGeneratorSet = true;
+    }
     
 
     
@@ -313,8 +341,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * </ul>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password or key obtention
-     *   iterations) will
+     *   change its configuration (algorithm, password, key obtention
+     *   iterations or salt generator) will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -350,8 +378,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * </ol>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password or key obtention
-     *   iterations) will
+     *   change its configuration (algorithm, password, key obtention
+     *   iterations or salt generator) will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -392,6 +420,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                             "greater than zero");
                 }
                 
+                SaltGenerator configSaltGenerator = config.getSaltGenerator();
+                
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
                             this.algorithm : configAlgorithm;
@@ -403,7 +433,18 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                      (configKeyObtentionIterations == null))?
                             this.keyObtentionIterations : 
                             configKeyObtentionIterations.intValue();
+                this.saltGenerator = 
+                    ((this.saltGeneratorSet) || (configSaltGenerator == null))?
+                            this.saltGenerator : configSaltGenerator;
                 
+            }
+            
+            /*
+             * If the encryptor was not set a salt generator in any way,
+             * it is time to apply its default value.
+             */
+            if (this.saltGenerator == null) {
+                this.saltGenerator = new RandomSaltGenerator();
             }
 
             // The specific parameter (salt size) for the chosen algorithm
@@ -455,17 +496,17 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
      * </p>
      * <p>
-     * This encryptor uses a different random salt for each encryption
+     * This encryptor uses a salt for each encryption
      * operation. The size of the salt depends on the algorithm
      * being used. This salt is used
-     * for creating the encryption key, and it is also appended unencrypted 
-     * at the beginning
+     * for creating the encryption key and, if generated by a random generator,
+     * it is also appended unencrypted at the beginning
      * of the results so that a decryption operation can be performed.
      * </p>
      * <p>
-     * <b>Because of the use of a random salt, two encryption results for 
+     * <b>If a random salt generator is used, two encryption results for 
      * the same message will always be different
-     * (except in the case of random salt coincidence)</b>. This enforces
+     * (except in the case of random salt coincidence)</b>. This may enforce
      * security by difficulting brute force attacks on sets of data at a time
      * and forcing attackers to perform a brute force attack on each separate
      * piece of encrypted data.
@@ -493,8 +534,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         
         try {
             
-            // Create random salt
-            byte[] salt = SaltGeneration.generateSalt(this.saltSizeBytes);
+            // Create salt
+            byte[] salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
 
             /*
              * Perform encryption using the Cipher
@@ -502,15 +543,22 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             PBEParameterSpec parameterSpec = 
                 new PBEParameterSpec(salt, this.keyObtentionIterations);
 
-            byte[] encyptedMessage = null;
+            byte[] encryptedMessage = null;
             synchronized (this.encryptCipher) {
                 this.encryptCipher.init(
                         Cipher.ENCRYPT_MODE, this.key, parameterSpec);
-                encyptedMessage = this.encryptCipher.doFinal(message);
+                encryptedMessage = this.encryptCipher.doFinal(message);
             }
 
-            // Append the unencrypted salt at the beginning of the result.
-            return ArrayUtils.addAll(salt, encyptedMessage);
+            // Finally we build an array containing both the unencrypted salt
+            // and the result of the encryption. This is done only
+            // if the salt generator we are using specifies to do so.
+            if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
+                encryptedMessage = ArrayUtils.addAll(salt, encryptedMessage);
+            }
+
+            
+            return encryptedMessage;
             
         } catch (InvalidKeyException e) {
             // The problem could be not having the unlimited strength policies
@@ -536,10 +584,10 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
      * </p>
      * <p>
-     * This decryption operation expects to find an unencrypted salt at the 
+     * If a random salt generator is used, this decryption operation will
+     * expect to find an unencrypted salt at the 
      * beginning of the encrypted input, so that the decryption operation can be
-     * correctly performed (this salt is supposed to be random and so, there
-     * is no other way of knowing it).
+     * correctly performed (there is no other way of knowing it).
      * </p>
      * 
      * @param encryptedMessage the byte array message to be decrypted
@@ -564,9 +612,18 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     
         try {
 
-            // Obtain unencrypted salt from the beginning of the message
-            byte[] salt = 
-                ArrayUtils.subarray(encryptedMessage, 0, this.saltSizeBytes);
+            // If we are using a salt generator which specifies the salt
+            // to be included into the encrypted message itself, get it from 
+            // there. If not, the salt is supposed to be fixed and thus the
+            // salt generator can be safely asked for it again.
+            byte[] salt = null; 
+            if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
+                salt = ArrayUtils.subarray(
+                        encryptedMessage, 0, this.saltSizeBytes);
+            } else {
+                salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
+            }
+            
             
             /*
              * Perform decryption using the Cipher
@@ -576,9 +633,18 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
 
             byte[] decryptedMessage = null;
             
-            byte[] encryptedMessageKernel = 
-                ArrayUtils.subarray(encryptedMessage, this.saltSizeBytes, 
-                        encryptedMessage.length);
+            // If we are using a salt generator which specifies the salt
+            // to be included into the encrypted message itself, we need to
+            // extract the part of the encrypted message which really belongs
+            // to the encryption result, and not the prepended salt.
+            byte[] encryptedMessageKernel = null; 
+            if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
+                encryptedMessageKernel = 
+                    ArrayUtils.subarray(encryptedMessage, this.saltSizeBytes, 
+                            encryptedMessage.length);
+            } else {
+                encryptedMessageKernel = encryptedMessage; 
+            }
                  
             synchronized (this.decryptCipher) {
                 this.decryptCipher.init(

@@ -21,12 +21,16 @@ package org.jasypt.encryption.pbe.config;
 
 import java.io.Serializable;
 
+import org.jasypt.salt.SaltGenerator;
+
 
 /**
  * <p>
  * Common interface for config classes applicable to 
- * {@link org.jasypt.encryption.pbe.StandardPBEByteEncryptor} or 
- * {@link org.jasypt.encryption.pbe.StandardPBEStringEncryptor} objects. 
+ * {@link org.jasypt.encryption.pbe.StandardPBEByteEncryptor}, 
+ * {@link org.jasypt.encryption.pbe.StandardPBEStringEncryptor},
+ * {@link org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor} or
+ * {@link org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor} objects. 
  * </p>
  * <p>
  * Objects of classes implementing this interface will provide values for:
@@ -34,6 +38,7 @@ import java.io.Serializable;
  *   <li>Algorithm.</li>
  *   <li>Password.</li>
  *   <li>Hashing iterations for obtaining the encryption key.</li>
+ *   <li>Salt generator.</li>
  * </ul>
  * Providing this interface lets the user create new <tt>PBEConfig</tt>
  * classes which retrieve values for this parameters from different
@@ -106,5 +111,21 @@ public interface PBEConfig extends Serializable {
      * @return the number of iterations
      */
     public Integer getKeyObtentionIterations();
+
+    
+    /**
+     * <p>
+     * Returns a {@link SaltGenerator} implementation to be used by the 
+     * encryptor.
+     * </p>
+     * <p>
+     * If this method returns null, the encryptor will ignore the config object
+     * when deciding the salt generator to be used.
+     * </p>
+     * 
+     * @return the salt generator, or null if this object will not want to set
+     *         a specific SaltGenerator implementation.
+     */
+    public SaltGenerator getSaltGenerator();
     
 }

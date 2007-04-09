@@ -19,6 +19,8 @@
  */
 package org.jasypt.digest.config;
 
+import org.jasypt.salt.SaltGenerator;
+
 /**
  * <p>
  * Bean implementation for {@link DigesterConfig}. This class allows 
@@ -42,7 +44,8 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     private String algorithm = null;
     private Integer iterations = null;
-    private Integer saltSizeBytes = null; 
+    private Integer saltSizeBytes = null;
+    private SaltGenerator saltGenerator = null;
     
 
     /**
@@ -110,6 +113,21 @@ public class SimpleDigesterConfig implements DigesterConfig {
     }
 
     
+    /**
+     * <p>
+     * Sets the salt generator.
+     * </p>
+     * <p>
+     * If not set, null will returned.
+     * </p>
+     * 
+     * @param saltGenerator the salt generator.
+     */
+    public void setSaltGenerator(SaltGenerator saltGenerator) {
+        this.saltGenerator = saltGenerator;
+    }
+
+    
     public String getAlgorithm() {
         return algorithm;
     }
@@ -122,6 +140,11 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     public Integer getSaltSizeBytes() {
         return saltSizeBytes;
+    }
+    
+    
+    public SaltGenerator getSaltGenerator() {
+        return saltGenerator;
     }
 
     
