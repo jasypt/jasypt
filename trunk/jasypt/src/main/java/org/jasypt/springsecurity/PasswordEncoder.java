@@ -46,7 +46,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  * <p>
  * Important: <b>This implementation ignores any salt provided through
  * the interface methods</b>, as the internal Jasypt 
- * <tt>PasswordEncryptor</tt> or <tt>StringDigester</tt> objects use a 
+ * <tt>PasswordEncryptor</tt> or <tt>StringDigester</tt> objects normally use a 
  * random one. This means that salt can be safely passed as 
  * <tt>null</tt>.
  * </p>
@@ -175,7 +175,7 @@ public class PasswordEncoder
     /**
      * Encodes a password. This implementation completely ignores salt, 
      * as jasypt's <tt>PasswordEncryptor</tt> and <tt>StringDigester</tt> 
-     * use a random one. Thus, it can be safely passed as <tt>null</tt>.
+     * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
      * @param rawPass The password to be encoded.
      * @param salt The salt, which will be ignored. It can be null.
@@ -193,7 +193,7 @@ public class PasswordEncoder
     /**
      * Checks a password's validity. This implementation completely ignores
      * salt, as jasypt's <tt>PasswordEncryptor</tt> and <tt>StringDigester</tt>
-     * use a random one. Thus, it can be safely passed as <tt>null</tt>.
+     * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
      * @param encPass The encrypted password (digest) against which to check.
      * @param rawPass The password to be checked.

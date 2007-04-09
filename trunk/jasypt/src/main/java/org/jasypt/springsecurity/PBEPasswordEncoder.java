@@ -55,7 +55,7 @@ import org.jasypt.util.text.TextEncryptor;
  * <p>
  * Important: <b>This implementation ignores any salt provided through
  * the interface methods</b>, as the internal Jasypt 
- * <tt>TextEncryptor</tt> or <tt>PBEStringEncryptor</tt> objects use a 
+ * <tt>TextEncryptor</tt> or <tt>PBEStringEncryptor</tt> objects normally use a 
  * random one. This means that salt can be safely passed as 
  * <tt>null</tt>.
  * </p>
@@ -186,7 +186,7 @@ public class PBEPasswordEncoder
     /**
      * Encodes a password. This implementation completely ignores salt, 
      * as jasypt's <tt>TextEncryptor</tt> and <tt>PBEStringEncryptor</tt> 
-     * use a random one. Thus, it can be safely passed as <tt>null</tt>.
+     * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
      * @param rawPass The password to be encoded.
      * @param salt The salt, which will be ignored. It can be null.
@@ -204,7 +204,7 @@ public class PBEPasswordEncoder
     /**
      * Checks a password's validity. This implementation completely ignores
      * salt, as jasypt's <tt>TextEncryptor</tt> and <tt>PBEStringEncryptor</tt>
-     * use a random one. Thus, it can be safely passed as <tt>null</tt>.
+     * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
      * @param encPass The encrypted password against which to check.
      * @param rawPass The password to be checked.
