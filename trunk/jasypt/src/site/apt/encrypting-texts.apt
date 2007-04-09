@@ -1,7 +1,7 @@
 
 Encrypting texts
 
-  Jasypt currently offers support for performing PBE (Password Based Encryption)
+  Jasypt offers support for performing PBE (Password Based Encryption)
   operations on texts. This is offered through the
   <<<org.jasypt.encryption.pbe.PBEStringEncryptor>>> interface and its
   default implementation, <<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>.

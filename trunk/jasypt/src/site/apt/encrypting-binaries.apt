@@ -1,0 +1,79 @@
+
+Encrypting binaries
+
+  Jasypt offers support for performing PBE (Password Based Encryption)
+  operations on binaries (byte[] objects). This is offered through the
+  <<<org.jasypt.encryption.pbe.PBEByteEncryptor>>> interface and its
+  default implementation, <<org.jasypt.encryption.pbe.StandardPBEByteEncryptor>>.
+  
+* Usage
+  
+  Assuming that you will be using the default implementation, once the
+  <<<StandardPBEByteEncryptor>>> instance has been created, this is how
+  it will work:
+
+** Configuration
+
+ The algorithm, password and key-obtention iterations can take 
+ values in any of these ways:
+ 
+     * Using its default values (except for password).
+     
+     * Setting an <<<org.jasypt.encryption.pbe.config.PBEConfig>>> 
+       object which provides new configuration values. {{{advancedconfiguration.html}Learn More}}.
+       
+     * Calling the corresponding <<<setAlgorithm(...)>>>, 
+       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
+       or <<<setSaltGenerator(...)>>> methods.
+
+ And the actual values to be used for initialization will be established
+ by applying the following priorities:
+
+     * First, the default values are considered (except for password).
+      
+     * Then, if a <<<link org.jasypt.encryption.pbe.config.PBEConfig>>>
+       object has been set with <<<setConfig(...)>>>, the non-null values 
+       returned by its <<<getX()>>> methods override the default values.
+       
+     * Finally, if the corresponding <<<setX(...)>>> method has been called
+       on the encryptor itself for any of the configuration parameters, the 
+       values set by these calls override all of the above.
+
+       
+** Initialization
+
+  Before it is ready to encrypt, an object of this class has to be
+  <initialized>. Initialization happens:
+
+     * When <<<initialize()>>> is called.
+     
+     * When <<<encrypt(...)>>> or <<<decrypt(...)>>> are called for the
+       first time, if <<<initialize()>>> has not been called before
+
+     * Once an encryptor has been initialized, trying to
+       change its configuration willresult in an 
+       <<<AlreadyInitializedException>>> being thrown.
+
+
+** Usage
+
+  An encryptor may be used for:
+
+     * <Encrypting messages>, by calling the <<<encrypt(..)>>> method.
+     
+     * <Decrypting messages>, by calling the <<<decrypt(...)>>> method.
+
+ <<When using a random salt generator, two encryption results for 
+ the same message will always be different (except in the case of random 
+ salt coincidence)>>. This enforces security by difficulting brute force
+ attacks on sets of data at a time and forcing attackers to perform a brute 
+ force attack on each separate piece of encrypted data.
+
+** Learn more
+
+ To learn more about the mechanisms involved in encryption, read
+ {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
+
+  
+  
+  

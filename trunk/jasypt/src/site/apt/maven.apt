@@ -1,49 +1,13 @@
 
 Using jasypt from Maven 2
 
-  Adding jasypt, jasypt-hiberante or jasypt-spring-security to your Maven 2 project is very easy:
-  you just need to add the following dependencies to your pom.xml:
-  
-      * For jasypt:
+  Adding jasypt to your Maven 2 project is very easy,
+  you just need to add the following dependency to your pom.xml:
       
 ---------
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
-      <version>{version}</version>
-      <scope>compile</scope>
-    </dependency>
----------
-  
-      * For jasypt-hibernate (you will also need jasypt):
-      
----------
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>{version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt-hibernate</artifactId>
-      <version>{version}</version>
-      <scope>compile</scope>
-    </dependency>
----------
-  
-      * For jasypt-spring-security (you will also need jasypt):
-      
----------
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>{version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt-spring-security</artifactId>
       <version>{version}</version>
       <scope>compile</scope>
     </dependency>
@@ -52,11 +16,9 @@ Using jasypt from Maven 2
 
 Using jasypt from Maven 1.x
 
-  Adding jasypt, jasypt-hiberante or jasypt-spring-security to your Maven 1.x project is almost as easy
-  as it is for Maven 2, except for the lack of support for transitive dependencies:
-  you need to add the following dependencies to your project.xml:
-  
-      * For jasypt:
+  Adding jasypt to your Maven 1.x project is almost as easy
+  as it is for Maven 2, except for the lack of support for transitive dependencies.
+  So, you will need to add the following dependencies to your project.xml:
       
 ---------
     <dependency>
@@ -79,88 +41,5 @@ Using jasypt from Maven 1.x
       <version>1.1</version>
     </dependency>
 
----------
-  
-      * For jasypt-hibernate (you will also need jasypt):
-      
----------
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>{version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt-hibernate</artifactId>
-      <version>{version}</version>
-    </dependency>
-    <!-- 
-       If you already have dependencies on commons-lang or commons-codec,
-       you should skip the following ones.
-    -->
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <!--
-      You should also have already configured all dependencies for the
-      Hibernate version you are using.
-    -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>3.1</version>
-    </dependency>
-    ...
-    ...
-    ...
----------
-
-      * For jasypt-spring-security (you will also need jasypt):
-
-      
----------
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>{version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt-spring-security</artifactId>
-      <version>{version}</version>
-    </dependency>
-    <!-- 
-       If you already have dependencies on commons-lang or commons-codec,
-       you should skip the following ones.
-    -->
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.1</version>
-    </dependency>
-    <!--
-      You should also have already configured all dependencies for the
-      Spring Security (Acegi) version you are using.
-    -->
-    <dependency>
-      <groupId>org.acegisecurity</groupId>
-      <artifactId>acegi-security</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    ...
-    ...
-    ...
 ---------
       
