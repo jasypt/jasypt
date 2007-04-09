@@ -25,6 +25,7 @@ import org.jasypt.encryption.pbe.PBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.salt.SaltGenerator;
 
 /**
  * <p>
@@ -42,7 +43,8 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * with {@link #setEncryptor(PBEBigDecimalEncryptor)}</b>. If not, a
  * <tt>StandardPBEBigDecimalEncryptor</tt> object will be created internally
  * and it will be configurable with the {@link #setPassword(String)},
- * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)}
+ * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
+ * {@link #setSaltGenerator(SaltGenerator)}
  * and  {@link #setConfig(PBEConfig)} methods.
  * </p>
  * <p>
@@ -54,8 +56,8 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  *   <li>Create an object of this class (declaring it).</li>
  *   <li>Set its <tt>registeredName</tt> and, either its 
  *       wrapped <tt>encryptor</tt> or its <tt>password</tt>, 
- *       <tt>algorithm</tt>, <tt>keyObtentionIterations</tt> and
- *       <tt>config</tt> properties.</li>
+ *       <tt>algorithm</tt>, <tt>keyObtentionIterations</tt>,
+ *       <tt>saltGenerator</tt> and <tt>config</tt> properties.</li>
  *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
  *       <tt>encryptorRegisteredName</tt> parameter the same value specified
  *       to this object in <tt>registeredName</tt>.</li>
@@ -227,6 +229,25 @@ public final class HibernatePBEBigDecimalEncryptor {
             (StandardPBEBigDecimalEncryptor) this.encryptor;
         standardPBEBigDecimalEncryptor.setKeyObtentionIterations(
                 keyObtentionIterations);
+    }
+    
+
+    /**
+     * Sets the salt generator to be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @param saltGenerator the salt generator to be set for the internal
+     *                      encryptor.
+     */
+    public void setSaltGenerator(SaltGenerator saltGenerator) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEBigDecimalEncryptor standardPBEBigDecimalEncryptor =
+            (StandardPBEBigDecimalEncryptor) this.encryptor;
+        standardPBEBigDecimalEncryptor.setSaltGenerator(saltGenerator);
     }
 
 
