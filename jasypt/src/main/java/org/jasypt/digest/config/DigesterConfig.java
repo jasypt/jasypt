@@ -86,7 +86,7 @@ public interface DigesterConfig extends Serializable {
     
     /**
      * <p>
-     * Returns the size of the random salt to be used to compute the digest.
+     * Returns the size of the salt to be used to compute the digest.
      * This mechanism is explained in 
      * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
@@ -96,10 +96,10 @@ public interface DigesterConfig extends Serializable {
      * </p>
      * <p>
      * If this method returns null, the digester will ignore the config object
-     * when deciding the size of the random salt to be used.
+     * when deciding the size of the salt to be used.
      * </p>
      * 
-     * @return the size of the random salt to be used, in bytes, or null if
+     * @return the size of the salt to be used, in bytes, or null if
      *         this object will not want to set a size for salt.
      */
     public Integer getSaltSizeBytes();

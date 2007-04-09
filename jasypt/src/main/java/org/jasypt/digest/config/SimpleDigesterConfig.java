@@ -100,13 +100,13 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     /**
      * <p>
-     * Size in bytes of the random salt to be used.
+     * Size in bytes of the salt to be used.
      * </p>
      * <p>
      * If not set, null will returned.
      * </p>
      * 
-     * @param saltSizeBytes the size of the random salt, in bytes.
+     * @param saltSizeBytes the size of the salt, in bytes.
      */
     public void setSaltSizeBytes(Integer saltSizeBytes) {
         this.saltSizeBytes = saltSizeBytes;
