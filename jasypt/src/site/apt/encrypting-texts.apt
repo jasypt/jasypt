@@ -31,7 +31,8 @@ Encrypting texts
        object which provides new configuration values. {{{advancedconfiguration.html}Learn More}}.
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
-       <<<setPassword(...)>>> or <<<setKeyObtentionIterations(...)>>> methods.
+       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
+       or <<<setSaltGenerator(...)>>> methods.
 
  And the actual values to be used for initialization will be established
  by applying the following priorities:
@@ -55,7 +56,7 @@ Encrypting texts
      * When <<<initialize()>>> is called.
      
      * When <<<encrypt(...)>>> or <<<decrypt(...)>>> are called for the
-       first time, if <tt>initialize()</tt> has not been called before
+       first time, if <<<initialize()>>> has not been called before
 
      * Once an encryptor has been initialized, trying to
        change its configuration willresult in an 
@@ -70,7 +71,7 @@ Encrypting texts
      
      * <Decrypting messages>, by calling the <<<decrypt(...)>>> method.
 
- <<Because of the use of a random salt, two encryption results for 
+ <<When using a random salt generator, two encryption results for 
  the same message will always be different (except in the case of random 
  salt coincidence)>>. This enforces security by difficulting brute force
  attacks on sets of data at a time and forcing attackers to perform a brute 
@@ -79,7 +80,7 @@ Encrypting texts
 ** Learn more
 
  To learn more about the mechanisms involved in encryption, read
- {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS &#035;5: Password-Based Cryptography Standard}}.
+ {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
 
   
   
