@@ -98,6 +98,20 @@
       </answer>
     </faq>
     
+    <faq id="where-are-jasypt-hibernate-and-jasypt-spring-security">
+      <question>Where have the jasypt-hibernate and jasypt-spring-security modules gone?</question>
+      <answer>
+        <p>
+          Jasypt source trunks were merged in version 1.2, so that everything
+          is now in a single module, <tt>jasypt</tt>. This has not affected
+          the package structure, and you will find the
+          jasypt-hibernate classes in package <tt>org.jasypt.hibernate</tt>
+          and the jasypt-spring-security ones at <tt>org.jasypt.springsecurity</tt>,
+          as usual.
+        </p>
+      </answer>
+    </faq>
+    
   </part>
 
 
