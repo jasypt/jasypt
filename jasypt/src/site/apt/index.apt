@@ -1,4 +1,13 @@
 
+  <<Jasypt 1.2 has been just released>>. Have a look at the 
+  {{{changelog.html}ChangeLog}}, check the {{{features.html}features}}
+  or {{{download.html}download}} the new version.
+
+  <<Stay in touch with other jasypt users!>> request help, discuss your ideas
+  or make suggestions in the new
+  {{{https://lists.sourceforge.net/lists/listinfo/jasypt-users} jasypt-users mailing list}}
+  and the {{{http://www.nabble.com/Jasypt---Users-f21330.html}users forum}}.
+
 Java Simplified Encryption
 
   Jasypt is a java library which allows 
