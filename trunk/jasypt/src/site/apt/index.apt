@@ -1,3 +1,6 @@
+  -------
+  Main
+  -------
 
   <<Jasypt 1.2 has been just released>>. Have a look at the 
   {{{changelog.html}ChangeLog}}, check the {{{features.html}features}}
@@ -7,6 +10,8 @@
   or make suggestions in the new
   {{{https://lists.sourceforge.net/lists/listinfo/jasypt-users} jasypt-users mailing list}}
   and the {{{http://www.nabble.com/Jasypt---Users-f21330.html}users forum}}.
+
+  New article published: <<{{{howtoencryptuserpasswords.html}How to Encrypt User Passwords}}>>.
 
 Java Simplified Encryption
 

@@ -27,27 +27,35 @@
   
     <links>
       <item name="Main" href="index.html" />
-      <item name="Features" href="features.html" />
       <item name="Download" href="download.html" />
-      <item name="Source Repository" href="source-repository.html" />
-      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
+      <item name="Features" href="features.html" />
+      <item name="Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
       <item name="Sourceforge.net Project Page" href="http://www.sourceforge.net/projects/jasypt" />
     </links>
 
     <menu name="The Jasypt Project">
       <item name="Main" href="index.html"/>
+      <item name="Features" href="features.html" />
       <item name="Download" href="download.html"/>
+      <item name="Source Repository" href="source-repository.html" />
       <item name="License" href="license.html"/>
-      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
-      <item name="Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
-      <item name="Mailing Lists" href="mailinglists.html"/>
       <item name="Team" href="team.html"/>
     </menu>
 
-    <menu name="Documentation">
-      <item name="Features" href="features.html" />
-      <item name="FAQ" href="faq.html" />
+    <menu name="Reference">
+      <item name="JavaDoc" href="api/jasypt/apidocs/index.html" />
       <item name="Dependencies" href="dependencies.html" />
+      <item name="FAQ" href="faq.html" />
+    </menu>
+
+    <menu name="Community">
+      <item name="Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
+      <item name="Mailing Lists" href="mailinglists.html"/>
+      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
+      <item name="External Resources" href="externalresources.html"/>
+    </menu>
+
+    <menu name="Guides">
       <item name="Getting Started" href="getting-started.html">
         <item name="Jasypt at a Glance" href="ataglance.html" />
         <item name="Easy Tools" href="getting-started-easy.html" />
@@ -62,9 +70,12 @@
       <item name="Jasypt + Hibernate 3" href="hibernate3.html"/>
       <item name="Jasypt + Spring" href="spring.html"/>
       <item name="Jasypt + Acegi" href="springsecurity.html"/>
-      <item name="JavaDoc" href="api/jasypt/apidocs/index.html" />
-      <item name="External Resources" href="externalresources.html"/>
     </menu>
+
+    <menu name="Articles">
+      <item name="How to encrypt user passwords" href="howtoencryptuserpasswords.html"/>
+    </menu>
+
 
     <head>
       <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>

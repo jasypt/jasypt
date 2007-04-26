@@ -1,3 +1,6 @@
+  -------
+  Dependencies
+  -------
 
   If you are using Maven 2, there is no need to consider these dependencies,
   as they will be automatically managed as transitive dependencies.
