@@ -11,7 +11,7 @@
 
 <html>
   <head>
-    <title>Jasypt: Java simplified encryption - Main</title>
+    <title>Jasypt: Java simplified encryption - </title>
     <style type="text/css" media="all">
       @import url("http://www.jasypt.org/css/maven-base.css");
       @import url("http://www.jasypt.org/css/maven-theme.css");
@@ -27,14 +27,14 @@
                     </head>
 
 
-
 <!-- NABBLE: Deleted "class=composite" attribute from <body> for Nabble integration -->    
 
   <body>
-  
-  
+
+
+
     <div id="banner">
-                  <a href="http://www.jasypt.org/index.html" id="bannerLeft">
+                  <a href="http://www.jasypt.org/" id="bannerLeft">
     
                                             <img src="http://www.jasypt.org/images/jasypt.png" alt="" />
     
@@ -57,16 +57,18 @@
             
   
             <div class="xleft">
-        Last Published: 26 Apr 2007
+        Last Published: 17 Apr 2007
                   &nbsp;| Version: 1.2
                       </div>
             <div class="xright">      <a href="http://www.jasypt.org/index.html">Main</a>
           |
-          <a href="http://www.jasypt.org/download.html">Download</a>
-          |
           <a href="http://www.jasypt.org/features.html">Features</a>
           |
-          <a href="http://www.nabble.com/Jasypt---Users-f21330.html">Users Forum</a>
+          <a href="http://www.jasypt.org/download.html">Download</a>
+          |
+          <a href="http://www.jasypt.org/source-repository.html">Source Repository</a>
+          |
+          <a href="http://sourceforge.net/tracker/?group_id=183612">Issue Tracking</a>
           |
           <a href="http://www.sourceforge.net/projects/jasypt">Sourceforge.net Project Page</a>
           
@@ -81,7 +83,6 @@
         <hr />
       </div>
     </div>
-    
 
 
 
@@ -92,7 +93,7 @@
 		<td valign="top" align="left" width=1%>
 
 <!-- NABBLE END: Added for Nabble integration -->    
-    
+		
     <div id="leftColumn">
       <div id="navcolumn">
            
@@ -106,16 +107,7 @@
         <ul>
               
     <li class="none">
-    
-<!-- NABBLE START: Added link for Nabble integration -->    
               <a href="http://www.jasypt.org/index.html">Main</a>
-<!-- NABBLE END: Added link for Nabble integration -->    
-
-
-        </li>
-              
-    <li class="none">
-              <a href="http://www.jasypt.org/features.html">Features</a>
         </li>
               
     <li class="none">
@@ -123,34 +115,12 @@
         </li>
               
     <li class="none">
-              <a href="http://www.jasypt.org/source-repository.html">Source Repository</a>
-        </li>
-              
-    <li class="none">
               <a href="http://www.jasypt.org/license.html">License</a>
         </li>
               
     <li class="none">
-              <a href="http://www.jasypt.org/team.html">Team</a>
+              <a href="http://sourceforge.net/tracker/?group_id=183612">Issue Tracking</a>
         </li>
-          </ul>
-          <h5>Reference</h5>
-        <ul>
-              
-    <li class="none">
-              <a href="http://www.jasypt.org/api/jasypt/apidocs/index.html">JavaDoc</a>
-        </li>
-              
-    <li class="none">
-              <a href="http://www.jasypt.org/dependencies.html">Dependencies</a>
-        </li>
-              
-    <li class="none">
-              <a href="http://www.jasypt.org/faq.html">FAQ</a>
-        </li>
-          </ul>
-          <h5>Community</h5>
-        <ul>
               
     <li class="none">
               <a href="http://www.nabble.com/Jasypt---Users-f21330.html"><strong>Users Forum</strong></a>
@@ -161,15 +131,23 @@
         </li>
               
     <li class="none">
-              <a href="http://sourceforge.net/tracker/?group_id=183612">Issue Tracking</a>
+              <a href="http://www.jasypt.org/team.html">Team</a>
+        </li>
+          </ul>
+          <h5>Documentation</h5>
+        <ul>
+              
+    <li class="none">
+              <a href="http://www.jasypt.org/features.html">Features</a>
         </li>
               
     <li class="none">
-              <a href="http://www.jasypt.org/externalresources.html">External Resources</a>
+              <a href="http://www.jasypt.org/faq.html">FAQ</a>
         </li>
-          </ul>
-          <h5>Guides</h5>
-        <ul>
+              
+    <li class="none">
+              <a href="http://www.jasypt.org/dependencies.html">Dependencies</a>
+        </li>
               
           
               
@@ -232,12 +210,13 @@
     <li class="none">
               <a href="http://www.jasypt.org/springsecurity.html">Jasypt + Acegi</a>
         </li>
-          </ul>
-          <h5>Articles</h5>
-        <ul>
               
     <li class="none">
-              <a href="http://www.jasypt.org/howtoencryptuserpasswords.html">How to encrypt user passwords</a>
+              <a href="http://www.jasypt.org/api/jasypt/apidocs/index.html">JavaDoc</a>
+        </li>
+              
+    <li class="none">
+              <a href="http://www.jasypt.org/externalresources.html">External Resources</a>
         </li>
           </ul>
                                              
@@ -276,16 +255,19 @@
     font-size: 1em;
   }
 </style>
+
+<!-- NABBLE END: Added for Nabble integration -->    
     
 
 <div class='nabble' id='nabble' />
+
+<!-- NABBLE START: Added for Nabble integration -->    
 
       </td>
     </tr>
 </table>
 
 <!-- NABBLE END: Added for Nabble integration -->    
-
 
 
     <div class="clear">

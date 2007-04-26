@@ -1,5 +1,8 @@
+  -------
+  Integrating Jasypt with Spring Framework
+  -------
 
-Integrating jasypt with Spring Framework
+Integrating Jasypt with Spring Framework
 
   You have nothing special to do to integrate Jasypt with Spring, as all of the
   encryption tools (digesters and encryptors) in jasypt have the adequate design
