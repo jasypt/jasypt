@@ -19,7 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 public class PBEWithSHA1AndRC2_40BigIntegerEncryptorTest 
@@ -27,7 +26,7 @@ public class PBEWithSHA1AndRC2_40BigIntegerEncryptorTest
 
     protected PBEBigIntegerEncryptor createPBEIntegerEncryptor() {
         StandardPBEBigIntegerEncryptor encryptor = new StandardPBEBigIntegerEncryptor();
-        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_SHA1_AND_RC2_40);
+        encryptor.setAlgorithm("PBEWithSHA1AndRC2_40");
         return encryptor;
     }
 

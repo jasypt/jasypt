@@ -22,7 +22,6 @@ package org.jasypt.util.numeric;
 import java.math.BigInteger;
 
 import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 /**
  * <p>
@@ -68,7 +67,7 @@ public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
     public BasicIntegerNumberEncryptor() {
         super();
         this.encryptor = new StandardPBEBigIntegerEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        this.encryptor.setAlgorithm("PBEWithMD5AndDES");
     }
 
     

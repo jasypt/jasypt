@@ -20,7 +20,6 @@
 package org.jasypt.util;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 /**
  * <p>
@@ -75,7 +74,7 @@ public final class StrongTextEncryptor {
     public StrongTextEncryptor() {
         super();
         this.encryptor = new StandardPBEStringEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        this.encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
     }
 
     

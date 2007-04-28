@@ -20,7 +20,6 @@
 package org.jasypt.util.text;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 /**
@@ -66,7 +65,7 @@ public final class BasicTextEncryptor implements TextEncryptor {
     public BasicTextEncryptor() {
         super();
         this.encryptor = new StandardPBEStringEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        this.encryptor.setAlgorithm("PBEWithMD5AndDES");
     }
 
     
