@@ -20,7 +20,6 @@
 package org.jasypt.util.binary;
 
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 /**
@@ -67,7 +66,7 @@ public final class BasicBinaryEncryptor implements BinaryEncryptor {
     public BasicBinaryEncryptor() {
         super();
         this.encryptor = new StandardPBEByteEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        this.encryptor.setAlgorithm("PBEWithMD5AndDES");
     }
 
     

@@ -19,7 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 public class PBEWithSHA1AndDESedeBigIntegerEncryptorTest 
@@ -27,7 +26,7 @@ public class PBEWithSHA1AndDESedeBigIntegerEncryptorTest
 
     protected PBEBigIntegerEncryptor createPBEIntegerEncryptor() {
         StandardPBEBigIntegerEncryptor encryptor = new StandardPBEBigIntegerEncryptor();
-        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_SHA1_AND_DESEDE);
+        encryptor.setAlgorithm("PBEWithSHA1AndDESede");
         return encryptor;
     }
 

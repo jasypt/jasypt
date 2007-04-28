@@ -29,7 +29,6 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -126,8 +125,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     /**
      * The default algorithm to be used if none specified: PBEWithMD5AndDES.
      */
-    public static final String DEFAULT_ALGORITHM = 
-        PBEAlgorithms.PBE_WITH_MD5_AND_DES;
+    public static final String DEFAULT_ALGORITHM = "PBEWithMD5AndDES";
 
     /**
      * The default number of hashing iterations applied for obtaining the
@@ -135,9 +133,14 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      */
     public static final int DEFAULT_KEY_OBTENTION_ITERATIONS = 1000;
 
+    /**
+     * The default salt size, only used if the chosen encryption algorithm
+     * is not a block algorithm and thus block size cannot be used as salt size. 
+     */
+    public static final int DEFAULT_SALT_SIZE_BYTES = 8;
 
-    // Algorithm for Password Based Encoding. Must be registered in 
-    // org.jasypt.encryption.pbe.algorithms.PBEAlgorithms.
+
+    // Algorithm for Password Based Encoding.
     private String algorithm = DEFAULT_ALGORITHM;
     
     // Password to be applied. This will NOT have a default value. If none
@@ -155,9 +158,10 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
 
     // Size in bytes of the salt to be used for obtaining the
     // encryption key. This size will depend on the PBE algorithm being used,
-    // so instead of being set by the user it will be provided by the
-    // org.jasypt.encryption.pbe.algorithms.PBEAlgorithms registry.
-    private int saltSizeBytes = 0;
+    // and it will be set to the size of the block for the specific
+    // chosen algorithm (if the algorithm is not a block algorithm, the 
+    // default value will be used).
+    private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
     
     
     // Config object set (optionally).
@@ -238,19 +242,16 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * Sets the algorithm to be used for encryption, like 
      * <tt>PBEWithMD5AndDES</tt>.
      * </p>
-     * 
      * <p>
-     * This algorithm has to be supported by your Java Virtual Machine, and
-     * it must be one of the algorithms registered at 
-     * {@link org.jasypt.encryption.pbe.algorithms.PBEAlgorithms}.
+     * This algorithm has to be supported by your provider and, if this provider
+     * supports it, you can also specify <i>mode</i> and <i>padding</i> for 
+     * it, like <tt>ALGORITHM/MODE/PADDING</tt>.
      * </p>
      * 
      * @param algorithm the name of the algorithm to be used.
-     * @see org.jasypt.encryption.pbe.algorithms.PBEAlgorithms
      */
     public synchronized void setAlgorithm(String algorithm) {
         Validate.notEmpty(algorithm, "Algorithm cannot be set empty");
-        PBEAlgorithms.validateAlgorithm(algorithm);
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -402,7 +403,6 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 if (configAlgorithm != null) {
                     Validate.notEmpty(password, 
                             "Algorithm cannot be set empty");
-                    PBEAlgorithms.validateAlgorithm(algorithm);
                 }
                 
                 
@@ -446,13 +446,6 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             if (this.saltGenerator == null) {
                 this.saltGenerator = new RandomSaltGenerator();
             }
-
-            // The specific parameter (salt size) for the chosen algorithm
-            // is retrieved from the algorithm registry.
-            PBEAlgorithms.Parameters parameters =
-                PBEAlgorithms.getParameters(this.algorithm);
-            this.saltSizeBytes = parameters.getSaltSizeBytes();
-
             
             try {
             
@@ -480,6 +473,16 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             } catch (Throwable t) {
                 throw new EncryptionInitializationException(t);
             }
+            
+
+            // The salt size for the chosen algorithm is set to be equal 
+            // to the algorithm's block size (if it is a block algorithm).
+            int algorithmBlockSize = this.encryptCipher.getBlockSize();
+            if (algorithmBlockSize > 0) {
+                this.saltSizeBytes = algorithmBlockSize;
+            }
+            
+            
             this.initialized = true;
         }
         
@@ -563,7 +566,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         } catch (InvalidKeyException e) {
             // The problem could be not having the unlimited strength policies
             // installed, so better give a usefull error message.
-            handleInvalidKeyException();
+            handleInvalidKeyException(e);
             throw new EncryptionOperationNotPossibleException();
         } catch (Exception e) {
             // If encryption fails, it is more secure not to return any 
@@ -660,7 +663,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         } catch (InvalidKeyException e) {
             // The problem could be not having the unlimited strength policies
             // installed, so better give a usefull error message.
-            handleInvalidKeyException();
+            handleInvalidKeyException(e);
             throw new EncryptionOperationNotPossibleException();
         } catch (Exception e) {
             // If decryption fails, it is more secure not to return any 
@@ -678,13 +681,10 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * message for this is simply "invalid key size", which does not provide
      * enough clues for the user to know what is really going on).
      */
-    private void handleInvalidKeyException() {
-        
-        String vmVendor = System.getProperty("java.vm.vendor");
-        if ((this.algorithm.equals(
-                PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES)) &&
-            (vmVendor != null) && 
-            (vmVendor.toUpperCase().contains("SUN"))) {
+    private void handleInvalidKeyException(InvalidKeyException e) {
+
+        if ((e.getMessage() != null) && 
+                (e.getMessage().toUpperCase().contains("INVALID KEY SIZE"))) {
             
             throw new EncryptionOperationNotPossibleException(
                     "Encryption raised an exception. A possible cause is " +

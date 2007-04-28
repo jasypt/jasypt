@@ -19,7 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 public class PBEWithMD5AndDESStringEncryptorTest 
@@ -27,7 +26,7 @@ public class PBEWithMD5AndDESStringEncryptorTest
 
     protected PBEStringEncryptor createPBEStringEncryptor() {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_DES);
+        encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor;
     }
 

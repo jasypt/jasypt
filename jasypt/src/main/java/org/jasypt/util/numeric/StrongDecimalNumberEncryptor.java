@@ -22,7 +22,6 @@ package org.jasypt.util.numeric;
 import java.math.BigDecimal;
 
 import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 /**
@@ -69,7 +68,7 @@ public class StrongDecimalNumberEncryptor implements DecimalNumberEncryptor {
     public StrongDecimalNumberEncryptor() {
         super();
         this.encryptor = new StandardPBEBigDecimalEncryptor();
-        this.encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        this.encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
     }
 
     

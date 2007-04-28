@@ -19,7 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.pbe.algorithms.PBEAlgorithms;
 
 
 public class PBEWithMD5AndTripleDESBigDecimalEncryptorTest 
@@ -27,7 +26,7 @@ public class PBEWithMD5AndTripleDESBigDecimalEncryptorTest
 
     protected PBEBigDecimalEncryptor createPBEDecimalEncryptor() {
         StandardPBEBigDecimalEncryptor encryptor = new StandardPBEBigDecimalEncryptor();
-        encryptor.setAlgorithm(PBEAlgorithms.PBE_WITH_MD5_AND_TRIPLE_DES);
+        encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
         return encryptor;
     }
 

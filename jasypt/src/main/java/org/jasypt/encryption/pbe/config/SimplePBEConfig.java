@@ -64,13 +64,12 @@ public class SimplePBEConfig implements PBEConfig {
      * Sets a value for the encryption algorithm
      * </p>
      * <p>
-     * This algorithm has to be supported by your Java Virtual Machine, and
-     * it must be one of the algorithms registered at 
-     * {@link org.jasypt.encryption.pbe.algorithms.PBEAlgorithms}.
+     * This algorithm has to be supported by your JCE provider and, if this provider
+     * supports it, you can also specify <i>mode</i> and <i>padding</i> for 
+     * it, like <tt>ALGORITHM/MODE/PADDING</tt>.
      * </p>
      * 
      * @param algorithm the name of the algorithm to be used
-     * @see org.jasypt.encryption.pbe.algorithms.PBEAlgorithms
      */
     public void setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
