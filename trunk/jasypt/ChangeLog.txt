@@ -1,3 +1,17 @@
+1.3
+=======
+
+- DigesterConfig and PBEConfig are not Serializable anymore.
+- Added provider and providerName properties to DigesterConfig and
+  SimpleDigesterConfig classes.
+- Added providerClassName, providerName and saltGeneratorClassName
+  configuration at EnvironmentDigesterConfig.
+- StandardByteDigester, StandardStringDigester, Digester, 
+  and ConfigurablePasswordEncryptor can now specify the JCE security provider
+  (<tt>java.security.Provider</tt> implementation) which will be asked
+  for the digest algorithm.
+
+
 1.2
 =======
 

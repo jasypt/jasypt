@@ -25,6 +25,7 @@ import java.security.MessageDigest;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class MessageDigesterTest extends TestCase {
 
@@ -58,6 +59,16 @@ public class MessageDigesterTest extends TestCase {
             assertTrue(ArrayUtils.isEquals(md2.digest(message), encryptedMessage2));
         }
         
+        Digester messageDigester3 = new Digester();
+        messageDigester3.setAlgorithm("WHIRLPOOL");
+        messageDigester3.setProvider(new BouncyCastleProvider());
+        byte[] encryptedMessage3 = messageDigester3.digest(message);
+        
+        MessageDigest md3 = MessageDigest.getInstance("WHIRLPOOL", new BouncyCastleProvider());
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(ArrayUtils.isEquals(md3.digest(message), encryptedMessage3));
+        }
         
     }
 

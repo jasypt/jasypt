@@ -21,6 +21,8 @@ package org.jasypt.digest;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Provider;
 import java.util.Arrays;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -47,15 +49,15 @@ import org.jasypt.salt.SaltGenerator;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, salt size iterations and salt generator can take values 
- * in any of these
- * ways:
+ * The algorithm, provider, salt size iterations and salt generator 
+ * can take values in any of these ways:
  * <ul>
  *   <li>Using its default values.</li>
  *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
+ *   <li>Calling the corresponding <tt>setAlgorithm</tt>, <tt>setProvider</tt>,
+ *       <tt>setProviderName</tt>,
  *       <tt>setSaltSizeBytes</tt>, <tt>setIterations</tt>
  *       or <tt>setSaltGenerator</tt> methods.</li>
  * </ul>
@@ -85,7 +87,8 @@ import org.jasypt.salt.SaltGenerator;
  *       first time, if <tt>initialize</tt> has not been called before.</li>
  * </ul>
  * Once a digester has been initialized, trying to
- * change its configuration (algorithm, salt size, iterations or salt generator)
+ * change its configuration (algorithm, provider, salt size, iterations or 
+ * salt generator)
  * will result in an <tt>AlreadyInitializedException</tt> being thrown.
  * </p>
  * 
@@ -189,11 +192,16 @@ public final class StandardByteDigester implements ByteDigester {
     // and so default value will be applied only in initialize(), if it finally
     // becomes necessary.
     private SaltGenerator saltGenerator = null;
+    // Name of the java.security.Provider which will be asked for the selected
+    // algorithm
+    private String providerName = null;
+    // java.security.Provider instance which will be asked for the selected
+    // algorithm
+    private Provider provider = null;
 
     
     /*
-     * Config: this object can set a configuration (algorithm, salt size,
-     * number of iterations and salt generator) by bringing the values in 
+     * Config: this object can set a configuration by bringing the values in 
      * whichever way the developer wants (it only has to implement the 
      * DigesterConfig interface).
      * 
@@ -210,6 +218,8 @@ public final class StandardByteDigester implements ByteDigester {
     private boolean saltSizeBytesSet = false;
     private boolean iterationsSet = false;
     private boolean saltGeneratorSet = false;
+    private boolean providerNameSet = false;
+    private boolean providerSet = false;
 
     /*
      * Flag which indicates whether the digester has been initialized or not.
@@ -252,6 +262,7 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * <ul>
      *   <li>Algorithm</li>
+     *   <li>Security Provider (or provider name)</li>
      *   <li>Salt size</li>
      *   <li>Hashing iterations</li>
      *   <li>Salt generator</li>
@@ -280,19 +291,26 @@ public final class StandardByteDigester implements ByteDigester {
      * Sets the algorithm to be used for digesting, like <tt>MD5</tt> 
      * or <tt>SHA-1</tt>.
      * </p>
-     * 
      * <p>
-     * This algorithm has to be supported by your Java Virtual Machine, and
+     * This algorithm has to be supported by your security infrastructure, and
      * it should be allowed as an algorithm for creating
      * java.security.MessageDigest instances.
      * </p>
+     * <p>
+     * If you are specifying a security provider with {@link #setProvider(Provider)} or
+     * {@link #setProviderName(String)}, this algorithm should be
+     * supported by your specified provider.
+     * </p>
+     * <p>
+     * If you are not specifying a provider, you will be able to use those
+     * algorithms provided by the default security provider of your JVM vendor.
+     * For valid names in the Sun JVM, see <a target="_blank" 
+     *         href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
+     *         Cryptography Architecture API Specification & 
+     *         Reference</a>.
+     * </p>
      * 
-     * @param algorithm the name of the algorithm to be used. See Appendix A 
-     *                  in the <a target="_blank" 
-     *                  href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
-     *                  Cryptography Architecture API Specification & 
-     *                  Reference</a>
-     *                  for information about standard algorithm names.
+     * @param algorithm the name of the algorithm to be used.
      */
     public synchronized void setAlgorithm(String algorithm) {
         Validate.notEmpty(algorithm, "Algorithm cannot be empty");
@@ -362,6 +380,8 @@ public final class StandardByteDigester implements ByteDigester {
      * an instance of {@link org.jasypt.salt.RandomSaltGenerator} will be used. 
      * </p>
      * 
+     * @since 1.2
+     * 
      * @param saltGenerator the salt generator to be used.
      */
     public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
@@ -371,6 +391,73 @@ public final class StandardByteDigester implements ByteDigester {
         }
         this.saltGenerator = saltGenerator;
         this.saltGeneratorSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the
+     * digest algorithm. This security provider has to be registered beforehand
+     * at the JVM security framework. 
+     * </p>
+     * <p>
+     * The provider can also be set with the {@link #setProvider(Provider)}
+     * method, in which case it will not be necessary neither registering
+     * the provider beforehand,
+     * nor calling this {@link #setProviderName(String)} method to specify
+     * a provider name.
+     * </p>
+     * <p>
+     * Note that a call to {@link #setProvider(Provider)} overrides any value 
+     * set by this method.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider to be asked
+     *                     for the digest algorithm.
+     */
+    public synchronized void setProviderName(String providerName) {
+        Validate.notNull(providerName, "Provider name cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.providerName = providerName;
+        this.providerNameSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the security provider to be asked for the digest algorithm.
+     * The provider does not have to be registered at the security 
+     * infrastructure beforehand, and its being used here will not result in
+     * it being registered.
+     * </p>
+     * <p>
+     * If this method is called, calling {@link #setProviderName(String)}
+     * becomes unnecessary.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param provider the provider to be asked for the chosen algorithm
+     */
+    public synchronized void setProvider(Provider provider) {
+        Validate.notNull(provider, "Provider cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.provider = provider;
+        this.providerSet = true;
     }
     
 
@@ -387,7 +474,7 @@ public final class StandardByteDigester implements ByteDigester {
      * </ul>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, salt size, iterations
+     *   change its configuration (algorithm, provider, salt size, iterations
      *   or salt generator) will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
@@ -423,7 +510,7 @@ public final class StandardByteDigester implements ByteDigester {
      * </ol>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, salt size, iterations
+     *   change its configuration (algorithm, provider, salt size, iterations
      *   or salt generator) will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
@@ -464,6 +551,15 @@ public final class StandardByteDigester implements ByteDigester {
                 }
                 
                 SaltGenerator configSaltGenerator = config.getSaltGenerator();
+                
+                String configProviderName = config.getProviderName();
+                if (configProviderName != null) {
+                    Validate.notEmpty(configProviderName,
+                            "Provider name cannot be empty");
+                }
+                
+                Provider configProvider = config.getProvider();
+                
 
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
@@ -477,6 +573,12 @@ public final class StandardByteDigester implements ByteDigester {
                 this.saltGenerator = 
                     ((this.saltGeneratorSet) || (configSaltGenerator == null))?
                             this.saltGenerator : configSaltGenerator;
+                this.providerName = 
+                    ((this.providerNameSet) || (configProviderName == null))?
+                            this.providerName : configProviderName;
+                this.provider = 
+                    ((this.providerSet) || (configProvider == null))?
+                            this.provider : configProvider;
                 
             }
             
@@ -494,8 +596,17 @@ public final class StandardByteDigester implements ByteDigester {
              * changed in the future.
              */
             try {
-                this.md = MessageDigest.getInstance(this.algorithm);
+                if (this.provider != null) {
+                    this.md = MessageDigest.getInstance(this.algorithm, this.provider);
+                } else if (this.providerName != null) {
+                    this.md = MessageDigest.getInstance(this.algorithm, this.providerName);
+                } else {
+                    this.md = MessageDigest.getInstance(this.algorithm);
+                }
+System.out.println("Using algorithm: " + this.md.getAlgorithm() + " at " + this.md.getProvider().getName());
             } catch (NoSuchAlgorithmException e) {
+                throw new EncryptionInitializationException(e);
+            } catch (NoSuchProviderException e) {
                 throw new EncryptionInitializationException(e);
             }
             this.initialized = true;

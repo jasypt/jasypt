@@ -20,9 +20,12 @@
 package org.jasypt.digest;
 
 
+import java.security.Security;
+
 import junit.framework.TestCase;
 
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jasypt.digest.config.SimpleDigesterConfig;
 import org.jasypt.salt.FixedByteArraySaltGenerator;
 
@@ -106,6 +109,41 @@ public class StandardStringDigesterTest extends TestCase {
             assertTrue(
                     digester4.digest(message).equals(
                     digester5.digest(message)));
+        }
+
+        StandardStringDigester digester6 = new StandardStringDigester();
+        SimpleDigesterConfig dig6Config = new SimpleDigesterConfig();
+        dig6Config.setProvider(new BouncyCastleProvider());
+        digester6.setConfig(dig6Config);
+        String digest6 = digester6.digest(message);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester6.matches(message, digest6));
+        }
+
+
+        Security.addProvider(new BouncyCastleProvider());
+        
+        StandardStringDigester digester7 = new StandardStringDigester();
+        SimpleDigesterConfig dig7Config = new SimpleDigesterConfig();
+        dig7Config.setProviderName("BC");
+        digester7.setConfig(dig7Config);
+        String digest7 = digester7.digest(message);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester7.matches(message, digest7));
+        }
+        
+        StandardStringDigester digester8 = new StandardStringDigester();
+        SimpleDigesterConfig dig8Config = new SimpleDigesterConfig();
+        dig8Config.setProvider(new BouncyCastleProvider());
+        dig8Config.setProviderName("SUN");
+        dig8Config.setAlgorithm("WHIRLPOOL");
+        digester8.setConfig(dig8Config);
+        String digest8 = digester8.digest(message);
+        
+        for (int i = 0; i < 100; i++) {
+            assertTrue(digester8.matches(message, digest8));
         }
         
     }

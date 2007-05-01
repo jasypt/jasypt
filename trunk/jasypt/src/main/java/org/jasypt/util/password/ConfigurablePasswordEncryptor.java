@@ -19,9 +19,12 @@
  */
 package org.jasypt.util.password;
 
+import java.security.Provider;
+
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.DigesterConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 
 /**
  * <p>
@@ -30,7 +33,7 @@ import org.jasypt.digest.config.DigesterConfig;
  * <p>
  * This class internally holds a {@link StandardStringDigester}
  * which can be configured by the user by optionally choosing the algorithm 
- * to be used, the mechanism of encryption (plain digests vs. use of salt
+ * to be used, the mechanism of encryption (plain digests vs. use of random salt
  * and iteration count) and even use a {@link DigesterConfig} object for
  * more advanced configuration.
  * </p>
@@ -91,23 +94,93 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * Sets the algorithm to be used for digesting, like <tt>MD5</tt> 
      * or <tt>SHA-1</tt>.
      * </p>
-     * 
      * <p>
-     * This algorithm has to be supported by your Java Virtual Machine, and
+     * This algorithm has to be supported by your security infrastructure, and
      * it should be allowed as an algorithm for creating
      * java.security.MessageDigest instances.
      * </p>
+     * <p>
+     * If you are specifying a security provider with {@link #setProvider(Provider)} or
+     * {@link #setProviderName(String)}, this algorithm should be
+     * supported by your specified provider.
+     * </p>
+     * <p>
+     * If you are not specifying a provider, you will be able to use those
+     * algorithms provided by the default security provider of your JVM vendor.
+     * For valid names in the Sun JVM, see <a target="_blank" 
+     *         href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
+     *         Cryptography Architecture API Specification & 
+     *         Reference</a>.
+     * </p>
      * 
-     * @param algorithm the name of the algorithm to be used. See Appendix A 
-     *                  in the <a target="_blank" 
-     *                  href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
-     *                  Cryptography Architecture API Specification & 
-     *                  Reference</a>
-     *                  for information about standard algorithm names.
+     * @param algorithm the name of the algorithm to be used.
      * @see StandardStringDigester#setAlgorithm(String)
      */
     public void setAlgorithm(String algorithm) {
         this.digester.setAlgorithm(algorithm);
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the
+     * digest algorithm. This security provider has to be registered beforehand
+     * at the JVM security framework. 
+     * </p>
+     * <p>
+     * The provider can also be set with the {@link #setProvider(Provider)}
+     * method, in which case it will not be necessary neither registering
+     * the provider beforehand,
+     * nor calling this {@link #setProviderName(String)} method to specify
+     * a provider name.
+     * </p>
+     * <p>
+     * Note that a call to {@link #setProvider(Provider)} overrides any value 
+     * set by this method.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider to be asked
+     *                     for the digest algorithm.
+     * @throws AlreadyInitializedException if it has already been initialized,
+     *         this is, if {@link #digest(byte[])} has been called at least
+     *         once.
+     */
+    public void setProviderName(String providerName) {
+        this.digester.setProviderName(providerName);
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the security provider to be asked for the digest algorithm.
+     * The provider does not have to be registered at the security 
+     * infrastructure beforehand, and its being used here will not result in
+     * it being registered.
+     * </p>
+     * <p>
+     * If this method is called, calling {@link #setProviderName(String)}
+     * becomes unnecessary.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param provider the provider to be asked for the chosen algorithm
+     * @throws AlreadyInitializedException if it has already been initialized,
+     *         this is, if {@link #digest(byte[])} has been called at least
+     *         once.
+     */
+    public void setProvider(Provider provider) {
+        this.digester.setProvider(provider);
     }
     
 

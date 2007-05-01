@@ -19,7 +19,7 @@
  */
 package org.jasypt.digest.config;
 
-import java.io.Serializable;
+import java.security.Provider;
 
 import org.jasypt.salt.SaltGenerator;
 
@@ -33,6 +33,7 @@ import org.jasypt.salt.SaltGenerator;
  * Objects of classes implementing this interface will provide values for:
  * <ul>
  *   <li>Algorithm.</li>
+ *   <li>Security provider (or provider name).</li>
  *   <li>Salt size (in bytes).</li>
  *   <li>Hashing iterations.</li>
  *   <li>Salt generator.</li>
@@ -56,7 +57,7 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface DigesterConfig extends Serializable {
+public interface DigesterConfig {
 
     /**
      * <p>
@@ -137,9 +138,62 @@ public interface DigesterConfig extends Serializable {
      * when deciding the salt generator to be used.
      * </p>
      * 
+     * @since 1.2
+     * 
      * @return the salt generator, or null if this object will not want to set
      *         a specific SaltGenerator implementation.
      */
     public SaltGenerator getSaltGenerator();
+
+
+    /**
+     * <p>
+     * Returns the name of the <tt>java.security.Provider</tt> implementation
+     * to be used by the digester for obtaining the digest algorithm. This
+     * provider must have been registered beforehand.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore this parameter
+     * when deciding the name of the security provider to be used.
+     * </p>
+     * <p>
+     * If this method does not return null, and neither does {@link #getProvider()},
+     * <tt>providerName</tt> will be ignored, and the provider object returned
+     * by <tt>getProvider()</tt> will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @return the name of the security provider to be used.
+     */
+    public String getProviderName();
+
+    
+    /**
+     * <p>
+     * Returns the <tt>java.security.Provider</tt> implementation object
+     * to be used by the digester for obtaining the digest algorithm.
+     * </p>
+     * <p>
+     * If this method returns null, the digester will ignore this parameter
+     * when deciding the security provider object to be used.
+     * </p>
+     * <p>
+     * If this method does not return null, and neither does {@link #getProviderName()},
+     * <tt>providerName</tt> will be ignored, and the provider object returned
+     * by <tt>getProvider()</tt> will be used.
+     * </p>
+     * <p>
+     * The provider returned by this method <b>does not need to be
+     * registered beforehand<b>, and its use will not result in its 
+     * registry.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @return the security provider object to be asked for the digest
+     *         algorithm.
+     */
+    public Provider getProvider();
     
 }
