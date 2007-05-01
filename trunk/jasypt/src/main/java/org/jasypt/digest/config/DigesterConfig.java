@@ -186,7 +186,7 @@ public interface DigesterConfig {
      * <p>
      * The provider returned by this method <b>does not need to be
      * registered beforehand<b>, and its use will not result in its 
-     * registry.
+     * being registered.
      * </p>
      * 
      * @since 1.3

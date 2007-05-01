@@ -382,7 +382,7 @@ public final class StandardStringDigester implements StringDigester {
      * Sets the security provider to be asked for the digest algorithm.
      * The provider does not have to be registered at the security 
      * infrastructure beforehand, and its being used here will not result in
-     * it being registered.
+     * its being registered.
      * </p>
      * <p>
      * If this method is called, calling {@link #setProviderName(String)}
