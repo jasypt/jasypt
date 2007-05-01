@@ -34,7 +34,7 @@ import org.jasypt.exceptions.AlreadyInitializedException;
  * This class internally holds a {@link StandardStringDigester}
  * which can be configured by the user by optionally choosing the algorithm 
  * to be used, the mechanism of encryption (plain digests vs. use of random salt
- * and iteration count) and even use a {@link DigesterConfig} object for
+ * and iteration count (default)) and even use a {@link DigesterConfig} object for
  * more advanced configuration.
  * </p>
  * <p>
