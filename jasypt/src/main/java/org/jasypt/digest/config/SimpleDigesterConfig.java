@@ -167,7 +167,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * {@link #setProviderName(String)} and they should not be used altogether.
      * The provider specified with {@link #setProvider(Provider)} does not
      * have to be registered beforehand, and its use will not result in its
-     * registry.
+     * being registered.
      * </p>
      * <p>
      * If both the <tt>providerName</tt> and <tt>provider</tt> properties
