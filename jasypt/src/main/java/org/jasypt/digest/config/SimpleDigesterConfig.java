@@ -19,6 +19,8 @@
  */
 package org.jasypt.digest.config;
 
+import java.security.Provider;
+
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -39,13 +41,13 @@ import org.jasypt.salt.SaltGenerator;
  * 
  */
 public class SimpleDigesterConfig implements DigesterConfig {
-
-    private static final long serialVersionUID = 7854221035086673697L;
     
     private String algorithm = null;
     private Integer iterations = null;
     private Integer saltSizeBytes = null;
     private SaltGenerator saltGenerator = null;
+    private String providerName = null;
+    private Provider provider = null;
     
 
     /**
@@ -62,18 +64,25 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * Sets the name of the algorithm.
      * </p>
      * <p>
-     * This algorithm has to be supported by your Java Virtual Machine, and
+     * This algorithm has to be supported by your security infrastructure, and
      * it should be allowed as an algorithm for creating
      * java.security.MessageDigest instances.
      * </p>
      * <p>
-     * For valid names, see <a target="_blank" 
+     * If you are specifying a security provider with {@link #setProvider(Provider)} or
+     * {@link #setProviderName(String)}, this algorithm should be
+     * supported by your specified provider.
+     * </p>
+     * <p>
+     * If you are not specifying a provider, you will be able to use those
+     * algorithms provided by the default security provider of your JVM vendor.
+     * For valid names in the Sun JVM, see <a target="_blank" 
      *         href="http://java.sun.com/j2se/1.5.0/docs/guide/security/CryptoSpec.html#AppA">Java 
      *         Cryptography Architecture API Specification & 
      *         Reference</a>.
      * </p>
      * <p>
-     * If not set, null will returned.
+     * If not set, null will be returned.
      * </p>
      * 
      * @param algorithm the name of the algorithm.
@@ -88,7 +97,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * Sets the number of hashing iterations.
      * </p>
      * <p>
-     * If not set, null will returned.
+     * If not set, null will be returned.
      * </p>
      * 
      * @param iterations the number of iterations.
@@ -103,7 +112,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * Size in bytes of the salt to be used.
      * </p>
      * <p>
-     * If not set, null will returned.
+     * If not set, null will be returned.
      * </p>
      * 
      * @param saltSizeBytes the size of the salt, in bytes.
@@ -118,13 +127,63 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * Sets the salt generator.
      * </p>
      * <p>
-     * If not set, null will returned.
+     * If not set, null will be returned.
      * </p>
+     * 
+     * @since 1.2
      * 
      * @param saltGenerator the salt generator.
      */
     public void setSaltGenerator(SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
+    }
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the digest
+     * algorithm. This provider should be already registered.
+     * </p>
+     * <p>
+     * If both the <tt>providerName</tt> and <tt>provider</tt> properties
+     * are set, only <tt>provider</tt> will be used, and <tt>providerName</tt>
+     * will have no meaning for the digester object.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider.
+     */
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+    
+    /**
+     * <p>
+     * Sets the security provider to be used for obtaining the digest 
+     * algorithm. This method is an alternative to 
+     * {@link #setProviderName(String)} and they should not be used altogether.
+     * The provider specified with {@link #setProvider(Provider)} does not
+     * have to be registered beforehand, and its use will not result in its
+     * registry.
+     * </p>
+     * <p>
+     * If both the <tt>providerName</tt> and <tt>provider</tt> properties
+     * are set, only <tt>provider</tt> will be used, and <tt>providerName</tt>
+     * will have no meaning for the digester object.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider.
+     */
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     
@@ -145,6 +204,14 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     public SaltGenerator getSaltGenerator() {
         return saltGenerator;
+    }
+    
+    public String getProviderName() {
+        return providerName;
+    }
+    
+    public Provider getProvider() {
+        return provider;
     }
 
     
