@@ -20,6 +20,7 @@
 package org.jasypt.encryption.pbe;
 
 import java.security.InvalidKeyException;
+import java.security.Provider;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -39,7 +40,7 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Standard implementation of the {@link PBEByteEncryptor} interface.
- * This class lets the user specify the algorithm to be used for 
+ * This class lets the user specify the algorithm (and provider) to be used for 
  * encryption, the password to use,
  * the number of hashing iterations and the salt generator
  * that will be applied for obtaining
@@ -52,7 +53,7 @@ import org.jasypt.salt.SaltGenerator;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, password, key-obtention iterations and salt generator can take 
+ * The algorithm, provider, password, key-obtention iterations and salt generator can take 
  * values in any of these ways:
  * <ul>
  *   <li>Using its default values (except for password).</li>
@@ -60,6 +61,7 @@ import org.jasypt.salt.SaltGenerator;
  *       object which provides new 
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
+ *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
  *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
  *       <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
@@ -140,8 +142,10 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     public static final int DEFAULT_SALT_SIZE_BYTES = 8;
 
 
-    // Algorithm for Password Based Encoding.
+    // Algorithm (and provider-related info) for Password Based Encoding.
     private String algorithm = DEFAULT_ALGORITHM;
+    private String providerName = null;
+    private Provider provider = null;
     
     // Password to be applied. This will NOT have a default value. If none
     // is set during configuration, an exception will be thrown.
@@ -176,6 +180,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     private boolean passwordSet = false;
     private boolean iterationsSet = false;
     private boolean saltGeneratorSet = false;
+    private boolean providerNameSet = false;
+    private boolean providerSet = false;
     
     
     /*
@@ -214,6 +220,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * 
      * <ul>
      *   <li>Algorithm</li>
+     *   <li>Security Provider (or provider name)</li>
      *   <li>Password</li>
      *   <li>Hashing iterations for obtaining the encryption key</li>
      *   <li>Salt generator</li>
@@ -243,8 +250,9 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * <tt>PBEWithMD5AndDES</tt>.
      * </p>
      * <p>
-     * This algorithm has to be supported by your provider and, if this provider
-     * supports it, you can also specify <i>mode</i> and <i>padding</i> for 
+     * This algorithm has to be supported by your JCE provider (if you specify
+     * one, or the default JVM provider if you don't) and, if it is supported,
+     * you can also specify <i>mode</i> and <i>padding</i> for 
      * it, like <tt>ALGORITHM/MODE/PADDING</tt>.
      * </p>
      * 
@@ -327,6 +335,72 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         this.saltGeneratorSet = true;
     }
     
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the
+     * encryption algorithm. This security provider has to be registered 
+     * beforehand at the JVM security framework. 
+     * </p>
+     * <p>
+     * The provider can also be set with the {@link #setProvider(Provider)}
+     * method, in which case it will not be necessary neither registering
+     * the provider beforehand,
+     * nor calling this {@link #setProviderName(String)} method to specify
+     * a provider name.
+     * </p>
+     * <p>
+     * Note that a call to {@link #setProvider(Provider)} overrides any value 
+     * set by this method.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider to be asked
+     *                     for the encryption algorithm.
+     */
+    public synchronized void setProviderName(String providerName) {
+        Validate.notNull(providerName, "Provider name cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.providerName = providerName;
+        this.providerNameSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the security provider to be asked for the encryption algorithm.
+     * The provider does not have to be registered at the security 
+     * infrastructure beforehand, and its being used here will not result in
+     * its being registered.
+     * </p>
+     * <p>
+     * If this method is called, calling {@link #setProviderName(String)}
+     * becomes unnecessary.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param provider the provider to be asked for the chosen algorithm
+     */
+    public synchronized void setProvider(Provider provider) {
+        Validate.notNull(provider, "Provider cannot be set null");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.provider = provider;
+        this.providerSet = true;
+    }
 
     
     /**
@@ -342,8 +416,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * </ul>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password, key obtention
-     *   iterations or salt generator) will
+     *   change its configuration will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -379,8 +452,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * </ol>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password, key obtention
-     *   iterations or salt generator) will
+     *   change its configuration will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -422,6 +494,14 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 
                 SaltGenerator configSaltGenerator = config.getSaltGenerator();
                 
+                String configProviderName = config.getProviderName();
+                if (configProviderName != null) {
+                    Validate.notEmpty(configProviderName,
+                            "Provider name cannot be empty");
+                }
+                
+                Provider configProvider = config.getProvider();
+                
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
                             this.algorithm : configAlgorithm;
@@ -436,6 +516,12 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 this.saltGenerator = 
                     ((this.saltGeneratorSet) || (configSaltGenerator == null))?
                             this.saltGenerator : configSaltGenerator;
+                this.providerName = 
+                    ((this.providerNameSet) || (configProviderName == null))?
+                            this.providerName : configProviderName;
+                this.provider = 
+                    ((this.providerSet) || (configProvider == null))?
+                            this.provider : configProvider;
                 
             }
             
@@ -460,14 +546,47 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                  */
                 PBEKeySpec pbeKeySpec = 
                     new PBEKeySpec(this.password.toCharArray());
-                SecretKeyFactory factory =
-                    SecretKeyFactory.getInstance(this.algorithm);
                 
-                this.key = factory.generateSecret(pbeKeySpec);
-                
-                this.encryptCipher = Cipher.getInstance(this.algorithm);
-                this.decryptCipher = Cipher.getInstance(this.algorithm);
-                
+                if (this.provider != null) {
+                    
+                    SecretKeyFactory factory =
+                        SecretKeyFactory.getInstance(
+                                this.algorithm, 
+                                this.provider);
+                    
+                    this.key = factory.generateSecret(pbeKeySpec);
+                    
+                    this.encryptCipher = 
+                        Cipher.getInstance(this.algorithm, this.provider);
+                    this.decryptCipher = 
+                        Cipher.getInstance(this.algorithm, this.provider);
+                    
+                } else if (this.providerName != null) {
+                    
+                    SecretKeyFactory factory =
+                        SecretKeyFactory.getInstance(
+                                this.algorithm, 
+                                this.providerName);
+                    
+                    this.key = factory.generateSecret(pbeKeySpec);
+                    
+                    this.encryptCipher = 
+                        Cipher.getInstance(this.algorithm, this.providerName);
+                    this.decryptCipher = 
+                        Cipher.getInstance(this.algorithm, this.providerName);
+                    
+                } else {
+                    
+                    SecretKeyFactory factory =
+                        SecretKeyFactory.getInstance(this.algorithm);
+                    
+                    this.key = factory.generateSecret(pbeKeySpec);
+                    
+                    this.encryptCipher = Cipher.getInstance(this.algorithm);
+                    this.decryptCipher = Cipher.getInstance(this.algorithm);
+                    
+                }
+
             } catch (EncryptionInitializationException e) {
                 throw e;
             } catch (Throwable t) {

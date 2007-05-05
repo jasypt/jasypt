@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe.config;
 
+import java.security.Provider;
+
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -41,12 +43,12 @@ import org.jasypt.salt.SaltGenerator;
  */
 public class SimplePBEConfig implements PBEConfig {
     
-    private static final long serialVersionUID = -5536955400809738920L;
-    
     private String algorithm = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
     private SaltGenerator saltGenerator = null;
+    private String providerName = null;
+    private Provider provider = null;
 
 
     /**
@@ -109,6 +111,54 @@ public class SimplePBEConfig implements PBEConfig {
     public void setSaltGenerator(SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
     }
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the encryption
+     * algorithm. This provider should be already registered.
+     * </p>
+     * <p>
+     * If both the <tt>providerName</tt> and <tt>provider</tt> properties
+     * are set, only <tt>provider</tt> will be used, and <tt>providerName</tt>
+     * will have no meaning for the encryptor object.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider.
+     */
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+    
+    /**
+     * <p>
+     * Sets the security provider to be used for obtaining the encryption 
+     * algorithm. This method is an alternative to 
+     * {@link #setProviderName(String)} and they should not be used altogether.
+     * The provider specified with {@link #setProvider(Provider)} does not
+     * have to be registered beforehand, and its use will not result in its
+     * being registered.
+     * </p>
+     * <p>
+     * If both the <tt>providerName</tt> and <tt>provider</tt> properties
+     * are set, only <tt>provider</tt> will be used, and <tt>providerName</tt>
+     * will have no meaning for the encryptor object.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider.
+     */
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
 
     
     public String getAlgorithm() {
@@ -128,6 +178,14 @@ public class SimplePBEConfig implements PBEConfig {
     
     public SaltGenerator getSaltGenerator() {
         return saltGenerator;
+    }
+    
+    public String getProviderName() {
+        return providerName;
+    }
+    
+    public Provider getProvider() {
+        return provider;
     }
 
     

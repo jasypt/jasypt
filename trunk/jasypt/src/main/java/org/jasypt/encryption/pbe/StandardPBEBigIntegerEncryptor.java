@@ -20,6 +20,7 @@
 package org.jasypt.encryption.pbe;
 
 import java.math.BigInteger;
+import java.security.Provider;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
@@ -31,7 +32,7 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Standard implementation of the {@link PBEBigIntegerEncryptor} interface.
- * This class lets the user specify the algorithm to be used for 
+ * This class lets the user specify the algorithm (and provider) to be used for 
  * encryption, the password to use,
  * the number of hashing iterations and the salt generator
  * that will be applied for obtaining
@@ -52,7 +53,7 @@ import org.jasypt.salt.SaltGenerator;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, password, key-obtention iterations and salt generator can take 
+ * The algorithm, provider, password, key-obtention iterations and salt generator can take 
  * values in any of these ways:
  * <ul>
  *   <li>Using its default values (except for password).</li>
@@ -60,6 +61,7 @@ import org.jasypt.salt.SaltGenerator;
  *       object which provides new 
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
+ *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
  *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
  *       <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
@@ -147,6 +149,7 @@ public final class StandardPBEBigIntegerEncryptor
      * 
      * <ul>
      *   <li>Algorithm</li>
+     *   <li>Security Provider (or provider name)</li>
      *   <li>Password</li>
      *   <li>Hashing iterations for obtaining the encryption key</li>
      *   <li>Salt generator</li>
@@ -162,7 +165,7 @@ public final class StandardPBEBigIntegerEncryptor
      *               source for configuration parameters.
      */
     public void setConfig(PBEConfig config) {
-        byteEncryptor.setConfig(config);
+        this.byteEncryptor.setConfig(config);
     }
 
     
@@ -171,17 +174,17 @@ public final class StandardPBEBigIntegerEncryptor
      * Sets the algorithm to be used for encryption, like 
      * <tt>PBEWithMD5AndDES</tt>.
      * </p>
-     * 
      * <p>
-     * This algorithm has to be supported by your JCE provider and, if this provider
-     * supports it, you can also specify <i>mode</i> and <i>padding</i> for 
+     * This algorithm has to be supported by your JCE provider (if you specify
+     * one, or the default JVM provider if you don't) and, if it is supported,
+     * you can also specify <i>mode</i> and <i>padding</i> for 
      * it, like <tt>ALGORITHM/MODE/PADDING</tt>.
      * </p>
      * 
      * @param algorithm the name of the algorithm to be used.
      */
     public void setAlgorithm(String algorithm) {
-        byteEncryptor.setAlgorithm(algorithm);
+        this.byteEncryptor.setAlgorithm(algorithm);
     }
 
     
@@ -200,7 +203,7 @@ public final class StandardPBEBigIntegerEncryptor
      * @param password the password to be used.
      */
     public void setPassword(String password) {
-        byteEncryptor.setPassword(password);
+        this.byteEncryptor.setPassword(password);
     }
     
 
@@ -218,7 +221,7 @@ public final class StandardPBEBigIntegerEncryptor
      * @param keyObtentionIterations the number of iterations
      */
     public void setKeyObtentionIterations(int keyObtentionIterations) {
-        byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
+        this.byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
 
     
@@ -231,7 +234,64 @@ public final class StandardPBEBigIntegerEncryptor
      * @param saltGenerator the salt generator to be used.
      */
     public void setSaltGenerator(SaltGenerator saltGenerator) {
-        byteEncryptor.setSaltGenerator(saltGenerator);
+        this.byteEncryptor.setSaltGenerator(saltGenerator);
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the name of the security provider to be asked for the
+     * encryption algorithm. This security provider has to be registered 
+     * beforehand at the JVM security framework. 
+     * </p>
+     * <p>
+     * The provider can also be set with the {@link #setProvider(Provider)}
+     * method, in which case it will not be necessary neither registering
+     * the provider beforehand,
+     * nor calling this {@link #setProviderName(String)} method to specify
+     * a provider name.
+     * </p>
+     * <p>
+     * Note that a call to {@link #setProvider(Provider)} overrides any value 
+     * set by this method.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the security provider to be asked
+     *                     for the encryption algorithm.
+     */
+    public void setProviderName(String providerName) {
+        this.byteEncryptor.setProviderName(providerName);
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the security provider to be asked for the encryption algorithm.
+     * The provider does not have to be registered at the security 
+     * infrastructure beforehand, and its being used here will not result in
+     * its being registered.
+     * </p>
+     * <p>
+     * If this method is called, calling {@link #setProviderName(String)}
+     * becomes unnecessary.
+     * </p>
+     * <p>
+     * If no provider name / provider is explicitly set, the default JVM
+     * provider will be used.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param provider the provider to be asked for the chosen algorithm
+     */
+    public void setProvider(Provider provider) {
+        this.byteEncryptor.setProvider(provider);
     }
 
 
@@ -248,8 +308,7 @@ public final class StandardPBEBigIntegerEncryptor
      * </ul>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password, key obtention
-     *   iterations or salt generator) will
+     *   change its configuration will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -257,7 +316,7 @@ public final class StandardPBEBigIntegerEncryptor
      *         not.
      */
     public boolean isInitialized() {
-        return byteEncryptor.isInitialized();
+        return this.byteEncryptor.isInitialized();
     }
 
     
@@ -285,8 +344,7 @@ public final class StandardPBEBigIntegerEncryptor
      * </ol>
      * <p>
      *   Once an encryptor has been initialized, trying to
-     *   change its configuration (algorithm, password, key obtention
-     *   iterations or salt generator) will
+     *   change its configuration will
      *   result in an <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
@@ -294,7 +352,7 @@ public final class StandardPBEBigIntegerEncryptor
      *         be correctly done (for example, no password has been set).
      */
     public void initialize() {
-        byteEncryptor.initialize();
+        this.byteEncryptor.initialize();
     }
     
     
@@ -352,7 +410,7 @@ public final class StandardPBEBigIntegerEncryptor
             byte[] messageBytes = message.toByteArray();
             
             // The StandardPBEByteEncryptor does its job.
-            byte[] encryptedMessage = byteEncryptor.encrypt(messageBytes);
+            byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
 
             // The length of the encrypted message will be stored
             // with the result itself so that we can correctly rebuild
@@ -424,7 +482,7 @@ public final class StandardPBEBigIntegerEncryptor
                         encryptedMessageBytes, encryptedMessage.signum());
             
             // Let the byte encyptor decrypt
-            byte[] message = byteEncryptor.decrypt(encryptedMessageBytes);
+            byte[] message = this.byteEncryptor.decrypt(encryptedMessageBytes);
 
             // Finally, return a new number built from the decrypted bytes
             return new BigInteger(message);

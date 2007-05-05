@@ -31,7 +31,7 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Standard implementation of the {@link StringDigester} interface.
- * This class lets the user specify the algorithm to be used for 
+ * This class lets the user specify the algorithm (and provider) to be used for 
  * creating digests, the size of the salt to be applied,
  * the number of times the hash function will be applied (iterations) and
  * the salt generator to be used.
@@ -55,10 +55,10 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm</tt>, 
- *       <tt>setProvider</tt>, <tt>setProviderName</tt>,
- *       <tt>setSaltSizeBytes</tt>, <tt>setIterations</tt>
- *       or <tt>setSaltGenerator</tt> methods.</li>
+ *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
+ *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
+ *       <tt>setSaltSizeBytes(...)</tt>, <tt>setIterations(...)</tt>
+ *       or <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
