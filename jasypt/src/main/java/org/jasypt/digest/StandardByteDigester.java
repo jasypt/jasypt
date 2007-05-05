@@ -37,7 +37,7 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Standard implementation of the {@link ByteDigester} interface.
- * This class lets the user specify the algorithm to be used for 
+ * This class lets the user specify the algorithm (and provider) to be used for 
  * creating digests, the size of the salt to be applied, 
  * the number of times the hash function will be applied (iterations) and
  * the salt generator to be used.
@@ -56,10 +56,10 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm</tt>, <tt>setProvider</tt>,
- *       <tt>setProviderName</tt>,
- *       <tt>setSaltSizeBytes</tt>, <tt>setIterations</tt>
- *       or <tt>setSaltGenerator</tt> methods.</li>
+ *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, <tt>setProvider(...)</tt>,
+ *       <tt>setProviderName(...)</tt>,
+ *       <tt>setSaltSizeBytes(...)</tt>, <tt>setIterations(...)</tt>
+ *       or <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
@@ -597,13 +597,18 @@ public final class StandardByteDigester implements ByteDigester {
              */
             try {
                 if (this.provider != null) {
-                    this.md = MessageDigest.getInstance(this.algorithm, this.provider);
+                    this.md = 
+                        MessageDigest.getInstance(
+                                this.algorithm, 
+                                this.provider);
                 } else if (this.providerName != null) {
-                    this.md = MessageDigest.getInstance(this.algorithm, this.providerName);
+                    this.md = 
+                        MessageDigest.getInstance(
+                                this.algorithm, 
+                                this.providerName);
                 } else {
                     this.md = MessageDigest.getInstance(this.algorithm);
                 }
-System.out.println("Using algorithm: " + this.md.getAlgorithm() + " at " + this.md.getProvider().getName());
             } catch (NoSuchAlgorithmException e) {
                 throw new EncryptionInitializationException(e);
             } catch (NoSuchProviderException e) {

@@ -2,14 +2,12 @@
   Main
   -------
 
-  <<Jasypt 1.2 has been just released>>. Have a look at the 
-  {{{changelog.html}ChangeLog}}, check the {{{features.html}features}}
-  or {{{download.html}download}} the new version.
-
-  <<Stay in touch with other jasypt users!>> request help, discuss your ideas
-  or make suggestions in the new
-  {{{https://lists.sourceforge.net/lists/listinfo/jasypt-users} jasypt-users mailing list}}
-  and the {{{http://www.nabble.com/Jasypt---Users-f21330.html}users forum}}.
+  <<Jasypt 1.3 will be released mid-May 2007>>, featuring changes in the provider
+  API which will allow the use of non-default JCE providers like 
+  {{{http://www.bouncycastle.org}Bouncy Castle}}. With this, any
+  PBE or digest algorithm you can get from any JCE provider will be available 
+  for you to use with Jasypt. Stay tuned for the new release at the
+  {{{mailinglists.html}jasypt-announce mailing list}}.
 
   New article published: <<{{{howtoencryptuserpasswords.html}How to Encrypt User Passwords}}>>.
 
