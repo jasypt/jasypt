@@ -148,7 +148,8 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @param providerName the name of the security provider to be asked
      *                     for the digest algorithm.
      * @throws AlreadyInitializedException if it has already been initialized,
-     *         this is, if {@link #digest(byte[])} has been called at least
+     *         this is, if {@link #encryptPassword(String)} or
+     *         {@link #checkPassword(String, String)} have been called at least
      *         once.
      */
     public void setProviderName(String providerName) {
@@ -176,7 +177,8 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * 
      * @param provider the provider to be asked for the chosen algorithm
      * @throws AlreadyInitializedException if it has already been initialized,
-     *         this is, if {@link #digest(byte[])} has been called at least
+     *         this is, if {@link #encryptPassword(String)} or
+     *         {@link #checkPassword(String, String)} have been called at least
      *         once.
      */
     public void setProvider(Provider provider) {
