@@ -188,30 +188,30 @@ public class SimpleDigesterConfig implements DigesterConfig {
 
     
     public String getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
     
     public Integer getIterations() {
-        return iterations;
+        return this.iterations;
     }
 
     
     public Integer getSaltSizeBytes() {
-        return saltSizeBytes;
+        return this.saltSizeBytes;
     }
     
     
     public SaltGenerator getSaltGenerator() {
-        return saltGenerator;
+        return this.saltGenerator;
     }
     
     public String getProviderName() {
-        return providerName;
+        return this.providerName;
     }
     
     public Provider getProvider() {
-        return provider;
+        return this.provider;
     }
 
     
