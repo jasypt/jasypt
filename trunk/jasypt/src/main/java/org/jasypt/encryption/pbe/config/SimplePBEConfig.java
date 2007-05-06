@@ -162,30 +162,30 @@ public class SimplePBEConfig implements PBEConfig {
 
     
     public String getAlgorithm() {
-        return algorithm;
+        return this.algorithm;
     }
 
     
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     
     public Integer getKeyObtentionIterations() {
-        return keyObtentionIterations;
+        return this.keyObtentionIterations;
     }
     
     
     public SaltGenerator getSaltGenerator() {
-        return saltGenerator;
+        return this.saltGenerator;
     }
     
     public String getProviderName() {
-        return providerName;
+        return this.providerName;
     }
     
     public Provider getProvider() {
-        return provider;
+        return this.provider;
     }
 
     
