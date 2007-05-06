@@ -154,7 +154,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @since 1.3
      * 
-     * @param providerName the name of the security provider.
+     * @param provider the security provider object.
      */
     public void setProvider(Provider provider) {
         this.provider = provider;
