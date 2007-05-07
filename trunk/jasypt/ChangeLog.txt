@@ -10,6 +10,21 @@
   and ConfigurablePasswordEncryptor can now specify the JCE security provider
   (<tt>java.security.Provider</tt> implementation) which will be asked
   for the digest algorithm.
+- Added provider and providerName properties to PBEConfig and
+  SimplePBEConfig classes.
+- Added providerClassName, providerName and saltGeneratorClassName
+  configuration at EnvironmentPBEConfig.
+- StandardPBEByteEncryptor, StandardPBEStringEncryptor, 
+  StandardPBEBigIntegerEncryptor and StandardPBEBigDecimalEncryptor can now 
+  specify the JCE security provider (<tt>java.security.Provider</tt> 
+  implementation) which will be asked for the digest algorithm.
+- Created new StringDigesterConfig configuration interface for digesters,
+  which extends DigesterConfig and adds parameters "unicodeNormalizationIgnored"
+  and "stringOutputType". Also created new implementations 
+  SimpleStringDigesterConfig and EnvironmentStringDigesterConfig.
+- Added Unicode Normalization step to StandardStringDigester, and also
+  capabilities to return hexadecimal-encoded digest Strings instead of only
+  BASE64 ones.
 
 
 1.2
