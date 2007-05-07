@@ -25,6 +25,12 @@
 - Added Unicode Normalization step to StandardStringDigester, and also
   capabilities to return hexadecimal-encoded digest Strings instead of only
   BASE64 ones.
+- Created new StringPBEConfig configuration interface for encryptors,
+  which extends PBEConfig and adds parameter "stringOutputType". Also
+  created new implementations SimpleStringPBEConfig and
+  EnvironmentStringPBEConfig.
+- Added capabilities to return hexadecimal-endoded Strings to 
+  StandardPBEStringEncryptor.
 
 
 1.2
