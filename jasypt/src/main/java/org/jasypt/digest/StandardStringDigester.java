@@ -22,10 +22,16 @@ package org.jasypt.digest;
 import java.security.Provider;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.config.DigesterConfig;
+import org.jasypt.digest.config.StringDigesterConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
+
+import com.ibm.icu.text.Normalizer;
 
 
 /**
@@ -39,7 +45,7 @@ import org.jasypt.salt.SaltGenerator;
  * <p>
  * This class avoids byte-conversion problems related to the fact of 
  * different platforms having different default charsets, and returns 
- * digests in the form of BASE64-encoded ASCII Strings.
+ * digests in the form of BASE64-encoded or HEXADECIMAL ASCII Strings.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -55,10 +61,7 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Setting a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
- *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
- *       <tt>setSaltSizeBytes(...)</tt>, <tt>setIterations(...)</tt>
- *       or <tt>setSaltGenerator(...)</tt> methods.</li>
+ *   <li>Calling the corresponding <tt>setX(...)</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
@@ -86,7 +89,7 @@ import org.jasypt.salt.SaltGenerator;
  *       first time, if <tt>initialize</tt> has not been called before.</li>
  * </ul>
  * Once a digester has been initialized, trying to
- * change its configuration (algorithm, provider, salt size, iterations or salt generator)
+ * change its configuration
  * will result in an <tt>AlreadyInitializedException</tt> being thrown.
  * </p>
  * 
@@ -115,7 +118,7 @@ import org.jasypt.salt.SaltGenerator;
  *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
  *       the <i>undigested</i> salt and the final result of the hash
  *       function are concatenated and returned as a result.</li>
- *   <li>The result of the concatenation is encoded in BASE64
+ *   <li>The result of the concatenation is encoded in BASE64 or HEXADECIMAL
  *       and returned as an ASCII String.</li>
  * </ol>
  * Put schematically in bytes:
@@ -205,7 +208,8 @@ public final class StandardStringDigester implements StringDigester {
      * can be bytes that may not conform a "valid" LATIN-1 String.
      * </p>
      * <p>
-     * Because of this, digests are always encoded in <i>BASE64</i> after 
+     * Because of this, digests are always encoded in <i>BASE64</i> or
+     * HEXADECIMAL after 
      * being created, and this ensures that the 
      * digests will make perfectly representable, safe ASCII Strings. Because
      * of this, the charset used to convert the digest bytes to the returned 
@@ -213,12 +217,52 @@ public final class StandardStringDigester implements StringDigester {
      * </p>
      */
     public static final String DIGEST_CHARSET = "US-ASCII";
+    
+    /**
+     * <p>
+     * Whether the Unicode normalization step should be ignored because of
+     * legacy-compatibility issues. Defaults to <b>FALSE</b> (the normalization
+     * step WILL be performed).
+     * </p>
+     */
+    public static final boolean DEFAULT_UNICODE_NORMALIZATION_IGNORED = false;
 
+    /**
+     * <p>
+     * Default type of String output. Set to <b>BASE64</b>. 
+     * </p> 
+     */
+    public static final String DEFAULT_STRING_OUTPUT_TYPE = 
+        CommonUtils.STRING_OUTPUT_TYPE_BASE64;
+
+    
     // The StandardByteDigester that will be internally used.
     private StandardByteDigester byteDigester = null;
+
+    // If the config object set is a StringDigesterConfig, it must be referenced
+    private StringDigesterConfig stringDigesterConfig = null;
+    
+    // This variable holds whether the unicode normalization step should
+    // be ignored or not (default = DO NOT ignore).
+    private boolean unicodeNormalizationIgnored = 
+        DEFAULT_UNICODE_NORMALIZATION_IGNORED;
+    
+    // This variable holds the type of String output which will be done,
+    // and also a boolean variable for faster comparison
+    private String stringOutputType = DEFAULT_STRING_OUTPUT_TYPE;
+    private boolean stringOutputTypeBase64 = true;
+
+    /*
+     * Set of booleans which indicate whether the config or default values
+     * have to be overriden because of the setX methods having been
+     * called.
+     */
+    private boolean unicodeNormalizationIgnoredSet = false;
+    private boolean stringOutputTypeSet = false;
+    
     
     // BASE64 encoder which will make sure the returned digests are
-    // valid US-ASCII strings.
+    // valid US-ASCII strings (if the user chooses BASE64 output).
     private Base64 base64 = null;
 
 
@@ -235,7 +279,8 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
-     * Sets a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> object 
+     * Sets a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
+     * or {@link StringDigesterConfig} object 
      * for the digester. If this config
      * object is set, it will be asked values for:
      * </p>
@@ -246,6 +291,10 @@ public final class StandardStringDigester implements StringDigester {
      *   <li>Salt size</li>
      *   <li>Hashing iterations</li>
      *   <li>Salt generator</li>
+     *   <li>Use of Unicode normalization mechanisms 
+     *       (only <tt>StringDigesterConfig</tt>)</li>
+     *   <li>Output type (base64, hexadecimal) 
+     *       (only <tt>StringDigesterConfig</tt>)</li>
      * </ul>
      * 
      * <p>
@@ -257,8 +306,11 @@ public final class StandardStringDigester implements StringDigester {
      * @param config the <tt>DigesterConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public void setConfig(DigesterConfig config) {
-        byteDigester.setConfig(config);
+    public synchronized void setConfig(DigesterConfig config) {
+        this.byteDigester.setConfig(config);
+        if ((config != null) && (config instanceof StringDigesterConfig)) {
+            this.stringDigesterConfig = (StringDigesterConfig) config;
+        }
     }
 
     
@@ -289,7 +341,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param algorithm the name of the algorithm to be used.
      */
     public void setAlgorithm(String algorithm) {
-        byteDigester.setAlgorithm(algorithm);
+        this.byteDigester.setAlgorithm(algorithm);
     }
 
     
@@ -308,7 +360,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param saltSizeBytes the size of the salt to be used, in bytes.
      */
     public void setSaltSizeBytes(int saltSizeBytes) {
-        byteDigester.setSaltSizeBytes(saltSizeBytes);
+        this.byteDigester.setSaltSizeBytes(saltSizeBytes);
     }
 
     
@@ -328,7 +380,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param iterations the number of iterations.
      */
     public void setIterations(int iterations) {
-        byteDigester.setIterations(iterations);
+        this.byteDigester.setIterations(iterations);
     }
 
     
@@ -341,7 +393,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param saltGenerator the salt generator to be used.
      */
     public void setSaltGenerator(SaltGenerator saltGenerator) {
-        byteDigester.setSaltGenerator(saltGenerator);
+        this.byteDigester.setSaltGenerator(saltGenerator);
     }
 
     
@@ -373,7 +425,7 @@ public final class StandardStringDigester implements StringDigester {
      *                     for the digest algorithm.
      */
     public void setProviderName(String providerName) {
-        byteDigester.setProviderName(providerName);
+        this.byteDigester.setProviderName(providerName);
     }
     
     
@@ -398,9 +450,75 @@ public final class StandardStringDigester implements StringDigester {
      * @param provider the provider to be asked for the chosen algorithm
      */
     public void setProvider(Provider provider) {
-        byteDigester.setProvider(provider);
+        this.byteDigester.setProvider(provider);
     }
     
+    
+    /**
+     * <p>
+     * Sets whether the unicode text normalization step should be ignored.
+     * </p>
+     * <p>
+     * The Java Virtual Machine internally handles all Strings as UNICODE. When
+     * digesting or matching digests in jasypt, these Strings are first 
+     * <b>normalized to 
+     * its NFC form</b> so that digest matching is not affected by the specific
+     * form in which the messages where input.
+     * </p>
+     * <p>
+     * <b>It is normally safe (and recommended) to leave this parameter set to 
+     * its default FALSE value (and thus DO perform normalization 
+     * operations)</b>. But in some specific cases in which issues with legacy
+     * software could arise, it might be useful to set this to TRUE.
+     * </p>
+     * <p>
+     * For more information on unicode text normalization, see this issue of 
+     * <a href="http://java.sun.com/mailers/techtips/corejava/2007/tt0207.html">Core Java Technologies Tech Tips</a>.
+     * </p>
+     * 
+     * @since 1.3
+     * 
+     * @param unicodeNormalizationIgnored whether the unicode text 
+     *        normalization step should be ignored or not.
+     */
+    public synchronized void setUnicodeNormalizationIgnored(boolean unicodeNormalizationIgnored) {
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.unicodeNormalizationIgnored = unicodeNormalizationIgnored;
+        this.unicodeNormalizationIgnoredSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the the form in which String output
+     * will be encoded. Available encoding types are:
+     * </p>
+     * <ul>
+     *   <li><tt><b>base64</b></tt> (default)</li>
+     *   <li><tt><b>hexadecimal</b></tt></li>
+     * </ul>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+
+     * @since 1.3
+     * 
+     * @param stringOutputType the string output type.
+     */
+    public synchronized void setStringOutputType(String stringOutputType) {
+        Validate.notEmpty(stringOutputType, 
+                "String output type cannot be set empty");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.stringOutputType = 
+            CommonUtils.
+                getStandardStringOutputType(stringOutputType);
+        this.stringOutputTypeSet = true;
+    }
+
     
     /**
      * <p>
@@ -415,16 +533,16 @@ public final class StandardStringDigester implements StringDigester {
      * </ul>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, provider, salt size, iterations or
-     *   salt generator) will result in an <tt>AlreadyInitializedException</tt>
+     *   change its configuration will result in an 
+     *   <tt>AlreadyInitializedException</tt>
      *   being thrown.
      * </p>
      * 
      * @return true if the digester has already been initialized, false if
      *   not.
      */
-    public boolean isInitialized() {
-        return byteDigester.isInitialized();
+    public synchronized boolean isInitialized() {
+        return this.byteDigester.isInitialized();
     }
 
     
@@ -451,8 +569,8 @@ public final class StandardStringDigester implements StringDigester {
      * </ol>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, provider, salt size, iterations or salt
-     *   generator) will result in an <tt>AlreadyInitializedException</tt> 
+     *   change its configuration will result in an 
+     *   <tt>AlreadyInitializedException</tt> 
      *   being thrown.
      * </p>
      * 
@@ -461,8 +579,40 @@ public final class StandardStringDigester implements StringDigester {
      *         cannot be used).
      *
      */
-    public void initialize() {
-        byteDigester.initialize();
+    public synchronized void initialize() {
+        
+        // Double-check to avoid synchronization issues
+        if (!this.isInitialized()) {
+
+            /*
+             * If a StringDigesterConfig object has been set, we need to 
+             * consider the values it returns (if, for each value, the
+             * corresponding "setX" method has not been called).
+             */
+            if (this.stringDigesterConfig != null) {
+                
+                Boolean configUnicodeNormalizationIgnored = 
+                    this.stringDigesterConfig.isUnicodeNormalizationIgnored();
+                String configStringOutputType = 
+                    this.stringDigesterConfig.getStringOutputType();
+
+                this.unicodeNormalizationIgnored = 
+                    ((this.unicodeNormalizationIgnoredSet) || (configUnicodeNormalizationIgnored == null))?
+                            this.unicodeNormalizationIgnored : configUnicodeNormalizationIgnored.booleanValue();
+                this.stringOutputType = 
+                    ((this.stringOutputTypeSet) || (configStringOutputType == null))?
+                            this.stringOutputType : configStringOutputType;
+                
+            }
+            
+            this.stringOutputTypeBase64 =
+                (CommonUtils.STRING_OUTPUT_TYPE_BASE64.
+                    equalsIgnoreCase(this.stringOutputType));
+            
+            this.byteDigester.initialize();
+        
+        }
+
     }
     
 
@@ -485,7 +635,7 @@ public final class StandardStringDigester implements StringDigester {
      *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
      *       the <i>undigested</i> salt and the final result of the hash
      *       function are concatenated and returned as a result.</li>
-     *   <li>The result of the concatenation is encoded in BASE64
+     *   <li>The result of the concatenation is encoded in BASE64 or HEXADECIMAL
      *       and returned as an ASCII String.</li>
      * </ol>
      * Put schematically in bytes:
@@ -544,25 +694,45 @@ public final class StandardStringDigester implements StringDigester {
         if (message == null) {
             return null;
         }
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
         
         try {
 
+            // Normalize Unicode message to NFC form
+            String normalizedMessage = null;
+            if (! this.unicodeNormalizationIgnored) {
+                normalizedMessage = 
+                    Normalizer.normalize(message, Normalizer.NFC);
+            } else {
+                normalizedMessage = message;
+            }
+            
             // The input String is converted into bytes using MESSAGE_CHARSET
             // as a fixed charset to avoid problems with different platforms
             // having different default charsets (see MESSAGE_CHARSET doc).
-            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
+            byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
 
             // The StandardByteDigester does its job.
-            byte[] digest = byteDigester.digest(messageBytes);
+            byte[] digest = this.byteDigester.digest(messageBytes);
             
-            // We encode the result in BASE64 so that we obtain the safest
-            // result String possible.
-            synchronized (base64) {
-                digest = base64.encode(digest);
+            // We encode the result in BASE64 or HEXADECIMAL so that we obtain
+            // the safest result String possible.
+            String result = null;
+            if (this.stringOutputTypeBase64) {
+                synchronized (base64) {
+                    digest = base64.encode(digest);
+                }
+                result = new String(digest, DIGEST_CHARSET); 
+            } else {
+                result = CommonUtils.toHexadecimal(digest);
             }
             
             // Finally, the result String is encoded in US-ASCII
-            return new String(digest, DIGEST_CHARSET);
+            return result; 
 
         } catch (EncryptionInitializationException e) {
             throw e;
@@ -614,24 +784,43 @@ public final class StandardStringDigester implements StringDigester {
         } else if (digest == null) {
             return false;
         }
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
         
         try {
+
+            // Normalize Unicode message to NFC form
+            String normalizedMessage = null;
+            if (! this.unicodeNormalizationIgnored) {
+                normalizedMessage = 
+                    Normalizer.normalize(message, Normalizer.NFC);
+            } else {
+                normalizedMessage = message;
+            }
             
             // We get a valid byte array from the message, in the 
             // fixed MESSAGE_CHARSET that the digest operations use.
-            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
+            byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
             
-            // The digest, which must be a US-ASCII String with BASE64-encoded
-            // bytes, is converted into a byte array.
-            byte[] digestBytes = digest.getBytes(DIGEST_CHARSET);
 
-            // The BASE64 encoding is reversed.
-            synchronized (base64) {
-                digestBytes = base64.decode(digestBytes);
+            // The BASE64 or HEXADECIMAL encoding is reversed and the digest
+            // is converted into a byte array.
+            byte[] digestBytes = null;
+            if (this.stringOutputTypeBase64) {
+                // The digest must be a US-ASCII String BASE64-encoded
+                digestBytes = digest.getBytes(DIGEST_CHARSET);
+                synchronized (base64) {
+                    digestBytes = base64.decode(digestBytes);
+                }
+            } else {
+                digestBytes = CommonUtils.fromHexadecimal(digest);
             }
             
             // The StandardByteDigester is asked to match message to digest.
-            return byteDigester.matches(messageBytes, digestBytes); 
+            return this.byteDigester.matches(messageBytes, digestBytes); 
         
         } catch (EncryptionInitializationException e) {
             throw e;
