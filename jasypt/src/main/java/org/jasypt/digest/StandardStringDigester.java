@@ -635,7 +635,8 @@ public final class StandardStringDigester implements StringDigester {
      *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
      *       the <i>undigested</i> salt and the final result of the hash
      *       function are concatenated and returned as a result.</li>
-     *   <li>The result of the concatenation is encoded in BASE64 or HEXADECIMAL
+     *   <li>The result of the concatenation is encoded in BASE64 (default) 
+     *       or HEXADECIMAL
      *       and returned as an ASCII String.</li>
      * </ol>
      * Put schematically in bytes:
