@@ -731,7 +731,6 @@ public final class StandardStringDigester implements StringDigester {
                 result = CommonUtils.toHexadecimal(digest);
             }
             
-            // Finally, the result String is encoded in US-ASCII
             return result; 
 
         } catch (EncryptionInitializationException e) {
