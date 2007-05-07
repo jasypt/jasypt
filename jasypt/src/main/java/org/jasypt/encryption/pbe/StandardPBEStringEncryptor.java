@@ -22,7 +22,11 @@ package org.jasypt.encryption.pbe;
 import java.security.Provider;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.encryption.pbe.config.StringPBEConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
@@ -40,7 +44,8 @@ import org.jasypt.salt.SaltGenerator;
  * <p>
  * This class avoids byte-conversion problems related to the fact of 
  * different platforms having different default charsets, and returns 
- * encryption results in the form of BASE64-encoded ASCII Strings.
+ * encryption results in the form of BASE64-encoded or HEXADECIMAL 
+ * ASCII Strings.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -56,10 +61,7 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Setting a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
  *       object which provides new 
  *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
- *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
- *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
- *       <tt>setSaltGenerator(...)</tt> methods.</li>
+ *   <li>Calling the corresponding <tt>setX(...)</tt> methods.</li>
  * </ul>
  * And the actual values to be used for initialization will be established
  * by applying the following priorities:
@@ -158,14 +160,40 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * </p>
      * <p>
      * Because of this, encryption results are always encoded in <i>BASE64</i>
-     * after being created, and this ensures that the 
-     * results will make perfectly representable, safe ASCII Strings. Because
-     * of this, the charset used to convert the encrypted bytes to the returned 
-     * String is set to <b>US-ASCII</b>.
+     * (default) or <i>HEXADECIMAL</i> after being created, and this ensures 
+     * that the results will make perfectly representable, safe ASCII Strings. 
+     * Because of this, the charset used to convert the encrypted bytes to the
+     * returned String is set to <b>US-ASCII</b>.
      * </p>
      */
     private static final String ENCRYPTED_MESSAGE_CHARSET = "US-ASCII";
 
+
+    /**
+     * <p>
+     * Default type of String output. Set to <b>BASE64</b>. 
+     * </p> 
+     */
+    public static final String DEFAULT_STRING_OUTPUT_TYPE = 
+        CommonUtils.STRING_OUTPUT_TYPE_BASE64;
+    
+
+    // If the config object set is a StringPBEConfig, it must be referenced
+    private StringPBEConfig stringPBEConfig = null;
+    
+    // This variable holds the type of String output which will be done,
+    // and also a boolean variable for faster comparison
+    private String stringOutputType = DEFAULT_STRING_OUTPUT_TYPE;
+    private boolean stringOutputTypeBase64 = true;
+
+    
+    /*
+     * Set of booleans which indicate whether the config or default values
+     * have to be overriden because of the setX methods having been
+     * called.
+     */
+    private boolean stringOutputTypeSet = false;
+    
     
     // The StandardPBEByteEncryptor that will be internally used.
     private StandardPBEByteEncryptor byteEncryptor = null;
@@ -199,6 +227,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      *   <li>Password</li>
      *   <li>Hashing iterations for obtaining the encryption key</li>
      *   <li>Salt generator</li>
+     *   <li>Output type (base64, hexadecimal) 
+     *       (only <tt>StringPBEConfig</tt>)</li>
      * </ul>
      * 
      * <p>
@@ -210,8 +240,11 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @param config the <tt>PBEConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public void setConfig(PBEConfig config) {
+    public synchronized void setConfig(PBEConfig config) {
         this.byteEncryptor.setConfig(config);
+        if ((config != null) && (config instanceof StringPBEConfig)) {
+            this.stringPBEConfig = (StringPBEConfig) config;
+        }
     }
 
     
@@ -339,6 +372,36 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
     public void setProvider(Provider provider) {
         this.byteEncryptor.setProvider(provider);
     }
+    
+    
+    /**
+     * <p>
+     * Sets the the form in which String output
+     * will be encoded. Available encoding types are:
+     * </p>
+     * <ul>
+     *   <li><tt><b>base64</b></tt> (default)</li>
+     *   <li><tt><b>hexadecimal</b></tt></li>
+     * </ul>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+
+     * @since 1.3
+     * 
+     * @param stringOutputType the string output type.
+     */
+    public synchronized void setStringOutputType(String stringOutputType) {
+        Validate.notEmpty(stringOutputType, 
+                "String output type cannot be set empty");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.stringOutputType = 
+            CommonUtils.
+                getStandardStringOutputType(stringOutputType);
+        this.stringOutputTypeSet = true;
+    }
 
 
     /**
@@ -361,7 +424,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @return true if the encryptor has already been initialized, false if
      *         not.
      */
-    public boolean isInitialized() {
+    public synchronized boolean isInitialized() {
         return this.byteEncryptor.isInitialized();
     }
 
@@ -397,8 +460,35 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public void initialize() {
-        this.byteEncryptor.initialize();
+    public synchronized void initialize() {
+        
+        // Double-check to avoid synchronization issues
+        if (!this.isInitialized()) {
+
+            /*
+             * If a StringPBEConfig object has been set, we need to 
+             * consider the values it returns (if, for each value, the
+             * corresponding "setX" method has not been called).
+             */
+            if (this.stringPBEConfig != null) {
+                
+                String configStringOutputType = 
+                    this.stringPBEConfig.getStringOutputType();
+
+                this.stringOutputType = 
+                    ((this.stringOutputTypeSet) || (configStringOutputType == null))?
+                            this.stringOutputType : configStringOutputType;
+                
+            }
+            
+            this.stringOutputTypeBase64 =
+                (CommonUtils.STRING_OUTPUT_TYPE_BASE64.
+                    equalsIgnoreCase(this.stringOutputType));
+            
+            this.byteEncryptor.initialize();
+        
+        }
+
     }
     
     
@@ -407,7 +497,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * Encrypts a message using the specified configuration.
      * </p>
      * </p>
-     * The Strings returned by this method are BASE64-encoded ASCII Strings.
+     * The Strings returned by this method are BASE64-encoded (default) or
+     * HEXADECIMAL ASCII Strings.
      * </p>
      * <p>
      * The mechanisms applied to perform the encryption operation are described
@@ -444,6 +535,11 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         if (message == null) {
             return null;
         }
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
         
         try {
 
@@ -455,15 +551,19 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             // The StandardPBEByteEncryptor does its job.
             byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
             
-            // We encode the result in BASE64 so that we obtain the safest
-            // result String possible.
-            synchronized (this.base64) {
-                encryptedMessage = this.base64.encode(encryptedMessage);
+            // We encode the result in BASE64 or HEXADECIMAL so that we obtain
+            // the safest result String possible.
+            String result = null;
+            if (this.stringOutputTypeBase64) {
+                synchronized (this.base64) {
+                    encryptedMessage = this.base64.encode(encryptedMessage);
+                }
+                result = new String(encryptedMessage,ENCRYPTED_MESSAGE_CHARSET);
+            } else {
+                result = CommonUtils.toHexadecimal(encryptedMessage);
             }
-            
-            // Finally, the result String is encoded in US-ASCII
-            return new String(encryptedMessage, 
-                    ENCRYPTED_MESSAGE_CHARSET);
+System.out.println(result);            
+            return result;
         
         } catch (EncryptionInitializationException e) {
             throw e;
@@ -483,7 +583,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * Decrypts a message using the specified configuration.
      * </p>
      * <p>
-     * This method expects to receive a BASE64-encoded ASCII String.
+     * This method expects to receive a BASE64-encoded (default)
+     * or HEXADECIMAL ASCII String.
      * </p>
      * <p>
      * The mechanisms applied to perform the decryption operation are described
@@ -510,18 +611,28 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         if (encryptedMessage == null) {
             return null;
         }
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
         
         try {
             
-            // Get the byte array corresponding to the ASCII input.
-            byte[] encryptedMessageBytes = 
-                encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
-            
-            // Convert the BASE64-encoded input back into an unencoded byte 
-            // array.
-            synchronized (this.base64) {
+            byte[] encryptedMessageBytes = null;
+
+            // Decode input to bytes depending on whether it is a
+            // BASE64-encoded or hexadecimal String
+            if (this.stringOutputTypeBase64) {
                 encryptedMessageBytes = 
-                    this.base64.decode(encryptedMessageBytes);
+                    encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
+                synchronized (this.base64) {
+                    encryptedMessageBytes = 
+                        this.base64.decode(encryptedMessageBytes);
+                }
+            } else {
+                encryptedMessageBytes = 
+                    CommonUtils.fromHexadecimal(encryptedMessage);
             }
 
             // Let the byte encyptor decrypt
