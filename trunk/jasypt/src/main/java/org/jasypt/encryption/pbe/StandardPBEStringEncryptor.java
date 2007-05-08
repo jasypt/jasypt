@@ -562,7 +562,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             } else {
                 result = CommonUtils.toHexadecimal(encryptedMessage);
             }
-System.out.println(result);            
+            
             return result;
         
         } catch (EncryptionInitializationException e) {
