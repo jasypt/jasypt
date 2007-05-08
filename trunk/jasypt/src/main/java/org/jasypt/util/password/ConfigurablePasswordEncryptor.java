@@ -205,6 +205,24 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
             this.digester.setSaltSizeBytes(StandardByteDigester.DEFAULT_SALT_SIZE_BYTES);
         }
     }
+
+    
+    /**
+     * <p>
+     * Sets the the form in which String output
+     * will be encoded. Available encoding types are:
+     * </p>
+     * <ul>
+     *   <li><tt><b>base64</b></tt> (default)</li>
+     *   <li><tt><b>hexadecimal</b></tt></li>
+     * </ul>
+     * @since 1.3
+     * 
+     * @param stringOutputType the string output type.
+     */
+    public void setStringOutputType(String stringOutputType) {
+        this.digester.setStringOutputType(stringOutputType);
+    }
     
     
     /**

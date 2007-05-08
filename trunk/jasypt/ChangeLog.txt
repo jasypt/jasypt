@@ -31,6 +31,8 @@
   EnvironmentStringPBEConfig.
 - Added capabilities to return hexadecimal-endoded Strings to 
   StandardPBEStringEncryptor.
+- Added capabilities to return hexadecimal-endoded Strings to 
+  ConfigurablePasswordEncryptor.
 
 
 1.2
