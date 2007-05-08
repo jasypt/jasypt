@@ -502,7 +502,7 @@ public final class StandardStringDigester implements StringDigester {
      * <p>
      * If not set, null will be returned.
      * </p>
-
+     *
      * @since 1.3
      * 
      * @param stringOutputType the string output type.
