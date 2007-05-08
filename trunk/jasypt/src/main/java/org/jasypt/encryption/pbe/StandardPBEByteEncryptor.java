@@ -37,6 +37,8 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.RandomSaltGenerator;
 import org.jasypt.salt.SaltGenerator;
 
+import com.ibm.icu.text.Normalizer;
+
 /**
  * <p>
  * Standard implementation of the {@link PBEByteEncryptor} interface.
@@ -539,6 +541,10 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 if (this.password == null) {
                     throw new EncryptionInitializationException(
                             "Password not set for Password Based Encryptor");
+                } else {
+                    // Normalize password to NFC form
+                    this.password = 
+                        Normalizer.normalize(this.password, Normalizer.NFC);
                 }
                 
                 /*
