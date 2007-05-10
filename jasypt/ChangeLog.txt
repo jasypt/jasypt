@@ -33,6 +33,10 @@
   StandardPBEStringEncryptor.
 - Added capabilities to return hexadecimal-endoded Strings to 
   ConfigurablePasswordEncryptor.
+- Added to HibernatePBEStringEncryptor the possibility to set the providerName,
+  provider and stringOutputType parameters.
+- Added providerName and stringOutputType parameters to all the String-related
+  Hibernate types.
 
 
 1.2
