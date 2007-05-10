@@ -59,8 +59,10 @@ public abstract class AbstractEncryptedAsStringType
     
     private String encryptorName = null;
     private String algorithm = null;
+    private String providerName = null;
     private String password = null;
     private Integer keyObtentionIterations = null;
+    private String stringOutputType = null;
     
     protected PBEStringEncryptor encryptor = null;
 
@@ -162,10 +164,14 @@ public abstract class AbstractEncryptedAsStringType
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
         String paramAlgorithm =
             parameters.getProperty(ParameterNaming.ALGORITHM);
+        String paramProviderName =
+            parameters.getProperty(ParameterNaming.PROVIDER_NAME);
         String paramPassword =
             parameters.getProperty(ParameterNaming.PASSWORD);
         String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
+        String paramStringOutputType =
+            parameters.getProperty(ParameterNaming.STRING_OUTPUT_TYPE);
         
         this.useEncryptorName = false;
         if (paramEncryptorName != null) {
@@ -194,6 +200,10 @@ public abstract class AbstractEncryptedAsStringType
                 this.algorithm = paramAlgorithm;
             }
             
+            if (paramProviderName != null) {
+                this.providerName = paramProviderName;
+            }
+            
             if (paramKeyObtentionIterations != null) {
 
                 try {
@@ -207,6 +217,10 @@ public abstract class AbstractEncryptedAsStringType
                             "\" is not a valid integer");
                 }
                 
+            }
+            
+            if (paramStringOutputType != null) {
+                this.stringOutputType = paramStringOutputType;
             }
             
         } else {
@@ -252,9 +266,17 @@ public abstract class AbstractEncryptedAsStringType
                     newEncryptor.setAlgorithm(this.algorithm);
                 }
                 
+                if (this.providerName != null) {
+                    newEncryptor.setProviderName(this.providerName);
+                }
+                
                 if (this.keyObtentionIterations != null) {
                     newEncryptor.setKeyObtentionIterations(
                             this.keyObtentionIterations.intValue());
+                }
+                
+                if (this.stringOutputType != null) {
+                    newEncryptor.setStringOutputType(stringOutputType);
                 }
                 
                 newEncryptor.initialize();
