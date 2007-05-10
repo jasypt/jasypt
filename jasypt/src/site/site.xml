@@ -34,46 +34,49 @@
     </links>
 
     <menu name="The Jasypt Project">
-      <item name="Main" href="index.html"/>
-      <item name="Features" href="features.html" />
-      <item name="Download" href="download.html"/>
-      <item name="Source Repository" href="source-repository.html" />
-      <item name="License" href="license.html"/>
-      <item name="Team" href="team.html"/>
+      <item name="· Main" href="index.html"/>
+      <item name="· Features" href="features.html" />
+      <item name="· Download" href="download.html"/>
+      <item name="· Source Repository" href="source-repository.html" />
+      <item name="· License" href="license.html"/>
+      <item name="· Team" href="team.html"/>
     </menu>
 
     <menu name="Reference">
-      <item name="JavaDoc" href="api/jasypt/apidocs/index.html" />
-      <item name="Dependencies" href="dependencies.html" />
-      <item name="FAQ" href="faq.html" />
+      <item name="· JavaDoc" href="api/jasypt/apidocs/index.html" />
+      <item name="· Dependencies" href="dependencies.html" />
+      <item name="· FAQ" href="faq.html" />
     </menu>
 
     <menu name="Community">
-      <item name="Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
-      <item name="Mailing Lists" href="mailinglists.html"/>
-      <item name="Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
-      <item name="External Resources" href="externalresources.html"/>
+      <item name="· Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
+      <item name="· Mailing Lists" href="mailinglists.html"/>
+      <item name="· Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
+      <item name="· External Resources" href="externalresources.html"/>
     </menu>
 
     <menu name="Guides">
-      <item name="Getting Started" href="getting-started.html">
-        <item name="Jasypt at a Glance" href="ataglance.html" />
-        <item name="Easy Tools" href="getting-started-easy.html" />
-        <item name="Standard Tools" href="getting-started-standard.html" />
+      <item name="· Getting Started" href="getting-started.html">
+        <item name="· Jasypt at a Glance" href="ataglance.html" />
+        <item name="· Easy Tools" href="getting-started-easy.html" />
+        <item name="· Standard Tools" href="getting-started-standard.html" />
       </item>
-      <item name="Encrypting passwords" href="encrypting-passwords.html" />
-      <item name="Encrypting texts" href="encrypting-texts.html" />
-      <item name="Encrypting numbers" href="encrypting-numbers.html" />
-      <item name="Encrypting binaries" href="encrypting-binaries.html" />
-      <item name="Advanced configuration" href="advancedconfiguration.html" />
-      <item name="Jasypt + Maven" href="maven.html"/>
-      <item name="Jasypt + Hibernate 3" href="hibernate3.html"/>
-      <item name="Jasypt + Spring" href="spring.html"/>
-      <item name="Jasypt + Acegi" href="springsecurity.html"/>
+      <item name="· Encrypting passwords" href="encrypting-passwords.html" />
+      <item name="· Encrypting texts" href="encrypting-texts.html" />
+      <item name="· Encrypting numbers" href="encrypting-numbers.html" />
+      <item name="· Encrypting binaries" href="encrypting-binaries.html" />
+      <item name="· Advanced configuration" href="advancedconfiguration.html" />
+      <item name="· Using non-default JCE providers" href="non-default-providers.html" />
+      <item name="· Jasypt + Maven" href="maven.html"/>
+      <item name="· Jasypt + Hibernate 3" href="hibernate3.html"/>
+      <item name="· Jasypt + Spring" href="spring.html"/>
+      <item name="· Jasypt + Acegi" href="springsecurity.html"/>
+      <item name="· Jasypt + Bouncy Castle" href="bouncy-castle.html"/>
     </menu>
 
     <menu name="Articles">
-      <item name="How to encrypt user passwords" href="howtoencryptuserpasswords.html"/>
+      <item name="· How to encrypt user passwords" href="howtoencryptuserpasswords.html"/>
+      <item name="· How to integrate Bouncy Castle into Spring Security (Acegi) using Jasypt" href="springsecurity-bouncy-castle.html"/>
     </menu>
 
 

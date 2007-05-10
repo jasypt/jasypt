@@ -14,7 +14,8 @@ Encrypting texts
   Jasypt uses the byte (binary) encryption mechanisms as a basis for
   text encryption, with the following specificity:
         
-      * All the String results (of encryption) are encoded in <<BASE64>>, and thus
+      * All the String results (of encryption) are encoded in <<BASE64>> 
+        (or <<hexadecimal>>, if you prefer), and thus
         can be safely stored as US-ASCII characters.
   
 * Usage
@@ -34,6 +35,7 @@ Encrypting texts
        object which provides new configuration values. {{{advancedconfiguration.html}Learn More}}.
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
+       <<<setProvider(...)>>>, <<<setProviderName(...)>>>,
        <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
        or <<<setSaltGenerator(...)>>> methods.
 

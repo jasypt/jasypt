@@ -51,6 +51,10 @@ Jasypt at a glance
 
       * {{{advancedconfiguration.html}Advanced configuration}}: learn how jasypt's encryptors and digesters can be configured in unusual or user-defined ways.
       
+      []
+
+      * {{{non-default-providers.html}Using non-default JCE providers}}: learn how jasypt can be used with JCE providers different than the default JVM one.
+      
 
   And if you want to learn about integrating jasypt with other tools, visit:
   
@@ -67,4 +71,8 @@ Jasypt at a glance
       []
       
       * {{{springsecurity.html}Jasypt + Acegi}}: Integrating jasypt into your Spring Security (Acegi) based applications.
+      
+      []
+      
+      * {{{bouncy-castle.html}Jasypt + Bouncy Castle}}: Using {{{http://www.bouncycastle.org}Bouncy Castle}} as a JCE provider in jasypt.
       

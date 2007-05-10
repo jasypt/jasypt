@@ -22,6 +22,8 @@ Base dependencies for jasypt
     * {{{http://jakarta.apache.org/commons/lang/}Apache Jakarta Commons Lang}} 2.1 or higher
     
     * {{{http://jakarta.apache.org/commons/codec/}Apache Jakarta Commons Codec}} 1.1 or higher
+    
+    * {{{http://www.icu-project.org/}International Components for Unicode (ICU)}} 3.4.4 or higher
   
 
 Optional dependencies
