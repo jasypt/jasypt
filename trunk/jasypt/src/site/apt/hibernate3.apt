@@ -92,7 +92,7 @@ Integrating Jasypt with Hibernate 3
   The Hibernate mapping file can be configured in two different ways:
   
        [[A]] <<By extension>>, declaring the encryptor parameters in the
-             mapping itself (password, algorithm, etc). This is not very recommended
+             mapping itself (password, algorithm, providerName, etc). This is not very recommended
              (the mapping file does not seem like a right place for a password)
              but can be useful in some situations.
              When this method is selected, the encryptor implementation used

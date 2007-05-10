@@ -75,5 +75,32 @@ Using Jasypt with non-default JCE providers
        encryptors, with their <<<setProvider(java.security.Provider provider)>>> method. The provider
        doesn't need to be previously registered.
   
+  Some examples (using the Bouncy Castle provider):
+  
+
+----------------
+...
+Security.addProvider(new BouncyCastleProvider());
+...
+StandardPBEStringEncryptor mySecondEncryptor = new StandardPBEStringEncryptor();
+mySecondEncryptor.setProviderName("BC");
+mySecondEncryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
+mySecondEncryptor.setPassword(myPassword);
+
+String mySecondEncryptedText = mySecondEncryptor.encrypt(myText);
+...
+----------------
+  
+----------------
+...        
+StandardStringDigester digester = new StandardStringDigester();
+digester.setProvider(new BouncyCastleProvider());
+digester.setAlgorithm("WHIRLPOOL");
+
+String digest = digester.digest(message);
+...
+----------------
+  
+  
   
   
