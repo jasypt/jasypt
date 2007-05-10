@@ -10,6 +10,13 @@ Features
      
      []
      
+     * Open API for <<use with any JCE provider>>, and not only the default
+     Java VM one. Jasypt can be easily used with well-known 
+     providers like {{{http://www.bouncycastle.org}Bouncy Castle}}.
+     {{{non-default-providers.html}Learn more}}.
+     
+     []
+     
      * <<Higher security for your users' passwords>>.
      {{{encrypting-passwords.html}Learn more}}.
        

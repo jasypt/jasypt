@@ -15,22 +15,28 @@ Advanced configuration for encyptors and digesters
   
       * <<org.jasypt.digest.config.DigesterConfig>> for the configuration of
       <<<StandardByteDigester>>> and <<<StandardStringDigester>>> objects
-      (by calling their respective <<<setConfig()>>> methods).
+      (by calling their respective <<<setConfig()>>> methods). There also
+      is an <<org.jasypt.digest.config.StringDigesterConfig>> interface
+      for adding configuration parameters specific to String digesting.
       
       []
       
       * <<org.jasypt.encryption.pbe.config.PBEConfig>> for the configuration of
       <<<StandardPBEByteEncryptor>>>, <<<StandardPBEStringEncryptor>>>,
       <<<StandardPBEBigIntegerEncryptor>>> and <<<StandardPBEBigDecimalEncryptor>>>
-      objects (also by calling their respective <<<setConfig()>>> methods).
+      objects (also by calling their respective <<<setConfig()>>> methods). There also
+      is an <<org.jasypt.encryption.pbe.config.StringPBEConfig>> interface
+      for adding configuration parameters specific to String encryption.
       
-  Jasypt provides at the moment two <<standard implementations>> of the   
+  Jasypt provides at the moment two <standard implementations> of the   
   <*Config> interfaces for digesters, and other two for encryptors:
   
       * <<org.jasypt.digest.config.SimpleDigesterConfig>> and 
         <<org.jasypt.encryption.pbe.config.SimplePBEConfig>>, which allow
         setting configuration properties in a <bean way> (via
-        <<<setX>>> methods).
+        <<<setX>>> methods). Their <String-specific> variants are
+        <<org.jasypt.digest.config.SimpleStringDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.SimpleStringPBEConfig>>.
         
       []
       
@@ -42,6 +48,9 @@ Advanced configuration for encyptors and digesters
         for example, to set an encryption password in an environment variable,
         start the application or application server, let the jasypt encryptor
         object initialize, and then unset the variable (thus hiding it).
+        Their <String-specific> variants are
+        <<org.jasypt.digest.config.EnvironmentStringDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig>>.
         
   <<Important>>: If a *Config object returns <<<null>>> for a configuration
   value, then it will be simply ignored, and other configuration mechanisms

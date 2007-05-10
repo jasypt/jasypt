@@ -26,6 +26,7 @@ Encrypting binaries
        object which provides new configuration values. {{{advancedconfiguration.html}Learn More}}.
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
+       <<<setProvider(...)>>>, <<<setProviderName(...)>>>,
        <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
        or <<<setSaltGenerator(...)>>> methods.
 

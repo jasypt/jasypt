@@ -31,8 +31,8 @@ Getting Started with JASYPT standard encryption tools
       given in {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
       
       * <<StandardStringDigester>>: String counterpart to StandardByteDigester,
-      receiving String input and returning charset-safe, BASE64 encoded
-      String output.
+      receiving String input and returning charset-safe, BASE64 
+      (or hexadecimal) encoded String output.
 
 
   It's basic usage can be very simple:
@@ -50,7 +50,7 @@ String digest = digester.digest(myMessage);
   Standard*Digesters implement a coherent and secure set of default configuration values, 
   but they can be additionally configured in two ways:
   
-      * By calling to its <<<set>>> methods (setAlgorith, setSaltSizeBytes, setIterations)
+      * By calling to its <<<setX(...)>>> methods (algorithm, provider, salt size, etc.)
       
       * By setting a <<DigesterConfig>> object which configures the
         digester. A default <bean> implementation of this interface is supplied
@@ -113,8 +113,8 @@ String digest = digester.digest(myMessage);
       given in {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
       
       * <<StandardPBEStringEncryptor>>: String counterpart to StandardPBEByteEncryptor,
-      receiving String input and returning charset-safe, BASE64 encoded
-      String output as encryption results.
+      receiving String input and returning charset-safe, BASE64 
+      (or hexadecimal) encoded String output as encryption results.
       
       * <<StandardPBEBigIntegerEncryptor>>: Equivalent to StandardPBEByteEncryptor,
       receiving BigInteger input and returning BigInteger output.
@@ -141,7 +141,7 @@ String plainText = encryptor.decrypt(encryptedText);  // encryptedText.equals(pl
   As with digesters, Standard*Encryptors implement a coherent and secure set 
   of default configuration values (except for the password), but they can also be additionally configured in two ways:
   
-      * By calling to its <<<set>>> methods (setAlgorith, setPassword, setKeyObtentionIterations)
+      * By calling to its <<<setX(...)>>> methods (algorithm, provider, password, etc...)
       
       * By setting a <<PBEConfig>> object which configures the
         digester. A default <bean> implementation of this interface is supplied

@@ -2,12 +2,12 @@
   Main
   -------
 
-  <<Jasypt 1.3 will be released mid-May 2007>>, featuring changes in the provider
+  <<Jasypt 1.3 has been released (May 13th, 2007)>> featuring, among other changes, a new open provider
   API which will allow the use of non-default JCE providers like 
   {{{http://www.bouncycastle.org}Bouncy Castle}}. With this, any
-  PBE or digest algorithm you can get from any JCE provider will be available 
-  for you to use with Jasypt. Stay tuned for the new release at the
-  {{{mailinglists.html}jasypt-announce mailing list}}.
+  PBE or digest algorithm you can get from any JCE provider is available 
+  for you to use with Jasypt. Have a look at the 
+  {{{features.html}features}}.
 
   New article published: <<{{{howtoencryptuserpasswords.html}How to Encrypt User Passwords}}>>.
 
@@ -26,10 +26,12 @@ Java Simplified Encryption
     * Suitable for integration into <<Spring>>-based applications and also
       transparently integrable with <<ACEGI>> (Spring Security).
 
+    * Open API for use with any JCE provider.
+
     * {{{features.html}...and much more}}
 
   Have a look at the complete set of <<{{{features.html}Jasypt Features}}>>
-  or have a look at the <<{{{faq.html}FAQ}}>>.
+  or check the <<{{{faq.html}FAQ}}>>.
 
   With Jasypt, encrypting and checking a password can be as simple as...
   
@@ -72,7 +74,7 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 
 * Current version
 
-  Current stable version is <<1.2>> (Released: April 10th, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
+  Current stable version is <<1.3>> (Released: May 13th, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
 
 
 * Encryption can be simple to use, spread the word!
