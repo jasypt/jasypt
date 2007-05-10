@@ -19,6 +19,8 @@
  */
 package org.jasypt.hibernate.encryptor;
 
+import java.security.Provider;
+
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
@@ -42,7 +44,8 @@ import org.jasypt.salt.SaltGenerator;
  * <tt>StandardPBEStringEncryptor</tt> object will be created internally
  * and it will be configurable with the {@link #setPassword(String)},
  * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
- * {@link #setSaltGenerator(SaltGenerator)}
+ * {@link #setSaltGenerator(SaltGenerator)}, {@link #setProviderName(String)},
+ * {@link #setProvider(Provider)}, {@link #setStringOutputType(String)}
  * and  {@link #setConfig(PBEConfig)} methods.
  * </p>
  * <p>
@@ -246,6 +249,67 @@ public final class HibernatePBEStringEncryptor {
         StandardPBEStringEncryptor standardPBEStringEncryptor =
             (StandardPBEStringEncryptor) this.encryptor;
         standardPBEStringEncryptor.setSaltGenerator(saltGenerator);
+    }
+
+    
+    /**
+     * Sets the name of the JCE provider to be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @since 1.3
+     * 
+     * @param providerName the name of the JCE provider (already registered)
+     */
+    public void setProviderName(String providerName) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEStringEncryptor standardPBEStringEncryptor =
+            (StandardPBEStringEncryptor) this.encryptor;
+        standardPBEStringEncryptor.setProviderName(providerName);
+    }
+
+    
+    /**
+     * Sets the JCE provider to be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @since 1.3
+     * 
+     * @param provider the JCE provider to be used
+     */
+    public void setProvider(Provider provider) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEStringEncryptor standardPBEStringEncryptor =
+            (StandardPBEStringEncryptor) this.encryptor;
+        standardPBEStringEncryptor.setProvider(provider);
+    }
+
+    
+    /**
+     * Sets the type of String output ("base64" (default), "hexadecimal") to 
+     * be used by the internal encryptor, 
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     * 
+     * @since 1.3
+     * 
+     * @param provider the type of String output
+     */
+    public void setStringOutputType(String stringOutputType) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        StandardPBEStringEncryptor standardPBEStringEncryptor =
+            (StandardPBEStringEncryptor) this.encryptor;
+        standardPBEStringEncryptor.setStringOutputType(stringOutputType);
     }
 
 
