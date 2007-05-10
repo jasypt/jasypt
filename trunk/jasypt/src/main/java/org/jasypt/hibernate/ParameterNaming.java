@@ -55,6 +55,17 @@ public class ParameterNaming {
     
     /**
      * <p>
+     * The name of the JCE security provider we want to get the algorithm from
+     * (if it is no the default one.
+     * </p>
+     * <p>
+     * Value = <tt>providerName</tt>
+     * </p>
+     */
+    public static final String PROVIDER_NAME = "providerName";
+    
+    /**
+     * <p>
      * The encryption password.
      * </p>
      * <p>
@@ -74,6 +85,17 @@ public class ParameterNaming {
      */
     public static final String KEY_OBTENTION_ITERATIONS = 
         "keyObtentionIterations";
+    
+    /**
+     * <p>
+     * The type of String output ("base64" (default), "hexadecimal") to be
+     * generated.
+     * </p>
+     * <p>
+     * Value = <tt>stringOutputType</tt>
+     * </p>
+     */
+    public static final String STRING_OUTPUT_TYPE = "stringOutputType";
     
     /**
      * <p>
