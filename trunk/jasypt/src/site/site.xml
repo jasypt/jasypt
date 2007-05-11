@@ -76,7 +76,6 @@
 
     <menu name="Articles">
       <item name="· How to encrypt user passwords" href="howtoencryptuserpasswords.html"/>
-      <item name="· How to integrate Bouncy Castle into Spring Security (Acegi) using Jasypt" href="springsecurity-bouncy-castle.html"/>
     </menu>
 
 

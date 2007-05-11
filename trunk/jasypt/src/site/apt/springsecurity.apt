@@ -11,7 +11,7 @@ Integrating Jasypt with Spring Security (Acegi)
 
   Jasypt provides an integration package, org.jasypt.springsecurity, which
   allows the integration of jasypt's powerful password encryption capabilities into 
-  a Spring Security-enabled application. Once integrated, jasypt will
+  a {{{http://www.acegisecurity.org}Spring Security}}-enabled application. Once integrated, jasypt will
   be responsible for managing the check of users' passwords at sign in in
   a transparent way for the rest of the security framework.
   
@@ -190,3 +190,56 @@ Integrating Jasypt with Spring Security (Acegi)
   </bean>
   ...
 ------------  
+
+
+* Using other JCE providers like Bouncy Castle
+
+  With Jasypt, you can easily integrate the {{{http://www.bouncycastle.org}Bouncy Castle}}
+  JCE provider (or any other JCE provider) into your Acegi infrastructure, thus
+  being able to use lots of new algorithms for password encryption at your apps.
+  
+  For example, you could use the <WHIRLPOOL> hash function on your passwords
+  just like this:
+  
+------------  
+  ...
+  <!-- We need an instance of the BouncyCastleProvider --> 
+  <bean id="bcProvider" class="org.bouncycastle.jce.provider.BouncyCastleProvider" />
+  ...
+  ...
+  <!-- Your application may use the PasswordEncryptor in several places, --> 
+  <!-- like for example at new user sign-up.                             --> 
+  <bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.ConfigurablePasswordEncryptor">
+    <property name="algorithm">
+      <value>WHIRLPOOL</value>
+    </property>
+    <property name="provider">
+      <ref bean="bcProvider" />
+    </property>
+  </bean>
+  ...
+  ...
+  <!-- This Spring Security-friendly PasswordEncoder implementation will -->
+  <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
+  <!-- the security framework.                                           -->
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity.PasswordEncoder">
+    <property name="passwordEncryptor">
+      <ref bean="jasyptPasswordEncryptor" />
+    </property>
+  </bean>
+  ...
+  ...
+  <!-- Your DaoAuthenticationProvider will then use it like with any     -->
+  <!-- other implementation of the PasswordEncoder interface.            -->
+  <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+      <property name="userDetailsService" ref="userDetailsService"/>
+      <property name="passwordEncoder">
+        <ref bean="passwordEncoder" />
+      </property>
+  </bean>
+  ...
+------------  
+  
+
+  
+  
