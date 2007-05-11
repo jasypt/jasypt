@@ -16,7 +16,8 @@ Encrypting texts
         
       * All the String results (of encryption) are encoded in <<BASE64>> 
         (or <<hexadecimal>>, if you prefer), and thus
-        can be safely stored as US-ASCII characters.
+        can be safely stored as US-ASCII characters. This output encoding
+        can be selected with the <<<setStringOutputType>>> method.
   
 * Usage
   
