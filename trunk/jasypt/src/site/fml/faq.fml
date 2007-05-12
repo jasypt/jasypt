@@ -26,15 +26,16 @@
       <answer>
         <p>
           No. Jasypt does not implement any encryption algorithms, but instead
-          delegates to the ones already provided by the JCE 
-          (Java Cryptography Extension), adding a layer for ease and 
+          delegates to the ones already provided by a JCE 
+          (Java Cryptography Extension) provider, which can be either the
+          default VM one or any other of your choice, adding a layer for ease and 
           correctness of use, configurability, integration with many 
           other technologies, etc.
         </p>
         <p>
           If is "simplified encryption" because it is much easier to use
           and integrate than the standard APIs, but you will
-          get the same encryption power as if you were using JCE directly, 
+          get the same encryption power as if you were using the JCE API directly, 
           or even more, as jasypt will enforce
           best practices and use standards that will ensure that you always
           get the highest level of security from encryption.
@@ -73,6 +74,40 @@
           package for Spring Security, but <b>it does not need Spring Security
           for normal operation</b>.It 
           won't add a dependency on Spring Security to your project.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="does-jasypt-need-bouncy-castle">
+      <question>Can jasypt use the Bouncy Castle JCE provider? Is it required?</question>
+      <answer>
+        <p>
+          Yes, since version 1.3, it can. The provider API in jasypt is open,
+          so that <b>you can use Bouncy Castle or any other JCE provider of
+          your choice</b>. You will only have to specify your provider to the
+          encryptors or digesters you are using when configurig them.
+        </p>
+        <p>
+          But, <b>Bouncy Castle is not required</b>. Jasypt has no dependency
+          on it, and thus you can decide not to use Bouncy Castle at all,
+          for example if you want to use the algorithms shipped with your JVM's
+          JCE default provider.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="are-algorithms-like-AES-or-WHIRLPOOL-supported">
+      <question>Are algorithms like <i>AES</i> or <i>WHIRLPOOL</i> supported in jasypt?</question>
+      <answer>
+        <p>
+          Yes and no. Jasypt by itself does not implement any algorithms, but
+          it lets you use any JCE provider of your choice. 
+        </p>
+        <p>
+          <b>Both AES (encryption) and WHIRLPOOL (digests) are algorithms supported 
+          by the Bouncy Castle JCE provider</b>, and thus you can use them from 
+          jasypt as long as you set Bouncy Castle as your JCE provider for your
+          jasypt encryptors or digesters.
         </p>
       </answer>
     </faq>
@@ -198,9 +233,9 @@
           then you can have a look at <a href="api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">org.jasypt.digest.StandardStringDigester</a>.
         </p>
         <p>
-          And if you want to know more, have a look at
-          the <a href="encrypting-passwords.html">Encrypting Passwords</a>
-          guide to learn about how a password should be encrypted.
+          And if you want to know more, have a look at the article 
+          <a href="howtoencryptuserpasswords.html">How to encrypt user passwords</a>
+          to learn about how a password should be encrypted.
         </p>
       </answer>
     </faq>
@@ -372,7 +407,7 @@
     </faq>
    
     <faq id="no-unlimited-strength">
-      <question>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <tt>PBEWithMD5AndTripleDES</tt> algorithm, but other algorithms work alright.</question>
+      <question>I receive an <tt>InvalidKeyException</tt> when trying to use the <tt>StrongTextEncryptor</tt> or the <i>TripleDES</i> or other strong algorithms, although some algorithms work alright.</question>
       <answer>
         <p>
           This probably happens because you need download and install the
