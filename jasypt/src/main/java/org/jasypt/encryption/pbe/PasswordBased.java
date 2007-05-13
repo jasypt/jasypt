@@ -19,30 +19,25 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.encryption.BigIntegerEncryptor;
-
 /**
  * <p>
- * Common interface for all Password Based Encryptors which receive a BigInteger
- * message and return a BigInteger result.
- * </p>
- * <p>
- * <b>Important</b>: The size of the result of encrypting a number, depending
- * on the algorithm, may be much bigger (in bytes) than the size of the
- * encrypted number itself. For example, encrypting a 4-byte integer can result
- * in an encrypted 16-byte number. This can lead the user into problems if the
- * encrypted values are to be stored and not enough room has been provided.
- * </p>
- * <p>
- * For a default implementation, see {@link StandardPBEBigIntegerEncryptor}.
+ * Common interface for all entities which can be set a password.
  * </p>
  * 
- * @since 1.2
+ * @since 1.3
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEBigIntegerEncryptor 
-        extends BigIntegerEncryptor, PasswordBased {
+public interface PasswordBased {
+    
+    /**
+     * <p>
+     * Sets a password to be used by the encryptor.
+     * </p>
+     * 
+     * @param password the password to be used.
+     */
+    public void setPassword(String password);
 
 }
