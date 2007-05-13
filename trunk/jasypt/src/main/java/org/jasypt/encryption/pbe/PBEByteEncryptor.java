@@ -35,16 +35,6 @@ import org.jasypt.encryption.ByteEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEByteEncryptor extends ByteEncryptor {
-
-    
-    /**
-     * <p>
-     * Sets a password to be used by the encryptor.
-     * </p>
-     * 
-     * @param password the password to be used.
-     */
-    public void setPassword(String password);
+public interface PBEByteEncryptor extends ByteEncryptor, PasswordBased {
     
 }

@@ -35,15 +35,6 @@ import org.jasypt.encryption.StringEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEStringEncryptor extends StringEncryptor {
-
-    /**
-     * <p>
-     * Sets a password to be used by the encryptor.
-     * </p>
-     * 
-     * @param password the password to be used.
-     */
-    public void setPassword(String password);
+public interface PBEStringEncryptor extends StringEncryptor, PasswordBased {
     
 }

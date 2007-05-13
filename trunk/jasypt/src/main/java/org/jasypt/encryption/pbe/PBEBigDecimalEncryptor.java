@@ -43,16 +43,8 @@ import org.jasypt.encryption.BigDecimalEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public interface PBEBigDecimalEncryptor extends BigDecimalEncryptor {
+public interface PBEBigDecimalEncryptor 
+        extends BigDecimalEncryptor, PasswordBased {
 
-    
-    /**
-     * <p>
-     * Sets a password to be used by the encryptor.
-     * </p>
-     * 
-     * @param password the password to be used.
-     */
-    public void setPassword(String password);
     
 }
