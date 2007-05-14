@@ -2,12 +2,22 @@
   Main
   -------
 
-  <<Jasypt 1.3 has been released (May 13th, 2007)>> featuring, among other changes, a new open provider
-  API which will allow the use of non-default JCE providers like 
-  {{{http://www.bouncycastle.org}Bouncy Castle}}. With this, any
-  PBE or digest algorithm you can get from any JCE provider is available 
-  for you to use with Jasypt. Have a look at the 
-  {{{features.html}features}}.
+  <<Jasypt 1.3 has been released (May 14th, 2007)>> featuring:
+  
+    * A new open provider
+      API which will allow the use of non-default JCE providers like 
+      {{{http://www.bouncycastle.org}Bouncy Castle}}. With this, any
+      PBE or digest algorithm you can get from any JCE provider is available 
+      for you to use with Jasypt. 
+      
+    * A new web PBE configuration system for avoiding storing encryption
+      passwords in files in web applications, and instead asking the
+      authorised admin for these passwords through a web form each time
+      the application is deployed.
+      
+    * Ability to output Strings encoded in hexadecimal besides BASE64.
+      
+  Have a look at the <<{{{features.html}features}}>>.
 
   New article published: <<{{{howtoencryptuserpasswords.html}How to Encrypt User Passwords}}>>.
 

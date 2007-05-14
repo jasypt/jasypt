@@ -29,7 +29,7 @@ Advanced configuration for encyptors and digesters
       for adding configuration parameters specific to String encryption.
       
   Jasypt provides at the moment two <standard implementations> of the   
-  <*Config> interfaces for digesters, and other two for encryptors:
+  <*Config> interfaces for digesters, and three for encryptors:
   
       * <<org.jasypt.digest.config.SimpleDigesterConfig>> and 
         <<org.jasypt.encryption.pbe.config.SimplePBEConfig>>, which allow
@@ -51,6 +51,17 @@ Advanced configuration for encyptors and digesters
         Their <String-specific> variants are
         <<org.jasypt.digest.config.EnvironmentStringDigesterConfig>> and 
         <<org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig>>.
+        
+      []
+      
+      * <<org.jasypt.encryption.pbe.config.WebPBEConfig>> (and
+      <<org.jasypt.encryption.pbe.config.WebStringPBEConfig>>), only for
+      Password Based Encryption, which allow the configuration of encryptor
+      passwords in web applications from the web itself, once the webapp
+      has been deployed (and thus allowing developers not to store the
+      encryption passwords in any file, simply providing it to the app each
+      time it is deployed). {{{webconfiguration.html}Learn more}}.
+      
         
   <<Important>>: If a *Config object returns <<<null>>> for a configuration
   value, then it will be simply ignored, and other configuration mechanisms
