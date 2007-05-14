@@ -42,6 +42,18 @@
         </p>
       </answer>
     </faq>
+    
+    <faq id="is-jasypt-only-for-web-applications">
+      <question>Is jasypt intended for use only in web applications?</question>
+      <answer>
+        <p>
+          No, not at all. Jasypt offers some special configuration facilities
+          to web applications, but it is not necessary for an application
+          to be web for using jasypt. Jasypt will <b>not</b> add any dependency
+          on any web-related API to your application if you don't want to.
+        </p>
+      </answer>
+    </faq>
 
     <faq id="i-dont-use-hibernate">
       <question>I don't use Hibernate at all. Can I use jasypt anyway?</question>
