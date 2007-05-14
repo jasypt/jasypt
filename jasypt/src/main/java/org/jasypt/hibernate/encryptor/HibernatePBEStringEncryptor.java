@@ -299,7 +299,7 @@ public final class HibernatePBEStringEncryptor {
      * 
      * @since 1.3
      * 
-     * @param provider the type of String output
+     * @param stringOutputType the type of String output
      */
     public void setStringOutputType(String stringOutputType) {
         if (this.encryptorSet) {
