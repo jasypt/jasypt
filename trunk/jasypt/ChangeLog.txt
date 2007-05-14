@@ -37,6 +37,11 @@
   provider and stringOutputType parameters.
 - Added providerName and stringOutputType parameters to all the String-related
   Hibernate types.
+- Added package org.jasypt.web.pbeconfig for configuration of PBE encryption
+  keys from webapps. Includes servlet, filter and contextlistener.
+- Added WebPBEConfig and WebStringPBEConfig for configuration through the new
+  web PBE config infrastructure.
+
 
 
 1.2
