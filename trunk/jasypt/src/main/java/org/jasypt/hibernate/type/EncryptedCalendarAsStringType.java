@@ -139,7 +139,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
     protected String convertToString(Object object) {
         StringBuffer strBuff = new StringBuffer();
         long timeMillis = ((Calendar) object).getTimeInMillis();
-        strBuff.append(Long.valueOf(timeMillis).toString());
+        strBuff.append((new Long(timeMillis)).toString());
         if (storeTimeZone.booleanValue()) {
             strBuff.append(" ");
             strBuff.append(((Calendar) object).getTimeZone().getID());

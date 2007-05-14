@@ -809,7 +809,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     private void handleInvalidKeyException(InvalidKeyException e) {
 
         if ((e.getMessage() != null) && 
-                (e.getMessage().toUpperCase().contains("KEY SIZE"))) {
+                ((e.getMessage().toUpperCase().indexOf("KEY SIZE") != -1))) {
             
             throw new EncryptionOperationNotPossibleException(
                     "Encryption raised an exception. A possible cause is " +
