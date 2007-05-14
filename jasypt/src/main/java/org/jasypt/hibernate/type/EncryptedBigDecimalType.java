@@ -21,7 +21,6 @@ package org.jasypt.hibernate.type;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -222,7 +221,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
         }
         BigDecimal scaledEncryptedMessage = 
             storedEncryptedMessage.setScale(
-                    decimalScale.intValue(), RoundingMode.UNNECESSARY); 
+                    decimalScale.intValue(), BigDecimal.ROUND_UNNECESSARY); 
         return this.encryptor.decrypt(scaledEncryptedMessage);
     }
 
@@ -235,7 +234,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
         } else {
             BigDecimal scaledValue = 
                 ((BigDecimal) value).setScale(
-                        decimalScale.intValue(), RoundingMode.DOWN);
+                        decimalScale.intValue(), BigDecimal.ROUND_DOWN);
             BigDecimal encryptedMessage = 
                 this.encryptor.encrypt(scaledValue);
             st.setBigDecimal(index, encryptedMessage);
