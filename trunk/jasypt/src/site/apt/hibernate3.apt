@@ -198,14 +198,16 @@ Integrating Jasypt with Hibernate 3
          
 
        * <<Without Spring>>, we will have to use the <HibernatePBEEncryptorRegistry>
-          singleton directly, registering our encryptor like this:
+          singleton directly, registering our encryptor at application
+          initialization like this (for example, inside a 
+          <ServletContextListener> for a webapp):
           
 -------------------             
   StandardPBEStringEncryptor strongEncryptor = new StandardPBEStringEncryptor();
   ...
   HibernatePBEEncryptorRegistry registry =
       HibernatePBEEncryptorRegistry.getInstance();
-  registry.registerPBEEncryptor("strongHibernateEncryptor", strongEncryptor);
+  registry.registerPBEStringEncryptor("strongHibernateEncryptor", strongEncryptor);
 -------------------             
 
 
