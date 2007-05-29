@@ -207,7 +207,7 @@ Integrating Jasypt with Hibernate 3
   ...
   HibernatePBEEncryptorRegistry registry =
       HibernatePBEEncryptorRegistry.getInstance();
-  registry.registerPBEStringEncryptor("strongHibernateEncryptor", strongEncryptor);
+  registry.registerPBEStringEncryptor("strongHibernateStringEncryptor", strongEncryptor);
 -------------------             
 
 
