@@ -1,5 +1,36 @@
+  -------
+  External Resources
+  -------
 
-External Resources covering Jasypt
+Projects related to Jasypt
+
+    * {{{http://www.hibernate.org}Hibernate}}, a widely used, high performance 
+    object/relational persistence and query service. Nowadays one of the <de facto>
+    standards in the industry of enterprise application software. Jasypt can
+    be integrated into Hibernate for transparent encryption of stored data.
+    
+    []
+    
+    * {{{http://www.acegisecurity.org}ACEGI (Spring Security)}}, security
+    framework featuring comprehensive authentication and authorisation services
+    for Spring-based applications. Jasypt includes integration features for 
+    password encryption in ACEGI.
+    
+    []
+    
+    * {{{http://www.bouncycastle.org}Bouncy Castle}}, a very complete encryption
+    library which includes a lightweight cryptography API, a JCE provider
+    implementing many encryption algorithms, and other advanced features. Bouncy
+    Castle's JCE provider can be integrated into Jasypt.
+    
+    []
+    
+    * {{{http://kasai.manentiasoftware.com}Kasai}}, complete authentication
+    and authorization framework which uses jasypt for encryption of stored
+    users/passwords.
+
+
+Articles, Tutorials, Posts covering Jasypt
 
   This is intended to be a collection of articles, tutorials, code samples and reviews
   in the web, in any language, about Jasypt.
@@ -25,6 +56,7 @@ External Resources covering Jasypt
 
 Tell us
   
+  Do you run a project (commercial or open source) that uses Jasypt? 
   Have you published an article, tutorial or review about Jasypt, in English or
   in your own language? {{{team.html}Tell us}} so that we can link to it from
   this page.
