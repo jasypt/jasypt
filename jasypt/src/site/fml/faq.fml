@@ -179,8 +179,8 @@
         </p>
         <p>
           If you want to learn why this happens and how you could try to avoid it,
-          have a look at the <a href="encrypting-passwords.html">Encrypting 
-          Passwords Guide</a>.
+          have a look at the article "<a href="howtoencryptuserpasswords.html">How 
+          to encrypt user passwords</a>".
         </p>
         <p>
           ...and, if you are not using such calls but some other APIs or 
@@ -214,8 +214,8 @@
           message digesters (one hashing iteration, none or user-property based fixed salt...), 
           and are not as safe as
           jasypt's password encryptors can be (learn more about random salt and
-          iteration count at the <a href="encrypting-passwords.html">Encrypting 
-          Passwords Guide</a>).</li>
+          iteration count at the article "<a href="howtoencryptuserpasswords.html">How 
+          to encrypt user passwords</a>").</li>
           <li>Second, because they don't provide the same level of configuration
           capabilities as jasypt's password encryptors: algorithms, 
           parameters resolution...</li>
