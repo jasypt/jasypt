@@ -33,7 +33,7 @@
           other technologies, etc.
         </p>
         <p>
-          If is "simplified encryption" because it is much easier to use
+          It is "simplified encryption" because it is much easier to use
           and integrate than the standard APIs, but you will
           get the same encryption power as if you were using the JCE API directly, 
           or even more, as jasypt will enforce
