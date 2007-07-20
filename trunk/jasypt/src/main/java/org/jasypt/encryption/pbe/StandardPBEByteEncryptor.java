@@ -475,7 +475,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 
                 String configAlgorithm = config.getAlgorithm();
                 if (configAlgorithm != null) {
-                    Validate.notEmpty(password, 
+                    Validate.notEmpty(configAlgorithm, 
                             "Algorithm cannot be set empty");
                 }
                 
