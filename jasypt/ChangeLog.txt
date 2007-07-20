@@ -1,3 +1,10 @@
+
+1.3.1
+=======
+- Solved configuration bug in "StandardPBEByteEncryptor.initialize()" for 
+  algorithms coming from *Config objects.
+  
+
 1.3
 =======
 
