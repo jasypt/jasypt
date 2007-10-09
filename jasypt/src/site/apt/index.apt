@@ -2,17 +2,7 @@
   Main
   -------
 
-  <<Jasypt 1.3.1 has been released (July 23rd, 2007)>>. 
-  
-  Jasypt 1.3.1 is a maintenance release solving a configuration bug which 
-  might arise when setting the encryption algorithm from a *Config object.
-  
-  This is the only bug found in jasypt since its first release
-  in January 24th, 2007 (7,000+ downloads from SourceForge.net so far, many more
-  from Maven repositories). <<Upgrade to 1.3.1 is not strictly required for 1.3 users
-  unless they are directly affected by this bug>>. 
-      
-  Have a look at the <<{{{features.html}features}}>>.
+  Current stable version is <<1.3.1>> (Released: July 23rd, 2007) [{{{features.html}Features}}] [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
 
 Java Simplified Encryption
 
@@ -74,10 +64,6 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   be able to choose encryption algorithms, salt generation and many more
   advanced features...
   
-
-* Current version
-
-  Current stable version is <<1.3.1>> (Released: July 23rd, 2007) [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
 
 
 * Encryption can be simple to use, spread the word!

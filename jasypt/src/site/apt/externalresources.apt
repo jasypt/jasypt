@@ -42,6 +42,11 @@ Articles, Tutorials, Posts covering Jasypt
       Article written at the AppFuse.org wiki by Iv\341n Garc\355a S\341inz-Aja,
       explaining the integration of jasypt for transparent database encryption
       with hibernate inside an AppFuse-powered application.
+    
+    []
+      
+    * {{{http://www.i-proving.ca/space/Ken+Stevens/blog/2007-09-07_2}Encrypting columns in a database using jasypt}}
+      Tutorial blog post about the hibernate integration capabilities of jasypt.
       
   <<Indonesian>>
 
