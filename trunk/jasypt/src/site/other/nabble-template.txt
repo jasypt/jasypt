@@ -237,6 +237,10 @@
     <li class="none">
               <a href="http://www.jasypt.org/bouncy-castle.html">· Jasypt + Bouncy Castle</a>
         </li>
+              
+    <li class="none">
+              <a href="http://www.jasypt.org/seam2.html">· Jasypt + Seam 2</a>
+        </li>
           </ul>
           <h5>Articles</h5>
         <ul>
