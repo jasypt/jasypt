@@ -4,6 +4,8 @@
 
 Integrating Jasypt with Seam 2 (Mini-Howto)
 
+  (Mini-Howto contributed by <Peter Viglucci>)
+
 * Step 1: Adding the dependencies 
   
   Make sure you include references to Jasypt and its dependencies in your
