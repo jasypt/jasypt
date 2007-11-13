@@ -80,7 +80,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @return the config name.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
 
@@ -110,8 +110,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @return the validation word assigned to this config object
      */
     public String getValidationWord() {
-        Validate.notEmpty(validationWord, "Validation word cannot be set empty");
-        return validationWord;
+        return this.validationWord;
     }
 
 
@@ -127,6 +126,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @param validation the validation word to be assigned to this config object
      */
     public void setValidationWord(String validation) {
+        Validate.notEmpty(validation, "Validation word cannot be set empty");
         this.validationWord = validation;
     }
     

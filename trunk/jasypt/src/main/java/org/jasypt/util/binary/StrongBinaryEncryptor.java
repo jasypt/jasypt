@@ -57,7 +57,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEByteEncryptor encryptor = null;
+    private final StandardPBEByteEncryptor encryptor;
     
     
     /**
@@ -76,7 +76,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * @param password the password to be set.
      */
     public void setPassword(String password) {
-        encryptor.setPassword(password);
+        this.encryptor.setPassword(password);
     }
 
     
@@ -87,7 +87,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * @see StandardPBEByteEncryptor#encrypt(byte[])
      */
     public byte[] encrypt(byte[] binary) {
-        return encryptor.encrypt(binary);
+        return this.encryptor.encrypt(binary);
     }
 
     
@@ -98,7 +98,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * @see StandardPBEByteEncryptor#decrypt(byte[])
      */
     public byte[] decrypt(byte[] encryptedBinary) {
-        return encryptor.decrypt(encryptedBinary);
+        return this.encryptor.decrypt(encryptedBinary);
     }
 
 

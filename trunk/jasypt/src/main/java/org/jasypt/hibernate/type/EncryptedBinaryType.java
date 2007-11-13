@@ -171,9 +171,8 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
             throws HibernateException {
         if (cached == null) {
             return null;
-        } else {
-            return deepCopy(cached);
         }
+        return deepCopy(cached);
     }
 
     
@@ -181,9 +180,8 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
             throws HibernateException {
         if (value == null) {
             return null;
-        } else {
-            return (Serializable) deepCopy(value);
         }
+        return (Serializable) deepCopy(value);
     }
 
     
@@ -362,11 +360,11 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
                 PBEByteEncryptor pbeEncryptor = 
-                    registry.getPBEByteEncryptor(encryptorName);
+                    registry.getPBEByteEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big integer encryptor registered for hibernate " +
-                            "with name \"" + encryptorName + "\"");
+                            "with name \"" + this.encryptorName + "\"");
                 }
                 this.encryptor = pbeEncryptor;
                 

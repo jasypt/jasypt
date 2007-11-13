@@ -196,11 +196,11 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
     
     
     // The StandardPBEByteEncryptor that will be internally used.
-    private StandardPBEByteEncryptor byteEncryptor = null;
+    private final StandardPBEByteEncryptor byteEncryptor;
     
     // BASE64 encoder which will make sure the returned results are
     // valid US-ASCII strings.
-    private Base64 base64 = null;
+    private final Base64 base64;
 
     
     

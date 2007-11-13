@@ -179,9 +179,8 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
             throws HibernateException {
         if (cached == null) {
             return null;
-        } else {
-            return deepCopy(cached);
         }
+        return deepCopy(cached);
     }
 
     
@@ -189,9 +188,8 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
             throws HibernateException {
         if (value == null) {
             return null;
-        } else {
-            return (Serializable) deepCopy(value);
         }
+        return (Serializable) deepCopy(value);
     }
 
     
@@ -221,7 +219,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
         }
         BigDecimal scaledEncryptedMessage = 
             storedEncryptedMessage.setScale(
-                    decimalScale.intValue(), BigDecimal.ROUND_UNNECESSARY); 
+                    this.decimalScale.intValue(), BigDecimal.ROUND_UNNECESSARY); 
         return this.encryptor.decrypt(scaledEncryptedMessage);
     }
 
@@ -234,7 +232,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
         } else {
             BigDecimal scaledValue = 
                 ((BigDecimal) value).setScale(
-                        decimalScale.intValue(), BigDecimal.ROUND_DOWN);
+                        this.decimalScale.intValue(), BigDecimal.ROUND_DOWN);
             BigDecimal encryptedMessage = 
                 this.encryptor.encrypt(scaledValue);
             st.setBigDecimal(index, encryptedMessage);
@@ -342,11 +340,11 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
                 PBEBigDecimalEncryptor pbeEncryptor = 
-                    registry.getPBEBigDecimalEncryptor(encryptorName);
+                    registry.getPBEBigDecimalEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big decimal encryptor registered for hibernate " +
-                            "with name \"" + encryptorName + "\"");
+                            "with name \"" + this.encryptorName + "\"");
                 }
                 this.encryptor = pbeEncryptor;
                 

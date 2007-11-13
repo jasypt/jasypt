@@ -195,9 +195,8 @@ public class PBEPasswordEncoder
         checkInitialization();
         if (this.useTextEncryptor.booleanValue()) {
             return this.textEncryptor.encrypt(rawPass);
-        } else {
-            return this.pbeStringEncryptor.encrypt(rawPass);
         }
+        return this.pbeStringEncryptor.encrypt(rawPass);
     }
 
 

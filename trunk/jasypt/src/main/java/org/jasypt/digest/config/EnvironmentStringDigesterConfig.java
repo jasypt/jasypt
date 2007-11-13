@@ -78,7 +78,7 @@ public class EnvironmentStringDigesterConfig
      * @return the name of the variable
      */
     public String getUnicodeNormalizationIgnoredEnvName() {
-        return unicodeNormalizationIgnoredEnvName;
+        return this.unicodeNormalizationIgnoredEnvName;
     }
 
 
@@ -110,7 +110,7 @@ public class EnvironmentStringDigesterConfig
      * @return the name of the property
      */
     public String getUnicodeNormalizationIgnoredSysPropertyName() {
-        return unicodeNormalizationIgnoredSysPropertyName;
+        return this.unicodeNormalizationIgnoredSysPropertyName;
     }
 
 
@@ -141,7 +141,7 @@ public class EnvironmentStringDigesterConfig
      * @return the name of the variable
      */
     public String getStringOutputTypeEnvName() {
-        return stringOutputTypeEnvName;
+        return this.stringOutputTypeEnvName;
     }
 
 
@@ -171,7 +171,7 @@ public class EnvironmentStringDigesterConfig
      * @return the name of the property
      */
     public String getStringOutputTypeSysPropertyName() {
-        return stringOutputTypeSysPropertyName;
+        return this.stringOutputTypeSysPropertyName;
     }
 
 

@@ -101,113 +101,125 @@ public class WebPBEConfigServlet extends HttpServlet {
     private void execute(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
+        try {
+            
+            WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
 
-        if (registry.isWebConfigurationDone()) {
-            
-            // Configuration was already done, display an "Already done" page
-            writeResponse(
-                    WebPBEConfigHtmlUtils.createConfigurationDoneHtml(), 
-                    resp);
-            
-        } else {
-            
-            String settingFlag = 
-                req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_SETTING_FLAG);
-            if (StringUtils.isEmpty(settingFlag)) {
-
-                // We are first arriving at the form, just show it
+            if (registry.isWebConfigurationDone()) {
+                
+                // Configuration was already done, display an "Already done" page
                 writeResponse(
-                        WebPBEConfigHtmlUtils.createInputFormHtml(req, false), 
+                        WebPBEConfigHtmlUtils.createConfigurationDoneHtml(), 
                         resp);
                 
             } else {
-
-                /*
-                 * The form was already shown and submitted, so we must
-                 * process the results.
-                 */
                 
-                List configs = registry.getConfigs();
-                Iterator configsIter = configs.iterator();
-                int i = 0;
-                int valid = 0;
-                while (configsIter.hasNext()) {
+                String settingFlag = 
+                    req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_SETTING_FLAG);
+                if (StringUtils.isEmpty(settingFlag)) {
 
-                    WebPBEConfig config = (WebPBEConfig) configsIter.next();
-                    
-                    String validation = 
-                        req.getParameter(WebPBEConfigHtmlUtils.VALIDATION_PREFIX + i);
-                    String password = 
-                        req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_PREFIX + i);
-                    String retypedPassword = 
-                        req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_RETYPED_PREFIX + i);
-                    
-                    if (!StringUtils.isEmpty(validation) &&
-                        !StringUtils.isEmpty(password)   &&
-                        password.equals(retypedPassword)   &&
-                        (config.getValidationWord().equals(validation))) {
-                        /*
-                         * Passwords will not be set here, instead, we will
-                         * wait until ALL the passwords are set correctly,
-                         * to avoid a partial initialization.
-                         */
-                        valid++;
-                    }
-                
-                    i++;
-                    
-                }
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat();
-                Calendar now = Calendar.getInstance();
-                
-                if (valid < configs.size()) {
-
-                    /*
-                     * Bad attempt: log and show error.
-                     */
-                    
-                    this.getServletContext().log(
-                            "Failed attempt to set PBE Configuration from " +
-                            req.getRemoteAddr() + 
-                            " [" + dateFormat.format(now.getTime()) + "]");
-                    
+                    // We are first arriving at the form, just show it
                     writeResponse(
-                            WebPBEConfigHtmlUtils.createInputFormHtml(req, true), 
+                            WebPBEConfigHtmlUtils.createInputFormHtml(req, false), 
                             resp);
                     
                 } else {
 
                     /*
-                     * Success: log, set passwords and show success page.
+                     * The form was already shown and submitted, so we must
+                     * process the results.
                      */
                     
-                    configsIter = configs.iterator();
-                    i = 0;
+                    List configs = registry.getConfigs();
+                    Iterator configsIter = configs.iterator();
+                    int i = 0;
+                    int valid = 0;
                     while (configsIter.hasNext()) {
+
                         WebPBEConfig config = (WebPBEConfig) configsIter.next();
+                        
+                        String validation = 
+                            req.getParameter(WebPBEConfigHtmlUtils.VALIDATION_PREFIX + i);
                         String password = 
                             req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_PREFIX + i);
-                        config.setPassword(password);
+                        String retypedPassword = 
+                            req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_RETYPED_PREFIX + i);
+                        
+                        if (!StringUtils.isEmpty(validation) &&
+                            !StringUtils.isEmpty(password)   &&
+                            password.equals(retypedPassword)   &&
+                            (config.getValidationWord().equals(validation))) {
+                            /*
+                             * Passwords will not be set here, instead, we will
+                             * wait until ALL the passwords are set correctly,
+                             * to avoid a partial initialization.
+                             */
+                            valid++;
+                        }
+                    
                         i++;
+                        
                     }
-                    
-                    registry.setWebConfigurationDone(true);
 
-                    this.getServletContext().log(
-                            "PBE Configuration succesfully set from " +
-                            req.getRemoteAddr() + 
-                            " [" + dateFormat.format(now.getTime()) + "]");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat();
+                    Calendar now = Calendar.getInstance();
                     
-                    writeResponse(
-                            WebPBEConfigHtmlUtils.createConfigurationDoneHtml(), 
-                            resp);
+                    if (valid < configs.size()) {
+
+                        /*
+                         * Bad attempt: log and show error.
+                         */
+                        
+                        this.getServletContext().log(
+                                "Failed attempt to set PBE Configuration from " +
+                                req.getRemoteAddr() + 
+                                " [" + dateFormat.format(now.getTime()) + "]");
+                        
+                        writeResponse(
+                                WebPBEConfigHtmlUtils.createInputFormHtml(req, true), 
+                                resp);
+                        
+                    } else {
+
+                        /*
+                         * Success: log, set passwords and show success page.
+                         */
+                        
+                        configsIter = configs.iterator();
+                        i = 0;
+                        while (configsIter.hasNext()) {
+                            WebPBEConfig config = (WebPBEConfig) configsIter.next();
+                            String password = 
+                                req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_PREFIX + i);
+                            config.setPassword(password);
+                            i++;
+                        }
+                        
+                        registry.setWebConfigurationDone(true);
+
+                        this.getServletContext().log(
+                                "PBE Configuration succesfully set from " +
+                                req.getRemoteAddr() + 
+                                " [" + dateFormat.format(now.getTime()) + "]");
+                        
+                        writeResponse(
+                                WebPBEConfigHtmlUtils.createConfigurationDoneHtml(), 
+                                resp);
+                        
+                    }
                     
                 }
                 
             }
             
+        } catch (IOException e) {
+            this.getServletContext().log(
+                    "Exception raised during servlet execution", e);
+            throw e;
+        } catch (Throwable t) {
+            this.getServletContext().log(
+                    "Exception raised during servlet execution", t);
+            throw new ServletException(t);
         }
 
     }
@@ -215,7 +227,7 @@ public class WebPBEConfigServlet extends HttpServlet {
     
     
     private void writeResponse(String html, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws IOException {
         PrintWriter printWriter = response.getWriter();
         printWriter.write(html);
         printWriter.flush();

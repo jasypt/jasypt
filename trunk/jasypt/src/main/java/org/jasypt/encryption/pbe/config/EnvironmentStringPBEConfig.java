@@ -75,7 +75,7 @@ public class EnvironmentStringPBEConfig
      * @return the name of the variable
      */
     public String getStringOutputTypeEnvName() {
-        return stringOutputTypeEnvName;
+        return this.stringOutputTypeEnvName;
     }
 
 
@@ -105,7 +105,7 @@ public class EnvironmentStringPBEConfig
      * @return the name of the property
      */
     public String getStringOutputTypeSysPropertyName() {
-        return stringOutputTypeSysPropertyName;
+        return this.stringOutputTypeSysPropertyName;
     }
 
 

@@ -532,33 +532,33 @@ public final class StandardByteDigester implements ByteDigester {
              */
             if (this.config != null) {
                 
-                String configAlgorithm = config.getAlgorithm();
+                String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
                     Validate.notEmpty(configAlgorithm, 
                             "Algorithm cannot be empty");
                 }
                 
-                Integer configSaltSizeBytes = config.getSaltSizeBytes();
+                Integer configSaltSizeBytes = this.config.getSaltSizeBytes();
                 if (configSaltSizeBytes != null) {
                     Validate.isTrue(configSaltSizeBytes.intValue() >= 0, 
                             "Salt size in bytes must be non-negative");
                 }
                 
-                Integer configIterations = config.getIterations();
+                Integer configIterations = this.config.getIterations();
                 if (configIterations != null) {
                     Validate.isTrue(configIterations.intValue() > 0, 
                             "Number of iterations must be greater than zero");
                 }
                 
-                SaltGenerator configSaltGenerator = config.getSaltGenerator();
+                SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
                 
-                String configProviderName = config.getProviderName();
+                String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
                     Validate.notEmpty(configProviderName,
                             "Provider name cannot be empty");
                 }
                 
-                Provider configProvider = config.getProvider();
+                Provider configProvider = this.config.getProvider();
                 
 
                 this.algorithm = 

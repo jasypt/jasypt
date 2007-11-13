@@ -64,7 +64,7 @@ import org.jasypt.exceptions.AlreadyInitializedException;
 public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
 
     // The internal digester used
-    private StandardStringDigester digester = null;
+    private final StandardStringDigester digester;
     
     
     /**
@@ -234,7 +234,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @see StandardStringDigester#digest(String)
      */
     public String encryptPassword(String password) {
-        return digester.digest(password);
+        return this.digester.digest(password);
     }
 
     
@@ -249,7 +249,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      */
     public boolean checkPassword(String plainPassword, 
             String encryptedPassword) {
-        return digester.matches(plainPassword, encryptedPassword);
+        return this.digester.matches(plainPassword, encryptedPassword);
     }
     
 }

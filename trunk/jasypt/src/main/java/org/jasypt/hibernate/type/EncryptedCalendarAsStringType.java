@@ -121,7 +121,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
         String[] stringTokens = StringUtils.split(string);
         TimeZone tz = null;
         long timeMillis = Long.valueOf(stringTokens[0]).longValue();
-        if (storeTimeZone.booleanValue()) {
+        if (this.storeTimeZone.booleanValue()) {
             tz = TimeZone.getTimeZone(stringTokens[1]);
         } else {
             tz = TimeZone.getDefault();
@@ -140,7 +140,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
         StringBuffer strBuff = new StringBuffer();
         long timeMillis = ((Calendar) object).getTimeInMillis();
         strBuff.append((new Long(timeMillis)).toString());
-        if (storeTimeZone.booleanValue()) {
+        if (this.storeTimeZone.booleanValue()) {
             strBuff.append(" ");
             strBuff.append(((Calendar) object).getTimeZone().getID());
         }
@@ -154,7 +154,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
       	
         String paramStoreTimeZone = parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
         if ((paramStoreTimeZone != null) && (!paramStoreTimeZone.trim().equals(""))) {
-            storeTimeZone = BooleanUtils.toBooleanObject(paramStoreTimeZone);
+            this.storeTimeZone = BooleanUtils.toBooleanObject(paramStoreTimeZone);
         }
         
     }
