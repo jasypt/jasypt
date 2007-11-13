@@ -128,7 +128,7 @@ public final class StandardPBEBigDecimalEncryptor
 
     
     // The StandardPBEByteEncryptor that will be internally used.
-    private StandardPBEByteEncryptor byteEncryptor = null;
+    private final StandardPBEByteEncryptor byteEncryptor;
 
     
     

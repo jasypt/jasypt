@@ -20,7 +20,6 @@
 package org.jasypt.encryption.pbe;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.Validate;
 
 /**
  * 
@@ -45,8 +44,11 @@ class NumberUtils {
    
    
     static int intFromByteArray(byte[] byteArray) {
-        Validate.isTrue (((byteArray != null) && (byteArray.length > 0)),
-                "Cannot convert an empty array into an int");
+        
+        if (byteArray == null || byteArray.length == 0) {
+            throw new IllegalArgumentException(
+                    "Cannot convert an empty array into an int");
+        }
         int result = (0xff & byteArray[0]);
         for (int i = 0; i < byteArray.length; i++) {
             result = (result << 8) | (0xff & byteArray[i]);
@@ -58,18 +60,18 @@ class NumberUtils {
     static byte[] processBigIntegerEncryptedByteArray(
             byte[] byteArray, int signum) {
 
-        byteArray = ArrayUtils.clone(byteArray);
+        byte[] processedByteArray = ArrayUtils.clone(byteArray);
         
         // Check size
-        if (byteArray.length > 4) {
+        if (processedByteArray.length > 4) {
             
-            int initialSize = byteArray.length;
+            int initialSize = processedByteArray.length;
             byte[] encryptedMessageExpectedSizeBytes =
-                ArrayUtils.subarray(byteArray,
+                ArrayUtils.subarray(processedByteArray,
                         (initialSize - 4),
                         initialSize);
-            byteArray  =
-                ArrayUtils.subarray(byteArray, 0, 
+            processedByteArray  =
+                ArrayUtils.subarray(processedByteArray, 0, 
                     (initialSize - 4));
             int expectedSize = 
                 NumberUtils.intFromByteArray(encryptedMessageExpectedSizeBytes);
@@ -77,13 +79,13 @@ class NumberUtils {
             // If expected and real sizes do not match, we will need to pad
             // (this happens because BigInteger removes 0x0's and -0x1's in
             // the leftmost side).
-            if (byteArray.length != expectedSize) {
+            if (processedByteArray.length != expectedSize) {
 
                 // BigInteger can have removed, in the leftmost side:
                 //      * 0x0's: for not being significative
                 //      * -0x1's: for being translated as the "signum"
                 int sizeDifference = 
-                    (expectedSize - byteArray.length);
+                    (expectedSize - processedByteArray.length);
 
                 byte[] padding = new byte[sizeDifference];
                 for (int i = 0; i < sizeDifference; i++) {
@@ -93,18 +95,20 @@ class NumberUtils {
 
                 // Finally, the encrypted message bytes are represented
                 // as they supposedly were when they were encrypted.
-                    byteArray =
-                    ArrayUtils.addAll(padding, byteArray);
+                processedByteArray =
+                    ArrayUtils.addAll(padding, processedByteArray);
                 
             }
             
         }
 
-        return byteArray;
+        return processedByteArray;
         
     }
     
     
-    private NumberUtils() {}
+    private NumberUtils() {
+        super();
+    }
     
 }

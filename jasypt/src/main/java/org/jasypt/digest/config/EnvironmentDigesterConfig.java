@@ -84,7 +84,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getAlgorithmEnvName() {
-        return algorithmEnvName;
+        return this.algorithmEnvName;
     }
 
 
@@ -112,7 +112,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getAlgorithmSysPropertyName() {
-        return algorithmSysPropertyName;
+        return this.algorithmSysPropertyName;
     }
 
 
@@ -140,7 +140,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getIterationsEnvName() {
-        return iterationsEnvName;
+        return this.iterationsEnvName;
     }
 
 
@@ -175,7 +175,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getIterationsSysPropertyName() {
-        return iterationsSysPropertyName;
+        return this.iterationsSysPropertyName;
     }
 
 
@@ -210,7 +210,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getSaltSizeBytesEnvName() {
-        return saltSizeBytesEnvName;
+        return this.saltSizeBytesEnvName;
     }
 
 
@@ -245,7 +245,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getSaltSizeBytesSysPropertyName() {
-        return saltSizeBytesSysPropertyName;
+        return this.saltSizeBytesSysPropertyName;
     }
 
 
@@ -282,7 +282,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getSaltGeneratorClassNameEnvName() {
-        return saltGeneratorClassNameEnvName;
+        return this.saltGeneratorClassNameEnvName;
     }
 
 
@@ -327,7 +327,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getSaltGeneratorClassNameSysPropertyName() {
-        return saltGeneratorClassNameSysPropertyName;
+        return this.saltGeneratorClassNameSysPropertyName;
     }
 
 
@@ -372,7 +372,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getProviderNameEnvName() {
-        return providerNameEnvName;
+        return this.providerNameEnvName;
     }
 
 
@@ -406,7 +406,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getProviderNameSysPropertyName() {
-        return providerNameSysPropertyName;
+        return this.providerNameSysPropertyName;
     }
 
 
@@ -438,7 +438,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the variable
      */
     public String getProviderClassNameEnvName() {
-        return providerClassNameEnvName;
+        return this.providerClassNameEnvName;
     }
 
 
@@ -483,7 +483,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * @return the name of the property
      */
     public String getProviderClassNameSysPropertyName() {
-        return providerClassNameSysPropertyName;
+        return this.providerClassNameSysPropertyName;
     }
 
 

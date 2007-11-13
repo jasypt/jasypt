@@ -79,7 +79,7 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
      * @param charset the specified charset
      */
     public synchronized void setCharset(String charset) {
-        Validate.notNull(salt, "Charset cannot be set null");
+        Validate.notNull(charset, "Charset cannot be set null");
         this.charset = charset;
     }
 
@@ -97,7 +97,7 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
         }
         if (this.saltBytes == null) {
             try {
-                this.saltBytes = salt.getBytes(this.charset);
+                this.saltBytes = this.salt.getBytes(this.charset);
             } catch (UnsupportedEncodingException e) {
                 throw new EncryptionInitializationException(
                     "Invalid charset specified: " + this.charset);

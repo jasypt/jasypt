@@ -43,7 +43,7 @@ public final class RandomSaltGenerator implements SaltGenerator {
     
     private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     
-    private SecureRandom random = null;
+    private final SecureRandom random;
     
     
     /**
@@ -53,8 +53,8 @@ public final class RandomSaltGenerator implements SaltGenerator {
     public RandomSaltGenerator() {
         super();
         try {
-            random = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
-            random.setSeed(System.currentTimeMillis());
+            this.random = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
+            this.random.setSeed(System.currentTimeMillis());
         } catch (NoSuchAlgorithmException e) {
             throw new EncryptionInitializationException(e);
         }
@@ -69,8 +69,8 @@ public final class RandomSaltGenerator implements SaltGenerator {
      */
     public byte[] generateSalt(int lengthBytes) {
         byte[] salt = new byte[lengthBytes];
-        synchronized (random) {
-            random.nextBytes(salt);
+        synchronized (this.random) {
+            this.random.nextBytes(salt);
         }
         return salt;
     }

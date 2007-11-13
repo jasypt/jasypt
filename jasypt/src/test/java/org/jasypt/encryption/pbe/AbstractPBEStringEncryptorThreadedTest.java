@@ -36,7 +36,7 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
     
     protected abstract PBEStringEncryptor createEncryptor();
     
-    private class TesterLauncher {
+    protected class TesterLauncher {
 
         private AtomicInteger runningThreads = null;
         private int numThreads = 0;
@@ -51,12 +51,12 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
             encryptor.setPassword(password);
             
             AtomicInteger errors = new AtomicInteger(0);
-            runningThreads = new AtomicInteger(0);
+            this.runningThreads = new AtomicInteger(0);
             
             for (int i = 0; i < numOfThreads; i++) {
                 TesterRunnable tester = 
                     new TesterRunnable(encryptor, numIters, errors, 
-                            runningThreads, this);
+                            this.runningThreads, this);
                 Thread testerThread = new Thread(tester);
                 testerThread.start();
             }
@@ -72,7 +72,7 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
         }
         
         private synchronized boolean continueWaiting() {
-            return (runningThreads.get() < numThreads);
+            return (this.runningThreads.get() < this.numThreads);
         }
         
     }
@@ -101,10 +101,10 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
         public void run() {
             
             int localErrors = 0;
-            for (int i = 0; i < numIters; i++) {
+            for (int i = 0; i < this.numIters; i++) {
                 try {
-                    String encryptedMessage = encryptor.encrypt(message);
-                    if (!message.equals(encryptor.decrypt(encryptedMessage))) {
+                    String encryptedMessage = this.encryptor.encrypt(this.message);
+                    if (!this.message.equals(this.encryptor.decrypt(encryptedMessage))) {
                         localErrors++;
                     }
                 } catch (Exception e) {
@@ -113,12 +113,12 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
                 }
             }
 
-            synchronized (launcher) {
+            synchronized (this.launcher) {
                 if (localErrors > 0) {
-                    errors.addAndGet(localErrors);
+                    this.errors.addAndGet(localErrors);
                 }
-                finishedThreads.incrementAndGet();
-                launcher.notify();
+                this.finishedThreads.incrementAndGet();
+                this.launcher.notify();
             }
         }
         

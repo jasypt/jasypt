@@ -184,9 +184,8 @@ public class PasswordEncoder
         checkInitialization();
         if (this.useEncryptor.booleanValue()) {
             return this.passwordEncryptor.encryptPassword(rawPass);
-        } else {
-            return this.stringDigester.digest(rawPass);
         }
+        return this.stringDigester.digest(rawPass);
     }
 
 
@@ -203,9 +202,8 @@ public class PasswordEncoder
         checkInitialization();
         if (this.useEncryptor.booleanValue()) {
             return this.passwordEncryptor.checkPassword(rawPass, encPass);
-        } else {
-            return this.stringDigester.matches(rawPass, encPass);
         }
+        return this.stringDigester.matches(rawPass, encPass);
     }
 
 

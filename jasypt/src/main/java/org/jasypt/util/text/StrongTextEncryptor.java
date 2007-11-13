@@ -61,7 +61,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
 
     
     // The internal encryptor 
-    private StandardPBEStringEncryptor encryptor = null;
+    private final StandardPBEStringEncryptor encryptor;
     
     
 
@@ -81,7 +81,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * @param password the password to be set.
      */
     public void setPassword(String password) {
-        encryptor.setPassword(password);
+        this.encryptor.setPassword(password);
     }
 
     
@@ -92,7 +92,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * @see StandardPBEStringEncryptor#encrypt(String)
      */
     public String encrypt(String message) {
-        return encryptor.encrypt(message);
+        return this.encryptor.encrypt(message);
     }
     
 
@@ -103,7 +103,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * @see StandardPBEStringEncryptor#decrypt(String)
      */
     public String decrypt(String encryptedMessage) {
-        return encryptor.decrypt(encryptedMessage);
+        return this.encryptor.decrypt(encryptedMessage);
     }
     
 }

@@ -473,36 +473,36 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
              */
             if (this.config != null) {
                 
-                String configAlgorithm = config.getAlgorithm();
+                String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
                     Validate.notEmpty(configAlgorithm, 
                             "Algorithm cannot be set empty");
                 }
                 
                 
-                String configPassword = config.getPassword();
+                String configPassword = this.config.getPassword();
                 if (configPassword != null) {
                     Validate.notEmpty(configPassword, 
                             "Password cannot be set empty");
                 }
                 
                 Integer configKeyObtentionIterations = 
-                    config.getKeyObtentionIterations();
+                    this.config.getKeyObtentionIterations();
                 if (configKeyObtentionIterations != null) {
                     Validate.isTrue(configKeyObtentionIterations.intValue() > 0, 
                             "Number of iterations for key obtention must be " +
                             "greater than zero");
                 }
                 
-                SaltGenerator configSaltGenerator = config.getSaltGenerator();
+                SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
                 
-                String configProviderName = config.getProviderName();
+                String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
                     Validate.notEmpty(configProviderName,
                             "Provider name cannot be empty");
                 }
                 
-                Provider configProvider = config.getProvider();
+                Provider configProvider = this.config.getProvider();
                 
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
@@ -541,11 +541,11 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 if (this.password == null) {
                     throw new EncryptionInitializationException(
                             "Password not set for Password Based Encryptor");
-                } else {
-                    // Normalize password to NFC form
-                    this.password = 
-                        Normalizer.normalize(this.password, Normalizer.NFC);
                 }
+                
+                // Normalize password to NFC form
+                this.password = 
+                    Normalizer.normalize(this.password, Normalizer.NFC);
                 
                 /*
                  * Encryption and decryption Ciphers are created the usual way.

@@ -35,7 +35,7 @@ public class StandardStringDigesterThreadedTest extends TestCase {
     }
     
     
-    private class TesterLauncher {
+    protected class TesterLauncher {
 
         private AtomicInteger runningThreads = null;
         private int numThreads = 0;
@@ -46,12 +46,12 @@ public class StandardStringDigesterThreadedTest extends TestCase {
             
             StandardStringDigester digester = new StandardStringDigester();
             AtomicInteger errors = new AtomicInteger(0);
-            runningThreads = new AtomicInteger(0);
+            this.runningThreads = new AtomicInteger(0);
             
             for (int i = 0; i < numOfThreads; i++) {
                 TesterRunnable tester = 
                     new TesterRunnable(digester, numIters, errors, 
-                            runningThreads, this);
+                            this.runningThreads, this);
                 Thread testerThread = new Thread(tester);
                 testerThread.start();
             }
@@ -67,7 +67,7 @@ public class StandardStringDigesterThreadedTest extends TestCase {
         }
         
         private synchronized boolean continueWaiting() {
-            return (runningThreads.get() < numThreads);
+            return (this.runningThreads.get() < this.numThreads);
         }
         
     }
@@ -96,10 +96,10 @@ public class StandardStringDigesterThreadedTest extends TestCase {
         public void run() {
             
             int localErrors = 0;
-            for (int i = 0; i < numIters; i++) {
+            for (int i = 0; i < this.numIters; i++) {
                 try {
-                    String encryptedMessage = digester.digest(message);
-                    if (!digester.matches(message, encryptedMessage)) {
+                    String encryptedMessage = this.digester.digest(this.message);
+                    if (!this.digester.matches(this.message, encryptedMessage)) {
                         localErrors++;
                     }
                 } catch (Exception e) {
@@ -108,12 +108,12 @@ public class StandardStringDigesterThreadedTest extends TestCase {
                 }
             }
 
-            synchronized (launcher) {
+            synchronized (this.launcher) {
                 if (localErrors > 0) {
-                    errors.addAndGet(localErrors);
+                    this.errors.addAndGet(localErrors);
                 }
-                finishedThreads.incrementAndGet();
-                launcher.notify();
+                this.finishedThreads.incrementAndGet();
+                this.launcher.notify();
             }
         }
         

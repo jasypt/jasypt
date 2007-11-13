@@ -84,7 +84,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getAlgorithmEnvName() {
-        return algorithmEnvName;
+        return this.algorithmEnvName;
     }
 
 
@@ -112,7 +112,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getAlgorithmSysPropertyName() {
-        return algorithmSysPropertyName;
+        return this.algorithmSysPropertyName;
     }
 
 
@@ -140,7 +140,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getKeyObtentionIterationsEnvName() {
-        return keyObtentionIterationsEnvName;
+        return this.keyObtentionIterationsEnvName;
     }
 
 
@@ -175,7 +175,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getKeyObtentionIterationsSysPropertyName() {
-        return keyObtentionIterationsSysPropertyName;
+        return this.keyObtentionIterationsSysPropertyName;
     }
 
 
@@ -210,7 +210,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getPasswordEnvName() {
-        return passwordEnvName;
+        return this.passwordEnvName;
     }
 
 
@@ -238,7 +238,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getPasswordSysPropertyName() {
-        return passwordSysPropertyName;
+        return this.passwordSysPropertyName;
     }
 
 
@@ -268,7 +268,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getSaltGeneratorClassNameEnvName() {
-        return saltGeneratorClassNameEnvName;
+        return this.saltGeneratorClassNameEnvName;
     }
 
    
@@ -313,7 +313,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getSaltGeneratorClassNameSysPropertyName() {
-        return saltGeneratorClassNameSysPropertyName;
+        return this.saltGeneratorClassNameSysPropertyName;
     }
 
 
@@ -358,7 +358,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getProviderNameEnvName() {
-        return providerNameEnvName;
+        return this.providerNameEnvName;
     }
 
 
@@ -392,7 +392,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getProviderNameSysPropertyName() {
-        return providerNameSysPropertyName;
+        return this.providerNameSysPropertyName;
     }
 
 
@@ -424,7 +424,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the variable
      */
     public String getProviderClassNameEnvName() {
-        return providerClassNameEnvName;
+        return this.providerClassNameEnvName;
     }
 
 
@@ -469,7 +469,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * @return the name of the property
      */
     public String getProviderClassNameSysPropertyName() {
-        return providerClassNameSysPropertyName;
+        return this.providerClassNameSysPropertyName;
     }
 
 

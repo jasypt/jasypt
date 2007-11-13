@@ -71,7 +71,7 @@ public final class Digester {
     private static final int SALT_SIZE_BYTES = 0;
     
     // The internal digester used
-    private StandardByteDigester digester = null;
+    private final StandardByteDigester digester;
     
     
     /**
@@ -243,7 +243,7 @@ public final class Digester {
      * @see StandardByteDigester#digest(byte[])
      */
     public byte[] digest(byte[] binary) {
-        return digester.digest(binary);
+        return this.digester.digest(binary);
     }
 
     

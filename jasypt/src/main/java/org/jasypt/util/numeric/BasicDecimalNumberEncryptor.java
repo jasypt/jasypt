@@ -58,7 +58,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEBigDecimalEncryptor encryptor = null;
+    private final StandardPBEBigDecimalEncryptor encryptor;
     
     
     /**
@@ -77,7 +77,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * @param password the password to be set.
      */
     public void setPassword(String password) {
-        encryptor.setPassword(password);
+        this.encryptor.setPassword(password);
     }
 
 
@@ -88,7 +88,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * @see StandardPBEBigDecimalEncryptor#encrypt(BigDecimal)
      */
     public BigDecimal encrypt(BigDecimal number) {
-        return encryptor.encrypt(number);
+        return this.encryptor.encrypt(number);
     }
     
     
@@ -99,7 +99,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * @see StandardPBEBigDecimalEncryptor#decrypt(BigDecimal)
      */
     public BigDecimal decrypt(BigDecimal encryptedNumber) {
-        return encryptor.decrypt(encryptedNumber);
+        return this.encryptor.decrypt(encryptedNumber);
     }
 
 }

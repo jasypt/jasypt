@@ -237,7 +237,7 @@ public final class StandardStringDigester implements StringDigester {
 
     
     // The StandardByteDigester that will be internally used.
-    private StandardByteDigester byteDigester = null;
+    private final StandardByteDigester byteDigester;
 
     // If the config object set is a StringDigesterConfig, it must be referenced
     private StringDigesterConfig stringDigesterConfig = null;
@@ -263,7 +263,7 @@ public final class StandardStringDigester implements StringDigester {
     
     // BASE64 encoder which will make sure the returned digests are
     // valid US-ASCII strings (if the user chooses BASE64 output).
-    private Base64 base64 = null;
+    private final Base64 base64;
 
 
     
@@ -724,8 +724,8 @@ public final class StandardStringDigester implements StringDigester {
             // the safest result String possible.
             String result = null;
             if (this.stringOutputTypeBase64) {
-                synchronized (base64) {
-                    digest = base64.encode(digest);
+                synchronized (this.base64) {
+                    digest = this.base64.encode(digest);
                 }
                 result = new String(digest, DIGEST_CHARSET); 
             } else {
@@ -812,8 +812,8 @@ public final class StandardStringDigester implements StringDigester {
             if (this.stringOutputTypeBase64) {
                 // The digest must be a US-ASCII String BASE64-encoded
                 digestBytes = digest.getBytes(DIGEST_CHARSET);
-                synchronized (base64) {
-                    digestBytes = base64.decode(digestBytes);
+                synchronized (this.base64) {
+                    digestBytes = this.base64.decode(digestBytes);
                 }
             } else {
                 digestBytes = CommonUtils.fromHexadecimal(digest);

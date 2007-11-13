@@ -64,9 +64,8 @@ public class CommonUtils {
         }
         if (STRING_OUTPUT_TYPE_HEXADECIMAL_NAMES.contains(valueStr.toUpperCase())) {
             return STRING_OUTPUT_TYPE_HEXADECIMAL;
-        } else {
-            return STRING_OUTPUT_TYPE_BASE64;
         }
+        return STRING_OUTPUT_TYPE_BASE64;
     }
 
     

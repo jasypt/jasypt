@@ -156,7 +156,7 @@ public final class HibernatePBEEncryptorRegistry {
     public synchronized PBEStringEncryptor getPBEStringEncryptor(
             String registeredName) {
         HibernatePBEStringEncryptor hibernateEncryptor = 
-            (HibernatePBEStringEncryptor) stringEncryptors.get(registeredName);
+            (HibernatePBEStringEncryptor) this.stringEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }
@@ -196,7 +196,7 @@ public final class HibernatePBEEncryptorRegistry {
     public synchronized PBEBigIntegerEncryptor getPBEBigIntegerEncryptor(
             String registeredName) {
         HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
-            (HibernatePBEBigIntegerEncryptor) bigIntegerEncryptors.get(registeredName);
+            (HibernatePBEBigIntegerEncryptor) this.bigIntegerEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }
@@ -238,7 +238,7 @@ public final class HibernatePBEEncryptorRegistry {
     public synchronized PBEBigDecimalEncryptor getPBEBigDecimalEncryptor(
             String registeredName) {
         HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
-            (HibernatePBEBigDecimalEncryptor) bigDecimalEncryptors.get(registeredName);
+            (HibernatePBEBigDecimalEncryptor) this.bigDecimalEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }
@@ -280,7 +280,7 @@ public final class HibernatePBEEncryptorRegistry {
     public synchronized PBEByteEncryptor getPBEByteEncryptor(
             String registeredName) {
         HibernatePBEByteEncryptor hibernateEncryptor = 
-            (HibernatePBEByteEncryptor) byteEncryptors.get(registeredName);
+            (HibernatePBEByteEncryptor) this.byteEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
         }

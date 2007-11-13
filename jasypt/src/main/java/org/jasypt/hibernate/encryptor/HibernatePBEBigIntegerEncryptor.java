@@ -155,7 +155,7 @@ public final class HibernatePBEBigIntegerEncryptor {
      * @return the encryptor.
      */
     public PBEBigIntegerEncryptor getEncryptor() {
-        return encryptor;
+        return this.encryptor;
     }
     
     
@@ -279,7 +279,7 @@ public final class HibernatePBEBigIntegerEncryptor {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
         }
-        return encryptor.encrypt(message);
+        return this.encryptor.encrypt(message);
     }
 
     
@@ -294,7 +294,7 @@ public final class HibernatePBEBigIntegerEncryptor {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
         }
-        return encryptor.decrypt(encryptedMessage);
+        return this.encryptor.decrypt(encryptedMessage);
     }
     
 
@@ -323,7 +323,7 @@ public final class HibernatePBEBigIntegerEncryptor {
      * @return the registered name.
      */
     public String getRegisteredName() {
-        return registeredName;
+        return this.registeredName;
     }
     
 }

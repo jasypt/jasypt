@@ -58,7 +58,7 @@ public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
 
 
     // The internal encryptor 
-    private StandardPBEBigIntegerEncryptor encryptor = null;
+    private final StandardPBEBigIntegerEncryptor encryptor;
     
     
     /**
@@ -77,7 +77,7 @@ public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * @param password the password to be set.
      */
     public void setPassword(String password) {
-        encryptor.setPassword(password);
+        this.encryptor.setPassword(password);
     }
 
 
@@ -88,7 +88,7 @@ public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * @see StandardPBEBigIntegerEncryptor#encrypt(BigInteger)
      */
     public BigInteger encrypt(BigInteger number) {
-        return encryptor.encrypt(number);
+        return this.encryptor.encrypt(number);
     }
     
     
@@ -99,7 +99,7 @@ public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * @see StandardPBEBigIntegerEncryptor#decrypt(BigInteger)
      */
     public BigInteger decrypt(BigInteger encryptedNumber) {
-        return encryptor.decrypt(encryptedNumber);
+        return this.encryptor.decrypt(encryptedNumber);
     }
 
 }

@@ -106,9 +106,8 @@ public abstract class AbstractEncryptedAsStringType
             throws HibernateException {
         if (cached == null) {
             return null;
-        } else {
-            return deepCopy(cached);
         }
+        return deepCopy(cached);
     }
 
     
@@ -116,9 +115,8 @@ public abstract class AbstractEncryptedAsStringType
             throws HibernateException {
         if (value == null) {
             return null;
-        } else {
-            return (Serializable) deepCopy(value);
         }
+        return (Serializable) deepCopy(value);
     }
 
     
@@ -247,11 +245,11 @@ public abstract class AbstractEncryptedAsStringType
                 HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
                 PBEStringEncryptor pbeEncryptor = 
-                    registry.getPBEStringEncryptor(encryptorName);
+                    registry.getPBEStringEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No string encryptor registered for hibernate " +
-                            "with name \"" + encryptorName + "\"");
+                            "with name \"" + this.encryptorName + "\"");
                 }
                 this.encryptor = pbeEncryptor;
                 
@@ -276,7 +274,7 @@ public abstract class AbstractEncryptedAsStringType
                 }
                 
                 if (this.stringOutputType != null) {
-                    newEncryptor.setStringOutputType(stringOutputType);
+                    newEncryptor.setStringOutputType(this.stringOutputType);
                 }
                 
                 newEncryptor.initialize();
