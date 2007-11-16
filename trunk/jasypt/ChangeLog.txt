@@ -1,9 +1,20 @@
+1.4
+=======
+- Minor code cleaning
+- Added org.jasypt.properties.EncryptableProperties as a java.util.Properties
+  which allows transparent decryption of encrypted property values.
+- Moved org.jasypt.hibernate.ParameterNaming to 
+  org.jasypt.hibernate.type.ParameterNaming.
+- Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
+  for allowing encrypted database passwords to be set in hibernate.cfg.xml 
+  files.
+
 
 1.3.1
 =======
 - Solved configuration bug in "StandardPBEByteEncryptor.initialize()" for 
   algorithms coming from *Config objects.
-  
+
 
 1.3
 =======

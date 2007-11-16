@@ -25,7 +25,6 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jasypt.hibernate.ParameterNaming;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 

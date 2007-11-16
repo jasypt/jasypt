@@ -48,9 +48,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *      ...
  *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
  *      ...
- *    &lt;class>
+ *    &lt;/class>
  *    ...
- *  &lt;hibernate-mapping>
+ *  &lt;/hibernate-mapping>
  * </pre>
  * </p>
  * <p>
@@ -78,9 +78,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *      ...
  *      &lt;property name="address" column="ADDRESS" type="<b>encryptedString</b>" />
  *      ...
- *    &lt;class>
+ *    &lt;/class>
  *    ...
- *  &lt;hibernate-mapping>
+ *  &lt;/hibernate-mapping>
  * </pre>
  * </p>
  * <p>
