@@ -78,7 +78,7 @@ public class EncryptedPasswordDriverManagerConnectionProvider extends
     
     
     public void configure(Properties props) {
-        
+       
        String encryptorRegisteredName = 
            props.getProperty(PASSWORD_ENCRYPTOR_REGISTERED_NAME);
        
@@ -92,12 +92,15 @@ public class EncryptedPasswordDriverManagerConnectionProvider extends
                    "No string encryptor registered for hibernate " +
                    "with name \"" + encryptorRegisteredName + "\"");
        }
-       
+
+       // Get the original password, encrypted
        String encryptedPassword = props.getProperty(Environment.PASS);
        
+       // Set it back into the properties, decrypted
        props.setProperty(
                Environment.PASS, encryptor.decrypt(encryptedPassword));
        
+       // Let Hibernate do the rest
        super.configure(props);
        
     } 

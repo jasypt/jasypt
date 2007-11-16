@@ -36,7 +36,6 @@ import org.hibernate.util.EqualsHelper;
 import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.hibernate.ParameterNaming;
 import org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 

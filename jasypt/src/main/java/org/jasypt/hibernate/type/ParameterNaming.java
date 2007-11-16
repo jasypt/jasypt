@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate;
+package org.jasypt.hibernate.type;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ package org.jasypt.hibernate;
  * typedef declaration in a Hibernate mapping.
  * </p>
  * 
- * @since 1.0
+ * @since 1.4 (was <tt>org.jasypt.hibernate.ParameterNaming</tt> since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
