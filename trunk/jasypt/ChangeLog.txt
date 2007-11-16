@@ -8,6 +8,9 @@
 - Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
   for allowing encrypted database passwords to be set in hibernate.cfg.xml 
   files.
+- Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider
+  for allowing encrypted database passwords to be set in hibernate.cfg.xml 
+  files.
 
 
 1.3.1
