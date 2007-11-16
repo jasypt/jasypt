@@ -74,6 +74,11 @@ public class EncryptedPasswordDriverManagerConnectionProvider extends
         DriverManagerConnectionProvider {
     
     
+    public EncryptedPasswordDriverManagerConnectionProvider() {
+        super();
+    }
+    
+    
     public void configure(Properties props) {
        
        String encryptorRegisteredName = 

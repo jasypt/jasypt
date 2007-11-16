@@ -76,6 +76,11 @@ public class EncryptedPasswordC3P0ConnectionProvider extends
         C3P0ConnectionProvider {
     
     
+    public EncryptedPasswordC3P0ConnectionProvider() {
+        super();
+    }
+    
+    
     public void configure(Properties props) {
        
        String encryptorRegisteredName = 
