@@ -70,8 +70,8 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class EncryptedPasswordDriverManagerConnectionProvider extends
-        DriverManagerConnectionProvider {
+public class EncryptedPasswordDriverManagerConnectionProvider 
+        extends DriverManagerConnectionProvider {
     
     
     public EncryptedPasswordDriverManagerConnectionProvider() {
