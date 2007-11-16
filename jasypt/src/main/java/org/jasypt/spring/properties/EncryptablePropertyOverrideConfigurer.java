@@ -49,8 +49,8 @@ import org.springframework.beans.factory.config.PropertyOverrideConfigurer;
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
  * 
  */
-public class EncryptablePropertyOverrideConfigurer extends
-		PropertyOverrideConfigurer {
+public class EncryptablePropertyOverrideConfigurer 
+        extends PropertyOverrideConfigurer {
 	/*
 	 * Only one of these instances will be initialized, the other one will be
 	 * null.

@@ -49,8 +49,8 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
  * 
  */
-public class EncryptablePropertyPlaceholderConfigurer extends
-		PropertyPlaceholderConfigurer {
+public class EncryptablePropertyPlaceholderConfigurer 
+        extends PropertyPlaceholderConfigurer {
 	/*
 	 * Only one of these instances will be initialized, the other one will be
 	 * null.
