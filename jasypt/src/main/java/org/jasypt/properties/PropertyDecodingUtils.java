@@ -37,7 +37,7 @@ import org.jasypt.util.text.TextEncryptor;
  *   </center>
  * </p>
  * <p>
- *   <b>This class is NOT meant to be used directly outside of jasypt.</b>
+ *   <b>Do NOT use this class. It is meant for internal Jasypt use only.</b>
  * </p>
  * 
  * @since 1.4
