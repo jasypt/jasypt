@@ -23,12 +23,12 @@ import org.apache.commons.lang.Validate;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyDecodingUtils;
 import org.jasypt.util.text.TextEncryptor;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.PropertyOverrideConfigurer;
 
 /**
  * <p>
  * Subclass of
- * <tt>org.springframework.beans.factory.config.PropertyPlaceholderConfigurer</tt>
+ * <tt>org.springframework.beans.factory.config.PropertyOverrideConfigurer</tt>
  * which can make use of a {@link org.jasypt.encryption.StringEncryptor} or
  * {@link org.jasypt.util.text.TextEncryptor} object to decrypt property values
  * if they are encrypted in the loaded resource locations.
@@ -49,8 +49,8 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
  * 
  */
-public class EncryptablePropertyPlaceholderConfigurer extends
-		PropertyPlaceholderConfigurer {
+public class EncryptablePropertyOverrideConfigurer extends
+		PropertyOverrideConfigurer {
 	/*
 	 * Only one of these instances will be initialized, the other one will be
 	 * null.
@@ -60,7 +60,7 @@ public class EncryptablePropertyPlaceholderConfigurer extends
 
 	/**
 	 * <p>
-	 * Creates an <tt>EncryptablePropertyPlaceholderConfigurer</tt> instance
+	 * Creates an <tt>EncryptablePropertyOverrideConfigurer</tt> instance
 	 * which will use the passed {@link StringEncryptor} object to decrypt
 	 * encrypted values.
 	 * </p>
@@ -69,7 +69,7 @@ public class EncryptablePropertyPlaceholderConfigurer extends
 	 *            the {@link StringEncryptor} to be used do decrypt values. It
 	 *            can not be null.
 	 */
-	public EncryptablePropertyPlaceholderConfigurer(
+	public EncryptablePropertyOverrideConfigurer(
 			StringEncryptor stringEncryptor) {
 		super();
 		Validate.notNull(stringEncryptor, "Encryptor cannot be null");
@@ -87,7 +87,7 @@ public class EncryptablePropertyPlaceholderConfigurer extends
 	 *            the {@link TextEncryptor} to be used do decrypt values. It can
 	 *            not be null.
 	 */
-	public EncryptablePropertyPlaceholderConfigurer(TextEncryptor textEncryptor) {
+	public EncryptablePropertyOverrideConfigurer(TextEncryptor textEncryptor) {
 		super();
 		Validate.notNull(textEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = null;
