@@ -135,6 +135,8 @@ import org.jasypt.util.text.TextEncryptor;
  * </p>
  * 
  * @since 1.2
+ * @deprecated Moved to {@link org.jasypt.spring.security.PBEPasswordEncoder},
+ *             will be removed in jasypt 1.5
  * 
  * @author Daniel Fern&aacute;ndez Garrido
  * 
