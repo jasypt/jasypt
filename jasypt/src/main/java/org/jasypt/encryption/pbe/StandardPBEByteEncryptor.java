@@ -733,14 +733,14 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             return null;
         }
         
-        // Check the received message is at least the size of the salt
-        if (encryptedMessage.length < this.saltSizeBytes) {
-            throw new EncryptionOperationNotPossibleException();
-        }
-        
         // Check initialization
         if (!isInitialized()) {
             initialize();
+        }
+        
+        // Check that the received message is bigger than the salt
+        if (encryptedMessage.length <= this.saltSizeBytes) {
+            throw new EncryptionOperationNotPossibleException();
         }
     
         try {
