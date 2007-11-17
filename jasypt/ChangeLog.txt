@@ -9,8 +9,16 @@
   for allowing encrypted database passwords to be set in hibernate.cfg.xml 
   files.
 - Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider
-  for allowing encrypted database passwords to be set in hibernate.cfg.xml 
-  files.
+  to allow setting encrypted database passwords in hibernate.cfg.xml files.
+- Added org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer
+  and org.jasypt.spring.properties.EncryptablePropertyOverrideConfigurer
+  to allow use of encrypted .properties files from within Spring applications
+  in a transparent manner.
+- Added org.jasypt.cli.JasyptStringDigestCLI, 
+  org.jasypt.cli.JasyptPBEStringEncryptionCLI and 
+  org.jasypt.cli.JasyptPBEStringDecryptionCLI to allow the execution of
+  digest, encryption and decryption commands from the command line, useful
+  for knowing which value to write in an encrypted .properties file. 
 
 
 1.3.1
