@@ -72,8 +72,8 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class EncryptedPasswordC3P0ConnectionProvider extends
-        C3P0ConnectionProvider {
+public class EncryptedPasswordC3P0ConnectionProvider 
+        extends C3P0ConnectionProvider {
     
     
     public EncryptedPasswordC3P0ConnectionProvider() {
