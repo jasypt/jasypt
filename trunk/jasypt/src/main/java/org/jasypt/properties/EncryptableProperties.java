@@ -163,7 +163,7 @@ public class EncryptableProperties extends Properties {
      * </p>
      * 
      * @param key the property key
-     * @defaultValue the default value to return
+     * @param defaultValue the default value to return
      * @return the (decrypted) value
      */
     public String getProperty(String key, String defaultValue) {
