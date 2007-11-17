@@ -153,7 +153,7 @@
           is now in a single module, <tt>jasypt</tt>. This has not affected
           the package structure, and you will find the
           jasypt-hibernate classes in package <tt>org.jasypt.hibernate</tt>
-          and the jasypt-spring-security ones at <tt>org.jasypt.springsecurity</tt>,
+          and the jasypt-spring-security ones at <tt>org.jasypt.spring.security</tt>,
           as usual.
         </p>
       </answer>

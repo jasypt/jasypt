@@ -19,6 +19,8 @@
   org.jasypt.cli.JasyptPBEStringDecryptionCLI to allow the execution of
   digest, encryption and decryption commands from the command line, useful
   for knowing which value to write in an encrypted .properties file. 
+- Package org.jasypt.springsecurity renamed as org.jasypt.spring.security, and
+  deprecated classes in the old package (will be removed in 1.5).
 
 
 1.3.1
