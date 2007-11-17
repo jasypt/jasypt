@@ -31,18 +31,18 @@ public class SecondEncryptionAfterFailBehaviourTest extends TestCase {
     public void testSecondEncryptionAfterFailBehaviour() throws Exception {
 
         String vsessionid = "012345678";
-        StandardPBEStringEncryptor strongEncryptor = 
+        StandardPBEStringEncryptor encryptor = 
             new StandardPBEStringEncryptor();
-        strongEncryptor.setPassword("jasypt");
+        encryptor.setPassword("jasypt");
 
         try {
-                strongEncryptor.decrypt(vsessionid);
+                encryptor.decrypt(vsessionid);
         } catch (Exception ignored) {
             // This exception will be always thrown, but ignored
         }
-        String enc = strongEncryptor.encrypt(vsessionid);
+        String enc = encryptor.encrypt(vsessionid);
         try {
-            strongEncryptor.decrypt(enc);
+            encryptor.decrypt(enc);
         } catch (Exception e) {           
             assertTrue(false);
         }
