@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.cli;
+package org.jasypt.intf.cli;
 
 import java.security.Provider;
 import java.util.Arrays;

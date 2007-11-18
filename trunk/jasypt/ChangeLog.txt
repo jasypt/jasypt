@@ -21,6 +21,10 @@
   for knowing which value to write in an encrypted .properties file. 
 - Package org.jasypt.springsecurity renamed as org.jasypt.spring.security, and
   deprecated classes in the old package (will be removed in 1.5).
+- Added to org.jasypt.encryption.pbe.StandardPBEByteEncryptor a workaround
+  for Sun JCE's bug 4953555 (http://bugs.sun.com/view_bug.do?bug_id=4953555)   
+- Added methods to Simple* and Environment* config classes for both Digesters 
+  and PBEEncryptors to allow them to be configured entirely with Strings.
 
 
 1.3.1

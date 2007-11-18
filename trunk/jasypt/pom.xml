@@ -92,6 +92,64 @@
           <reportOutputDirectory>${project.reporting.outputDirectory}/api/${artifactId}/apidocs</reportOutputDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>make-assembly-cli-bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>${basedir}/src/assembly/cli-bundle.xml</descriptor>
+              </descriptors>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>${artifactId}-cli-bundle</finalName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>make-assembly-dist</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
+              </descriptors>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>${artifactId}-${version}-dist</finalName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -139,6 +197,7 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>3.1</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
 
@@ -146,6 +205,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
       <version>2.0</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
 
@@ -153,6 +213,7 @@
       <groupId>org.acegisecurity</groupId>
       <artifactId>acegi-security</artifactId>
       <version>1.0.0</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
 
@@ -160,6 +221,7 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>2.4</version>
+      <scope>provided</scope>
       <optional>true</optional>
     </dependency>
     

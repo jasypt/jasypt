@@ -153,17 +153,11 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     public void setKeyObtentionIterationsEnvName(String keyObtentionIterationsEnvName) {
         this.keyObtentionIterationsEnvName = keyObtentionIterationsEnvName;
         if (keyObtentionIterationsEnvName == null) {
-            super.setKeyObtentionIterations(null);
+            super.setKeyObtentionIterations((Integer)null);
         } else {
             this.keyObtentionIterationsSysPropertyName = null;
-            String iterationsStr = System.getenv(keyObtentionIterationsEnvName);
-            if (iterationsStr != null) {
-                try {
-                    super.setKeyObtentionIterations(new Integer(iterationsStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setKeyObtentionIterations(
+                    System.getenv(keyObtentionIterationsEnvName));
         }
     }
 
@@ -188,17 +182,11 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     public void setKeyObtentionIterationsSysPropertyName(String keyObtentionIterationsSysPropertyName) {
         this.keyObtentionIterationsSysPropertyName = keyObtentionIterationsSysPropertyName;
         if (keyObtentionIterationsSysPropertyName == null) {
-            super.setKeyObtentionIterations(null);
+            super.setKeyObtentionIterations((Integer)null);
         } else {
             this.keyObtentionIterationsEnvName = null;
-            String iterationsStr = System.getProperty(keyObtentionIterationsSysPropertyName);
-            if (iterationsStr != null) {
-                try {
-                    super.setKeyObtentionIterations(new Integer(iterationsStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setKeyObtentionIterations(
+                    System.getProperty(keyObtentionIterationsSysPropertyName));
         }
     }
 
@@ -293,13 +281,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         } else {
             this.saltGeneratorClassNameSysPropertyName = null;
             String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
-            try {
-                Class saltGeneratorClass = Class.forName(saltGeneratorClassName);
-                SaltGenerator saltGenerator = (SaltGenerator) saltGeneratorClass.newInstance();
-                super.setSaltGenerator(saltGenerator);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
 
@@ -338,13 +320,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         } else {
             this.saltGeneratorClassNameEnvName = null;
             String saltGeneratorClassName = System.getProperty(saltGeneratorClassNameSysPropertyName);
-            try {
-                Class saltGeneratorClass = Class.forName(saltGeneratorClassName);
-                SaltGenerator saltGenerator = (SaltGenerator) saltGeneratorClass.newInstance();
-                super.setSaltGenerator(saltGenerator);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
 
@@ -410,7 +386,8 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
             super.setProviderName(null);
         } else {
             this.providerNameEnvName = null;
-            super.setProviderName(System.getProperty(providerNameSysPropertyName));
+            super.setProviderName(
+                    System.getProperty(providerNameSysPropertyName));
         }
     }
 
@@ -449,13 +426,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         } else {
             this.providerClassNameSysPropertyName = null;
             String providerClassName = System.getenv(providerClassNameEnvName);
-            try {
-                Class providerClass = Class.forName(providerClassName);
-                Provider provider = (Provider) providerClass.newInstance();
-                super.setProvider(provider);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setProviderClassName(providerClassName);
         }
     }
 
@@ -494,13 +465,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         } else {
             this.providerClassNameEnvName = null;
             String providerClassName = System.getProperty(providerClassNameSysPropertyName);
-            try {
-                Class providerClass = Class.forName(providerClassName);
-                Provider provider = (Provider) providerClass.newInstance();
-                super.setProvider(provider);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setProviderClassName(providerClassName);
         }
     }
     
@@ -525,6 +490,12 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     }
 
 
+    public void setKeyObtentionIterations(String keyObtentionIterations) {
+        this.keyObtentionIterationsEnvName = null;
+        this.keyObtentionIterationsSysPropertyName = null;
+        super.setKeyObtentionIterations(keyObtentionIterations);
+    }
+
 
     public void setPassword(String password) {
         this.passwordEnvName = null;
@@ -533,11 +504,17 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     }
 
     
-    
     public void setSaltGenerator(SaltGenerator saltGenerator) {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGenerator(saltGenerator);
+    }
+
+
+    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+        this.saltGeneratorClassNameEnvName = null;
+        this.saltGeneratorClassNameSysPropertyName = null;
+        super.setSaltGeneratorClassName(saltGeneratorClassName);
     }
 
 
@@ -555,6 +532,12 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         super.setProvider(provider);
     }
 
+
+    public void setProviderClassName(String providerClassName) {
+        this.providerClassNameEnvName = null;
+        this.providerClassNameSysPropertyName = null;
+        super.setProviderClassName(providerClassName);
+    }
 
     
 }

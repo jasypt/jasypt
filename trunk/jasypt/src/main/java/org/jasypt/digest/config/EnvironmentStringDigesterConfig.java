@@ -96,9 +96,15 @@ public class EnvironmentStringDigesterConfig
             this.unicodeNormalizationIgnored = null;
         } else {
             this.unicodeNormalizationIgnoredSysPropertyName = null;
-            this.unicodeNormalizationIgnored =
-                CommonUtils.getStandardBooleanValue(
-                        System.getenv(unicodeNormalizationIgnoredEnvName));
+            String unicodeNormalizationIgnoredValue = 
+                System.getenv(unicodeNormalizationIgnoredEnvName);
+            if (unicodeNormalizationIgnoredValue != null) {
+                this.unicodeNormalizationIgnored =
+                    CommonUtils.getStandardBooleanValue(
+                            unicodeNormalizationIgnoredValue);
+            } else {
+                this.unicodeNormalizationIgnored = null;
+            }
         }
     }
 
@@ -127,9 +133,15 @@ public class EnvironmentStringDigesterConfig
             this.unicodeNormalizationIgnored = null;
         } else {
             this.unicodeNormalizationIgnoredEnvName = null;
-            this.unicodeNormalizationIgnored =
-                CommonUtils.getStandardBooleanValue(
-                        System.getProperty(unicodeNormalizationIgnoredSysPropertyName));
+            String unicodeNormalizationIgnoredValue = 
+                System.getProperty(unicodeNormalizationIgnoredSysPropertyName);
+            if (unicodeNormalizationIgnoredValue != null) {
+                this.unicodeNormalizationIgnored =
+                    CommonUtils.getStandardBooleanValue(
+                            unicodeNormalizationIgnoredValue);
+            } else {
+                this.unicodeNormalizationIgnored = null;
+            }
         }
     }
 
@@ -231,6 +243,48 @@ public class EnvironmentStringDigesterConfig
     
     /**
      * <p>
+     * Sets whether the unicode text normalization step should be ignored.
+     * </p>
+     * <p>
+     * The Java Virtual Machine internally handles all Strings as UNICODE. When
+     * digesting or matching digests in jasypt, these Strings are first 
+     * <b>normalized to 
+     * its NFC form</b> so that digest matching is not affected by the specific
+     * form in which the messages where input.
+     * </p>
+     * <p>
+     * <b>It is normally safe (and recommended) to leave this parameter set to 
+     * its default FALSE value (and thus DO perform normalization 
+     * operations)</b>. But in some specific cases in which issues with legacy
+     * software could arise, it might be useful to set this to TRUE.
+     * </p>
+     * <p>
+     * For more information on unicode text normalization, see this issue of 
+     * <a href="http://java.sun.com/mailers/techtips/corejava/2007/tt0207.html">Core Java Technologies Tech Tips</a>.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * 
+     * @since 1.4
+     * 
+     * @param unicodeNormalizationIgnored whether the unicode text 
+     *        normalization step should be ignored or not.
+     */
+    public void setUnicodeNormalizationIgnored(String unicodeNormalizationIgnored) {
+        this.unicodeNormalizationIgnoredEnvName = null;
+        this.unicodeNormalizationIgnoredSysPropertyName = null;
+        if (unicodeNormalizationIgnored != null) {
+            this.unicodeNormalizationIgnored = 
+                CommonUtils.getStandardBooleanValue(unicodeNormalizationIgnored);
+        } else {
+            this.unicodeNormalizationIgnored = null;
+        }
+    }
+
+    
+    /**
+     * <p>
      * Sets the the form in which String output
      * will be encoded. Available encoding types are:
      * </p>
@@ -251,6 +305,10 @@ public class EnvironmentStringDigesterConfig
             CommonUtils.
                 getStandardStringOutputType(stringOutputType);
     }
+    
+    
+    
+    
     
     
     public Boolean isUnicodeNormalizationIgnored() {

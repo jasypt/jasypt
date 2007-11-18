@@ -21,6 +21,7 @@ package org.jasypt.encryption.pbe.config;
 
 import java.security.Provider;
 
+import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -34,6 +35,15 @@ import org.jasypt.salt.SaltGenerator;
  * For any of the configuration parameters, if its <tt>setX</tt>
  * method is not called, a <tt>null</tt> value will be returned by the
  * corresponding <tt>getX</tt> method. 
+ * </p>
+ * <p>
+ * <b>Note that there is not an exact correspondence between <tt>setX()</tt>
+ * and <tt>getX()</tt> methods</b>, as sometimes two methods like
+ * <tt>setProvider()</tt> and <tt>setProviderClassName()</tt> will affect the
+ * same configuration parameter (<tt>getProvider()</tt>). This means that
+ * several combinations of <tt>setX()</tt> methods <b>collide</b>, and 
+ * should not be called together (a call to <tt>setProviderClassName()</tt> 
+ * will override any previous call to <tt>setProvider()</tt>).
  * </p>
  * 
  * @since 1.0
@@ -70,6 +80,9 @@ public class SimplePBEConfig implements PBEConfig {
      * supports it, you can also specify <i>mode</i> and <i>padding</i> for 
      * it, like <tt>ALGORITHM/MODE/PADDING</tt>.
      * </p>
+     * <p>
+     * Determines the result of: {@link #getAlgorithm()}
+     * </p>
      * 
      * @param algorithm the name of the algorithm to be used
      */
@@ -80,6 +93,9 @@ public class SimplePBEConfig implements PBEConfig {
 
     /**
      * Sets the password to be used for encryption.
+     * <p>
+     * Determines the result of: {@link #getPassword()}
+     * </p>
      * 
      * @param password the password to be used.
      */
@@ -91,12 +107,40 @@ public class SimplePBEConfig implements PBEConfig {
     /**
      * Sets the number of hashing iterations applied to obtain the
      * encryption key.
+     * <p>
+     * Determines the result of: {@link #getKeyObtentionIterations()}
+     * </p>
      * 
      * @param keyObtentionIterations the number of iterations.
      */
     public void setKeyObtentionIterations(Integer keyObtentionIterations) {
         this.keyObtentionIterations = keyObtentionIterations;
     }
+
+    
+    /**
+     * Sets the number of hashing iterations applied to obtain the
+     * encryption key.
+     * <p>
+     * Determines the result of: {@link #getKeyObtentionIterations()}
+     * </p>
+     * 
+     * @since 1.4
+     * 
+     * @param keyObtentionIterations the number of iterations.
+     */
+    public void setKeyObtentionIterations(String keyObtentionIterations) {
+        if (keyObtentionIterations != null) {
+            try {
+                this.keyObtentionIterations = new Integer(keyObtentionIterations);
+            } catch (NumberFormatException e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.keyObtentionIterations = null;
+        }
+    }
+
     
     /**
      * <p>
@@ -105,12 +149,47 @@ public class SimplePBEConfig implements PBEConfig {
      * <p>
      * If not set, null will returned.
      * </p>
+     * <p>
+     * Determines the result of: {@link #getSaltGenerator()}
+     * </p>
      * 
      * @param saltGenerator the salt generator.
      */
     public void setSaltGenerator(SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
     }
+
+    
+    /**
+     * <p>
+     * Sets the salt generator.
+     * </p>
+     * <p>
+     * If not set, null will returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getSaltGenerator()}
+     * </p>
+     *
+     * @since 1.4
+     * 
+     * @param saltGenerator the salt generator.
+     */
+    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+        if (saltGeneratorClassName != null) {
+            try {
+                Class saltGeneratorClass = 
+                    Class.forName(saltGeneratorClassName);
+                this.saltGenerator = 
+                    (SaltGenerator) saltGeneratorClass.newInstance();
+            } catch (Exception e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.saltGenerator = null;
+        }
+    }
+
     
     /**
      * <p>
@@ -125,6 +204,9 @@ public class SimplePBEConfig implements PBEConfig {
      * <p>
      * If not set, null will be returned.
      * </p>
+     * <p>
+     * Determines the result of: {@link #getProviderName()}
+     * </p>
      * 
      * @since 1.3
      * 
@@ -133,12 +215,15 @@ public class SimplePBEConfig implements PBEConfig {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
+
     
     /**
      * <p>
      * Sets the security provider to be used for obtaining the encryption 
      * algorithm. This method is an alternative to 
-     * {@link #setProviderName(String)} and they should not be used altogether.
+     * both {@link #setProviderName(String)} and 
+     * {@link #setProviderClassName(String)} and they should not be used 
+     * altogether.
      * The provider specified with {@link #setProvider(Provider)} does not
      * have to be registered beforehand, and its use will not result in its
      * being registered.
@@ -151,6 +236,9 @@ public class SimplePBEConfig implements PBEConfig {
      * <p>
      * If not set, null will be returned.
      * </p>
+     * <p>
+     * Determines the result of: {@link #getProvider()}
+     * </p>
      * 
      * @since 1.3
      * 
@@ -158,6 +246,46 @@ public class SimplePBEConfig implements PBEConfig {
      */
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    
+    /**
+     * <p>
+     * Sets the security provider to be used for obtaining the encryption 
+     * algorithm. This method is an alternative to 
+     * both {@link #setProviderName(String)} and {@link #setProvider(Provider)} 
+     * and they should not be used altogether.
+     * The provider specified with {@link #setProviderClassName(String)} does not
+     * have to be registered beforehand, and its use will not result in its
+     * being registered.
+     * </p>
+     * <p>
+     * If both the <tt>providerName</tt> and <tt>provider</tt> properties
+     * are set, only <tt>provider</tt> will be used, and <tt>providerName</tt>
+     * will have no meaning for the encryptor object.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getProvider()}
+     * </p>
+     * 
+     * @since 1.4
+     * 
+     * @param provider the security provider object.
+     */
+    public void setProviderClassName(String providerClassName) {
+        if (providerClassName != null) {
+            try {
+                Class providerClass = Class.forName(providerClassName);
+                this.provider = (Provider) providerClass.newInstance();
+            } catch (Exception e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.provider = null;
+        }
     }
 
     
