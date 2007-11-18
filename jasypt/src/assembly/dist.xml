@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<assembly>
+
+  <id>dist</id>
+  
+  <formats>
+    <format>zip</format>
+  </formats>
+  
+  <fileSets>
+    <fileSet>
+      <directory>${basedir}/src/main/bin/</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>*.sh</include>
+        <include>*.bat</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>${artifactId}-cli-bundle.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target/apidocs/</directory>
+      <outputDirectory>/apidocs</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target/</directory>
+      <outputDirectory>/dist</outputDirectory>
+      <includes>
+        <include>${artifactId}-${version}.jar</include>
+        <include>${artifactId}-${version}-javadoc.jar</include>
+        <include>${artifactId}-${version}-sources.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>README.txt</include>
+        <include>NOTICE.txt</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+    
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>/lib</outputDirectory>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+    </dependencySet>
+  </dependencySets> 
+  
+  
+</assembly>

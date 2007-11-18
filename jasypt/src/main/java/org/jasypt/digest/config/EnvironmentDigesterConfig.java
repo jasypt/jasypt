@@ -21,7 +21,6 @@ package org.jasypt.digest.config;
 
 import java.security.Provider;
 
-import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -153,17 +152,10 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     public void setIterationsEnvName(String iterationsEnvName) {
         this.iterationsEnvName = iterationsEnvName;
         if (iterationsEnvName == null) {
-            super.setIterations(null);
+            super.setIterations((String)null);
         } else {
             this.iterationsSysPropertyName = null;
-            String iterationsStr = System.getenv(iterationsEnvName);
-            if (iterationsStr != null) {
-                try {
-                    super.setIterations(new Integer(iterationsStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setIterations(System.getenv(iterationsEnvName));
         }
     }
 
@@ -188,17 +180,10 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     public void setIterationsSysPropertyName(String iterationsSysPropertyName) {
         this.iterationsSysPropertyName = iterationsSysPropertyName;
         if (iterationsSysPropertyName == null) {
-            super.setIterations(null);
+            super.setIterations((String)null);
         } else {
             this.iterationsEnvName = null;
-            String iterationsStr = System.getProperty(iterationsSysPropertyName);
-            if (iterationsStr != null) {
-                try {
-                    super.setIterations(new Integer(iterationsStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setIterations(System.getProperty(iterationsSysPropertyName));
         }
     }
 
@@ -223,17 +208,10 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     public void setSaltSizeBytesEnvName(String saltSizeBytesEnvName) {
         this.saltSizeBytesEnvName = saltSizeBytesEnvName;
         if (saltSizeBytesEnvName == null) {
-            super.setSaltSizeBytes(null);
+            super.setSaltSizeBytes((String)null);
         } else {
             this.saltSizeBytesSysPropertyName = null;
-            String saltSizeBytesStr = System.getenv(saltSizeBytesEnvName);
-            if (saltSizeBytesStr != null) {
-                try {
-                    super.setSaltSizeBytes(new Integer(saltSizeBytesStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setSaltSizeBytes(System.getenv(saltSizeBytesEnvName));
         }
     }
 
@@ -258,17 +236,11 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     public void setSaltSizeBytesSysPropertyName(String saltSizeBytesSysPropertyName) {
         this.saltSizeBytesSysPropertyName = saltSizeBytesSysPropertyName;
         if (saltSizeBytesSysPropertyName == null) {
-            super.setSaltSizeBytes(null);
+            super.setSaltSizeBytes((Integer)null);
         } else {
             this.saltSizeBytesEnvName = null;
-            String saltSizeBytesStr = System.getProperty(saltSizeBytesSysPropertyName);
-            if (saltSizeBytesStr != null) {
-                try {
-                    super.setSaltSizeBytes(new Integer(saltSizeBytesStr));
-                } catch (NumberFormatException e) {
-                    throw new EncryptionInitializationException(e);
-                }
-            }
+            super.setSaltSizeBytes(
+                    System.getProperty(saltSizeBytesSysPropertyName));
         }
     }
 
@@ -307,13 +279,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         } else {
             this.saltGeneratorClassNameSysPropertyName = null;
             String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
-            try {
-                Class saltGeneratorClass = Class.forName(saltGeneratorClassName);
-                SaltGenerator saltGenerator = (SaltGenerator) saltGeneratorClass.newInstance();
-                super.setSaltGenerator(saltGenerator);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
 
@@ -351,14 +317,9 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
             super.setSaltGenerator(null);
         } else {
             this.saltGeneratorClassNameEnvName = null;
-            String saltGeneratorClassName = System.getProperty(saltGeneratorClassNameSysPropertyName);
-            try {
-                Class saltGeneratorClass = Class.forName(saltGeneratorClassName);
-                SaltGenerator saltGenerator = (SaltGenerator) saltGeneratorClass.newInstance();
-                super.setSaltGenerator(saltGenerator);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            String saltGeneratorClassName = 
+                System.getProperty(saltGeneratorClassNameSysPropertyName);
+            super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
 
@@ -463,13 +424,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         } else {
             this.providerClassNameSysPropertyName = null;
             String providerClassName = System.getenv(providerClassNameEnvName);
-            try {
-                Class providerClass = Class.forName(providerClassName);
-                Provider provider = (Provider) providerClass.newInstance();
-                super.setProvider(provider);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setProviderClassName(providerClassName);
         }
     }
 
@@ -508,13 +463,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         } else {
             this.providerClassNameEnvName = null;
             String providerClassName = System.getProperty(providerClassNameSysPropertyName);
-            try {
-                Class providerClass = Class.forName(providerClassName);
-                Provider provider = (Provider) providerClass.newInstance();
-                super.setProvider(provider);
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
+            super.setProviderClassName(providerClassName);
         }
     }
     
@@ -537,8 +486,22 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     }
 
 
+    public void setIterations(String iterations) {
+        this.iterationsEnvName = null;
+        this.iterationsSysPropertyName = null;
+        super.setIterations(iterations);
+    }
+
+
 
     public void setSaltSizeBytes(Integer saltSizeBytes) {
+        this.saltSizeBytesEnvName = null;
+        this.saltSizeBytesSysPropertyName = null;
+        super.setSaltSizeBytes(saltSizeBytes);
+    }
+
+
+    public void setSaltSizeBytes(String saltSizeBytes) {
         this.saltSizeBytesEnvName = null;
         this.saltSizeBytesSysPropertyName = null;
         super.setSaltSizeBytes(saltSizeBytes);
@@ -553,6 +516,13 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     }
 
 
+    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+        this.saltGeneratorClassNameEnvName = null;
+        this.saltGeneratorClassNameSysPropertyName = null;
+        super.setSaltGeneratorClassName(saltGeneratorClassName);
+    }
+
+
     public void setProviderName(String providerName) {
         this.providerNameEnvName = null;
         this.providerNameSysPropertyName = null;
@@ -560,13 +530,18 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     }
 
     
-    
     public void setProvider(Provider provider) {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProvider(provider);
     }
 
+
+    public void setProviderClassName(String providerClassName) {
+        this.providerClassNameEnvName = null;
+        this.providerClassNameSysPropertyName = null;
+        super.setProviderClassName(providerClassName);
+    }
 
     
 }

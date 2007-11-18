@@ -17,65 +17,78 @@
  * 
  * =============================================================================
  */
-package org.jasypt.cli;
+package org.jasypt.intf.cli;
 
 import java.util.Properties;
 
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.apache.commons.lang.ArrayUtils;
+import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.config.SimpleStringDigesterConfig;
 
-public class JasyptPBEStringDecryptionCLI {
+public class JasyptStringDigestCLI {
     
     private static final String[] VALID_REQUIRED_ARGUMENTS =
         new String[] {
-            ArgumentNaming.ARG_INPUT,
-            ArgumentNaming.ARG_PASSWORD
+            ArgumentNaming.ARG_INPUT
         };
     
     private static final String[] VALID_OPTIONAL_ARGUMENTS =
         new String[] {
             ArgumentNaming.ARG_ALGORITHM,
-            ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS,
+            ArgumentNaming.ARG_ITERATIONS,
+            ArgumentNaming.ARG_SALT_SIZE_BYTES,
             ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME,
             ArgumentNaming.ARG_PROVIDER_NAME,
             ArgumentNaming.ARG_PROVIDER_CLASS_NAME,
+            ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED,
             ArgumentNaming.ARG_STRING_OUTPUT_TYPE
         };
     
     
     public static void main(String[] args) {
-
+        
+        String applicationName = null;
+        String[] arguments = null;
+        if (args[0] == null || args[0].indexOf("=") != -1) {
+            applicationName = JasyptStringDigestCLI.class.getName();
+            arguments = args;
+        } else {
+            applicationName = args[0];
+            arguments = (String[]) ArrayUtils.subarray(args, 1, args.length);
+        }
+        
         Properties argumentValues = 
             ArgumentUtils.getArgumentValues(
-                    args, args[0], 
+                    arguments, applicationName, 
                     VALID_REQUIRED_ARGUMENTS, VALID_OPTIONAL_ARGUMENTS);
 
-        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+        SimpleStringDigesterConfig config = new SimpleStringDigesterConfig();
         config.setAlgorithm(ArgumentUtils.getAlgorithm(argumentValues));
-        config.setKeyObtentionIterations(
-                ArgumentUtils.getKeyObtentionIterations(argumentValues));
+        config.setIterations(ArgumentUtils.getIterations(argumentValues));
+        config.setSaltSizeBytes(ArgumentUtils.getSaltSizeBytes(argumentValues));
         config.setSaltGenerator(ArgumentUtils.getSaltGenerator(argumentValues));
         config.setProviderName(ArgumentUtils.getProviderName(argumentValues));
         config.setProvider(ArgumentUtils.getProvider(argumentValues));
+        config.setUnicodeNormalizationIgnored(
+                ArgumentUtils.getUnicodeNormalizationIgnored(argumentValues));
         config.setStringOutputType(
                 ArgumentUtils.getStringOutputType(argumentValues));
-        config.setPassword(ArgumentUtils.getPassword(argumentValues));
 
         String input = ArgumentUtils.getInput(argumentValues);
 
         ArgumentUtils.showArgumentDescription(argumentValues);
         
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setConfig(config);
+        StandardStringDigester digester = new StandardStringDigester();
+        digester.setConfig(config);
         
-        ArgumentUtils.showOutput(encryptor.decrypt(input));
+        ArgumentUtils.showOutput(digester.digest(input));
         
     }
     
     
     
     
-    private JasyptPBEStringDecryptionCLI() {
+    private JasyptStringDigestCLI() {
         super();
     }
     

@@ -68,6 +68,9 @@ public class SimpleStringPBEConfig
      * <p>
      * If not set, null will be returned.
      * </p>
+     * <p>
+     * Determines the result of: {@link #getStringOutputType()}
+     * </p>
      * 
      * @param stringOutputType the string output type.
      */

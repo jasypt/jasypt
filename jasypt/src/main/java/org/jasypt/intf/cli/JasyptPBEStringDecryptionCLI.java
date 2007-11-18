@@ -17,14 +17,14 @@
  * 
  * =============================================================================
  */
-package org.jasypt.cli;
+package org.jasypt.intf.cli;
 
 import java.util.Properties;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 
-public class JasyptPBEStringEncryptionCLI {
+public class JasyptPBEStringDecryptionCLI {
     
     private static final String[] VALID_REQUIRED_ARGUMENTS =
         new String[] {
@@ -44,7 +44,7 @@ public class JasyptPBEStringEncryptionCLI {
     
     
     public static void main(String[] args) {
-        
+
         Properties argumentValues = 
             ArgumentUtils.getArgumentValues(
                     args, args[0], 
@@ -68,14 +68,14 @@ public class JasyptPBEStringEncryptionCLI {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setConfig(config);
         
-        ArgumentUtils.showOutput(encryptor.encrypt(input));
+        ArgumentUtils.showOutput(encryptor.decrypt(input));
         
     }
     
     
     
     
-    private JasyptPBEStringEncryptionCLI() {
+    private JasyptPBEStringDecryptionCLI() {
         super();
     }
     
