@@ -23,10 +23,22 @@ import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 
 /**
+ * <p>
+ * This class acts as a stateless service for encryption, decryption and
+ * digest operations, letting its clients configure all the jasypt environment
+ * (algorithms, passwords, providers...) from Strings in a single call, be it
+ * using direct values, environment variables or java vm properties.
+ * </p>
+ * <p>
+ * It is meant to service the CLI interfaces, but it can also be used for other
+ * purposes. For instance, by subclassing or wrapping it with a JAX-WS web 
+ * service class, developers can easily create an encryption web service.
+ * </p>
  * 
  * @since 1.4
  * 
@@ -37,11 +49,49 @@ public class JasyptStatelessService {
 
 
 
+    /**
+     * Creates a new instance of <tt>JasyptStatelessService</tt>. 
+     */
     public JasyptStatelessService() {
         super();
     }
     
-    
+
+    /**
+     * <p>
+     * Configure and perform a digest operation.
+     * </p>
+     * 
+     * @param input
+     * @param algorithm
+     * @param algorithmEnvName
+     * @param algorithmSysPropertyName
+     * @param iterations
+     * @param iterationsEnvName
+     * @param iterationsSysPropertyName
+     * @param saltSizeBytes
+     * @param saltSizeBytesEnvName
+     * @param saltSizeBytesSysPropertyName
+     * @param saltGeneratorClassName
+     * @param saltGeneratorClassNameEnvName
+     * @param saltGeneratorClassNameSysPropertyName
+     * @param providerName
+     * @param providerNameEnvName
+     * @param providerNameSysPropertyName
+     * @param providerClassName
+     * @param providerClassNameEnvName
+     * @param providerClassNameSysPropertyName
+     * @param unicodeNormalizationIgnored
+     * @param unicodeNormalizationIgnoredEnvName
+     * @param unicodeNormalizationIgnoredSysPropertyName
+     * @param stringOutputType
+     * @param stringOutputTypeEnvName
+     * @param stringOutputTypeSysPropertyName
+     * @return the result of the digest operation
+     * @throws EncryptionOperationNotPossibleException if the operation could
+     *         not be performed (either because of wrong input or wrong
+     *         parametrization).
+     */
     public String digest(
             String input,
             String algorithm,
@@ -168,7 +218,38 @@ public class JasyptStatelessService {
     }
 
     
-    
+    /**
+     * <p>
+     * Configure and perform an encryption operation.
+     * </p>
+     * 
+     * @param input
+     * @param password
+     * @param passwordEnvName
+     * @param passwordSysPropertyName
+     * @param algorithm
+     * @param algorithmEnvName
+     * @param algorithmSysPropertyName
+     * @param keyObtentionIterations
+     * @param keyObtentionIterationsEnvName
+     * @param keyObtentionIterationsSysPropertyName
+     * @param saltGeneratorClassName
+     * @param saltGeneratorClassNameEnvName
+     * @param saltGeneratorClassNameSysPropertyName
+     * @param providerName
+     * @param providerNameEnvName
+     * @param providerNameSysPropertyName
+     * @param providerClassName
+     * @param providerClassNameEnvName
+     * @param providerClassNameSysPropertyName
+     * @param stringOutputType
+     * @param stringOutputTypeEnvName
+     * @param stringOutputTypeSysPropertyName
+     * @return the result of the encryption operation
+     * @throws EncryptionOperationNotPossibleException if the operation could
+     *         not be performed (either because of wrong input or wrong
+     *         parametrization).
+     */
     public String encrypt(
             String input,
             String password,
@@ -282,8 +363,38 @@ public class JasyptStatelessService {
     }
     
 
-    
-    
+    /**
+     * <p>
+     * Configure and perform a decryption operation.
+     * </p>
+     * 
+     * @param input
+     * @param password
+     * @param passwordEnvName
+     * @param passwordSysPropertyName
+     * @param algorithm
+     * @param algorithmEnvName
+     * @param algorithmSysPropertyName
+     * @param keyObtentionIterations
+     * @param keyObtentionIterationsEnvName
+     * @param keyObtentionIterationsSysPropertyName
+     * @param saltGeneratorClassName
+     * @param saltGeneratorClassNameEnvName
+     * @param saltGeneratorClassNameSysPropertyName
+     * @param providerName
+     * @param providerNameEnvName
+     * @param providerNameSysPropertyName
+     * @param providerClassName
+     * @param providerClassNameEnvName
+     * @param providerClassNameSysPropertyName
+     * @param stringOutputType
+     * @param stringOutputTypeEnvName
+     * @param stringOutputTypeSysPropertyName
+     * @return the result of the decryption operation
+     * @throws EncryptionOperationNotPossibleException if the operation could
+     *         not be performed (either because of wrong input or wrong
+     *         parametrization).
+     */
     public String decrypt(
             String input,
             String password,
