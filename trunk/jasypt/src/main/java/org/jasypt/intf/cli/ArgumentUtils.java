@@ -40,10 +40,7 @@ class ArgumentUtils {
             System.out.println("Runtime: " + 
                     System.getProperty("java.vm.vendor") + " " + 
                     System.getProperty("java.vm.name") + " " +
-                    System.getProperty("java.vm.version") + " " +
-                    "(Java version: " + 
-                    System.getProperty("java.vm.specification.version") + 
-                    ")");
+                    System.getProperty("java.vm.version") + " ");
             System.out.println("\n");
         }
         
