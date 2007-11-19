@@ -30,9 +30,17 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-class ArgumentUtils {
+
+/*
+ * Internal class for managing common CLI operations like argument extraction
+ * or rendering command output/errors.
+ */
+class CLIUtils {
 
     
+    /*
+     * Renders the execution environment.
+     */
     static void showEnvironment(boolean verbose) {
         
         if (verbose) {
@@ -46,7 +54,10 @@ class ArgumentUtils {
         
     }
     
-    
+
+    /*
+     * Renders the command arguments as accepted for execution.
+     */
     static void showArgumentDescription(Properties argumentValues, 
             boolean verbose) {
         
@@ -64,6 +75,9 @@ class ArgumentUtils {
     }
     
     
+    /*
+     * Renders the command output.
+     */
     static void showOutput(String output, boolean verbose) {
 
         if (verbose) {
@@ -77,6 +91,9 @@ class ArgumentUtils {
     }
 
     
+    /*
+     * Renders an error occurred during execution.
+     */
     static void showError(Throwable t, boolean verbose) {
 
         if (verbose) {
@@ -113,6 +130,9 @@ class ArgumentUtils {
     }
 
     
+    /*
+     * Defines whether the user has turned verbosity off or not.
+     */
     static boolean getVerbosity(String[] args) {
         for (int i = 0; i < args.length; i++) {
             String key = StringUtils.substringBefore(args[i], "=");
@@ -128,6 +148,9 @@ class ArgumentUtils {
     }
     
     
+    /*
+     * Extracts the argument values and checks its wellformedness.
+     */
     static Properties getArgumentValues(String appName, String[] args, 
             String[][] requiredArgNames, String[][] optionalArgNames) {
         
@@ -154,6 +177,8 @@ class ArgumentUtils {
                 } else {
                     argumentValues.setProperty(key, value);
                 }
+            } else {
+                throw new IllegalArgumentException("Bad argument: " + args[i]);
             }
         }
         
@@ -175,6 +200,9 @@ class ArgumentUtils {
     }
     
     
+    /*
+     * Renders the usage instructions and exits with error.
+     */
     static void showUsageAndExit(String appName,
             String[][] requiredArgNames, String[][] optionalArgNames) {
         
@@ -223,8 +251,10 @@ class ArgumentUtils {
     }
     
     
-    
-    private ArgumentUtils() {
+    /*
+     * Instantiation is forbidden.
+     */
+    private CLIUtils() {
         super();
     }
     

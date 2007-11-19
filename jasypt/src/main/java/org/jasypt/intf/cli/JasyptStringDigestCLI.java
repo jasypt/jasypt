@@ -75,7 +75,7 @@ public class JasyptStringDigestCLI {
     
     public static void main(String[] args) {
 
-        boolean verbose = ArgumentUtils.getVerbosity(args);
+        boolean verbose = CLIUtils.getVerbosity(args);
         
         try {
             
@@ -90,17 +90,17 @@ public class JasyptStringDigestCLI {
             }
             
             Properties argumentValues = 
-                ArgumentUtils.getArgumentValues(
+                CLIUtils.getArgumentValues(
                         applicationName, arguments,  
                         VALID_REQUIRED_ARGUMENTS, VALID_OPTIONAL_ARGUMENTS);
 
-            ArgumentUtils.showEnvironment(verbose);
+            CLIUtils.showEnvironment(verbose);
             
             JasyptStatelessService service = new JasyptStatelessService();
 
             String input = argumentValues.getProperty(ArgumentNaming.ARG_INPUT);
 
-            ArgumentUtils.showArgumentDescription(argumentValues, verbose);
+            CLIUtils.showArgumentDescription(argumentValues, verbose);
             
             String result =
                 service.digest(
@@ -130,10 +130,10 @@ public class JasyptStringDigestCLI {
                         argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME),
                         null);
             
-            ArgumentUtils.showOutput(result, verbose);
+            CLIUtils.showOutput(result, verbose);
 
         } catch (Throwable t) {
-            ArgumentUtils.showError(t, verbose);
+            CLIUtils.showError(t, verbose);
         }
         
     }
