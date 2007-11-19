@@ -60,36 +60,28 @@ public class JasyptStringDigestCLI {
                 ArgumentNaming.ARG_VERBOSE
             },
             new String [] {
-                ArgumentNaming.ARG_ALGORITHM,
-                ArgumentNaming.ARG_ALGORITHM_ENV_NAME
+                ArgumentNaming.ARG_ALGORITHM
             },
             new String [] {
-                ArgumentNaming.ARG_ITERATIONS,
-                ArgumentNaming.ARG_ITERATIONS_ENV_NAME
+                ArgumentNaming.ARG_ITERATIONS
             },
             new String [] {
-                ArgumentNaming.ARG_SALT_SIZE_BYTES,
-                ArgumentNaming.ARG_SALT_SIZE_BYTES_ENV_NAME
+                ArgumentNaming.ARG_SALT_SIZE_BYTES
             },
             new String [] {
-                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME,
-                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME
+                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_PROVIDER_NAME,
-                ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME
+                ArgumentNaming.ARG_PROVIDER_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_PROVIDER_CLASS_NAME,
-                ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME
+                ArgumentNaming.ARG_PROVIDER_CLASS_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED,
-                ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED_ENV_NAME
+                ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED
             },
             new String [] {
-                ArgumentNaming.ARG_STRING_OUTPUT_TYPE,
-                ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME
+                ArgumentNaming.ARG_STRING_OUTPUT_TYPE
             }
         };
     
@@ -134,28 +126,28 @@ public class JasyptStringDigestCLI {
                 service.digest(
                         input, 
                         argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM),
-                        argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_ITERATIONS),
-                        argumentValues.getProperty(ArgumentNaming.ARG_ITERATIONS_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_SALT_SIZE_BYTES),
-                        argumentValues.getProperty(ArgumentNaming.ARG_SALT_SIZE_BYTES_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED),
-                        argumentValues.getProperty(ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE),
-                        argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME),
+                        null,
                         null);
             
             CLIUtils.showOutput(result, verbose);
