@@ -21,7 +21,6 @@ package org.jasypt.encryption.pbe.config;
 
 import java.security.Provider;
 
-import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.salt.SaltGenerator;
 
 /**

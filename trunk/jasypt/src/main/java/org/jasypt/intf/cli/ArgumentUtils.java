@@ -19,7 +19,6 @@
  */
 package org.jasypt.intf.cli;
 
-import java.security.Provider;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,172 +26,151 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jasypt.commons.CommonUtils;
-import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.salt.SaltGenerator;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 class ArgumentUtils {
 
     
-    static String getPassword(Properties argumentValues) {
-        return argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD);
+    static void showEnvironment(boolean verbose) {
+        
+        if (verbose) {
+            System.out.println("\n----ENVIRONMENT-----------------\n");
+            System.out.println("Runtime: " + 
+                    System.getProperty("java.vm.vendor") + " " + 
+                    System.getProperty("java.vm.name") + " " +
+                    System.getProperty("java.vm.version") + " " +
+                    "(Java version: " + 
+                    System.getProperty("java.vm.specification.version") + 
+                    ")");
+            System.out.println("\n");
+        }
+        
+    }
+    
+    
+    static void showArgumentDescription(Properties argumentValues, 
+            boolean verbose) {
+        
+        if (verbose) {
+            System.out.println("\n----ARGUMENTS-------------------\n");
+            Iterator entriesIter = argumentValues.entrySet().iterator();
+            while (entriesIter.hasNext()) {
+                Map.Entry entry = (Map.Entry) entriesIter.next();
+                System.out.println(
+                        entry.getKey() + ": " + entry.getValue());
+            }
+            System.out.println("\n");
+        }
+        
+    }
+    
+    
+    static void showOutput(String output, boolean verbose) {
+
+        if (verbose) {
+            System.out.println("\n----OUTPUT----------------------\n");
+            System.out.println(output);
+            System.out.println("\n");
+        } else {
+            System.out.println(output);
+        }
+        
     }
 
     
-    static String getAlgorithm(Properties argumentValues) {
-        return argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM);
-    }
-    
-    
-    static Integer getIterations(Properties argumentValues) {
-        String iterations = 
-            argumentValues.getProperty(ArgumentNaming.ARG_ITERATIONS);
-        if (iterations != null) {
-            return new Integer(iterations);
+    static void showError(Throwable t, boolean verbose) {
+
+        if (verbose) {
+
+            System.err.println("\n----ERROR-----------------------\n");
+            if (t instanceof EncryptionOperationNotPossibleException) {
+                System.err.println(
+                        "Operation not possible (Bad input or parameters)");
+            } else {
+                if (t.getMessage() != null) {
+                    System.err.println(t.getMessage());
+                } else {
+                    System.err.println(t.getClass().getName());
+                }
+            }
+            System.err.println("\n");
+            
+        } else {
+            
+            System.err.print("ERROR: ");
+            if (t instanceof EncryptionOperationNotPossibleException) {
+                System.err.println(
+                        "Operation not possible (Bad input or parameters)");
+            } else {
+                if (t.getMessage() != null) {
+                    System.err.println(t.getMessage());
+                } else {
+                    System.err.println(t.getClass().getName());
+                }
+            }
+            
         }
-        return null;
+        
     }
+
     
-    
-    static Integer getKeyObtentionIterations(Properties argumentValues) {
-        String keyObtentionIterations = 
-            argumentValues.getProperty(
-                    ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS);
-        if (keyObtentionIterations != null) {
-            return new Integer(keyObtentionIterations);
-        }
-        return null;
-    }
-    
-    
-    static Integer getSaltSizeBytes(Properties argumentValues) {
-        String saltSizeBytes = 
-            argumentValues.getProperty(ArgumentNaming.ARG_SALT_SIZE_BYTES);
-        if (saltSizeBytes != null) {
-            return new Integer(saltSizeBytes);
-        }
-        return null;
-    }
-    
-    
-    static SaltGenerator getSaltGenerator(Properties argumentValues) {
-        String saltGeneratorClassName = 
-            argumentValues.getProperty(
-                    ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME);
-        if (saltGeneratorClassName != null) {
-            try {
-                Class saltGeneratorClass = 
-                    Class.forName(saltGeneratorClassName);
-                SaltGenerator saltGenerator = 
-                    (SaltGenerator) saltGeneratorClass.newInstance();
-                return saltGenerator;
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
+    static boolean getVerbosity(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            String key = StringUtils.substringBefore(args[i], "=");
+            String value = StringUtils.substringAfter(args[i], "=");
+            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+                continue;
+            }
+            if (ArgumentNaming.ARG_VERBOSE.equals(key)) {
+                return BooleanUtils.toBoolean(value);
             }
         }
-        return null;
+        return true;
     }
+    
+    
+    static Properties getArgumentValues(String appName, String[] args, 
+            String[][] requiredArgNames, String[][] optionalArgNames) {
+        
+        Set argNames = new HashSet();
+        for (int i = 0; i < requiredArgNames.length; i++) {
+            argNames.addAll(Arrays.asList(requiredArgNames[i]));
+        }
+        for (int i = 0; i < optionalArgNames.length; i++) {
+            argNames.addAll(Arrays.asList(optionalArgNames[i]));
+        }
 
-    
-    static String getProviderName(Properties argumentValues) {
-        String providerName = 
-            argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME);
-        if (providerName != null) {
-            return providerName;
-        }
-        return null;
-    }
-    
-
-    static Provider getProvider(Properties argumentValues) {
-        String providerClassName = 
-            argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME);
-        if (providerClassName != null) {
-            try {
-                Class providerClass = Class.forName(providerClassName);
-                Provider provider = (Provider) providerClass.newInstance();
-                return provider;
-            } catch (Exception e) {
-                throw new EncryptionInitializationException(e);
-            }
-        }
-        return null;
-    }
-    
-    
-    static Boolean getUnicodeNormalizationIgnored(Properties argumentValues) {
-        String unicodeNormalizationIgnored = 
-            argumentValues.getProperty(
-                    ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED);
-        if (unicodeNormalizationIgnored != null) {
-            return CommonUtils.getStandardBooleanValue(
-                    unicodeNormalizationIgnored);
-        }
-        return null;
-    }
-    
-    
-    static String getStringOutputType(Properties argumentValues) {
-        String stringOutputType =
-            argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE);
-        if (stringOutputType != null) {
-            return CommonUtils.getStandardStringOutputType(stringOutputType);
-        }
-        return null;
-    }
-    
-    
-    static String getInput(Properties argumentValues) {
-        // Cannot be null (checked in getArgumentValues)
-        return argumentValues.getProperty(ArgumentNaming.ARG_INPUT);
-    }
-
-    
-    static void showArgumentDescription(Properties argumentValues) {
-        
-        System.out.println("ARGUMENTS:");
-        Iterator entriesIter = argumentValues.entrySet().iterator();
-        while (entriesIter.hasNext()) {
-            Map.Entry entry = (Map.Entry) entriesIter.next();
-            System.out.println("  " + entry.getKey() + "=" + entry.getValue());
-        }
-        System.out.println("--------------------------------");
-        
-    }
-    
-    
-    static void showOutput(String output) {
-        
-        System.out.println("OUTPUT: " + output);
-        System.out.println("--------------------------------");
-        
-    }
-
-    
-    static Properties getArgumentValues(String[] args, String appName, 
-            String[] requiredArgNames, String[] optionalArgNames) {
-        
-        Set argNames = new HashSet(
-                    Arrays.asList(ArrayUtils.addAll(
-                            requiredArgNames, optionalArgNames)));
         Properties argumentValues = new Properties();
-        for (int i = 1; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             String key = StringUtils.substringBefore(args[i], "=");
             String value = StringUtils.substringAfter(args[i], "=");
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
                 throw new IllegalArgumentException("Bad argument: " + args[i]);
             }
             if (argNames.contains(key)) {
-                argumentValues.setProperty(key, value);
+                if (value.startsWith("\"") && value.endsWith("\"")) {
+                    argumentValues.setProperty(
+                            key, 
+                            value.substring(1, value.length() - 1));
+                } else {
+                    argumentValues.setProperty(key, value);
+                }
             }
         }
         
         //Check for all required arguments
         for (int i = 0; i < requiredArgNames.length; i++) {
-            if (!argumentValues.containsKey(requiredArgNames[i])) {
-                showUsageAndExit(appName, requiredArgNames, optionalArgNames);
+            boolean found = false;
+            for (int j = 0; j < requiredArgNames[i].length; j++) {
+                if (argumentValues.containsKey(requiredArgNames[i][j])) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                showUsageAndExit(
+                        appName, requiredArgNames, optionalArgNames);
             }
         }
         return argumentValues;
@@ -201,18 +179,47 @@ class ArgumentUtils {
     
     
     static void showUsageAndExit(String appName,
-            String[] requiredArgNames, String[] optionalArgNames) {
+            String[][] requiredArgNames, String[][] optionalArgNames) {
         
-        System.err.println("USAGE: " + appName + " [ARGUMENTS]");
-        System.err.print("  * Arguments must apply to format: ");
-        System.err.println("\"arg1=value1 arg2=value2 arg3=value3 ...\"");
-        System.err.println("  * Required arguments:");
+        System.err.println("\nUSAGE: " + appName + " [ARGUMENTS]\n");
+        System.err.println("  * Arguments must apply to format:\n");
+        System.err.println(
+                "      \"arg1=value1 arg2=value2 arg3=value3 ...\"\n");
+        System.err.println("  * Required arguments:\n");
         for (int i = 0; i < requiredArgNames.length; i++) {
-            System.err.println("      " + requiredArgNames[i]);
+            System.err.print("      ");
+            if (requiredArgNames[i].length == 1) {
+                System.err.print(requiredArgNames[i][0]);
+            } else {
+                System.err.print("(");
+                for (int j = 0; j < requiredArgNames[i].length; j++) {
+                    if (j > 0) {
+                        System.err.print(" | ");
+                    }
+                    System.err.print(requiredArgNames[i][j]);
+                }
+                System.err.print(")");
+            }
+            System.err.println();
+            System.err.println();
         }
-        System.err.println("  * Optional arguments:");
+        System.err.println("  * Optional arguments:\n");
         for (int i = 0; i < optionalArgNames.length; i++) {
-            System.err.println("      " + optionalArgNames[i]);
+            System.err.print("      ");
+            if (optionalArgNames[i].length == 1) {
+                System.err.print(optionalArgNames[i][0]);
+            } else {
+                System.err.print("(");
+                for (int j = 0; j < optionalArgNames[i].length; j++) {
+                    if (j > 0) {
+                        System.err.print(" | ");
+                    }
+                    System.err.print(optionalArgNames[i][j]);
+                }
+                System.err.print(")");
+            }
+            System.err.println();
+            System.err.println();
         }
         System.exit(1);
         

@@ -227,7 +227,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @since 1.4
      * 
-     * @param saltGenerator the salt generator.
+     * @param saltGeneratorClassName the name of the salt generator class.
      */
     public void setSaltGeneratorClassName(String saltGeneratorClassName) {
         if (saltGeneratorClassName != null) {
@@ -327,7 +327,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @since 1.4
      * 
-     * @param provider the security provider object.
+     * @param providerClassName the name of the security provider class.
      */
     public void setProviderClassName(String providerClassName) {
         if (providerClassName != null) {

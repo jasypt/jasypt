@@ -1,8 +1,8 @@
 @ECHO OFF
 IF "%OS%" == "Windows_NT" setlocal
 
-set SCRIPT_NAME=digest
-set EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptStringDigestCLI
+set SCRIPT_NAME=encrypt
+set EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI
 set CURRENT_DIR=%cd%
 set CLASSPATH=%CURRENT_DIR%\jasypt-cli-bundle.jar
 
