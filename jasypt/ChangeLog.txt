@@ -28,6 +28,8 @@
   Jasypt.
 - Package org.jasypt.springsecurity renamed as org.jasypt.spring.security, and
   deprecated classes in the old package (will be removed in 1.5).
+- Added org.jasypt.salt.ZeroSaltGenerator for creating salts filled with
+  "zero" bytes.
 
 
 1.3.1
