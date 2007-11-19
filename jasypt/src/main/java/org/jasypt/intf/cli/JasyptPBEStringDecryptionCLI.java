@@ -51,8 +51,7 @@ public class JasyptPBEStringDecryptionCLI {
                 ArgumentNaming.ARG_INPUT
             },
             new String [] {
-                ArgumentNaming.ARG_PASSWORD,
-                ArgumentNaming.ARG_PASSWORD_ENV_NAME
+                ArgumentNaming.ARG_PASSWORD
             }
         };
     
@@ -65,28 +64,22 @@ public class JasyptPBEStringDecryptionCLI {
                 ArgumentNaming.ARG_VERBOSE
             },
             new String [] {
-                ArgumentNaming.ARG_ALGORITHM,
-                ArgumentNaming.ARG_ALGORITHM_ENV_NAME
+                ArgumentNaming.ARG_ALGORITHM
             },
             new String [] {
-                ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS,
-                ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME
+                ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS
             },
             new String [] {
-                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME,
-                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME
+                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_PROVIDER_NAME,
-                ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME
+                ArgumentNaming.ARG_PROVIDER_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_PROVIDER_CLASS_NAME,
-                ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME
+                ArgumentNaming.ARG_PROVIDER_CLASS_NAME
             },
             new String [] {
-                ArgumentNaming.ARG_STRING_OUTPUT_TYPE,
-                ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME
+                ArgumentNaming.ARG_STRING_OUTPUT_TYPE
             }
         };
     
@@ -131,25 +124,25 @@ public class JasyptPBEStringDecryptionCLI {
                 service.decrypt(
                         input, 
                         argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD),
-                        argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM),
-                        argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS),
-                        argumentValues.getProperty(ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME),
-                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME),
+                        null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE),
-                        argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME),
+                        null,
                         null);
             
             CLIUtils.showOutput(result, verbose);

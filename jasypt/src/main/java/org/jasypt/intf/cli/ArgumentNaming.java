@@ -32,45 +32,28 @@ class ArgumentNaming {
     static final String ARG_INPUT = "input";
     
     static final String ARG_PASSWORD = "password";
-    static final String ARG_PASSWORD_ENV_NAME = "passwordEnvName";
     
     static final String ARG_ALGORITHM = "algorithm";
-    static final String ARG_ALGORITHM_ENV_NAME = "algorithmEnvName";
     
     static final String ARG_ITERATIONS = "iterations";
-    static final String ARG_ITERATIONS_ENV_NAME = "iterationsEnvName";
     
     static final String ARG_KEY_OBTENTION_ITERATIONS = 
         "keyObtentionIterations";
-    static final String ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME = 
-        "keyObtentionIterationsEnvName";
     
     static final String ARG_SALT_SIZE_BYTES = "saltSizeBytes";
-    static final String ARG_SALT_SIZE_BYTES_ENV_NAME = 
-        "saltSizeBytesEnvName";
     
     static final String ARG_SALT_GENERATOR_CLASS_NAME = 
         "saltGeneratorClassName";
-    static final String ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME = 
-        "saltGeneratorClassNameEnvName";
     
     static final String ARG_PROVIDER_CLASS_NAME = "providerClassName";
-    static final String ARG_PROVIDER_CLASS_NAME_ENV_NAME = 
-        "providerClassNameEnvName";
     
     static final String ARG_PROVIDER_NAME = "providerName";
-    static final String ARG_PROVIDER_NAME_ENV_NAME = 
-        "providerNameEnvName";
     
     static final String ARG_UNICODE_NORMALIZATION_IGNORED = 
         "unicodeNormalizationIgnored";
-    static final String ARG_UNICODE_NORMALIZATION_IGNORED_ENV_NAME = 
-        "unicodeNormalizationIgnoredEnvName";
     
     static final String ARG_STRING_OUTPUT_TYPE = 
         "stringOutputType";
-    static final String ARG_STRING_OUTPUT_TYPE_ENV_NAME = 
-        "stringOutputTypeEnvName";
     
     
     // Instantiation is not allowed
