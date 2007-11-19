@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.salt.ZeroSaltGenerator;
+
 import junit.framework.TestCase;
 
 public class SecondEncryptionAfterFailBehaviourTest extends TestCase {
@@ -46,6 +48,16 @@ public class SecondEncryptionAfterFailBehaviourTest extends TestCase {
         } catch (Exception e) {           
             assertTrue(false);
         }
+
+        /*
+         * The following is to test behaviour even if salt is not included 
+         * in output. 
+         */
+        StandardPBEStringEncryptor encryptor2 = new StandardPBEStringEncryptor();
+        encryptor2.setPassword("jasypt");
+        encryptor2.setSaltGenerator(new ZeroSaltGenerator());
+        String encryptedMsg = encryptor2.encrypt("jasypt");
+        assertTrue(encryptor2.decrypt(encryptedMsg).equals("jasypt"));
         
     }
 }
