@@ -1,7 +1,7 @@
 #!/bin/sh
 
-SCRIPT_NAME=digest
-EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptStringDigestCLI
+SCRIPT_NAME=decrypt
+EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI
 CURRENT_DIR=$PWD
 CLASSPATH=$CURRENT_DIR/jasypt-cli-bundle.jar
 
