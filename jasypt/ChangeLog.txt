@@ -18,18 +18,20 @@
   and org.jasypt.spring.properties.EncryptablePropertyOverrideConfigurer
   to allow use of encrypted .properties files from within Spring applications
   in a transparent manner.
-- Added org.jasypt.intf.cli.JasyptStringDigestCLI, 
-  org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI and 
-  org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI to allow the execution of
-  digest, encryption and decryption commands from the command line, useful
-  for knowing which value to write in an encrypted .properties file. 
-- Added org.jasypt.intf.service.JasyptStatelessService for supporting CLI
-  operation and development of stateless services (like web services) for
-  Jasypt.
 - Package org.jasypt.springsecurity renamed as org.jasypt.spring.security, and
   deprecated classes in the old package (will be removed in 1.5).
 - Added org.jasypt.salt.ZeroSaltGenerator for creating salts filled with
   "zero" bytes.
+- Added org.jasypt.intf.service.JasyptStatelessService for supporting CLI
+  operation and development of stateless services (like web services) for
+  Jasypt.
+- Added org.jasypt.intf.cli.JasyptStringDigestCLI, 
+  org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI and 
+  org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI to allow the execution of
+  digest, encryption and decryption commands from the command line, useful
+  for knowing which value to write in an encrypted .properties file.
+- Created new zip distribution containing convenience .sh and .bat files for 
+  executing CLI tools.
 
 
 1.3.1
