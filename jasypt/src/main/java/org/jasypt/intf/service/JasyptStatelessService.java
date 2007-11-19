@@ -26,6 +26,13 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 
 
+/**
+ * 
+ * @since 1.4
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ *
+ */
 public class JasyptStatelessService {
 
 
