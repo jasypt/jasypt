@@ -21,54 +21,113 @@ package org.jasypt.intf.cli;
 
 import java.util.Properties;
 
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.apache.commons.lang.ArrayUtils;
+import org.jasypt.intf.service.JasyptStatelessService;
 
 public class JasyptPBEStringEncryptionCLI {
     
-    private static final String[] VALID_REQUIRED_ARGUMENTS =
-        new String[] {
-            ArgumentNaming.ARG_INPUT,
-            ArgumentNaming.ARG_PASSWORD
+    private static final String[][] VALID_REQUIRED_ARGUMENTS =
+        new String[][] {
+            new String [] {
+                ArgumentNaming.ARG_INPUT
+            },
+            new String [] {
+                ArgumentNaming.ARG_PASSWORD,
+                ArgumentNaming.ARG_PASSWORD_ENV_NAME
+            }
         };
     
-    private static final String[] VALID_OPTIONAL_ARGUMENTS =
-        new String[] {
-            ArgumentNaming.ARG_ALGORITHM,
-            ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS,
-            ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME,
-            ArgumentNaming.ARG_PROVIDER_NAME,
-            ArgumentNaming.ARG_PROVIDER_CLASS_NAME,
-            ArgumentNaming.ARG_STRING_OUTPUT_TYPE
+    private static final String[][] VALID_OPTIONAL_ARGUMENTS =
+        new String[][] {
+            new String [] {
+                ArgumentNaming.ARG_VERBOSE
+            },
+            new String [] {
+                ArgumentNaming.ARG_ALGORITHM,
+                ArgumentNaming.ARG_ALGORITHM_ENV_NAME
+            },
+            new String [] {
+                ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS,
+                ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME
+            },
+            new String [] {
+                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME,
+                ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME
+            },
+            new String [] {
+                ArgumentNaming.ARG_PROVIDER_NAME,
+                ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME
+            },
+            new String [] {
+                ArgumentNaming.ARG_PROVIDER_CLASS_NAME,
+                ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME
+            },
+            new String [] {
+                ArgumentNaming.ARG_STRING_OUTPUT_TYPE,
+                ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME
+            }
         };
     
     
     public static void main(String[] args) {
-        
-        Properties argumentValues = 
-            ArgumentUtils.getArgumentValues(
-                    args, args[0], 
-                    VALID_REQUIRED_ARGUMENTS, VALID_OPTIONAL_ARGUMENTS);
 
-        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-        config.setAlgorithm(ArgumentUtils.getAlgorithm(argumentValues));
-        config.setKeyObtentionIterations(
-                ArgumentUtils.getKeyObtentionIterations(argumentValues));
-        config.setSaltGenerator(ArgumentUtils.getSaltGenerator(argumentValues));
-        config.setProviderName(ArgumentUtils.getProviderName(argumentValues));
-        config.setProvider(ArgumentUtils.getProvider(argumentValues));
-        config.setStringOutputType(
-                ArgumentUtils.getStringOutputType(argumentValues));
-        config.setPassword(ArgumentUtils.getPassword(argumentValues));
+        boolean verbose = ArgumentUtils.getVerbosity(args);
 
-        String input = ArgumentUtils.getInput(argumentValues);
+        try {
+            
+            String applicationName = null;
+            String[] arguments = null;
+            if (args[0] == null || args[0].indexOf("=") != -1) {
+                applicationName = JasyptPBEStringEncryptionCLI.class.getName();
+                arguments = args;
+            } else {
+                applicationName = args[0];
+                arguments = (String[]) ArrayUtils.subarray(args, 1, args.length);
+            }
+            
+            Properties argumentValues = 
+                ArgumentUtils.getArgumentValues(
+                        applicationName, arguments, 
+                        VALID_REQUIRED_ARGUMENTS, VALID_OPTIONAL_ARGUMENTS);
 
-        ArgumentUtils.showArgumentDescription(argumentValues);
-        
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-        encryptor.setConfig(config);
-        
-        ArgumentUtils.showOutput(encryptor.encrypt(input));
+            ArgumentUtils.showEnvironment(verbose);
+
+            JasyptStatelessService service = new JasyptStatelessService();
+
+            String input = argumentValues.getProperty(ArgumentNaming.ARG_INPUT);
+
+            ArgumentUtils.showArgumentDescription(argumentValues, verbose);
+            
+            String result =
+                service.encrypt(
+                        input, 
+                        argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD),
+                        argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM),
+                        argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS),
+                        argumentValues.getProperty(ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME),
+                        argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME),
+                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME),
+                        argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME_ENV_NAME),
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE),
+                        argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE_ENV_NAME),
+                        null);
+            
+            ArgumentUtils.showOutput(result, verbose);
+
+        } catch (Throwable t) {
+            ArgumentUtils.showError(t, verbose);
+        }
         
     }
     

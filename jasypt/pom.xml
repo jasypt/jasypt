@@ -130,8 +130,8 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/cli-bundle.xml</descriptor>
               </descriptors>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>${artifactId}-cli-bundle</finalName>
+              <appendAssemblyId>true</appendAssemblyId>
+              <finalName>${artifactId}</finalName>
             </configuration>
           </execution>
           <execution>
@@ -144,8 +144,8 @@
               <descriptors>
                 <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
               </descriptors>
-              <appendAssemblyId>false</appendAssemblyId>
-              <finalName>${artifactId}-${version}-dist</finalName>
+              <appendAssemblyId>true</appendAssemblyId>
+              <finalName>${artifactId}-${version}</finalName>
             </configuration>
           </execution>
         </executions>
