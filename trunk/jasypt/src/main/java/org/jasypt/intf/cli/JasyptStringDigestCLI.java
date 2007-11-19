@@ -24,8 +24,26 @@ import java.util.Properties;
 import org.apache.commons.lang.ArrayUtils;
 import org.jasypt.intf.service.JasyptStatelessService;
 
+
+/**
+ * <p>
+ * This class supports the CLI "digest" operation.
+ * </p>
+ * <p>
+ * <b>It should NEVER be used inside your code, only from the supplied
+ * command-line tools</b>.
+ * </p>
+ * 
+ * @since 1.4
+ * 
+ * @author Daniel Fern&aacute;ndez Garrido
+ *
+ */
 public class JasyptStringDigestCLI {
     
+    /*
+     * The required arguments for this CLI operation.
+     */
     private static final String[][] VALID_REQUIRED_ARGUMENTS =
         new String[][] {
             new String [] {
@@ -33,6 +51,9 @@ public class JasyptStringDigestCLI {
             }
         };
     
+    /*
+     * The optional arguments for this CLI operation.
+     */
     private static final String[][] VALID_OPTIONAL_ARGUMENTS =
         new String[][] {
             new String [] {
@@ -73,6 +94,13 @@ public class JasyptStringDigestCLI {
         };
     
     
+    /**
+     * <p>
+     * CLI execution method.
+     * </p>
+     * 
+     * @param args the command execution arguments
+     */
     public static void main(String[] args) {
 
         boolean verbose = CLIUtils.getVerbosity(args);
@@ -140,7 +168,9 @@ public class JasyptStringDigestCLI {
     
     
     
-    
+    /*
+     * Instantiation is forbidden.
+     */
     private JasyptStringDigestCLI() {
         super();
     }
