@@ -20,56 +20,60 @@
 package org.jasypt.intf.cli;
 
 
-public class ArgumentNaming {
+/*
+ * Internal class for holding the names of the CLI parameters. These
+ * can be both direct and environment variable names. 
+ */
+class ArgumentNaming {
 
     
-    public static final String ARG_VERBOSE = "verbose";
+    static final String ARG_VERBOSE = "verbose";
     
-    public static final String ARG_INPUT = "input";
+    static final String ARG_INPUT = "input";
     
-    public static final String ARG_PASSWORD = "password";
-    public static final String ARG_PASSWORD_ENV_NAME = "passwordEnvName";
+    static final String ARG_PASSWORD = "password";
+    static final String ARG_PASSWORD_ENV_NAME = "passwordEnvName";
     
-    public static final String ARG_ALGORITHM = "algorithm";
-    public static final String ARG_ALGORITHM_ENV_NAME = "algorithmEnvName";
+    static final String ARG_ALGORITHM = "algorithm";
+    static final String ARG_ALGORITHM_ENV_NAME = "algorithmEnvName";
     
-    public static final String ARG_ITERATIONS = "iterations";
-    public static final String ARG_ITERATIONS_ENV_NAME = "iterationsEnvName";
+    static final String ARG_ITERATIONS = "iterations";
+    static final String ARG_ITERATIONS_ENV_NAME = "iterationsEnvName";
     
-    public static final String ARG_KEY_OBTENTION_ITERATIONS = 
+    static final String ARG_KEY_OBTENTION_ITERATIONS = 
         "keyObtentionIterations";
-    public static final String ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME = 
+    static final String ARG_KEY_OBTENTION_ITERATIONS_ENV_NAME = 
         "keyObtentionIterationsEnvName";
     
-    public static final String ARG_SALT_SIZE_BYTES = "saltSizeBytes";
-    public static final String ARG_SALT_SIZE_BYTES_ENV_NAME = 
+    static final String ARG_SALT_SIZE_BYTES = "saltSizeBytes";
+    static final String ARG_SALT_SIZE_BYTES_ENV_NAME = 
         "saltSizeBytesEnvName";
     
-    public static final String ARG_SALT_GENERATOR_CLASS_NAME = 
+    static final String ARG_SALT_GENERATOR_CLASS_NAME = 
         "saltGeneratorClassName";
-    public static final String ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME = 
+    static final String ARG_SALT_GENERATOR_CLASS_NAME_ENV_NAME = 
         "saltGeneratorClassNameEnvName";
     
-    public static final String ARG_PROVIDER_CLASS_NAME = "providerClassName";
-    public static final String ARG_PROVIDER_CLASS_NAME_ENV_NAME = 
+    static final String ARG_PROVIDER_CLASS_NAME = "providerClassName";
+    static final String ARG_PROVIDER_CLASS_NAME_ENV_NAME = 
         "providerClassNameEnvName";
     
-    public static final String ARG_PROVIDER_NAME = "providerName";
-    public static final String ARG_PROVIDER_NAME_ENV_NAME = 
+    static final String ARG_PROVIDER_NAME = "providerName";
+    static final String ARG_PROVIDER_NAME_ENV_NAME = 
         "providerNameEnvName";
     
-    public static final String ARG_UNICODE_NORMALIZATION_IGNORED = 
+    static final String ARG_UNICODE_NORMALIZATION_IGNORED = 
         "unicodeNormalizationIgnored";
-    public static final String ARG_UNICODE_NORMALIZATION_IGNORED_ENV_NAME = 
+    static final String ARG_UNICODE_NORMALIZATION_IGNORED_ENV_NAME = 
         "unicodeNormalizationIgnoredEnvName";
     
-    public static final String ARG_STRING_OUTPUT_TYPE = 
+    static final String ARG_STRING_OUTPUT_TYPE = 
         "stringOutputType";
-    public static final String ARG_STRING_OUTPUT_TYPE_ENV_NAME = 
+    static final String ARG_STRING_OUTPUT_TYPE_ENV_NAME = 
         "stringOutputTypeEnvName";
     
     
-    
+    // Instantiation is not allowed
     private ArgumentNaming() {
         super();
     }
