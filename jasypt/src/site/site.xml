@@ -61,13 +61,14 @@
         <item name="· Easy Tools" href="getting-started-easy.html" />
         <item name="· Standard Tools" href="getting-started-standard.html" />
       </item>
+      <item name="· Advanced encryptor/digester configuration" href="advancedconfiguration.html" />
+      <item name="· Web PBE configuration" href="webconfiguration.html" />
       <item name="· Encrypting passwords" href="encrypting-passwords.html" />
       <item name="· Encrypting texts" href="encrypting-texts.html" />
       <item name="· Encrypting numbers" href="encrypting-numbers.html" />
       <item name="· Encrypting binaries" href="encrypting-binaries.html" />
-      <item name="· Advanced configuration" href="advancedconfiguration.html" />
-      <item name="· Command Line Tools" href="cli.html" />
-      <item name="· Web PBE configuration" href="webconfiguration.html" />
+      <item name="· Encrypting application configuration files" href="encrypting-configuration.html" />
+      <item name="· Encrypting from the command line" href="cli.html" />
       <item name="· Using non-default JCE providers" href="non-default-providers.html" />
       <item name="· Jasypt + Maven" href="maven.html"/>
       <item name="· Jasypt + Hibernate 3" href="hibernate3.html"/>

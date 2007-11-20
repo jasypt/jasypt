@@ -10,10 +10,9 @@
 - Moved org.jasypt.hibernate.ParameterNaming to 
   org.jasypt.hibernate.type.ParameterNaming.
 - Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
+  and org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider
   for allowing encrypted database passwords to be set in hibernate.cfg.xml 
   files.
-- Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider
-  to allow setting encrypted database passwords in hibernate.cfg.xml files.
 - Added org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer
   and org.jasypt.spring.properties.EncryptablePropertyOverrideConfigurer
   to allow use of encrypted .properties files from within Spring applications

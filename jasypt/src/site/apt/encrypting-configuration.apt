@@ -1,0 +1,54 @@
+  -------
+  Encrypting application configuration files
+  -------
+
+Encrypting application configuration files
+
+  Jasypt offers support for the use of encrypted application configuration
+  in three different ways:
+  
+    * <<.properties files>>: Jasypt provides the 
+      <<<org.jasypt.properties.EncryptableProperties>>> class for loading,
+      managing and transparently decrypting encrypted values in 
+      <<<.properties>>> files, allowing the combination of both encrypted 
+      and not-encrypted values is the same file.
+      
+    []
+    
+    * <<Encryption-aware Spring's PropertyPlaceholderConfigurer/PropertyOverrideConfigurer>>:
+      Jasypt provides an implementation of these configuration-related Spring
+      classes which can read .properties files with encrypted values
+      (like the ones managed by the <EncryptableProperties> class) and handle
+      them transparently to the rest of the Spring application beans.
+      
+    []
+    
+    * <<Database password encryption in Hibernate's hibernate.cfg.xml file>>:
+      Jasypt provides two <connection provider> classes for Hibernate
+      (DriverManager- and C3P0-based) which allow the database password to be 
+      written in an encrypted manner in the hibernate.cfg.xml file.
+
+      
+  This way, jasypt supports the encryption of database passwords in many
+  scenarios (Hibernate-, Spring-, both- or neither-based applications), and
+  the encryption of any other configuration property in all 
+  .properties-files-based applications (with or without Spring).
+  
+
+* EncryptableProperties
+
+  By using an <<<org.jasypt.properties.EncryptableProperties>>> object, an
+  application would be able to correctly read and use a .properties file like this:
+  
+* Encryption-aware Spring's property configurers
+
+  (TODO)
+  
+* Database password encryption in hibernate.cfg.xml
+
+  (TODO)
+
+
+    
+   
+  

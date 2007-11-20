@@ -1,8 +1,8 @@
   -------
-  Command Line Interface (CLI) Tools
+  Encrypting from the command line
   -------
 
-Command Line Interface (CLI) Tools
+Encrypting from the command line: Jasypt CLI Tools
 
   Jasypt supplies a bunch of Command Line Interface (CLI) tools, useful for
   performing encryption, decryption and digest operations from the command line.
