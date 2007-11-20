@@ -1,7 +1,7 @@
 @ECHO OFF
 IF "%OS%" == "Windows_NT" setlocal
 
-set SCRIPT_NAME=encrypt
+set SCRIPT_NAME=encrypt.bat
 set EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI
 set CURRENT_DIR=%cd%
 set EXEC_CLASSPATH=.;%CURRENT_DIR%\jasypt-cli-bundle.jar;%JASYPT_CLASSPATH%

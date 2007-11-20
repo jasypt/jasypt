@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SCRIPT_NAME=decrypt
+SCRIPT_NAME=decrypt.sh
 EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI
 CURRENT_DIR=$PWD
 EXEC_CLASSPATH=.:$CURRENT_DIR/jasypt-cli-bundle.jar:$JASYPT_CLASSPATH

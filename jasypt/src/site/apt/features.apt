@@ -73,6 +73,13 @@ Features
 
      []
      
+     * Provides easy to use <<CLI (Command Line Interface) tools>>
+     to allow developers initialize their encrypted data and include
+     encryption/decryption/digest operations in maintenance tasks or scripts.
+     {{{cli.html}Learn more}}.
+
+     []
+     
      * <<Comprehensive guides and javadoc documentation>>, to allow
      developers to better understand what they are really doing to their data.
           
