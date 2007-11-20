@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SCRIPT_NAME=digest
+SCRIPT_NAME=digest.sh
 EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptStringDigestCLI
 CURRENT_DIR=$PWD
 EXEC_CLASSPATH=.:$CURRENT_DIR/jasypt-cli-bundle.jar:$JASYPT_CLASSPATH

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SCRIPT_NAME=encrypt
+SCRIPT_NAME=encrypt.sh
 EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI
 CURRENT_DIR=$PWD
 EXEC_CLASSPATH=.:$CURRENT_DIR/jasypt-cli-bundle.jar:$JASYPT_CLASSPATH

@@ -66,6 +66,7 @@
       <item name="· Encrypting numbers" href="encrypting-numbers.html" />
       <item name="· Encrypting binaries" href="encrypting-binaries.html" />
       <item name="· Advanced configuration" href="advancedconfiguration.html" />
+      <item name="· Command Line Tools" href="cli.html" />
       <item name="· Web PBE configuration" href="webconfiguration.html" />
       <item name="· Using non-default JCE providers" href="non-default-providers.html" />
       <item name="· Jasypt + Maven" href="maven.html"/>
