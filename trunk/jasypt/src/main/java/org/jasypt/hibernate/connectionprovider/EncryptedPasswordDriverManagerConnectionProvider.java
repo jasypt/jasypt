@@ -26,7 +26,7 @@ import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.properties.PropertyDecodingUtils;
+import org.jasypt.properties.PropertyValueEncryptionUtils;
 
 /**
  *
@@ -115,21 +115,25 @@ public class EncryptedPasswordDriverManagerConnectionProvider
        String password = props.getProperty(Environment.PASS);
 
        // Perform decryption operations as needed and store the new values
-       if (PropertyDecodingUtils.isEncryptedValue(driver)) {
-           driver = PropertyDecodingUtils.decode(driver, encryptor);
-           props.setProperty(Environment.DRIVER, encryptor.decrypt(driver));
+       if (PropertyValueEncryptionUtils.isEncryptedValue(driver)) {
+           props.setProperty(
+                   Environment.DRIVER, 
+                   PropertyValueEncryptionUtils.decrypt(driver, encryptor));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(url)) {
-           url = PropertyDecodingUtils.decode(url, encryptor);
-           props.setProperty(Environment.URL, encryptor.decrypt(url));
+       if (PropertyValueEncryptionUtils.isEncryptedValue(url)) {
+           props.setProperty(
+                   Environment.URL, 
+                   PropertyValueEncryptionUtils.decrypt(url, encryptor));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(user)) {
-           user = PropertyDecodingUtils.decode(user, encryptor);
-           props.setProperty(Environment.USER, encryptor.decrypt(user));
+       if (PropertyValueEncryptionUtils.isEncryptedValue(user)) {
+           props.setProperty(
+                   Environment.USER, 
+                   PropertyValueEncryptionUtils.decrypt(user, encryptor));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(password)) {
-           password = PropertyDecodingUtils.decode(password, encryptor);
-           props.setProperty(Environment.PASS, encryptor.decrypt(password));
+       if (PropertyValueEncryptionUtils.isEncryptedValue(password)) {
+           props.setProperty(
+                   Environment.PASS, 
+                   PropertyValueEncryptionUtils.decrypt(password, encryptor));
        }
        
        // Let Hibernate process

@@ -41,7 +41,7 @@ Encrypting application configuration files
   decrypt them! Where can I store it safely?">. That is correct, you still 
   need one password, but this time
   it is the <encryption> one, under jasypt control, and thus, configurable
-  in many other more secure ways (specially recommended would be 
+  in many other more secure ways (especially recommended would be 
   {{{advancedconfiguration.html}environment variables}} or 
   {{{webconfiguration.html}web PBE configuration}}...).
   

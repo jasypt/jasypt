@@ -24,7 +24,7 @@ import org.jasypt.util.text.TextEncryptor;
 
 /**
  * <p>
- * Utility class to decode/encode values in properties files which could be
+ * Utility class to encrypt/decrypt values in properties files which could be
  * encrypted.
  * </p>
  * <p>
@@ -37,7 +37,7 @@ import org.jasypt.util.text.TextEncryptor;
  *   </center>
  * </p>
  * <p>
- *   <b>Do NOT use this class. It is meant for internal Jasypt use only.</b>
+ *   <b>This class is meant for internal Jasypt use only.</b>
  * </p>
  * 
  * @since 1.4
@@ -45,7 +45,7 @@ import org.jasypt.util.text.TextEncryptor;
  * @author Daniel Fern&aacute;ndez Garrido
  * 
  */
-public class PropertyDecodingUtils {
+public class PropertyValueEncryptionUtils {
 
     private static final String ENCRYPTED_VALUE_PREFIX = "ENC(";
     private static final String ENCRYPTED_VALUE_SUFFIX = ")";
@@ -67,19 +67,19 @@ public class PropertyDecodingUtils {
     }
 
     
-    public static String decode(
+    public static String decrypt(
             String encodedValue, StringEncryptor encryptor) {
         return encryptor.decrypt(getInnerEncryptedValue(encodedValue.trim()));
     }
 
     
-    public static String decode(
+    public static String decrypt(
             String encodedValue, TextEncryptor encryptor) {
         return encryptor.decrypt(getInnerEncryptedValue(encodedValue.trim()));
     }
 
     
-    public static String encode(
+    public static String encrypt(
             String decodedValue, StringEncryptor encryptor) {
         return 
             ENCRYPTED_VALUE_PREFIX + 
@@ -88,7 +88,7 @@ public class PropertyDecodingUtils {
     }
 
     
-    public static String encode(
+    public static String encrypt(
             String decodedValue, TextEncryptor encryptor) {
         return 
             ENCRYPTED_VALUE_PREFIX + 
@@ -97,7 +97,7 @@ public class PropertyDecodingUtils {
     }
     
     
-    private PropertyDecodingUtils() {
+    private PropertyValueEncryptionUtils() {
         super();
     }
 

@@ -175,14 +175,14 @@ public class EncryptableProperties extends Properties {
      * Internal method for decoding (decrypting) a value if needed.
      */
     private synchronized String decode(String encodedValue) {
-        if (!PropertyDecodingUtils.isEncryptedValue(encodedValue)) {
+        if (!PropertyValueEncryptionUtils.isEncryptedValue(encodedValue)) {
             return encodedValue;
         }
         if (this.stringEncryptor != null) {
-            return PropertyDecodingUtils.decode(encodedValue, this.stringEncryptor);
+            return PropertyValueEncryptionUtils.decrypt(encodedValue, this.stringEncryptor);
             
         }
-        return PropertyDecodingUtils.decode(encodedValue, this.textEncryptor);
+        return PropertyValueEncryptionUtils.decrypt(encodedValue, this.textEncryptor);
     }
 
     
