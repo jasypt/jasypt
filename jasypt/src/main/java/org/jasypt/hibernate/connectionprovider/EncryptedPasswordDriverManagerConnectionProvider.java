@@ -116,15 +116,19 @@ public class EncryptedPasswordDriverManagerConnectionProvider
 
        // Perform decryption operations as needed and store the new values
        if (PropertyDecodingUtils.isEncryptedValue(driver)) {
+           driver = PropertyDecodingUtils.decode(driver, encryptor);
            props.setProperty(Environment.DRIVER, encryptor.decrypt(driver));
        }
        if (PropertyDecodingUtils.isEncryptedValue(url)) {
+           url = PropertyDecodingUtils.decode(url, encryptor);
            props.setProperty(Environment.URL, encryptor.decrypt(url));
        }
        if (PropertyDecodingUtils.isEncryptedValue(user)) {
+           user = PropertyDecodingUtils.decode(user, encryptor);
            props.setProperty(Environment.USER, encryptor.decrypt(user));
        }
        if (PropertyDecodingUtils.isEncryptedValue(password)) {
+           password = PropertyDecodingUtils.decode(password, encryptor);
            props.setProperty(Environment.PASS, encryptor.decrypt(password));
        }
        
