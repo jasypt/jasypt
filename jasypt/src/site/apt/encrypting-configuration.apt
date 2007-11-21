@@ -23,7 +23,7 @@ Encrypting application configuration files
       
     []
     
-    * <<Datasource parameters encryption in Hibernate's hibernate.cfg.xml file>>:
+    * <<Encryption of datasource parameters in Hibernate's hibernate.cfg.xml file>>:
       Jasypt provides two <connection provider> classes for Hibernate
       (DriverManager- and C3P0-based) which allow the basic datasource
       parameters (driver, url, username and password) to be 
