@@ -26,19 +26,32 @@ import org.hibernate.connection.C3P0ConnectionProvider;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.properties.PropertyDecodingUtils;
 
 /**
  *
  * <p>
  * Extension of {@link C3P0ConnectionProvider} that allows the user
- * to write the password in an encrypted manner in the 
+ * to write the datasource configuration parameters in an encrypted manner in the 
  * <tt>hibernate.cfg.xml</tt> or <tt>hibernate.properties</tt> file
  * </p>
  * <p>
+ * The encryptable parameters are:
+ *  <ul>
+ *    <li><tt>connection.driver_class</tt></li>
+ *    <li><tt>connection.url</tt></li>
+ *    <li><tt>connection.username</tt></li>
+ *    <li><tt>connection.password</tt></li>
+ *  </ul>
+ * </p>
+ * <p>
  * The name of the password encryptor (decryptor, in fact) will be set in
- * property <tt>hibernate.connection.password_encryptor_registered_name</tt>. 
+ * property <tt>hibernate.connection.encryptor_registered_name</tt>. 
  * Its value must be the name of a {@link PBEStringEncryptor} object 
  * previously registered within {@link HibernatePBEEncryptorRegistry}.
+ * </p>
+ * <p>
+ * An example <tt>hibernate.cfg.xml</tt> file:
  * </p>
  * <p>
  * <pre>
@@ -47,12 +60,12 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  *    &lt;session-factory>
  *
  *      <!-- Database connection settings -->
- *      &lt;property name="connection.provider_class"><b>org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider</b>&lt;/property>
- *      &lt;property name="<b>connection.password_encryptor_registered_name</b>"><b>stringEncryptor</b>&lt;/property>
+ *      &lt;property name="<b>connection.provider_class</b>">org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider&lt;/property>
+ *      &lt;property name="<b>connection.encryptor_registered_name</b>">stringEncryptor&lt;/property>
  *      &lt;property name="connection.driver_class">org.postgresql.Driver&lt;/property>
  *      &lt;property name="connection.url">jdbc:postgresql://localhost/mydatabase&lt;/property>
  *      &lt;property name="connection.username">myuser&lt;/property>
- *      &lt;property name="connection.password">T6DAe34NasW==&lt;/property>
+ *      &lt;property name="connection.password">ENC(T6DAe34NasW==)&lt;/property>
  *      &lt;property name="c3p0.min_size">5&lt;/property>
  *      &lt;property name="c3p0.max_size">20&lt;/property>
  *      &lt;property name="c3p0.timeout">1800&lt;/property>
@@ -84,7 +97,7 @@ public class EncryptedPasswordC3P0ConnectionProvider
     public void configure(Properties props) {
        
        String encryptorRegisteredName = 
-           props.getProperty(ParameterNaming.PASSWORD_ENCRYPTOR_REGISTERED_NAME);
+           props.getProperty(ParameterNaming.ENCRYPTOR_REGISTERED_NAME);
        
        HibernatePBEEncryptorRegistry encryptorRegistry =
            HibernatePBEEncryptorRegistry.getInstance();
@@ -97,12 +110,25 @@ public class EncryptedPasswordC3P0ConnectionProvider
                    "with name \"" + encryptorRegisteredName + "\"");
        }
 
-       // Get the original password, encrypted
-       String encryptedPassword = props.getProperty(Environment.PASS);
-       
-       // Set it back into the properties, decrypted
-       props.setProperty(
-               Environment.PASS, encryptor.decrypt(encryptedPassword));
+       // Get the original values, which may be encrypted
+       String driver = props.getProperty(Environment.DRIVER);
+       String url = props.getProperty(Environment.URL);
+       String user = props.getProperty(Environment.USER);
+       String password = props.getProperty(Environment.PASS);
+
+       // Perform decryption operations as needed and store the new values
+       if (PropertyDecodingUtils.isEncryptedValue(driver)) {
+           props.setProperty(Environment.DRIVER, encryptor.decrypt(driver));
+       }
+       if (PropertyDecodingUtils.isEncryptedValue(url)) {
+           props.setProperty(Environment.URL, encryptor.decrypt(url));
+       }
+       if (PropertyDecodingUtils.isEncryptedValue(user)) {
+           props.setProperty(Environment.USER, encryptor.decrypt(user));
+       }
+       if (PropertyDecodingUtils.isEncryptedValue(password)) {
+           props.setProperty(Environment.PASS, encryptor.decrypt(password));
+       }
        
        // Let Hibernate do the rest
        super.configure(props);

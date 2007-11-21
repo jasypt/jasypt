@@ -39,10 +39,10 @@ public class ParameterNaming {
      * Property in <tt>hibernate.cfg.xml</tt> or 
      * <tt>hibernate.properties</tt> which contains the registered name
      * (in {@link HibernatePBEEncryptorRegistry}) of the encryptor which 
-     * will be used to decrypt the database password.
+     * will be used to decrypt the datasource parameters.
      */
-    public static final String PASSWORD_ENCRYPTOR_REGISTERED_NAME = 
-        "hibernate.connection.password_encryptor_registered_name";
+    public static final String ENCRYPTOR_REGISTERED_NAME = 
+        "hibernate.connection.encryptor_registered_name";
 
     
     private ParameterNaming() {

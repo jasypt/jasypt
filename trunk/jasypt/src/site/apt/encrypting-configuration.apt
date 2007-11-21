@@ -23,16 +23,18 @@ Encrypting application configuration files
       
     []
     
-    * <<Database password encryption in Hibernate's hibernate.cfg.xml file>>:
+    * <<Datasource parameters encryption in Hibernate's hibernate.cfg.xml file>>:
       Jasypt provides two <connection provider> classes for Hibernate
-      (DriverManager- and C3P0-based) which allow the database password to be 
+      (DriverManager- and C3P0-based) which allow the basic datasource
+      parameters (driver, url, username and password) to be 
       written in an encrypted manner in the hibernate.cfg.xml file.
 
       
-  This way, jasypt supports the encryption of database passwords in many
-  scenarios (Hibernate-, Spring-, both- or neither-based applications), and
-  the encryption of any other configuration property in all 
-  .properties-files-based applications (with or without Spring).
+  This way, jasypt supports the encryption of sensitive configuration data in multiple
+  scenarios (Hibernate-, Spring-, both- or neither-based applications).
+
+  <<As a general rule, jasypt expects encrypted configuration parameters to appear
+  surrounded by "ENC(...)">>.
   
   Here you may think: <"wait... I can encrypt values in my configuration
   files, ok, but... I still need a password (the encryption password) to
@@ -58,8 +60,6 @@ Encrypting application configuration files
 
   Note that the database password is encrypted (in fact, any other property
   could also be encrypted, be it related with database configuration or not). 
-
-  For declaring that a value is encrypted, it is surrounded by <<<ENC(...)>>>.
 
   How do we read this value? like this:
 
@@ -220,7 +220,8 @@ Encrypting application configuration files
   For those applications that define datasources in Hibernate's
   <<<hibernate.cfg.xml>>> file, Jasypt provides two <Connection Provider>
   (<<<org.hibernate.connection.ConnectionProvider>>>) implementations
-  which let the user declare the datasource password in an encrypted manner:
+  which let the user declare the datasource parameters
+  (driver, url, username and password) in an encrypted manner:
   
     * <<<org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider>>>,
     which extends Hibernate's <Driver Manager> connection provider (a very
@@ -248,14 +249,14 @@ Encrypting application configuration files
     <property name="connection.provider_class">
       org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
     </property>
-    <property name="connection.password_encryptor_registered_name">
+    <property name="connection.encryptor_registered_name">
       configurationHibernateEncryptor
     </property>
     
     <property name="connection.url">jdbc:mysql://localhost/reportsdb</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="connection.username">reportsUser</property>
-    <property name="connection.password">G6N718UuyPE5bHyWKyuLQSm02auQPUtm</property>
+    <property name="connection.password">ENC(G6N718UuyPE5bHyWKyuLQSm02auQPUtm)</property>
     <property name="connection.pool_size">12</property>
 
     <property name="show_sql">true</property>
@@ -268,18 +269,15 @@ Encrypting application configuration files
 
 ---  
 
-  In this configuration, Hibernate is told first to use Jasypt's DriverManager-based
-  connection provider (which expects an encrypted password to be set
-  for the <<<connection.password>>> property) and, then, it is also told
-  which is the encryptor object to be used for decrypting the password
-  (<<<connection.password_encryptor_registered_name>>>).
+  In this configuration, Hibernate is told to use Jasypt's DriverManager-based
+  connection provider and is passed a set of configuration parameters which
+  contain an encrypted value, the <<<connection.password>>> property. 
+  Then, Hibernate is also told about 
+  which is the encryptor object to be used for decrypting the encrypted parameters
+  (<<<connection.encryptor_registered_name>>>).
   
   This encryptor object should have been registered beforehand as a
   <<Hibernate Encryptor>>, as explained in the {{{hibernate3.html}Jasypt + Hibernate 3}} 
   configuration guide.
-  
-  Note that in hibernate.cfg.xml files there is no <<<ENC(...)>>> syntax, 
-  as there is no real need for it (<<<connection.password>>> is always
-  expected to be encrypted).
    
   
