@@ -26,7 +26,7 @@ import org.hibernate.connection.C3P0ConnectionProvider;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.properties.PropertyDecodingUtils;
+import org.jasypt.properties.PropertyValueEncryptionUtils;
 
 /**
  *
@@ -117,20 +117,20 @@ public class EncryptedPasswordC3P0ConnectionProvider
        String password = props.getProperty(Environment.PASS);
 
        // Perform decryption operations as needed and store the new values
-       if (PropertyDecodingUtils.isEncryptedValue(driver)) {
-           driver = PropertyDecodingUtils.decode(driver, encryptor);
+       if (PropertyValueEncryptionUtils.isEncryptedValue(driver)) {
+           driver = PropertyValueEncryptionUtils.decrypt(driver, encryptor);
            props.setProperty(Environment.DRIVER, encryptor.decrypt(driver));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(url)) {
-           url = PropertyDecodingUtils.decode(url, encryptor);
+       if (PropertyValueEncryptionUtils.isEncryptedValue(url)) {
+           url = PropertyValueEncryptionUtils.decrypt(url, encryptor);
            props.setProperty(Environment.URL, encryptor.decrypt(url));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(user)) {
-           user = PropertyDecodingUtils.decode(user, encryptor);
+       if (PropertyValueEncryptionUtils.isEncryptedValue(user)) {
+           user = PropertyValueEncryptionUtils.decrypt(user, encryptor);
            props.setProperty(Environment.USER, encryptor.decrypt(user));
        }
-       if (PropertyDecodingUtils.isEncryptedValue(password)) {
-           password = PropertyDecodingUtils.decode(password, encryptor);
+       if (PropertyValueEncryptionUtils.isEncryptedValue(password)) {
+           password = PropertyValueEncryptionUtils.decrypt(password, encryptor);
            props.setProperty(Environment.PASS, encryptor.decrypt(password));
        }
        

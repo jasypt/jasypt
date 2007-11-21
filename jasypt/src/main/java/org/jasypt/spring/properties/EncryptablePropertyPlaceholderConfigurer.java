@@ -21,7 +21,7 @@ package org.jasypt.spring.properties;
 
 import org.apache.commons.lang.Validate;
 import org.jasypt.encryption.StringEncryptor;
-import org.jasypt.properties.PropertyDecodingUtils;
+import org.jasypt.properties.PropertyValueEncryptionUtils;
 import org.jasypt.util.text.TextEncryptor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
@@ -100,14 +100,14 @@ public class EncryptablePropertyPlaceholderConfigurer
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
 	 */
 	protected String convertPropertyValue(String originalValue) {
-		if (!PropertyDecodingUtils.isEncryptedValue(originalValue)) {
+		if (!PropertyValueEncryptionUtils.isEncryptedValue(originalValue)) {
 			return originalValue;
 		}
 		if (this.stringEncryptor != null) {
-			return PropertyDecodingUtils.decode(originalValue,
+			return PropertyValueEncryptionUtils.decrypt(originalValue,
 					this.stringEncryptor);
 
 		}
-		return PropertyDecodingUtils.decode(originalValue, this.textEncryptor);
+		return PropertyValueEncryptionUtils.decrypt(originalValue, this.textEncryptor);
 	}
 }
