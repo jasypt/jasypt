@@ -34,6 +34,15 @@ Encrypting application configuration files
   the encryption of any other configuration property in all 
   .properties-files-based applications (with or without Spring).
   
+  Here you may think: <"wait... I can encrypt values in my configuration
+  files, ok, but... I still need a password (the encryption password) to
+  decrypt them! Where can I store it safely?">. That is correct, you still 
+  need one password, but this time
+  it is the <encryption> one, under jasypt control, and thus, configurable
+  in many other more secure ways (specially recommended would be 
+  {{{advancedconfiguration.html}environment variables}} or 
+  {{{webconfiguration.html}web PBE configuration}}...).
+  
 
 * EncryptableProperties
 
@@ -61,7 +70,7 @@ Encrypting application configuration files
   * decrypting the values in our .properties file.
   */
  StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
- encryptor.setPassword("jasypt");
+ encryptor.setPassword("jasypt"); // could be got from web, env variable...
  
  /*
   * Create our EncryptableProperties object and load it the usual way.
@@ -95,13 +104,116 @@ Encrypting application configuration files
   get(Object)>>.
 
   <<<EncryptableProperties>>> objects can receive as a constructor argument
-  both an <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>> or an
+  both an <<<org.jasypt.encryption.StringEncryptor>>> implementation or an
   <<<org.jasypt.util.TextEncryptor>>> object.
 
 
 * Encryption-aware Spring's property configurers
 
-  (TODO)
+  Jasypt provides two Spring-specific configuration management classes:
+  
+    * <<<org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer>>>,
+      as a totally compatible replacement for Spring's 
+      <PropertyPlaceholderConfigurer>.
+      
+    []
+  
+    * <<<org.jasypt.spring.properties.EncryptablePropertyOverrideConfigurer>>>,
+      as a totally compatible replacement for Spring's 
+      <PropertyOverrideConfigurer>.
+  
+    []
+    
+  Their use is analogue to the Spring equivalents, but this time we can use
+  them to read encrypted property values from our configuration files and
+  apply them to our beans.
+  
+  If we have the properties file seen before (<<<application.properties>>>):
+
+---
+ datasource.driver=com.mysql.jdbc.Driver
+ datasource.url=jdbc:mysql://localhost/reportsdb
+ datasource.username=reportsUser
+ datasource.password=ENC(G6N718UuyPE5bHyWKyuLQSm02auQPUtm)
+---
+
+  We can define in our Spring context configuration:
+  
+---
+  
+ <!--                                                                      -->
+ <!-- Configuration for encryptor, based on environment variables.         -->
+ <!--                                                                      -->
+ <!-- In this example, the encryption password will be read from an        -->
+ <!-- environment variable called "APP_ENCRYPTION_PASSWORD" which, once    --> 
+ <!-- the application has been started, could be safely unset.             -->
+ <!--                                                                      -->
+ <bean id="environmentVariablesConfiguration"
+     class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+   <property name="algorithm" value="PBEWithMD5AndDES" />
+   <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />
+ </bean>
+  
+  
+ <!--                                                                      -->
+ <!-- The will be the encryptor used for decrypting configuration values.  -->
+ <!--                                                                      -->
+ <bean id="configurationEncryptor"
+     class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+   <property name="config" ref="environmentVariablesConfiguration" />
+ </bean>
+
+
+ <!--                                                                      -->
+ <!-- The EncryptablePropertyPlaceholderConfigurer will read the           -->
+ <!-- .properties files and make their values accessible as ${var}         -->
+ <!--                                                                      -->
+ <!-- Our "configurationEncryptor" bean (which implements                  --> 
+ <!-- org.jasypt.encryption.StringEncryptor) is set as a constructor arg.  -->
+ <!--                                                                      -->
+ <bean id="propertyConfigurer"
+     class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+   <constructor-arg ref="configurationEncryptor" />
+   <property name="locations">
+     <list>
+       <value>/WEB-INF/classes/application.properties</value>
+     </list>
+   </property>
+   
+ </bean>
+
+
+ <!--                                                                      -->
+ <!-- Our datasource is configured here, in the usual way. Jasypt's        -->
+ <!-- EncryptedPropertyPlaceholderConfigurer will make sure that the       -->
+ <!-- ${datasource.password} file gets decrypted and the DBCP DataSource   -->
+ <!-- will be correctly initialized.                                       -->
+ <!--                                                                      -->
+ <bean id="dataSource"
+     class="org.apache.commons.dbcp.BasicDataSource"
+     destroy-method="close">
+   <property name="driverClassName">
+     <value>${datasource.driver}</value>
+   </property>
+   <property name="url">
+     <value>${datasource.url}</value>
+   </property>
+   <property name="username">
+     <value>${datasource.username}</value>
+   </property>
+   <property name="password">
+     <value>${datasource.password}</value>
+   </property>
+ </bean>
+	
+---  
+
+  <<<EncryptablePropertyPlaceholderConfigurer>>> and 
+  <<<EncryptablePropertyOverrideConfigurer>>> objects can receive as a 
+  constructor argument both an <<<org.jasypt.encryption.StringEncryptor>>> 
+  implementation or an <<<org.jasypt.util.TextEncryptor>>> object.
+
+  
   
 * Database password encryption in hibernate.cfg.xml
 
