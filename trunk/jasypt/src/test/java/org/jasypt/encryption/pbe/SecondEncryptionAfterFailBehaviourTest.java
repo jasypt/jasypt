@@ -19,9 +19,9 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.jasypt.salt.ZeroSaltGenerator;
-
 import junit.framework.TestCase;
+
+import org.jasypt.salt.ZeroSaltGenerator;
 
 public class SecondEncryptionAfterFailBehaviourTest extends TestCase {
 

@@ -4,7 +4,7 @@
 
 Encrypting application configuration files
 
-  Jasypt offers support for the use of encrypted application configuration
+  Jasypt offers support for encrypted application configuration
   in three different ways:
   
     * <<.properties files>>: Jasypt provides the 
@@ -39,7 +39,66 @@ Encrypting application configuration files
 
   By using an <<<org.jasypt.properties.EncryptableProperties>>> object, an
   application would be able to correctly read and use a .properties file like this:
+
+---
+ datasource.driver=com.mysql.jdbc.Driver
+ datasource.url=jdbc:mysql://localhost/reportsdb
+ datasource.username=reportsUser
+ datasource.password=ENC(G6N718UuyPE5bHyWKyuLQSm02auQPUtm)
+---
+
+  Note that the database password is encrypted (in fact, any other property
+  could also be encrypted, be it related with database configuration or not). 
+
+  For declaring that a value is encrypted, it is surrounded by <<<ENC(...)>>>.
+
+  How do we read this value? like this:
+
+---
+
+ /*
+  * First, create (or ask some other component for) the adequate encryptor for
+  * decrypting the values in our .properties file.
+  */
+ StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+ encryptor.setPassword("jasypt");
+ 
+ /*
+  * Create our EncryptableProperties object and load it the usual way.
+  */
+ Properties props = new EncryptableProperties(encryptor);
+ props.load(new FileInputStream("/path/to/my/configuration.properties"));
+
+ /*
+  * To get a non-encrypted value, we just get it with getProperty...
+  */
+ String datasourceUsername = props.getProperty("datasource.username");
+
+ /*
+  * ...and to get an encrypted value, we do exactly the same. Decryption will
+  * be transparently performed behind the scenes.
+  */ 
+ String datasourcePassword = props.getProperty("datasource.password");
+
+ // From now on, datasourcePassword equals "reports_passwd"...
+ 
+---
+
+  For decrypting the encrypted value, we just had to access it with <<<getProperty>>>,
+  just as with any other non-encrypted value.
   
+  <<<EncryptableProperties>>> extends <<<java.util.Properties>>>, and as such
+  it will be able to do all that can be usually done by a <Properties> object:
+  loading from/storing to files, XML, etc... but note that <<transparent
+  decryption is only performed by the getProperty(String) or
+  getProperty(String,String) methods, and not by any other retrieval methods like
+  get(Object)>>.
+
+  <<<EncryptableProperties>>> objects can receive as a constructor argument
+  both an <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>> or an
+  <<<org.jasypt.util.TextEncryptor>>> object.
+
+
 * Encryption-aware Spring's property configurers
 
   (TODO)
