@@ -73,11 +73,11 @@ Features
 
      []
      
-     * Provides <<functionality for encrypting all or part of an application
-     configuration (.properties) files>>, including sensitive information like
-     database passwords. <<Database password encryption is also
-     supported in Hibernate>> for direct datasource configuration in 
-     <<<hibernate.cfg.xml>>> files. {{{encrypting-configuration.html}Learn more}}.
+     * Provides <<advanced functionality for encrypting all or part of an application's
+     configuration files>>, including sensitive information like
+     database passwords. Seamlessly integrate encrypted configuration into
+     plain, Spring-based and/or Hibernate-enabled applications. 
+     {{{encrypting-configuration.html}Learn more}}.
 
      []
      
