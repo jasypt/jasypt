@@ -1,6 +1,5 @@
 1.4
 =======
-- Minor code cleaning
 - Added methods to Simple* and Environment* config classes for both Digesters 
   and PBEEncryptors to allow them to be configured entirely with Strings.
 - Added to org.jasypt.encryption.pbe.StandardPBEByteEncryptor a workaround
@@ -11,7 +10,7 @@
   org.jasypt.hibernate.type.ParameterNaming.
 - Added org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
   and org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider
-  for allowing encrypted database passwords to be set in hibernate.cfg.xml 
+  for allowing encrypted datasource parameters in hibernate.cfg.xml 
   files.
 - Added org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer
   and org.jasypt.spring.properties.EncryptablePropertyOverrideConfigurer
