@@ -1,0 +1,62 @@
+  -------
+  Integrating Jasypt with Apache Wicket
+  -------
+
+Integrating Jasypt with Apache Wicket
+
+  Jasypt can be configured into a Wicket application for performing
+  bi-directional encryption tasks (mainly URL encryption). This is done
+  by providing an implementation of 
+  
+  Note: Of course, Jasypt can also be used for uni-directional encryption tasks
+  like user password encryption as usual and with total control by the user,
+  without implementing any Wicket interfaces., but this tutorial 
+
+---
+    
+    @Override
+    protected void init() {
+        
+        super.init();
+        
+        /*
+         * In the following code example we will create a Jasypt byte 
+         * encryptor by hand, but in real world we can get it from Spring, 
+         * configure it via Web PBE configuration... whatever we want to. 
+         */
+        StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
+        encryptor.setAlgorithm("PBEWithMD5AndDES");
+        encryptor.setPassword("jasypt");
+        FixedStringSaltGenerator generator = new FixedStringSaltGenerator();
+        generator.setSalt("wicketwicketwicketwicketwicket");
+        encryptor.setSaltGenerator(generator);
+        
+        /*
+         * Create the Jasypt Crypt Factory with the desired encryptor,
+         * which will return org.jasypt.wicket.JasyptCrypt objects implementing
+         * the org.apache.wicket.util.crypt.ICrypt interface.
+         */
+        ICryptFactory jasyptCryptFactory = new JasyptCryptFactory(encryptor);
+        
+        /*
+         * Set the Jasypt Crypt Factory into the application configuration.
+         */
+        getSecuritySettings().setCryptFactory(jasyptCryptFactory);
+        
+    }
+
+    
+    
+    @Override
+    protected IRequestCycleProcessor newRequestCycleProcessor() {
+        
+        return new WebRequestCycleProcessor() {
+            @Override
+            protected IRequestCodingStrategy newRequestCodingStrategy() {
+                return new CryptedUrlWebRequestCodingStrategy(new WebRequestCodingStrategy());
+            }
+        };
+        
+    }    
+
+---
