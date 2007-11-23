@@ -22,6 +22,7 @@ package org.jasypt.wicket;
 import org.apache.wicket.util.crypt.ICrypt;
 import org.apache.wicket.util.crypt.ICryptFactory;
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
 
 
 /**
@@ -47,12 +48,37 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
  */
 public class JasyptCryptFactory implements ICryptFactory {
 
+    // Encryptor doesn't need to be instanced each time. We hold a reference.
     private final JasyptCrypt jasyptCrypt;
     
+    /**
+     * <p>
+     * Creates a new instance of <tt>JasyptCryptFactory</tt>.
+     * </p>
+     * <p>
+     * This factory uses an instance of {@link PBEByteEncryptor} instead of
+     * a {@link PBEStringEncryptor} (as could be expected) because Wicket
+     * requires a specific type of String encoding (<i>URL and file safe
+     * BASE64</i>), which is managed by a wicket internal class, and which
+     * expectes byte[] input.
+     * </p>
+     * 
+     * @param encryptor the PBEByteEncryptor to be used.
+     */
     public JasyptCryptFactory(PBEByteEncryptor encryptor) {
         this.jasyptCrypt = new JasyptCrypt(encryptor);
     }
+
     
+    /**
+     * <p>
+     * Return a new encryptor object.
+     * </p>
+     * <p>
+     * This method returns always the same <tt>JasyptCrypt</tt> object, instead
+     * of creating a new one.
+     * </p>
+     */
     public ICrypt newCrypt() {
         return this.jasyptCrypt;
     }

@@ -9,7 +9,7 @@ Integrating Jasypt with Apache Wicket
   transparent data persistance, etc. as usual, and for these operations no especial
   wicket integration features are needed, there still exist some specific
   security features in wicket which could make a good use of an encryption
-  library like Jasypt. For example: URL encryption.
+  library like Jasypt. Specifically, <URL encryption>.
   
   Wicket can configure URLs to be encrypted, like 
   <<<http://server/myapp/?x=ASD4-23*23412vwed3A3A>>>.
@@ -40,6 +40,8 @@ Integrating Jasypt with Apache Wicket
   Note that <<<JasyptCrypt>>> objects adhere to wicket specifications of
   returning String output in the form of <URL and filename safe Base64>.
   
+  <<Important>>: jasypt's integration features for wicket require at least
+  <Apache Wicket 1.3.0-rc1>.
 
 * Configuring the factory
 
