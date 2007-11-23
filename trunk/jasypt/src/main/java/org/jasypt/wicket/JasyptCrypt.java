@@ -26,8 +26,10 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
 
 
 /**
- * 
- * 
+ * <p>
+ * Jasypt's implementation of {@link ICrypt}, based on the use of a 
+ * {@link PBEByteEncryptor} object for encryption and decryption operations.
+ * </p>
  * <p>
  * This class is <i>thread-safe</i>.
  * </p>
@@ -38,17 +40,34 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
  */
 public class JasyptCrypt implements ICrypt {
 
-    /** Encoding used to convert java String from and to byte[] */
+    // Encoding used to convert java String from and to byte[]
     private static final String CHARACTER_ENCODING = "UTF-8";
 
+    // The wrapped encryptor 
     private final PBEByteEncryptor encryptor;
 
     
+    /**
+     * <p>
+     * Creates a new <tt>JasyptCrypt</tt> object, wrapping the passed
+     * encryptor.
+     * </p>
+     * 
+     * @param encryptor the PBEByteEncryptor to be used internally.
+     */
     public JasyptCrypt(PBEByteEncryptor encryptor) {
         this.encryptor = encryptor;
     }
     
-    
+
+    /**
+     * <p>
+     * Decrypts a string using URL and filename safe Base64 decoding.
+     * </p>
+     * 
+     * @param text the text to be decrypted.
+     * @return the decrypted string.
+     */
     public String decryptUrlSafe(String text) {
         
         try {
@@ -63,6 +82,15 @@ public class JasyptCrypt implements ICrypt {
         
     }
 
+    
+    /**
+     * <p>
+     * Encrypts a string using URL and filename safe Base64 encoding.
+     * </p>
+     * 
+     * @param plainText the text to be encrypted.
+     * @return encrypted string.
+     */
     public String encryptUrlSafe(String plainText) {
         
         try {
@@ -75,6 +103,14 @@ public class JasyptCrypt implements ICrypt {
         
     }
 
+    
+    /**
+     * <p>
+     * <b>Important</b>: Using jasypt, it makes no sense to change the encryption 
+     * key once the encryptor has been initialized, and so this method is
+     * implemented to throw <tt>UnsupportedOperationException</tt> always.
+     * </p>
+     */
     public void setKey(final String key) {
         throw new UnsupportedOperationException(
                 "JasyptCrypt encryptors cannot be set password by calling " +
