@@ -88,6 +88,11 @@ Features
 
      []
      
+     * <<Integrates into Apache Wicket>>, for more robust encryption of URLs 
+     in your secure applications. 
+
+     []
+     
      * <<Comprehensive guides and javadoc documentation>>, to allow
      developers to better understand what they are really doing to their data.
           
