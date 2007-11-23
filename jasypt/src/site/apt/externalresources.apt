@@ -28,6 +28,13 @@ Projects related to Jasypt
     * {{{http://kasai.manentiasoftware.com}Kasai}}, complete authentication
     and authorization framework which uses jasypt for encryption of stored
     users/passwords.
+    
+    []
+    
+    * {{{http://myna.emptybrain.info/}Myna}}, Java web application (.war file) 
+    that provides dynamic web content from both interpreted and compiled 
+    JavaScript, as well as complete access to Java libraries. Myna uses
+    jasypt for backing its encryption features.
 
 
 Articles, Tutorials, Posts covering Jasypt

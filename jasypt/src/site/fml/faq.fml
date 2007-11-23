@@ -396,6 +396,16 @@
   <part id="problems">
     <title>Problems</title>
 
+    <faq id="i-receive-a-classnotfoundexception">
+      <question>I receive a <tt>ClassNotFoundException</tt> when I try to encrypt or digest data.</question>
+      <answer>
+        <p>
+          You probably haven't added all the required dependencies to your classpath.
+          Please check the <a href="dependencies.html">Dependencies Page</a>.
+        </p>
+      </answer>
+    </faq>
+
     <faq id="encrypted-fields-not-in-where">
       <question>I do not get correct results when querying a Hibernate-mapped entity with encrypted fields when I set conditions on some of those fields.</question>
       <answer>
@@ -426,6 +436,26 @@
           <a href="http://java.sun.com/javase/downloads" target="_blank">Java 
           Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy 
           Files</a> in order to be able to use strong-encryption algorithms like TripleDES.
+        </p>
+      </answer>
+    </faq>
+   
+    <faq id="i-keep-on-receiving-encryption-operation-not-possible">
+      <question>I keep on receiving <tt>EncryptionOperationNotPossibleException</tt> exceptions when trying to decrypt my data.</question>
+      <answer>
+        <p>
+          <tt>EncryptionOperationNotPossibleException</tt> is a very general exception which
+          jasypt raises whenever there is a problem with encryption or decryption
+          operations. It does not provide any further information to prevent the
+          encryption infrastructure from showing too much information about what is going
+          on (we wouldn't want an attacker to get any algorithm-specific errors...)
+        </p>
+        <p>
+          When you get that error while decrypting, most of the times it will simply
+          mean that the encrypted string you input was not adequate for the
+          algorithm/password/keyObtentionIterations configuration you provided. Check
+          that your encryptor is configured in exactly the same way as the one with
+          which you originally encrypted the data.
         </p>
       </answer>
     </faq>
