@@ -4,16 +4,55 @@
 
 Integrating Jasypt with Apache Wicket
 
-  Jasypt can be configured into a Wicket application for performing
-  bi-directional encryption tasks (mainly URL encryption). This is done
-  by providing an implementation of 
+  Although the most usual way of using jasypt
+  in wicket applications is password encryption,
+  transparent data persistance, etc. as usual, and for these operations no especial
+  wicket integration features are needed, there still exist some specific
+  security features in wicket which could make a good use of an encryption
+  library like Jasypt. For example: URL encryption.
   
-  Note: Of course, Jasypt can also be used for uni-directional encryption tasks
-  like user password encryption as usual and with total control by the user,
-  without implementing any Wicket interfaces., but this tutorial 
+  Wicket can configure URLs to be encrypted, like 
+  <<<http://server/myapp/?x=ASD4-23*23412vwed3A3A>>>.
+  And for supporting this feature, it provides two cryptography
+  utility interfaces called <<<org.apache.wicket.util.crypt.ICryptFactory>>>
+  (for encryptor factories) and <<<org.apache.wicket.util.crypt.ICrypt>>> 
+  (for encryptor objects). 
+  
+  Wicket provides a set of simplistic implementations
+  of these interfaces, but security and configurability can be vastly 
+  improved by using jasypt's infrastructure.
+  
+  Jasypt provides:
+  
+    * <<org.jasypt.wicket.JasyptCryptFactory>>, an implementation of wicket's
+      <<<ICryptFactory>>> interface which receives an 
+      <<<org.jasypt.encryption.pbe.PBEByteEncryption>>> object (configured
+      at the user's wish: environment variables, web PBE config...) and 
+      provides encryptors of class
+      <<<org.jasypt.wicket.JasyptCrypt>>> (implementing <<<ICrypt>>> interface).
+  
+    []
+    
+    * <<org.jasypt.wicket.JasyptCrypt>>, implementation of wicket's
+    <<<ICrypt>>> returned by <<<JasyptCryptFactory>>>.
+    
+    
+  Note that <<<JasyptCrypt>>> objects adhere to wicket specifications of
+  returning String output in the form of <URL and filename safe Base64>.
+  
+
+* Configuring the factory
+
+  The ICryptFactory being used is configured at the <<<init()>>> method of
+  the <Application> class.
 
 ---
     
+public class MyApplication extends WebApplication {
+
+    ...
+    ...
+
     @Override
     protected void init() {
         
@@ -44,9 +83,25 @@ Integrating Jasypt with Apache Wicket
         getSecuritySettings().setCryptFactory(jasyptCryptFactory);
         
     }
+    
+    ...
+    ...
 
+}
+---
+
+
+* Configuring URL encryption
+
+  Finally, for configuring URL encryption for our application:
+
+---    
     
-    
+public class MyApplication extends WebApplication {
+
+    ...
+    ...
+
     @Override
     protected IRequestCycleProcessor newRequestCycleProcessor() {
         
@@ -58,5 +113,10 @@ Integrating Jasypt with Apache Wicket
         };
         
     }    
+    
+    ...
+    ...
+
+}
 
 ---
