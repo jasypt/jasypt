@@ -2,9 +2,19 @@
   Main
   -------
 
-  Current stable version is <<1.4>> (Released: November 23rd, 2007) [{{{features.html}Features}}] [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
-  
-  Jasypt is considered <<{{{http://opensource.fortifysoftware.com}Defect Free Software}}>> by the Java Open Review Project at Fortify Software.
+  <<Version 1.4 just released!>> (November 23rd, 2007) [{{{features.html}Features}}] [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
+	
+  What's new in 1.4:
+	
+    * Encryptable .properties files (plus Spring integration). {{{encrypting-configuration.html}Learn more}}.
+    
+    * Encryptable Hibernate datasource configuration. {{{encrypting-configuration.html}Learn more}}.
+    
+    * Command line tools. {{{cli.html}Learn more}}.
+    
+    * Apache Wicket integration for URL encryption. {{{wicket.html}Learn more}}.
+    
+    * Updated docs (including {{{seam2.html}Jasypt + Seam 2 integration guide}})
 
 Java Simplified Encryption
 
@@ -76,5 +86,4 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   Have you written an article, tutorial or review about Jasypt in English or
   in your own language? <<{{{team.html}Tell us}}>> so that we can link it from the
   {{{externalresources.html}External Resources}} page.
-
   
