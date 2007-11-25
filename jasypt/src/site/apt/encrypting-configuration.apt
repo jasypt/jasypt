@@ -34,7 +34,8 @@ Encrypting application configuration files
   scenarios (Hibernate-, Spring-, both- or neither-based applications).
 
   <<As a general rule, jasypt expects encrypted configuration parameters to appear
-  surrounded by "ENC(...)">>.
+  surrounded by "ENC(...)">>. You can compute this values using the 
+  {{{cli.html}CLI tools}}.
   
   Here you may think: <"wait... I can encrypt values in my configuration
   files, ok, but... I still need a password (the encryption password) to
