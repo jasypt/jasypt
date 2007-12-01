@@ -2,6 +2,103 @@
 <faqs title="Frequently Asked Questions">
 
 
+  <part id="aboutjasypt">
+    <title>About Jasypt</title>
+    
+    <faq id="where-does-jasypt-come-from">
+      <question>Where does Jasypt come from? Is it made or backed by any software company?</question>
+      <answer>
+        <p>
+          Jasypt is Open Source Software created by a Galician (from 
+          <a href="http://en.wikipedia.org/wiki/Galicia_(Spain)">Galicia, Spain</a>) Software Engineer
+          called <a href="team.html">Daniel Fernández Garrido</a> in his spare time, and which
+          has also received contributions of diverse kind from <a href="team.html">some other people</a>. 
+        </p>
+        <p>
+          It is neither made nor backed
+          by any software (or any other type of) company, and it is offered to the public
+          totally free of charge under the <b>Apache License 2.0</b>.
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="how-long-has-it-been-around">
+      <question>How long has Jasypt been around?</question>
+      <answer>
+        <p>
+          The first release of Jasypt was version 1.0, released in January 24th, 2007. 
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="how-long-has-it-been-around">
+      <question>How widely used is it? How many users does it have?</question>
+      <answer>
+        <p>
+          Being freely downloadable Open Source Software, it is totally impossible 
+          (for obvious reasons) to know how many people is using Jasypt nowadays
+          throughout the world. 
+        </p>
+        <p>
+          Jasypt can be both downloaded from the SourceForge.net mirrors and from 
+          Apache Maven's central repositories. It is to expect that most 
+          downloads are done from the Maven central repos, but only downloads 
+          from SF.net can be counted using the 
+          <a href="http://sourceforge.net/project/stats/&#63;group_id&#61;183612&#38;ugn&#61;jasypt">SourceForge 
+          Stats tool</a>.
+        </p>
+        <p>
+          These partial stats say that, <b>as of December 1st, 2007, Jasypt had been
+          downloaded 11,135 times</b>. 
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="can-it-be-considered-production-ready">
+      <question>Is it stable? Can it be considered production-ready?</question>
+      <answer>
+        <p>
+          <b>Yes</b>, all of its releases can be considered stable and production-ready.
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="does-jasypt-offer-commercial-support">
+      <question>Does Jasypt offer any type of commercial support?</question>
+      <answer>
+        <p>
+          No, it does not. Commercial support is not offered at the moment, but
+          there are <a href="http://www.nabble.com/Jasypt---Users-f21330.html">User
+          Forums</a> and <a href="mailinglists.html">Mailing Lists</a> at your disposal.
+        </p>
+      </answer>
+    </faq>
+    
+    <faq id="contribute">
+      <question>How can I or my company contribute to Jasypt?</question>
+      <answer>
+        <p>
+          In many ways:
+        </p>
+        <ul>
+          <li>You can write in the <a href="http://www.nabble.com/Jasypt---Users-f21330.html">User 
+              Forums</a> (or directly to the <a href="team.html">Team</a>) with your
+              ideas for improving Jasypt.</li>
+          <li>You can contribute some code, write a patch for a new feature
+              or behaviour (please, tell the project admins first about your idea so 
+              that effort can be correctly coordinated).</li> 
+          <li>You can write articles, reviews, blog posts, etc. about Jasypt, showing
+              how it works or how it integrates with other technologies.</li> 
+          <li>You can promote Jasypt in your company/work, showing your colleagues
+              or customers how encryption
+              can be an easy and powerful task by using Jasypt.</li>
+        </ul>
+      </answer>
+    </faq>
+
+  </part>
+  
+
   <part id="general">
     <title>General</title>
     
@@ -25,7 +122,7 @@
       <question>Does Jasypt implement its own encryption algorihms? Is it "simplified encryption" because it is less safe?</question>
       <answer>
         <p>
-          No. Jasypt does not implement any encryption algorithms, but instead
+          No. <b>Jasypt does not implement any encryption algorithms</b>, but instead
           delegates to the ones already provided by a JCE 
           (Java Cryptography Extension) provider, which can be either the
           default VM one or any other of your choice, adding a layer for ease and 
@@ -463,5 +560,5 @@
   </part>
 
 
-  
+    
 </faqs>
