@@ -1,3 +1,8 @@
+1.4.1
+=======
+- Fixed bug in EncryptedPasswordC3P0ConnectionProvider which made decryption
+  of datasource configuration not to work properly.
+
 1.4
 =======
 - Added methods to Simple* and Environment* config classes for both Digesters 
