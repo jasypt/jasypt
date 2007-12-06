@@ -118,20 +118,24 @@ public class EncryptedPasswordC3P0ConnectionProvider
 
        // Perform decryption operations as needed and store the new values
        if (PropertyValueEncryptionUtils.isEncryptedValue(driver)) {
-           driver = PropertyValueEncryptionUtils.decrypt(driver, encryptor);
-           props.setProperty(Environment.DRIVER, encryptor.decrypt(driver));
+           props.setProperty(
+                   Environment.DRIVER, 
+                   PropertyValueEncryptionUtils.decrypt(driver, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(url)) {
-           url = PropertyValueEncryptionUtils.decrypt(url, encryptor);
-           props.setProperty(Environment.URL, encryptor.decrypt(url));
+           props.setProperty(
+                   Environment.URL, 
+                   PropertyValueEncryptionUtils.decrypt(url, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(user)) {
-           user = PropertyValueEncryptionUtils.decrypt(user, encryptor);
-           props.setProperty(Environment.USER, encryptor.decrypt(user));
+           props.setProperty(
+                   Environment.USER, 
+                   PropertyValueEncryptionUtils.decrypt(user, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(password)) {
-           password = PropertyValueEncryptionUtils.decrypt(password, encryptor);
-           props.setProperty(Environment.PASS, encryptor.decrypt(password));
+           props.setProperty(
+                   Environment.PASS, 
+                   PropertyValueEncryptionUtils.decrypt(password, encryptor));
        }
        
        // Let Hibernate do the rest
