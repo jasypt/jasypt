@@ -2,6 +2,7 @@
  Using JASYPT from Maven 2
  -------------------------
  
+ 
  To use it in your Maven 2 applications, you will need to add it as
  a dependency with:
 

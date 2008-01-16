@@ -2,6 +2,7 @@
   Integrating Jasypt with Spring Security (Acegi Security) 
   -------
 
+
   If you want to know what jasypt can do to improve the security of your users'
   passwords in an acegi-enabled application, check the {{{faq.html}FAQ}} and
   also the article '{{{howtoencryptuserpasswords.html}How to encrypt user 

@@ -2,6 +2,7 @@
   Advanced Configuration
   -------
 
+
 Advanced configuration for encyptors and digesters
 
   Jasypt allows its provided encryptors and digesters to be configured in

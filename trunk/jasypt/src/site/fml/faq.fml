@@ -17,39 +17,17 @@
         <p>
           It is neither made nor backed
           by any software (or any other type of) company, and it is offered to the public
-          totally free of charge under the <b>Apache License 2.0</b>.
+          totally free of charge, both in binary and in source code forms, under the <b>Apache License 2.0</b>.
         </p>
       </answer>
     </faq>
     
-    <faq id="how-long-has-it-been-around">
-      <question>How long has Jasypt been around?</question>
+    <faq id="does-it-implement-or-include-cryptographic-algorithms">
+      <question>Does it implement or include cryptographic algorithms?</question>
       <answer>
         <p>
-          The first release of Jasypt was version 1.0, released in January 24th, 2007. 
-        </p>
-      </answer>
-    </faq>
-    
-    <faq id="how-long-has-it-been-around">
-      <question>How widely used is it? How many users does it have?</question>
-      <answer>
-        <p>
-          Being freely downloadable Open Source Software, it is totally impossible 
-          (for obvious reasons) to know how many people is using Jasypt nowadays
-          throughout the world. 
-        </p>
-        <p>
-          Jasypt can be both downloaded from the SourceForge.net mirrors and from 
-          Apache Maven's central repositories. It is to expect that most 
-          downloads are done from the Maven central repos, but only downloads 
-          from SF.net can be counted using the 
-          <a href="http://sourceforge.net/project/stats/&#63;group_id&#61;183612&#38;ugn&#61;jasypt">SourceForge 
-          Stats tool</a>.
-        </p>
-        <p>
-          These partial stats say that, <b>as of December 1st, 2007, Jasypt had been
-          downloaded 11,135 times</b>. 
+          <b>No, it doesn't</b>, Jasypt by itself does not implement nor distribute in any of its forms any cryptographic
+          algorithms, but it can use them via the Java Cryptography Extension.
         </p>
       </answer>
     </faq>
@@ -95,6 +73,17 @@
         </ul>
       </answer>
     </faq>
+    
+    <faq id="what-is-jasypts-export-classification">
+      <question>What is Jasypt's export classification in the United States of America?</question>
+      <answer>
+        <p>
+          Although Jasypt does not implement nor distribute in any of its forms any cryptographic
+          algorithms, it can use them via the Java Cryptography Extension API and, as such, it is 
+          classified under ECCN code 5D002 and approved for export under License Exception TSU.
+        </p>
+      </answer>
+    </faq>
 
   </part>
   
@@ -119,7 +108,7 @@
     </faq>
     
     <faq id="does-jasypt-implement-algorithms">
-      <question>Does Jasypt implement its own encryption algorihms? Is it "simplified encryption" because it is less safe?</question>
+      <question>Is it "simplified encryption" because it is less safe?</question>
       <answer>
         <p>
           No. <b>Jasypt does not implement any encryption algorithms</b>, but instead

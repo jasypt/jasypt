@@ -2,6 +2,7 @@
   Integrating Jasypt with Hibernate 3
   -------
 
+
 Integrating Jasypt with Hibernate 3
 
   Jasypt provides an integration package (<<<org.jasypt.hibernate.type>>>) which 

@@ -2,24 +2,6 @@
   Main
   -------
 
-  <<Version 1.4.1 just released!>> (December 6th, 2007) [{{{features.html}Features}}] [{{{download.html}Download}}] [{{{changelog.html}ChangeLog}}]
-
-  <<Note>>: Version 1.4.1 is released <<only>> to fix a bug in <<<EncryptedPasswordC3P0ConnectionProvider>>>
-  which affected decryption of datasource configuration data in <<<hibernate.cfg.xml>>> files
-  with the C3P0 connection provider. <It is safe not to upgrade from 1.4 to 1.4.1 if you don't require that feature.>   
-	
-  <<What's new in 1.4.x>>:
-	
-    * Encryptable .properties files (plus Spring integration). {{{encrypting-configuration.html}Learn more}}.
-    
-    * Encryptable Hibernate datasource configuration. {{{encrypting-configuration.html}Learn more}}.
-    
-    * Command line tools. {{{cli.html}Learn more}}.
-    
-    * Apache Wicket integration for URL encryption. {{{wicket.html}Learn more}}.
-    
-    * Updated docs (including {{{seam2.html}Jasypt + Seam 2 integration guide}})
-
 Java Simplified Encryption
 
   Jasypt is a java library which allows 
