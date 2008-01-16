@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="Jasypt: Java simplified encryption">
 
+
   <bannerLeft>
     <name>Jasypt: Java simplified encryption</name>
     <src>images/jasypt.png</src>

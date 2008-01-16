@@ -2,6 +2,7 @@
   ChangeLog
   -------
 
+
 Changes from 1.4 to 1.4.1
 
     * Fixed bug in <<<EncryptedPasswordC3P0ConnectionProvider>>> which made decryption

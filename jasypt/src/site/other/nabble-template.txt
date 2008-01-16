@@ -6,9 +6,6 @@
 
 
 
-
-
-
 <html>
   <head>
     <title>Jasypt: Java simplified encryption - Main</title>
