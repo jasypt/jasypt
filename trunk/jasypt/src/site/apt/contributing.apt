@@ -1,0 +1,118 @@
+  -------
+  Contributing to Jasypt
+  -------
+
+Contributing to Jasypt: Terms
+
+  In order to contribute to Jasypt, there are some terms with which you must agree:
+
+  <<Who can contribute?:>>
+  
+    * Anyone, with the unique condition that he/she must be a <<private individual>>,
+      acting in his/her own name, and not being endorsed in their contributed work
+      by any company or government.
+
+  <<About your contributed code:>>
+
+    * First and important: your code <<must both compile and work correctly>>. 
+      Also, the addition of any new patches to the codebase should not render 
+      it unstable in any way.
+      
+      []
+      
+    * There should be no compilation warnings.
+      
+      []
+
+    * All your code should follow the Java Code Conventions. The only 
+      exception for this is that column limit is 120 instead of the usual 
+      80 characters (this is a matter of convenience). 
+      
+      []
+      
+    * Remember that indentation is made of four spaces, not tabs.
+      
+      []
+      
+    * All your code should compile and run in Java 1.4, and it should be 
+      easy to read and understand by a human.
+      
+      []
+
+    * All public methods and classes should have comprehensive javadoc, and 
+      code should have a reasonable amount of comments in it (when needed, 
+      of course, not just comment for comment).
+      
+      []
+      
+    * All comments, names of classes and variables, log messages, etc. must
+      be in <<English>>.
+      
+      []
+
+  <<About your relation to the Jasypt project:>>
+
+    * First and most important: please, don't feel any obligation to do 
+      anything. If you like/want/feel happy about contributing, go for it. If not, 
+      don't feel any kind of commitment just for having discussed technical 
+      details with the project maintainers or other members, just leave it 
+      behind and it will be absolutely fine, 
+      even if it is after months and you have already coded thousands of lines.
+      
+      []
+
+    * You will be <<<@author>>> for any new classes that you code and also 
+      co-author to any existing classes to which you make <significant> 
+      changes. Of course you can say "no" to this, but unless you do, it 
+      is a matter of basic fairness to give the credit and merit to the person 
+      who deserves it.
+
+      []
+      
+    * Your contributions will be applied as patches that you will send to the
+      project maintainers, and you will have the consideration of <contributor> 
+      in the team page. This means that you will not have read+write direct access to
+      the CVS repository. This is something reserved for developers
+      who are author to a very significant percent of the total code base. Of 
+      course, this consideration can change in the future.
+      
+      []
+
+    * And importantly: You will have to take the required measures, under your 
+      entire responsibility, to <<ensure that the company/ies you work for will 
+      never claim any rights over your contributed code>>, and that all the code 
+      you contribute is original and will rise no claims over its intellectual 
+      property by any third persons or companies. Also, you agree to contribute 
+      your code or documentation <<for free and under the terms established by the 
+      Apache License 2.0 in a time-unlimited basis>>.
+
+
+Contributing to Jasypt: Steps
+
+  If, after carefully reading the above terms, you are willing to contribute 
+  some of your effort to Jasypt, first of all... THANK YOU! 
+  
+  The steps you should take are:
+  
+    * 1. First, send an email to the project maintainers talking about the new features
+      or fixes you would like to contribute. Don't forget to include your full
+      name :-).
+      
+      []
+      
+    * 2. If your contribution is approved, send the project maintainers an email
+      including a copy of the terms above, with your complete name, and 
+      stating clearly that you agree with these conditions.
+      
+      []
+      
+    * 3. If you work for a company which, by the way or place in which your code was
+      written, by your contract terms or by the laws in your contry, could claim
+      any rights (including intellectual property) over your contributed code, you will have
+      to send the project maintainers (either by email from your authorised superiors or 
+      by signed fax), a statement indicating that your company agrees
+      with the terms explained in this page, and that it both authorises your 
+      contribution to Jasypt and states that will never claim any kind of rights 
+      over it.
+
+      
