@@ -53,7 +53,7 @@
     </faq>
     
     <faq id="contribute">
-      <question>How can I or my company contribute to Jasypt?</question>
+      <question>How can I contribute to Jasypt?</question>
       <answer>
         <p>
           In many ways:
@@ -71,6 +71,10 @@
               or customers how encryption
               can be an easy and powerful task by using Jasypt.</li>
         </ul>
+        <p>
+          If you want to contribute some code to Jasypt, please read first the
+          page on <a href="contributing.html">Contributing to Jasypt</a>.
+        </p>
       </answer>
     </faq>
     

@@ -1,4 +1,9 @@
 
+1.5
+===
+- Fixed bug in .sh files in the bin folder. $@ did not work with inputs that
+  contained spaces and had to be substituted by "$@"
+
 1.4.1
 =======
 - Fixed bug in EncryptedPasswordC3P0ConnectionProvider which made decryption
