@@ -50,7 +50,7 @@ import org.jasypt.web.pbeconfig.WebPBEConfigRegistry;
  * 
  * @since 1.3
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class WebPBEConfig extends SimplePBEConfig {

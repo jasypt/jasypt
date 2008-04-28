@@ -82,7 +82,7 @@ import org.jasypt.properties.PropertyValueEncryptionUtils;
  * 
  * @since 1.4
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class EncryptedPasswordC3P0ConnectionProvider 

@@ -34,7 +34,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * 
  * @since 1.0
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class EncryptionOperationNotPossibleException 

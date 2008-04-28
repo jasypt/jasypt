@@ -93,7 +93,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class EncryptedBooleanAsStringType extends AbstractEncryptedAsStringType {

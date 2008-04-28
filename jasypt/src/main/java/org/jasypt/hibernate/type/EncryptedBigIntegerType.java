@@ -109,7 +109,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class EncryptedBigIntegerType implements UserType, ParameterizedType {

@@ -28,7 +28,7 @@ import org.apache.commons.lang.ArrayUtils;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  *
  */
 class NumberUtils {

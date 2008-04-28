@@ -33,7 +33,7 @@ import java.util.Arrays;
  * 
  * @since 1.4
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class ZeroSaltGenerator implements SaltGenerator {

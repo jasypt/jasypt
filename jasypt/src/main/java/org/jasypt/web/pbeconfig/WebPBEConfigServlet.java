@@ -81,7 +81,7 @@ import org.jasypt.encryption.pbe.config.WebPBEConfig;
  * 
  * @since 1.3
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  *
  */
 public class WebPBEConfigServlet extends HttpServlet {

@@ -49,7 +49,7 @@ import org.jasypt.encryption.pbe.config.StringPBEConfig;
  * 
  * @since 1.3
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  *
  */
 public class WebStringPBEConfig 

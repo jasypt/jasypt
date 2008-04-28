@@ -49,7 +49,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
  * 
  * @since 1.2 (class existed as org.jasypt.util.TextEncryptor since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class BasicTextEncryptor implements TextEncryptor {

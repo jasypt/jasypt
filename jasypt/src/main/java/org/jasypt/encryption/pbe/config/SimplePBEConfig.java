@@ -48,7 +48,7 @@ import org.jasypt.salt.SaltGenerator;
  * 
  * @since 1.0
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class SimplePBEConfig implements PBEConfig {

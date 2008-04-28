@@ -54,7 +54,7 @@ package org.jasypt.digest.config;
  * 
  * @since 1.3
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public interface StringDigesterConfig extends DigesterConfig {

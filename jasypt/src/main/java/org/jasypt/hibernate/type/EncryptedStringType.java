@@ -93,7 +93,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * @since 1.2 (substitutes org.jasypt.hibernate.EncryptedTextType 
  *        which existed since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class EncryptedStringType extends AbstractEncryptedAsStringType{

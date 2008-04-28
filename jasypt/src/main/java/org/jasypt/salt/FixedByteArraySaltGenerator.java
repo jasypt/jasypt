@@ -38,7 +38,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class FixedByteArraySaltGenerator implements SaltGenerator {

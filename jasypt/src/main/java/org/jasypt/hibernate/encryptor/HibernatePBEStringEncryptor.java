@@ -116,7 +116,7 @@ import org.jasypt.salt.SaltGenerator;
  * @since 1.2 (substitutes org.jasypt.hibernate.HibernatePBEEncryptor which
  *        existed since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class HibernatePBEStringEncryptor {
