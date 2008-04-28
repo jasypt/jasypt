@@ -40,7 +40,7 @@ import org.jasypt.encryption.BigDecimalEncryptor;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public interface PBEBigDecimalEncryptor 

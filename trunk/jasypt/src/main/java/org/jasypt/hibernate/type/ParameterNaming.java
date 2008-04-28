@@ -27,7 +27,7 @@ package org.jasypt.hibernate.type;
  * 
  * @since 1.4 (was <tt>org.jasypt.hibernate.ParameterNaming</tt> since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class ParameterNaming {

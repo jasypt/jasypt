@@ -52,7 +52,7 @@ import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class StrongDecimalNumberEncryptor implements DecimalNumberEncryptor {

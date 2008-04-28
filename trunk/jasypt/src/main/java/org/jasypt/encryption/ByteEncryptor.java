@@ -27,7 +27,7 @@ package org.jasypt.encryption;
  * 
  * @since 1.0
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public interface ByteEncryptor {

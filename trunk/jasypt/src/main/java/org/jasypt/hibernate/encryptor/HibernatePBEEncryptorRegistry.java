@@ -80,7 +80,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * @since 1.2 (class existed as 
  *            org.jasypt.hibernate.HibernatePBEEncryptorRegistry since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class HibernatePBEEncryptorRegistry {

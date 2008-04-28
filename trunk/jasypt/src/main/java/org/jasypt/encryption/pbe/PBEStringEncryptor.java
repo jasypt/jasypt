@@ -32,7 +32,7 @@ import org.jasypt.encryption.StringEncryptor;
  * 
  * @since 1.0
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public interface PBEStringEncryptor extends StringEncryptor, PasswordBased {

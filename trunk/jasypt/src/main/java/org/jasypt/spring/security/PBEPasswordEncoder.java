@@ -137,7 +137,7 @@ import org.jasypt.util.text.TextEncryptor;
  * @since 1.4 (existed since 1.2 as 
  *            <tt>org.jasypt.springsecurity.PasswordEncoder</tt>)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class PBEPasswordEncoder 

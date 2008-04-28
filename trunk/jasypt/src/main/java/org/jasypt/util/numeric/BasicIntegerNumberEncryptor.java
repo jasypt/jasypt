@@ -51,7 +51,7 @@ import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
  * 
  * @since 1.2
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class BasicIntegerNumberEncryptor implements IntegerNumberEncryptor {

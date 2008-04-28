@@ -45,7 +45,7 @@ import org.jasypt.salt.SaltGenerator;
  * 
  * @since 1.1
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public class EnvironmentPBEConfig extends SimplePBEConfig {

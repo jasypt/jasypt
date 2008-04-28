@@ -30,7 +30,7 @@ package org.jasypt.digest;
  * 
  * @since 1.0
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public interface StringDigester {

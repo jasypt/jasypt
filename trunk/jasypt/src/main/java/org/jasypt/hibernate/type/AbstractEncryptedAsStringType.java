@@ -42,7 +42,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * values as encrypted strings.
  * 
  * @since 1.2
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * @author Iv&aacute;n Garc&iacute;a S&aacute;inz-Aja
  * 
  */

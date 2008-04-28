@@ -54,7 +54,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
  * 
  * @since 1.2 (class existed in org.jasypt.util package since 1.0)
  * 
- * @author Daniel Fern&aacute;ndez Garrido
+ * @author Daniel Fern&aacute;ndez
  * 
  */
 public final class StrongTextEncryptor implements TextEncryptor {
