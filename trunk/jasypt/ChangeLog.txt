@@ -2,6 +2,8 @@
 1.5
 ===
 - Dependency on ICU4j made optional in Java 6 environments.
+- Created new versions of old ACEGI's PasswordEncoder and PBEPasswordEncoder
+  for Spring Security 2.x in package org.jasypt.spring.security2
 - Fixed bug in .sh files in the bin folder. $@ did not work with inputs that
   contained spaces and had to be substituted by "$@"
 
