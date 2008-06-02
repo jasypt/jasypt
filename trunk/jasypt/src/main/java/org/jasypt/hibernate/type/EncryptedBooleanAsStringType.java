@@ -102,7 +102,7 @@ public final class EncryptedBooleanAsStringType extends AbstractEncryptedAsStrin
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
     protected Object convertToObject(String string) {
-        return new Boolean(string);
+        return Boolean.valueOf(string);
     }
 
     public Class returnedClass() {
