@@ -61,7 +61,7 @@ public final class FixedByteArraySaltGenerator implements SaltGenerator {
      */
     public synchronized void setSalt(byte[] salt) {
         Validate.notNull(salt, "Salt cannot be set null");
-        this.salt = salt;
+        this.salt = ArrayUtils.clone(salt);
     }
 
     

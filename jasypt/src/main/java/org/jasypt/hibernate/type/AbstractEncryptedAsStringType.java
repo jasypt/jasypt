@@ -25,6 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.type.NullableType;
@@ -49,9 +50,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 public abstract class AbstractEncryptedAsStringType 
         implements UserType, ParameterizedType {
 
-    protected static NullableType nullableType = Hibernate.STRING;
-    protected static int sqlType = nullableType.sqlType();
-    protected static int[] sqlTypes = new int[]{ sqlType };
+    static final NullableType nullableType = Hibernate.STRING;
+    static final int sqlType = nullableType.sqlType();
+    static final int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;
     private boolean useEncryptorName = false;
@@ -82,7 +83,7 @@ public abstract class AbstractEncryptedAsStringType
     }
     
     public int[] sqlTypes() {
-        return sqlTypes;
+        return ArrayUtils.clone(sqlTypes);
     }
 
     

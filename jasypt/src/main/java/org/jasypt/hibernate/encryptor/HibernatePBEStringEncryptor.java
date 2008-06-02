@@ -156,7 +156,7 @@ public final class HibernatePBEStringEncryptor {
      * 
      * @return the encryptor.
      */
-    public PBEStringEncryptor getEncryptor() {
+    public synchronized PBEStringEncryptor getEncryptor() {
         return this.encryptor;
     }
     

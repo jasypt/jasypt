@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.type.NullableType;
@@ -153,7 +154,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
 
     
     public int[] sqlTypes() {
-        return sqlTypes;
+        return ArrayUtils.clone(sqlTypes);
     }
 
     
