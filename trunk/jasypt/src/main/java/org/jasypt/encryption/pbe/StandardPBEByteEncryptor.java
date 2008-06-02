@@ -34,10 +34,9 @@ import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.normalization.Normalizer;
 import org.jasypt.salt.RandomSaltGenerator;
 import org.jasypt.salt.SaltGenerator;
-
-import com.ibm.icu.text.Normalizer;
 
 /**
  * <p>
@@ -544,8 +543,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 }
                 
                 // Normalize password to NFC form
-                this.password = 
-                    Normalizer.normalize(this.password, Normalizer.NFC);
+                this.password = Normalizer.normalizeToNfc(this.password);
                 
                 /*
                  * Encryption and decryption Ciphers are created the usual way.
