@@ -29,9 +29,8 @@ import org.jasypt.digest.config.StringDigesterConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.normalization.Normalizer;
 import org.jasypt.salt.SaltGenerator;
-
-import com.ibm.icu.text.Normalizer;
 
 
 /**
@@ -706,8 +705,7 @@ public final class StandardStringDigester implements StringDigester {
             // Normalize Unicode message to NFC form
             String normalizedMessage = null;
             if (! this.unicodeNormalizationIgnored) {
-                normalizedMessage = 
-                    Normalizer.normalize(message, Normalizer.NFC);
+                normalizedMessage = Normalizer.normalizeToNfc(message);
             } else {
                 normalizedMessage = message;
             }
@@ -795,8 +793,7 @@ public final class StandardStringDigester implements StringDigester {
             // Normalize Unicode message to NFC form
             String normalizedMessage = null;
             if (! this.unicodeNormalizationIgnored) {
-                normalizedMessage = 
-                    Normalizer.normalize(message, Normalizer.NFC);
+                normalizedMessage = Normalizer.normalizeToNfc(message);
             } else {
                 normalizedMessage = message;
             }

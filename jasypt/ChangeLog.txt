@@ -1,6 +1,7 @@
 
 1.5
 ===
+- Dependency on ICU4j made optional in Java 6 environments.
 - Fixed bug in .sh files in the bin folder. $@ did not work with inputs that
   contained spaces and had to be substituted by "$@"
 
