@@ -19,10 +19,14 @@
  */
 package org.jasypt.properties;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Properties;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang.math.RandomUtils;
 import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.util.text.TextEncryptor;
 
 
@@ -54,6 +58,13 @@ import org.jasypt.util.text.TextEncryptor;
  * Encrypted and unencrypted objects can be combined in the same 
  * properties file.
  * </p>
+ * <p>
+ * Please note that, altough objects of this class are Serializable, they
+ * cannot be serialized and then de-serialized in different classloaders or
+ * virtual machines. This is so because encryptors are not serializable themselves
+ * (they cannot, as they contain sensitive information) and so they remain
+ * in memory, and live for as long as the classloader lives.
+ * </p>
  * 
  * @since 1.4
  * 
@@ -65,13 +76,16 @@ public class EncryptableProperties extends Properties {
     private static final long serialVersionUID = 6479795856725500639L;
 
     /*
-     * Only one of these instances will be initialized, the other one will
-     * be null.
+     * Used as an identifier for the encryptor registry
      */
-    private final StringEncryptor stringEncryptor;
-    private final TextEncryptor textEncryptor;
+    private Integer ident = new Integer(RandomUtils.nextInt());
     
+    /*
+     * Used as a marker to know if the object has ever been serialized
+     */
+    private boolean beenSerialized = false;
 
+    
     /**
      * <p>
      * Creates an <tt>EncryptableProperties</tt> instance which will use
@@ -114,8 +128,9 @@ public class EncryptableProperties extends Properties {
     public EncryptableProperties(Properties defaults, StringEncryptor stringEncryptor) {
         super(defaults);
         Validate.notNull(stringEncryptor, "Encryptor cannot be null");
-        this.stringEncryptor = stringEncryptor;
-        this.textEncryptor = null;
+        EncryptablePropertiesEncryptorRegistry registry =
+            EncryptablePropertiesEncryptorRegistry.getInstance();
+        registry.setStringEncryptor(this, stringEncryptor);
     }
 
 
@@ -133,8 +148,9 @@ public class EncryptableProperties extends Properties {
     public EncryptableProperties(Properties defaults, TextEncryptor textEncryptor) {
         super(defaults);
         Validate.notNull(textEncryptor, "Encryptor cannot be null");
-        this.stringEncryptor = null;
-        this.textEncryptor = textEncryptor;
+        EncryptablePropertiesEncryptorRegistry registry =
+            EncryptablePropertiesEncryptorRegistry.getInstance();
+        registry.setTextEncryptor(this, textEncryptor);
     }
 
 
@@ -170,21 +186,66 @@ public class EncryptableProperties extends Properties {
         return decode(super.getProperty(key, defaultValue));
     }
     
+    
+    /*
+     *  Returns the identifier, just to be used by the registry
+     */
+    Integer getIdent() {
+        return this.ident;
+    }
+    
 
     /*
      * Internal method for decoding (decrypting) a value if needed.
      */
     private synchronized String decode(String encodedValue) {
+        
         if (!PropertyValueEncryptionUtils.isEncryptedValue(encodedValue)) {
             return encodedValue;
         }
-        if (this.stringEncryptor != null) {
-            return PropertyValueEncryptionUtils.decrypt(encodedValue, this.stringEncryptor);
+        EncryptablePropertiesEncryptorRegistry registry =
+            EncryptablePropertiesEncryptorRegistry.getInstance();
+        StringEncryptor stringEncryptor = registry.getStringEncryptor(this);
+        if (stringEncryptor != null) {
+            return PropertyValueEncryptionUtils.decrypt(encodedValue, stringEncryptor);
             
         }
-        return PropertyValueEncryptionUtils.decrypt(encodedValue, this.textEncryptor);
+        TextEncryptor textEncryptor = registry.getTextEncryptor(this);
+        if (textEncryptor != null) {
+            return PropertyValueEncryptionUtils.decrypt(encodedValue, textEncryptor);
+        }
+        
+        /*
+         * If neither a StringEncryptor nor a TextEncryptor can be retrieved
+         * from the registry, this means that this EncryptableProperties
+         * object has been serialized and then deserialized in a different
+         * classloader and virtual machine, which is an unsupported behaviour. 
+         */
+        throw new EncryptionOperationNotPossibleException(
+                "Neither a string encryptor nor a text encryptor exist " +
+                "for this instance of EncryptableProperties. This is usually " +
+                "caused by the instance having been serialized and then " +
+                "de-serialized in a different classloader or virtual machine, " +
+                "which is an unsupported behaviour (as encryptors cannot be " +
+                "serialized themselves)");
+        
     }
+    
 
     
+    private void writeObject(ObjectOutputStream outputStream) throws IOException {
+        this.beenSerialized = true;
+        outputStream.defaultWriteObject();
+    }
+    
+    
+    
+    protected void finalize() throws Throwable {
+        if (!this.beenSerialized) {
+            EncryptablePropertiesEncryptorRegistry registry =
+                EncryptablePropertiesEncryptorRegistry.getInstance();
+            registry.removeEntries(this);
+        }
+    }
     
 }
