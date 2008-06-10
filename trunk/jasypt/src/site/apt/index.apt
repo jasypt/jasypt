@@ -2,6 +2,17 @@
   Main
   -------
 
+  <<Jasypt 1.5 RELEASED!>> (June 10th, 2008). [{{{download.html}DOWNLOAD}}][{{{changelog.html}ChangeLog}} ]
+  
+  What's new:
+  
+    * Dependency on ICU4j made optional in Java 6 environments.
+    
+    * Added integration for Spring Security 2.x
+    
+    * Random number generation algorithm can now be specified in RandomSaltGenerator.
+    
+
 Java Simplified Encryption
 
   Jasypt is a java library which allows 
