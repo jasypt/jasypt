@@ -74,7 +74,7 @@
       <item name="· Jasypt + Maven" href="maven.html"/>
       <item name="· Jasypt + Hibernate 3" href="hibernate3.html"/>
       <item name="· Jasypt + Spring" href="spring.html"/>
-      <item name="· Jasypt + Acegi" href="springsecurity.html"/>
+      <item name="· Jasypt + Spring Security" href="springsecurity.html"/>
       <item name="· Jasypt + Wicket" href="wicket.html"/>
       <item name="· Jasypt + Bouncy Castle" href="bouncy-castle.html"/>
       <item name="· Jasypt + Seam 2" href="seam2.html"/>

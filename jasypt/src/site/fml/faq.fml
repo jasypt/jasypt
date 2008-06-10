@@ -168,7 +168,7 @@
     </faq>
 
     <faq id="i-dont-use-spring-security">
-      <question>I don't use Spring Security (Acegi) at all. Can I use jasypt anyway?</question>
+      <question>I don't use Spring Security (or Acegi) at all. Can I use jasypt anyway?</question>
       <answer>
         <p>
           Yes, you can. Jasypt provides an <b>optional</b> integration
@@ -277,7 +277,7 @@
           it anyway to know if jasypt can help you do things better.
         </p>
         <p>
-          If you are using Spring Security (Acegi Security) for encrypting
+          If you are using Spring Security (former Acegi Security) for encrypting
           passwords in your application, check the corresponding question in
           this FAQ (below) to see what jasypt can do for you.
         </p>
@@ -291,7 +291,7 @@
           Before all, understand that <b>jasypt is not a substitute
           for Spring Security / Acegi</b>, which is a powerful and very complete
           security framework (and which use the Jasypt author truly recommends). 
-          Jasypt will instead <b>integrate into Acegi</b>
+          Jasypt will instead <b>integrate into Spring Security / Acegi</b>
           and improve its password encoding capabilities.
         </p>
         <p>
@@ -299,7 +299,7 @@
         </p>
         <ul>
           <li>First and most important, because the default standard encryptors (<tt>PasswordEncoder</tt>
-          implementations) shipped with Acegi (as of 1.0.4) are simple
+          implementations) shipped with Spring Security (as of 2.0.1) are simple
           message digesters (one hashing iteration, none or user-property based fixed salt...), 
           and are not as safe as
           jasypt's password encryptors can be (learn more about random salt and
@@ -310,14 +310,14 @@
           parameters resolution...</li>
           <li>And third, because using jasypt will help you decoupling your
           user management logic (more bussiness-oriented) from the authentication
-          and authorization component represented by Acegi (you won't
-          need to add dependencies on Acegi's <tt>PasswordEncoder</tt>s to
+          and authorization component represented by Spring Security (you won't
+          need to add dependencies on Spring Security's <tt>PasswordEncoder</tt>s to
           your user management logic, and will instead use classes from a more
           neutral library like jasypt).</li>
         </ul>
         <p>
-          For more information on integrating Jasypt into an Acegi-enabled
-          application, please check the <a href="springsecurity.html">Jasypt + Acegi</a> guide.
+          For more information on integrating Jasypt into an Spring Security-enabled
+          application, please check the <a href="springsecurity.html">Jasypt + Spring Security</a> guide.
         </p>
       </answer>
     </faq>
