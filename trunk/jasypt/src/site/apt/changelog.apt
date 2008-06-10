@@ -3,6 +3,18 @@
   -------
 
 
+Changes from 1.4.1 to 1.5
+
+    * Dependency on ICU4j made optional in Java 6 environments.
+    
+    * Created new versions of old ACEGI's PasswordEncoder and PBEPasswordEncoder
+      for Spring Security 2.x in package org.jasypt.spring.security2.
+
+    * Random number generation algorithm can now be specified in RandomSaltGenerator.
+      
+    * Fixed bug in .sh files in the bin folder. $@ did not work with inputs that
+      contained spaces and had to be substituted by "$@".
+
 Changes from 1.4 to 1.4.1
 
     * Fixed bug in <<<EncryptedPasswordC3P0ConnectionProvider>>> which made decryption
