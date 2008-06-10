@@ -31,6 +31,10 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * or digesting.
  * </p>
  * <p>
+ * The algorithm used for random number generation can be configured at 
+ * instantiation time. If not, the default algorithm will be used.
+ * </p>
+ * <p>
  * This class is <i>thread-safe</i>.
  * </p>
  * 
@@ -41,19 +45,35 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  */
 public final class RandomSaltGenerator implements SaltGenerator {
     
-    private static final String SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
+    /**
+     * The default algorithm to be used for secure random number 
+     * generation: set to SHA1PRNG.
+     */
+    public static final String DEFAULT_SECURE_RANDOM_ALGORITHM = "SHA1PRNG";
     
     private final SecureRandom random;
     
     
     /**
-     * Creates a new instance of <tt>RandomSaltGenerator</tt>
-     *
+     * Creates a new instance of <tt>RandomSaltGenerator</tt> using the 
+     * default secure random number generation algorithm.
      */
     public RandomSaltGenerator() {
+        this(DEFAULT_SECURE_RANDOM_ALGORITHM);
+    }
+    
+    
+    /**
+     * Creates a new instance of <tt>RandomSaltGenerator</tt> specifying a 
+     * secure random number generation algorithm.
+     * 
+     * @since 1.5
+     * 
+     */
+    public RandomSaltGenerator(String secureRandomAlgorithm) {
         super();
         try {
-            this.random = SecureRandom.getInstance(SECURE_RANDOM_ALGORITHM);
+            this.random = SecureRandom.getInstance(secureRandomAlgorithm);
             this.random.setSeed(System.currentTimeMillis());
         } catch (NoSuchAlgorithmException e) {
             throw new EncryptionInitializationException(e);

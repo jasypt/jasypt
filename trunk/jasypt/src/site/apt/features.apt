@@ -65,7 +65,7 @@ Features
 
      []
      
-     * {{{http://www.acegisecurity.org}Spring Security (Acegi Security)}}
+     * {{{http://static.springframework.org/spring-security/site/}Spring Security (former Acegi Security)}}
      optional integration
      for performing password encryption and matching tasks for the security
      framework, improving the security of your users' passwords by using
