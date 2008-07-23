@@ -26,7 +26,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt</artifactId>
   <packaging>jar</packaging>
-  <version>1.5</version>
+  <version>1.6-dev</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -47,7 +47,7 @@
   
   <scm>
     <url>http://jasypt.cvs.sourceforge.net/jasypt/</url>
-    <connection>scm:cvs:pserver:anonymous@jasypt.cvs.sourceforge.net:/cvsroot/jasypt</connection>
+    <connection>scm:cvs:pserver:anonymous:@jasypt.cvs.sourceforge.net:/cvsroot/jasypt</connection>
     <developerConnection>scm:cvs:ext:developername@jasypt.cvs.sourceforge.net:/cvsroot/jasypt</developerConnection>
   </scm>
   
