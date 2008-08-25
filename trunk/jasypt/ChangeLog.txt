@@ -1,4 +1,9 @@
 
+1.6
+===
+- Modified Class.forName calls to use current thread's context classloader.
+- Fixed JavaDoc for Spring Security -related classes.
+
 1.5
 ===
 - Dependency on ICU4j made optional in Java 6 environments.
