@@ -86,7 +86,8 @@ public class WebPBEInitializationContextListener
 
         Class initializerClass = null;
         try {
-            initializerClass = Class.forName(className);
+            initializerClass = 
+                Thread.currentThread().getContextClassLoader().loadClass(className);
         } catch (ClassNotFoundException e) {
             throw new EncryptionInitializationException(e);
         }
