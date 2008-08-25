@@ -66,7 +66,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
  *  &lt;!-- wrap the PasswordEncryptor instance so that it can be used from   -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.springsecurity.PasswordEncoder">
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
  *    &lt;property name="passwordEncryptor">
  *      &lt;ref bean="jasyptPasswordEncryptor" />
  *    &lt;/property>
@@ -102,7 +102,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
  *  &lt;!-- wrap the StringDigester instance so that it can be used from      -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.springsecurity.PasswordEncoder">
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
  *    &lt;property name="stringDigester">
  *      &lt;ref bean="jasyptStringDigester" />
  *    &lt;/property>
