@@ -233,7 +233,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
         if (saltGeneratorClassName != null) {
             try {
                 Class saltGeneratorClass = 
-                    Class.forName(saltGeneratorClassName);
+                    Thread.currentThread().getContextClassLoader().loadClass(saltGeneratorClassName);
                 this.saltGenerator = 
                     (SaltGenerator) saltGeneratorClass.newInstance();
             } catch (Exception e) {
@@ -332,7 +332,8 @@ public class SimpleDigesterConfig implements DigesterConfig {
     public void setProviderClassName(String providerClassName) {
         if (providerClassName != null) {
             try {
-                Class providerClass = Class.forName(providerClassName);
+                Class providerClass = 
+                    Thread.currentThread().getContextClassLoader().loadClass(providerClassName);
                 this.provider = (Provider) providerClass.newInstance();
             } catch (Exception e) {
                 throw new EncryptionInitializationException(e);

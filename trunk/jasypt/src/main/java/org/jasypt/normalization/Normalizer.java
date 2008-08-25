@@ -53,7 +53,7 @@ public class Normalizer {
         if (useJdkNormalizer == null) {
             // Still not initialized, will try to load the JDK Normalizer.
             try {
-                Class.forName(JDK_NORMALIZER_CLASS_NAME);
+                Thread.currentThread().getContextClassLoader().loadClass(JDK_NORMALIZER_CLASS_NAME);
                 useJdkNormalizer = Boolean.TRUE;
             } catch (ClassNotFoundException e) {
                 useJdkNormalizer = Boolean.FALSE;
