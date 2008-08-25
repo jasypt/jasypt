@@ -77,7 +77,7 @@ import org.jasypt.util.text.TextEncryptor;
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
  *  &lt;!-- wrap the TextEncryptor instance so that it can be used from       -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.springsecurity.PBEPasswordEncoder">
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PBEPasswordEncoder">
  *    &lt;property name="textEncryptor">
  *      &lt;ref bean="jasyptTextEncryptor" />
  *    &lt;/property>
@@ -113,7 +113,7 @@ import org.jasypt.util.text.TextEncryptor;
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
  *  &lt;!-- wrap the PBEStringEncryptor instance so that it can be used from  -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.springsecurity.PBEPasswordEncoder">
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PBEPasswordEncoder">
  *    &lt;property name="pbeStringEncryptor">
  *      &lt;ref bean="jasyptPBEStringEncryptor" />
  *    &lt;/property>
