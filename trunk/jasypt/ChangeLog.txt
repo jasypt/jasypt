@@ -3,6 +3,7 @@
 ===
 - Modified Class.forName calls to use current thread's context classloader.
 - Fixed JavaDoc for Spring Security -related classes.
+- Added missing registerPBE*Encryptor methods in HibernatePBEEncryptorRegistry
 
 1.5
 ===
