@@ -166,6 +166,23 @@ public final class HibernatePBEEncryptorRegistry {
     
 
 
+    /**
+     * Registers a <tt>PBEBigIntegerEncryptor</tt> object with the specified
+     * name.
+     * 
+     * @since 1.6
+     * 
+     * @param registeredName the registered name.
+     * @param encryptor the encryptor to be registered.
+     */
+    public synchronized void registerPBEBigIntegerEncryptor(
+            String registeredName, PBEBigIntegerEncryptor encryptor) {
+        HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
+            new HibernatePBEBigIntegerEncryptor(registeredName, encryptor);
+        this.bigIntegerEncryptors.put(registeredName, hibernateEncryptor);
+    }
+
+
     
     // Not public: this is used from 
     // HibernatePBEBigIntegerEncryptor.setRegisteredName.
@@ -203,9 +220,23 @@ public final class HibernatePBEEncryptorRegistry {
         return hibernateEncryptor.getEncryptor();
     }
 
-    
 
-    
+
+    /**
+     * Registers a <tt>PBEBigDecimalEncryptor</tt> object with the specified
+     * name.
+     * 
+     * @since 1.6
+     * 
+     * @param registeredName the registered name.
+     * @param encryptor the encryptor to be registered.
+     */
+    public synchronized void registerPBEBigDecimalEncryptor(
+            String registeredName, PBEBigDecimalEncryptor encryptor) {
+        HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
+            new HibernatePBEBigDecimalEncryptor(registeredName, encryptor);
+        this.bigDecimalEncryptors.put(registeredName, hibernateEncryptor);
+    }
 
 
     
@@ -246,6 +277,24 @@ public final class HibernatePBEEncryptorRegistry {
     }
 
     
+
+
+
+    /**
+     * Registers a <tt>PBEByteEncryptor</tt> object with the specified
+     * name.
+     * 
+     * @since 1.6
+     * 
+     * @param registeredName the registered name.
+     * @param encryptor the encryptor to be registered.
+     */
+    public synchronized void registerPBEByteEncryptor(
+            String registeredName, PBEByteEncryptor encryptor) {
+        HibernatePBEByteEncryptor hibernateEncryptor = 
+            new HibernatePBEByteEncryptor(registeredName, encryptor);
+        this.byteEncryptors.put(registeredName, hibernateEncryptor);
+    }
 
     
 
