@@ -495,6 +495,28 @@
       </answer>
     </faq>
 
+    <faq id="i-receive-a-classnotfoundexception-icu4j">
+      <question>I receive a <tt>ClassNotFoundException</tt> for class com/ibm/icu/text/Normalizer when I try to encrypt or digest data.</question>
+      <answer>
+        <p>
+          Since version 1.5, jasypt does not include ICU4j's jar files in its standard
+          distribution, as this dependency is not required unless java 1.5 or older versions
+          are being used and the ICU4j library is a very large jar file.
+        </p>
+        <p>
+          You can manually download icu4j from the <a href="http://icu-project.org/">ICU4j
+          website</a> or from your maven repository. 
+          Please check the <a href="dependencies.html">Dependencies</a> 
+          and <a href="maven.html">Jasypt + Maven</a> pages for further information.
+        </p>
+        <p>
+          If you are receiving this error when using the CLI tools, check
+          the <a href="cli.html">CLI page</a> about adding ICU4j to your
+          classpath when executing the tools.
+        </p>
+      </answer>
+    </faq>
+
     <faq id="encrypted-fields-not-in-where">
       <question>I do not get correct results when querying a Hibernate-mapped entity with encrypted fields when I set conditions on some of those fields.</question>
       <answer>
@@ -545,6 +567,15 @@
           algorithm/password/keyObtentionIterations configuration you provided. Check
           that your encryptor is configured in exactly the same way as the one with
           which you originally encrypted the data.
+        </p>
+        <p>
+          Also, if you are storing your encrypted data into a database, check that the
+          table columns that you use to store it are big enough to host the encrypted data
+          (which is always bigger than the original data). If you are transmitting your
+          encrypted data via HTTP, check that you are not having problems with the
+          transmission of BASE64-encoded data as URL parameters (BASE64 uses characters
+          which are forbidden in URL parameters, like "="). For these uses, try
+          using hexadecimal output.
         </p>
       </answer>
     </faq>
