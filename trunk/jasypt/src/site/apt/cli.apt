@@ -58,7 +58,9 @@ Encrypting from the command line: Jasypt CLI Tools
   environment variable containing extended classpath definitions for the execution of
   the encryption/decryption/digest commands. This feature can be useful if the user
   wants to configurehis/her own security provider or salt generator
-  implementation.
+  implementation, or if the user is using Java 1.5 or older and needs to add
+  icu4j's jars to the classpath (which are not included with jasypt's distribucion
+  any more).
   
   <<Verbosity>>: All these commands admit a <<<verbose>>> parameter
   (which can be set to <true> (default) or <false>) which let the user switch
