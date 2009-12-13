@@ -39,6 +39,7 @@ import org.hibernate.usertype.UserType;
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.hibernate.encryptor.HibernatePBEByteEncryptor;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 
 /**

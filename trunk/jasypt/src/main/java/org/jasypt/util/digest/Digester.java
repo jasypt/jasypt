@@ -22,6 +22,7 @@ package org.jasypt.util.digest;
 import java.security.Provider;
 
 import org.jasypt.digest.StandardByteDigester;
+import org.jasypt.exceptions.AlreadyInitializedException;
 
 /**
  * <p>
