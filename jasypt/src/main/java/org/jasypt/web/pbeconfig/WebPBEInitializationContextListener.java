@@ -23,6 +23,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.jasypt.encryption.pbe.config.WebPBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**

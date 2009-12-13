@@ -19,6 +19,8 @@
  */
 package org.jasypt.hibernate.connectionprovider;
 
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+
 
 /**
  * <p>

@@ -21,6 +21,9 @@ package org.jasypt.hibernate.type;
 
 import java.util.Date;
 
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
+
 /**
  * <p>
  * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows 
