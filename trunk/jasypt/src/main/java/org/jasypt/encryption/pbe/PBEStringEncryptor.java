@@ -36,5 +36,7 @@ import org.jasypt.encryption.StringEncryptor;
  * 
  */
 public interface PBEStringEncryptor extends StringEncryptor, PasswordBased {
+
+    // aggregator interface
     
 }

@@ -24,7 +24,6 @@ import java.security.Provider;
 import org.jasypt.digest.StandardByteDigester;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.DigesterConfig;
-import org.jasypt.exceptions.AlreadyInitializedException;
 
 /**
  * <p>
