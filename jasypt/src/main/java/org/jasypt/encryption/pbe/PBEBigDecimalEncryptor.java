@@ -46,5 +46,6 @@ import org.jasypt.encryption.BigDecimalEncryptor;
 public interface PBEBigDecimalEncryptor 
         extends BigDecimalEncryptor, PasswordBased {
 
+    // aggregator interface
     
 }

@@ -23,7 +23,6 @@ import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 

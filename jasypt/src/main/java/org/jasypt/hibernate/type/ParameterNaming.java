@@ -122,6 +122,8 @@ public class ParameterNaming {
     
     
     
-    private ParameterNaming() {}
+    private ParameterNaming() {
+        super();
+    }
     
 }

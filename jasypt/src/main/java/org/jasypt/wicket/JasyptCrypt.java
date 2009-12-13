@@ -91,7 +91,7 @@ public class JasyptCrypt implements ICrypt {
      * @param plainText the text to be encrypted.
      * @return encrypted string.
      */
-    public String encryptUrlSafe(String plainText) {
+    public String encryptUrlSafe(final String plainText) {
         
         try {
             byte[] plainBytes = plainText.getBytes(CHARACTER_ENCODING); 

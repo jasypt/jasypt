@@ -19,7 +19,6 @@
  */
 package org.jasypt.web.pbeconfig;
 
-import org.jasypt.encryption.pbe.config.WebPBEConfig;
 
 /**
  * <p>

@@ -45,4 +45,6 @@ import org.jasypt.encryption.BigIntegerEncryptor;
 public interface PBEBigIntegerEncryptor 
         extends BigIntegerEncryptor, PasswordBased {
 
+    // aggregator interface
+    
 }

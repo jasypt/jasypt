@@ -39,7 +39,6 @@ import org.hibernate.usertype.UserType;
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.hibernate.encryptor.HibernatePBEByteEncryptor;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 
 /**
@@ -239,10 +238,14 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
             } finally {
                 try {
                     inputStream.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                    // exception ignored
+                }
                 try {
                     outputStream.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                    // exception ignored
+                }
             }
             
             encryptedValue = outputStream.toByteArray();

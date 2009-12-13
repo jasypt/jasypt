@@ -108,7 +108,9 @@ public final class HibernatePBEEncryptorRegistry {
     }
     
     // The registry cannot be externally instantiated.
-    private HibernatePBEEncryptorRegistry() { }
+    private HibernatePBEEncryptorRegistry() { 
+        super();
+    }
  
 
     /**
