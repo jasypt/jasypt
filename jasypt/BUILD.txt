@@ -5,8 +5,12 @@
  To build JASYPT you will need Maven 2. You can get it at:
  
      http://maven.apache.org
+
+ Also, in order to pass the unit tests, you will need the
+ Java Unlimited Jurisdiction Policy files installed for the JDK with
+ which you are going to do the build.
      
- Once installed, build and install the project executing, from the JASYPT
+ Build and install the project executing, from the JASYPT
  project root folder:
  
      mvn clean:clean install
