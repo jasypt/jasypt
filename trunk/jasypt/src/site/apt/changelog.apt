@@ -3,6 +3,19 @@
   -------
 
 
+Changes from 1.5 to 1.6
+
+    * Modified Class.forName calls to use current thread's context classloader.
+    
+    * Fixed JavaDoc for Spring Security -related classes.
+    
+    * Added missing registerPBE*Encryptor methods in HibernatePBEEncryptorRegistry
+    
+    * Added compatibility with Spring Framework 3.0.x and Spring Security 3.0.x
+    
+    * Tested compatibility with Apache Wicket 1.4.x and Hibernate 3.2.x
+    
+
 Changes from 1.4.1 to 1.5
 
     * Dependency on ICU4j made optional in Java 6 environments.
@@ -14,6 +27,7 @@ Changes from 1.4.1 to 1.5
       
     * Fixed bug in .sh files in the bin folder. $@ did not work with inputs that
       contained spaces and had to be substituted by "$@".
+
 
 Changes from 1.4 to 1.4.1
 
