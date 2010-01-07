@@ -28,12 +28,4 @@ Base dependencies for jasypt
     
     * {{{http://www.icu-project.org/}International Components for Unicode (ICU)}} 3.4.4 or higher
   
-
-Optional dependencies
-
-  Jasypt can optionally depend on the following external libraries:
-    
-    * {{{http://www.hibernate.org}Hibernate}} 3.1 or higher
-    
-    * {{{http://www.acegisecurity.org}Acegi Security}} 1.0.0 or higher
     
