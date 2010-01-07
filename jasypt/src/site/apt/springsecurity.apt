@@ -8,27 +8,29 @@
   also the article '{{{howtoencryptuserpasswords.html}How to encrypt user 
   passwords}}' guide.
 
-Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
+Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
 
-  Jasypt provides two integration packages, <<<org.jasypt.spring.security>>> and
-  <<<org.jasypt.spring.security2>>>, which
+  Jasypt provides two integration packages, <<<org.jasypt.spring.security>>>,
+  <<<org.jasypt.spring.security2>>> and <<<org.jasypt.spring.security3>>>, which
   allow the integration of jasypt's powerful password encryption capabilities into 
-  ACEGI 1.x-enabled and Spring Security 2.x-enabled applications, respectively. 
+  ACEGI-enabled and Spring Security-enabled applications, respectively. 
   Once integrated, jasypt will
   be responsible for managing the check of users' passwords at sign in in
   a transparent way for the rest of the security framework.
   
   Password encryption is set up in Spring Security by injecting an
   object implementing the <<<org.acegisecurity.providers.encoding.PasswordEncoder>>>
-  (ACEGI 1.x) or <<<org.springframework.security.providers.encoding.PasswordEncoder>>>
-  (Spring Security 2.x) interface into your <<<AuthenticationProvider>>>.
+  (ACEGI 1.x), <<<org.springframework.security.providers.encoding.PasswordEncoder>>>
+  (Spring Security 2.x) or <<org.springframework.security.authentication.encoding.PasswordEncoder>>
+  (Spring Security 3.x) interface into your <<<AuthenticationProvider>>>.
   
   
   Jasypt provides two implementations of this <<<PasswordEncoder>>> interface
-  for each of ACEGI 1.x and Spring Security 2.x:
+  for each of ACEGI 1.x and Spring Security 2.x and 3.x:
   
       * <<org.jasypt.spring.security.PasswordEncoder>> / 
-        <<org.jasypt.spring.security2.PasswordEncoder>>, which
+        <<org.jasypt.spring.security2.PasswordEncoder>> / 
+        <<org.jasypt.spring.security3.PasswordEncoder>>, which
         is used for uni-directional password encryption (recommended),
         and which can wrap either an <<org.jasypt.util.password.PasswordEncryptor>> or
         an <<org.jasypt.digest.StringDigester>> object.
@@ -36,7 +38,8 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
       []
       
       * <<org.jasypt.spring.security.PBEPasswordEncoder>> /
-        <<org.jasypt.spring.security2.PBEPasswordEncoder>>, which
+        <<org.jasypt.spring.security2.PBEPasswordEncoder>> /
+        <<org.jasypt.spring.security3.PBEPasswordEncoder>>, which
         is used for bi-directional password encryption (not recommended),
         and which can wrap either an <<org.jasypt.util.text.TextEncryptor>> or
         an <<org.jasypt.encryption.pbe.StringEncryptor>> object.
@@ -47,7 +50,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   integration scenarios.
 
 
-* org.jasypt.spring.security.PasswordEncoder / org.jasypt.spring.security2.PasswordEncoder 
+* org.jasypt.spring.security|security2|security3.PasswordEncoder
 
   These <<<PasswordEncoder>>> 
   implementations can wrap either an <<org.jasypt.util.password.PasswordEncryptor>>
@@ -58,7 +61,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   into ACEGI / Spring Security using this adapter.
   
   It can be used from your Spring XML resource files like this
-  (for a <<<PasswordEncryptor>>> and Spring Security 2.x):
+  (for a <<<PasswordEncryptor>>> and Spring Security 3.x):
   
 ------------  
   ...
@@ -70,7 +73,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
     <property name="passwordEncryptor">
       <ref bean="jasyptPasswordEncryptor" />
     </property>
@@ -79,7 +82,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
   <!-- Your DaoAuthenticationProvider will then use it like with any     -->
   <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
       <property name="userDetailsService" ref="userDetailsService"/>
       <property name="passwordEncoder">
         <ref bean="passwordEncoder" />
@@ -88,7 +91,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
 ------------  
   
-  Or like this (for a <<<StringDigester>>> and Spring Security 2.x):
+  Or like this (for a <<<StringDigester>>> and Spring Security 3.x):
   
 ------------  
   ...
@@ -103,7 +106,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the StringDigester instance so that it can be used from      -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
     <property name="stringDigester">
       <ref bean="jasyptStringDigester" />
     </property>
@@ -112,7 +115,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
   <!-- Your DaoAuthenticationProvider will then use it like with any     -->
   <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
       <property name="userDetailsService" ref="userDetailsService"/>
       <property name="passwordEncoder">
         <ref bean="passwordEncoder" />
@@ -122,7 +125,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
 ------------  
   
 
-* org.jasypt.spring.security.PBEPasswordEncoder / org.jasypt.spring.security2.PBEPasswordEncoder
+* org.jasypt.spring.security|security2|security3.PBEPasswordEncoder
 
   These <<<PasswordEncoder>>> 
   implementations can wrap either an <<org.jasypt.util.text.TextEncryptor>>
@@ -130,10 +133,10 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   or an <<org.jasypt.encryption.pbe.PBEStringEncryptor>>
   implementation (<<<StandardPBEStringEncryptor>>>,...). This means that all
   bi-directional encryption methods supported in jasypt can be integrated
-  into ACEGI / Spring Security 2.x using this adapter.
+  into ACEGI / Spring Security using this adapter.
   
   It can be used from your Spring XML resource files like this
-  (for a <<<TextEncryptor>>> and Spring Security 2.x):
+  (for a <<<TextEncryptor>>> and Spring Security 3.x):
   
 ------------  
   ...
@@ -147,7 +150,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the TextEncryptor instance so that it can be used from       -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security2.PBEPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PBEPasswordEncoder">
     <property name="textEncryptor">
       <ref bean="jasyptTextEncryptor" />
     </property>
@@ -156,7 +159,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
   <!-- Your DaoAuthenticationProvider will then use it like with any     -->
   <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
       <property name="userDetailsService" ref="userDetailsService"/>
       <property name="passwordEncoder">
         <ref bean="passwordEncoder" />
@@ -165,7 +168,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
 ------------  
   
-  Or like this (for a <<<PBEStringEncryptor>>> and Spring Security 2.x):
+  Or like this (for a <<<PBEStringEncryptor>>> and Spring Security 3.x):
   
 ------------  
   ...
@@ -180,7 +183,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PBEStringEncryptor instance so that it can be used from  -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security2.PBEPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PBEPasswordEncoder">
     <property name="pbeStringEncryptor">
       <ref bean="jasyptPBEStringEncryptor" />
     </property>
@@ -189,7 +192,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
   <!-- Your DaoAuthenticationProvider will then use it like with any     -->
   <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
       <property name="userDetailsService" ref="userDetailsService"/>
       <property name="passwordEncoder">
         <ref bean="passwordEncoder" />
@@ -229,7 +232,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
     <property name="passwordEncryptor">
       <ref bean="jasyptPasswordEncryptor" />
     </property>
@@ -238,7 +241,7 @@ Integrating Jasypt with Spring Security 2.x (or Acegi 1.x)
   ...
   <!-- Your DaoAuthenticationProvider will then use it like with any     -->
   <!-- other implementation of the PasswordEncoder interface.            -->
-  <bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
       <property name="userDetailsService" ref="userDetailsService"/>
       <property name="passwordEncoder">
         <ref bean="passwordEncoder" />
