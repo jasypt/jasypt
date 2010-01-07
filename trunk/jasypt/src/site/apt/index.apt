@@ -2,15 +2,17 @@
   Main
   -------
 
-  <<Jasypt 1.5 RELEASED!>> (June 10th, 2008). [{{{download.html}DOWNLOAD}}][{{{changelog.html}ChangeLog}} ]
+  <<Jasypt 1.6 RELEASED!>> (January 7th, 2010). [{{{download.html}DOWNLOAD}}][{{{changelog.html}ChangeLog}} ]
   
   What's new:
   
-    * Dependency on ICU4j made optional in Java 6 environments.
+    * Added compatibility with Spring Framework 3.0.x and Spring Security 3.0.x.
     
-    * Added integration for Spring Security 2.x
+    * Tested compatibility with Apache Wicket 1.4.x and Hibernate 3.2.x.
     
-    * Random number generation algorithm can now be specified in RandomSaltGenerator.
+    * Added missing registerPBE*Encryptor methods in HibernatePBEEncryptorRegistry
+    
+    * Some other really minor fixes.
     
 
 Java Simplified Encryption
@@ -26,7 +28,7 @@ Java Simplified Encryption
     * Transparent integration with <<Hibernate>>.
     
     * Suitable for integration into <<Spring>>-based applications and also
-      transparently integrable with <<ACEGI>> (Spring Security).
+      transparently integrable with <<Spring Security>> (formerly ACEGI).
       
     * Integrated capabilities for encrypting the configuration of applications
       (i.e. datasources).

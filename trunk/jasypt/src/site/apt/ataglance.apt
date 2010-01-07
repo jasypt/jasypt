@@ -71,7 +71,7 @@ Jasypt at a glance
       
       []
       
-      * {{{springsecurity.html}Jasypt + Acegi}}: Integrating jasypt into your Spring Security (Acegi) based applications.
+      * {{{springsecurity.html}Jasypt + Acegi}}: Integrating jasypt into your Spring Security (or Acegi) based applications.
       
       []
       
