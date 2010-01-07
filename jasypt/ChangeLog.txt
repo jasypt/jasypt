@@ -4,6 +4,8 @@
 - Modified Class.forName calls to use current thread's context classloader.
 - Fixed JavaDoc for Spring Security -related classes.
 - Added missing registerPBE*Encryptor methods in HibernatePBEEncryptorRegistry
+- Added compatibility with Spring Framework 3.0.x and Spring Security 3.0.x
+- Tested compatibility with Apache Wicket 1.4.x and Hibernate 3.2.x
 
 1.5
 ===
