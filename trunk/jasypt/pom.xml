@@ -26,7 +26,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt</artifactId>
   <packaging>jar</packaging>
-  <version>1.6</version>
+  <version>1.6-SNAPSHOT</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -47,8 +47,8 @@
   
   <scm>
     <url>http://jasypt.cvs.sourceforge.net/jasypt/</url>
-    <connection>scm:cvs:pserver:anonymous@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</connection>
-    <developerConnection>scm:cvs:ext:developername@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</developerConnection>
+    <connection>scm:cvs:pserver:@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</connection>
+    <developerConnection>scm:cvs:ext:@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</developerConnection>
   </scm>
   
   <developers>
@@ -62,18 +62,36 @@
     </developer>
   </developers>
   
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+  </distributionManagement>
+
+
   <build>
+  
     <resources>
       <resource>
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
+    
     <plugins>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -82,6 +100,7 @@
           <target>1.4</target>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -92,6 +111,7 @@
           <reportOutputDirectory>${project.reporting.outputDirectory}/api/${artifactId}/apidocs</reportOutputDirectory>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -104,6 +124,7 @@
           </execution>
         </executions>
       </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -116,6 +137,21 @@
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -150,8 +186,12 @@
           </execution>
         </executions>
       </plugin>
+      
     </plugins>
+    
   </build>
+
+
 
   <reporting>
     <plugins>
