@@ -302,7 +302,7 @@ RSeN4JXTJwVFK6YYnxr6kYzK5I7aDqnJ
 
 ---
 
-$ ./decrypt.sh input="userDaTaBaSe_pass_word" verbose=false
+$ ./digest.sh input="userDaTaBaSe_pass_word" verbose=false
 3oZF4OzyW/0OZEDG/EU+22b+0ZJg9FSc
 ---
 
