@@ -10,7 +10,7 @@ Getting Started with JASYPT easy encryption tools
   is happening "behind the scenes") the execution of some of the most common
   encryption tasks.
   
-  Thses tools are categorized depending on the task they are intended to do:
+  These tools are categorized depending on the task they are intended to do:
 
       * General digesting (<<<org.jasypt.util.digest.*>>>)
       

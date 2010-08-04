@@ -130,7 +130,7 @@ Integrating Jasypt with Hibernate 3
   <hibernate-mapping package="myapp">
     ...
     <typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedStringType">
-      <param name="encryptorRegisteredName">strongHibernateEncryptor</param>
+      <param name="encryptorRegisteredName">strongHibernateStringEncryptor</param>
     </typedef>
     ...
     <class name="UserData" table="USER_DATA">
