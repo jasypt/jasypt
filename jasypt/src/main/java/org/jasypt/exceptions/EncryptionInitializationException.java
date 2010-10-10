@@ -19,8 +19,6 @@
  */
 package org.jasypt.exceptions;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 /**
  * Exception thrown when an error is raised during initialization of
  * an entity.
@@ -30,8 +28,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class EncryptionInitializationException 
-        extends NestableRuntimeException {
+public class EncryptionInitializationException extends RuntimeException {
     
     private static final long serialVersionUID = 8929638240023639778L;
 

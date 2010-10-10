@@ -1,4 +1,12 @@
 
+1.7
+===
+- Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
+  without depedencies on JDK version >= 6.
+- Added configuration parameter "invertPositionOfPlainSaltInEncryptionResults" to
+  salt generators so that plain salt can be added at the end of the encryption/digest
+  result instead of only at the beginning.
+
 1.6
 ===
 - Modified Class.forName calls to use current thread's context classloader.

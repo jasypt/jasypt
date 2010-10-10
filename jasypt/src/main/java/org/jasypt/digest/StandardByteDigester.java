@@ -25,8 +25,7 @@ import java.security.NoSuchProviderException;
 import java.security.Provider;
 import java.util.Arrays;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -266,6 +265,8 @@ public final class StandardByteDigester implements ByteDigester {
      *   <li>Salt size</li>
      *   <li>Hashing iterations</li>
      *   <li>Salt generator</li>
+     *   <li>Location of the salt in relation to the encrypted message 
+     *       (default: before)</li>
      * </ul>
      * 
      * <p>
@@ -277,8 +278,8 @@ public final class StandardByteDigester implements ByteDigester {
      * @param config the <tt>DigesterConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public synchronized void setConfig(DigesterConfig config) {
-        Validate.notNull(config, "Config cannot be set null");
+    public synchronized void setConfig(final DigesterConfig config) {
+        CommonUtils.validateNotNull(config, "Config cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -312,8 +313,8 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @param algorithm the name of the algorithm to be used.
      */
-    public synchronized void setAlgorithm(String algorithm) {
-        Validate.notEmpty(algorithm, "Algorithm cannot be empty");
+    public synchronized void setAlgorithm(final String algorithm) {
+        CommonUtils.validateNotEmpty(algorithm, "Algorithm cannot be empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -336,9 +337,8 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @param saltSizeBytes the size of the salt to be used, in bytes.
      */
-    public synchronized void setSaltSizeBytes(int saltSizeBytes) {
-        Validate.isTrue(saltSizeBytes >= 0, 
-                "Salt size in bytes must be non-negative");
+    public synchronized void setSaltSizeBytes(final int saltSizeBytes) {
+        CommonUtils.validateIsTrue(saltSizeBytes >= 0, "Salt size in bytes must be non-negative");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -363,9 +363,8 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @param iterations the number of iterations.
      */
-    public synchronized void setIterations(int iterations) {
-        Validate.isTrue(iterations > 0, 
-                "Number of iterations must be greater than zero");
+    public synchronized void setIterations(final int iterations) {
+        CommonUtils.validateIsTrue(iterations > 0, "Number of iterations must be greater than zero");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -384,8 +383,8 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @param saltGenerator the salt generator to be used.
      */
-    public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
-        Validate.notNull(saltGenerator, "Salt generator cannot be set null");
+    public synchronized void setSaltGenerator(final SaltGenerator saltGenerator) {
+        CommonUtils.validateNotNull(saltGenerator, "Salt generator cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -421,8 +420,8 @@ public final class StandardByteDigester implements ByteDigester {
      * @param providerName the name of the security provider to be asked
      *                     for the digest algorithm.
      */
-    public synchronized void setProviderName(String providerName) {
-        Validate.notNull(providerName, "Provider name cannot be set null");
+    public synchronized void setProviderName(final String providerName) {
+        CommonUtils.validateNotNull(providerName, "Provider name cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -451,14 +450,15 @@ public final class StandardByteDigester implements ByteDigester {
      * 
      * @param provider the provider to be asked for the chosen algorithm
      */
-    public synchronized void setProvider(Provider provider) {
-        Validate.notNull(provider, "Provider cannot be set null");
+    public synchronized void setProvider(final Provider provider) {
+        CommonUtils.validateNotNull(provider, "Provider cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
         this.provider = provider;
         this.providerSet = true;
     }
+
     
 
     /**
@@ -510,9 +510,8 @@ public final class StandardByteDigester implements ByteDigester {
      * </ol>
      * <p>
      *   Once a digester has been initialized, trying to
-     *   change its configuration (algorithm, provider, salt size, iterations
-     *   or salt generator) will
-     *   result in an <tt>AlreadyInitializedException</tt> being thrown.
+     *   change its configuration will result in an 
+     *   <tt>AlreadyInitializedException</tt> being thrown.
      * </p>
      * 
      * @throws EncryptionInitializationException if initialization could not
@@ -532,33 +531,31 @@ public final class StandardByteDigester implements ByteDigester {
              */
             if (this.config != null) {
                 
-                String configAlgorithm = this.config.getAlgorithm();
+                final String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
-                    Validate.notEmpty(configAlgorithm, 
-                            "Algorithm cannot be empty");
+                    CommonUtils.validateNotEmpty(configAlgorithm, "Algorithm cannot be empty");
                 }
                 
-                Integer configSaltSizeBytes = this.config.getSaltSizeBytes();
+                final Integer configSaltSizeBytes = this.config.getSaltSizeBytes();
                 if (configSaltSizeBytes != null) {
-                    Validate.isTrue(configSaltSizeBytes.intValue() >= 0, 
+                    CommonUtils.validateIsTrue(configSaltSizeBytes.intValue() >= 0, 
                             "Salt size in bytes must be non-negative");
                 }
                 
-                Integer configIterations = this.config.getIterations();
+                final Integer configIterations = this.config.getIterations();
                 if (configIterations != null) {
-                    Validate.isTrue(configIterations.intValue() > 0, 
+                    CommonUtils.validateIsTrue(configIterations.intValue() > 0, 
                             "Number of iterations must be greater than zero");
                 }
                 
-                SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
+                final SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
                 
-                String configProviderName = this.config.getProviderName();
+                final String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
-                    Validate.notEmpty(configProviderName,
-                            "Provider name cannot be empty");
+                    CommonUtils.validateNotEmpty(configProviderName, "Provider name cannot be empty");
                 }
                 
-                Provider configProvider = this.config.getProvider();
+                final Provider configProvider = this.config.getProvider();
                 
 
                 this.algorithm = 
@@ -723,17 +720,6 @@ public final class StandardByteDigester implements ByteDigester {
     private byte[] digest(byte[] message, byte[] salt) {
         
         try {
-            
-            byte[] encryptedMessage = new byte[0];
-
-            /*
-             * Add the salt to the result, as it have to be stored with the 
-             * digest itself so that we are able to create a new digest with
-             * the same salt for other message and compare them properly.
-             */
-            if (salt != null) {
-                encryptedMessage = ArrayUtils.addAll(encryptedMessage, salt);
-            }
 
             byte[] digest = null;
             
@@ -742,7 +728,7 @@ public final class StandardByteDigester implements ByteDigester {
                 this.md.reset();
                 
                 if (salt != null) {
-                    // The salt is added to the digest
+                    // The salt bytes are added before the message to be digested
                     this.md.update(salt);
                 }
                 this.md.update(message);
@@ -755,17 +741,25 @@ public final class StandardByteDigester implements ByteDigester {
                 
             }
 
-            // Finally we build an array containing both the undigested salt
+            // Finally we build an array containing both the unhashed (plain) salt
             // and the digest of the (salt + message). This is done only
             // if the salt generator we are using specifies to do so.
-            if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                encryptedMessage = ArrayUtils.addAll(encryptedMessage, digest);
-            } else {
-                encryptedMessage = digest;
+            if (this.saltGenerator.includePlainSaltInEncryptionResults() && salt != null) {
+
+                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                    
+                    // Insert unhashed salt before the hashing result (default behaviour)
+                    return CommonUtils.appendArrays(salt, digest);
+                    
+                }
+                    
+                // Append unhashed salt after the hashing result
+                return CommonUtils.appendArrays(digest, salt);
+                
             }
             
-            return encryptedMessage;
-        
+            return digest;
+            
         } catch (Exception e) {
             // If digest fails, it is more secure not to return any information
             // about the cause in nested exceptions. Simply fail.
@@ -827,7 +821,20 @@ public final class StandardByteDigester implements ByteDigester {
                 // If not, the salt is supposed to be fixed and thus the
                 // salt generator can be safely asked for it again.
                 if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                    salt = ArrayUtils.subarray(digest, 0, this.saltSizeBytes);
+                    if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                        final int saltStart = 0;
+                        final int saltSize = 
+                            (this.saltSizeBytes < digest.length? this.saltSizeBytes : digest.length);
+                        salt = new byte[saltSize];
+                        System.arraycopy(digest, saltStart, salt, 0, saltSize);
+                    } else {
+                        final int saltStart = 
+                            (this.saltSizeBytes < digest.length? (digest.length - this.saltSizeBytes) : 0);
+                        final int saltSize = 
+                            (this.saltSizeBytes < digest.length? this.saltSizeBytes : digest.length);
+                        salt = new byte[saltSize];
+                        System.arraycopy(digest, saltStart, salt, 0, saltSize);
+                    }
                 } else {
                     salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
                 }
@@ -847,7 +854,6 @@ public final class StandardByteDigester implements ByteDigester {
         
     }
 
-    
     
     
     

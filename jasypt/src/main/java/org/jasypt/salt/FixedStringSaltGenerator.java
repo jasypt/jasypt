@@ -21,8 +21,7 @@ package org.jasypt.salt;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
@@ -44,7 +43,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class FixedStringSaltGenerator implements SaltGenerator {
+public class FixedStringSaltGenerator implements SaltGenerator {
 
     private static final String DEFAULT_CHARSET = "UTF-8";
     
@@ -68,7 +67,7 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
      * @param salt the specified salt.
      */
     public synchronized void setSalt(String salt) {
-        Validate.notNull(salt, "Salt cannot be set null");
+        CommonUtils.validateNotNull(salt, "Salt cannot be set null");
         this.salt = salt;
     }
 
@@ -79,7 +78,7 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
      * @param charset the specified charset
      */
     public synchronized void setCharset(String charset) {
-        Validate.notNull(charset, "Charset cannot be set null");
+        CommonUtils.validateNotNull(charset, "Charset cannot be set null");
         this.charset = charset;
     }
 
@@ -107,7 +106,9 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
             throw new EncryptionInitializationException(
                     "Requested salt larger than set");
         }
-        return ArrayUtils.subarray(this.saltBytes, 0, lengthBytes);
+        final byte[] generatedSalt = new byte[lengthBytes];
+        System.arraycopy(this.saltBytes, 0, generatedSalt, 0, lengthBytes);
+        return generatedSalt;
     }
 
 
@@ -119,6 +120,17 @@ public final class FixedStringSaltGenerator implements SaltGenerator {
      * @return false
      */
     public boolean includePlainSaltInEncryptionResults() {
+        return false;
+    }
+
+
+    /**
+     * This salt generator keeps the default behaviour (salt is inserted
+     * before encryption/digesting message result).
+     * 
+     * @return false
+     */
+    public boolean invertPositionOfPlainSaltInEncryptionResults() {
         return false;
     }
 

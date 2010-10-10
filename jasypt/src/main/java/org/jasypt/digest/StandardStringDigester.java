@@ -21,9 +21,8 @@ package org.jasypt.digest;
 
 import java.security.Provider;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.Validate;
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.digest.config.StringDigesterConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -507,8 +506,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param stringOutputType the string output type.
      */
     public synchronized void setStringOutputType(String stringOutputType) {
-        Validate.notEmpty(stringOutputType, 
-                "String output type cannot be set empty");
+        CommonUtils.validateNotEmpty(stringOutputType, "String output type cannot be set empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }

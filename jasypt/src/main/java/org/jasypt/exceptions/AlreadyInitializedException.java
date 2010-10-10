@@ -19,7 +19,6 @@
  */
 package org.jasypt.exceptions;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**
  * Exception thrown when an attempt is made to change the configuration
@@ -31,7 +30,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class AlreadyInitializedException extends NestableRuntimeException {
+public class AlreadyInitializedException extends RuntimeException {
     
     private static final long serialVersionUID = 4592515503937873874L;
 

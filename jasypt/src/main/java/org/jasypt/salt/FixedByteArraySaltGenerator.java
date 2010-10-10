@@ -19,8 +19,7 @@
  */
 package org.jasypt.salt;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
@@ -41,7 +40,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class FixedByteArraySaltGenerator implements SaltGenerator {
+public class FixedByteArraySaltGenerator implements SaltGenerator {
 
     private byte[] salt = null;
     
@@ -60,8 +59,8 @@ public final class FixedByteArraySaltGenerator implements SaltGenerator {
      * @param salt the specified salt.
      */
     public synchronized void setSalt(byte[] salt) {
-        Validate.notNull(salt, "Salt cannot be set null");
-        this.salt = ArrayUtils.clone(salt);
+        CommonUtils.validateNotNull(salt, "Salt cannot be set null");
+        this.salt = (byte[]) salt.clone();
     }
 
     
@@ -80,7 +79,9 @@ public final class FixedByteArraySaltGenerator implements SaltGenerator {
             throw new EncryptionInitializationException(
                     "Requested salt larger than set");
         }
-        return ArrayUtils.subarray(this.salt, 0, lengthBytes);
+        final byte[] generatedSalt = new byte[lengthBytes];
+        System.arraycopy(this.salt, 0, generatedSalt, 0, lengthBytes);
+        return generatedSalt;
     }
 
 
@@ -92,6 +93,17 @@ public final class FixedByteArraySaltGenerator implements SaltGenerator {
      * @return false
      */
     public boolean includePlainSaltInEncryptionResults() {
+        return false;
+    }
+
+
+    /**
+     * This salt generator keeps the default behaviour (salt is inserted
+     * before encryption/digesting message result).
+     * 
+     * @return false
+     */
+    public boolean invertPositionOfPlainSaltInEncryptionResults() {
         return false;
     }
 

@@ -28,10 +28,27 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.digest.config.SimpleDigesterConfig;
-import org.jasypt.salt.FixedByteArraySaltGenerator;
+import org.jasypt.salt.RandomSaltGenerator;
 
-public class StandardStringDigesterTest extends TestCase {
+public class StandardStringDigesterInvertedSaltTest extends TestCase {
 
+    
+    class InvertedRandomSaltGenerator extends RandomSaltGenerator {
+
+        public InvertedRandomSaltGenerator() {
+            super();
+        }
+
+        public InvertedRandomSaltGenerator(String secureRandomAlgorithm) {
+            super(secureRandomAlgorithm);
+        }
+
+        public boolean invertPositionOfPlainSaltInEncryptionResults() {
+            return true;
+        }
+        
+    }
+    
     
     
     public void testDigest() throws Exception {
@@ -39,6 +56,7 @@ public class StandardStringDigesterTest extends TestCase {
         String message = "This is a Message";
         
         StandardStringDigester digester = new StandardStringDigester();
+        digester.setSaltGenerator(new InvertedRandomSaltGenerator());
         String digest = digester.digest(message);
         
         assertTrue(digester.digest(null) == null);
@@ -65,6 +83,7 @@ public class StandardStringDigesterTest extends TestCase {
         }
 
         StandardStringDigester digester2 = new StandardStringDigester();
+        digester2.setSaltGenerator(new InvertedRandomSaltGenerator());
         for (int i = 0; i < 100; i++) {
             assertTrue(digester2.matches(message, digest));
         }
@@ -74,45 +93,16 @@ public class StandardStringDigesterTest extends TestCase {
         }
         
         StandardStringDigester digester3 = new StandardStringDigester();
+        digester3.setSaltGenerator(new InvertedRandomSaltGenerator());
         digester3.setSaltSizeBytes(0);
         digest = digester3.digest(message);
         
         for (int i = 0; i < 100; i++) {
             assertTrue(digester3.matches(message, digest));
         }
-        
-        String saltString = "Jasypt Salt Testing";
-        byte[] saltByteArray  = saltString.getBytes("UTF-8");
-        FixedByteArraySaltGenerator fixedSaltGen = 
-            new FixedByteArraySaltGenerator();
-        fixedSaltGen.setSalt(saltByteArray);
-
-        StandardStringDigester digester4 = new StandardStringDigester();
-        digester4.setSaltGenerator(fixedSaltGen);
-        String digest4 = digester4.digest(message);
-        
-        for (int i = 0; i < 100; i++) {
-            assertTrue(digester4.matches(message, digest4));
-        }
-
-        StandardStringDigester digester5 = new StandardStringDigester();
-        SimpleDigesterConfig dig5Config = new SimpleDigesterConfig();
-        dig5Config.setSaltGenerator(fixedSaltGen);
-        digester5.setConfig(dig5Config);
-        String digest5 = digester5.digest(message);
-        
-        for (int i = 0; i < 100; i++) {
-            assertTrue(digester5.matches(message, digest5));
-        }
-
-        
-        for (int i = 0; i < 100; i++) {
-            assertTrue(
-                    digester4.digest(message).equals(
-                    digester5.digest(message)));
-        }
 
         StandardStringDigester digester6 = new StandardStringDigester();
+        digester6.setSaltGenerator(new InvertedRandomSaltGenerator());
         SimpleDigesterConfig dig6Config = new SimpleDigesterConfig();
         dig6Config.setProvider(new BouncyCastleProvider());
         digester6.setConfig(dig6Config);
@@ -126,6 +116,7 @@ public class StandardStringDigesterTest extends TestCase {
         Security.addProvider(new BouncyCastleProvider());
         
         StandardStringDigester digester7 = new StandardStringDigester();
+        digester7.setSaltGenerator(new InvertedRandomSaltGenerator());
         SimpleDigesterConfig dig7Config = new SimpleDigesterConfig();
         dig7Config.setProviderName("BC");
         digester7.setConfig(dig7Config);
@@ -136,6 +127,7 @@ public class StandardStringDigesterTest extends TestCase {
         }
         
         StandardStringDigester digester8 = new StandardStringDigester();
+        digester8.setSaltGenerator(new InvertedRandomSaltGenerator());
         SimpleDigesterConfig dig8Config = new SimpleDigesterConfig();
         dig8Config.setProvider(new BouncyCastleProvider());
         dig8Config.setProviderName("SUN");
@@ -148,6 +140,7 @@ public class StandardStringDigesterTest extends TestCase {
         }
         
         StandardStringDigester digester9 = new StandardStringDigester();
+        digester9.setSaltGenerator(new InvertedRandomSaltGenerator());
         EnvironmentStringDigesterConfig dig9Config = new EnvironmentStringDigesterConfig();
         dig9Config.setProvider(new BouncyCastleProvider());
         dig9Config.setAlgorithm("WHIRLPOOL");

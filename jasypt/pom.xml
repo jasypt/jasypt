@@ -117,6 +117,7 @@
           <overview>${basedir}/src/main/javadoc/overview.html</overview>
           <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
           <reportOutputDirectory>${project.reporting.outputDirectory}/api/${artifactId}/apidocs</reportOutputDirectory>
+          <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
         </configuration>
       </plugin>
       
@@ -219,21 +220,7 @@
   </reporting>
 
   <dependencies>
-  
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.1</version>
-      <scope>compile</scope>
-    </dependency>
     
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.1</version>
-      <scope>compile</scope>
-    </dependency>
-
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
@@ -528,6 +515,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
       <scope>test</scope>
     </dependency>
     

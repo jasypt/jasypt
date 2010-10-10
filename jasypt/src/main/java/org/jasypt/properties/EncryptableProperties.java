@@ -23,8 +23,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Properties;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.lang.math.RandomUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.util.text.TextEncryptor;
@@ -78,7 +77,7 @@ public class EncryptableProperties extends Properties {
     /*
      * Used as an identifier for the encryptor registry
      */
-    private Integer ident = new Integer(RandomUtils.nextInt());
+    private Integer ident = new Integer(CommonUtils.nextRandomInt());
     
     /*
      * Used as a marker to know if the object has ever been serialized
@@ -127,7 +126,7 @@ public class EncryptableProperties extends Properties {
      */
     public EncryptableProperties(Properties defaults, StringEncryptor stringEncryptor) {
         super(defaults);
-        Validate.notNull(stringEncryptor, "Encryptor cannot be null");
+        CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
         EncryptablePropertiesEncryptorRegistry registry =
             EncryptablePropertiesEncryptorRegistry.getInstance();
         registry.setStringEncryptor(this, stringEncryptor);
@@ -147,7 +146,7 @@ public class EncryptableProperties extends Properties {
      */
     public EncryptableProperties(Properties defaults, TextEncryptor textEncryptor) {
         super(defaults);
-        Validate.notNull(textEncryptor, "Encryptor cannot be null");
+        CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
         EncryptablePropertiesEncryptorRegistry registry =
             EncryptablePropertiesEncryptorRegistry.getInstance();
         registry.setTextEncryptor(this, textEncryptor);

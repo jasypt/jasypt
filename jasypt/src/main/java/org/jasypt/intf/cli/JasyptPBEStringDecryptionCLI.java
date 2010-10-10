@@ -21,7 +21,6 @@ package org.jasypt.intf.cli;
 
 import java.util.Properties;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.jasypt.intf.service.JasyptStatelessService;
 
 
@@ -104,7 +103,8 @@ public class JasyptPBEStringDecryptionCLI {
                 arguments = args;
             } else {
                 applicationName = args[0];
-                arguments = (String[]) ArrayUtils.subarray(args, 1, args.length);
+                arguments = new String[args.length - 1];
+                System.arraycopy(args, 1, arguments, 0, args.length - 1);
             }
             
             Properties argumentValues = 

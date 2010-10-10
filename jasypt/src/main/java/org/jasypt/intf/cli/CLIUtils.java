@@ -26,8 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
@@ -135,13 +134,15 @@ class CLIUtils {
      */
     static boolean getVerbosity(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            String key = StringUtils.substringBefore(args[i], "=");
-            String value = StringUtils.substringAfter(args[i], "=");
-            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+            String key = CommonUtils.substringBefore(args[i], "=");
+            String value = CommonUtils.substringAfter(args[i], "=");
+            if (CommonUtils.isEmpty(key) || CommonUtils.isEmpty(value)) {
                 continue;
             }
             if (ArgumentNaming.ARG_VERBOSE.equals(key)) {
-                return BooleanUtils.toBoolean(value);
+                final Boolean verbosity =
+                    CommonUtils.getStandardBooleanValue(value);
+                return (verbosity != null? verbosity.booleanValue() : false);
             }
         }
         return true;
@@ -164,9 +165,9 @@ class CLIUtils {
 
         Properties argumentValues = new Properties();
         for (int i = 0; i < args.length; i++) {
-            String key = StringUtils.substringBefore(args[i], "=");
-            String value = StringUtils.substringAfter(args[i], "=");
-            if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+            String key = CommonUtils.substringBefore(args[i], "=");
+            String value = CommonUtils.substringAfter(args[i], "=");
+            if (CommonUtils.isEmpty(key) || CommonUtils.isEmpty(value)) {
                 throw new IllegalArgumentException("Bad argument: " + args[i]);
             }
             if (argNames.contains(key)) {

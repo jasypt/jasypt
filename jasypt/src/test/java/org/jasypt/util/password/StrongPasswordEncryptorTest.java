@@ -22,7 +22,8 @@ package org.jasypt.util.password;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.codec.binary.Base64;
+import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
+
 
 public class StrongPasswordEncryptorTest extends TestCase {
 
