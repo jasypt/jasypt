@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.WebPBEConfig;
 
 /**
@@ -116,7 +116,7 @@ public class WebPBEConfigServlet extends HttpServlet {
                 
                 String settingFlag = 
                     req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_SETTING_FLAG);
-                if (StringUtils.isEmpty(settingFlag)) {
+                if (CommonUtils.isEmpty(settingFlag)) {
 
                     // We are first arriving at the form, just show it
                     writeResponse(
@@ -145,8 +145,8 @@ public class WebPBEConfigServlet extends HttpServlet {
                         String retypedPassword = 
                             req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_RETYPED_PREFIX + i);
                         
-                        if (!StringUtils.isEmpty(validation) &&
-                            !StringUtils.isEmpty(password)   &&
+                        if (!CommonUtils.isEmpty(validation) &&
+                            !CommonUtils.isEmpty(password)   &&
                             password.equals(retypedPassword)   &&
                             (config.getValidationWord().equals(validation))) {
                             /*

@@ -23,8 +23,7 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
@@ -117,7 +116,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
     protected Object convertToObject(String string) {
-        String[] stringTokens = StringUtils.split(string);
+        String[] stringTokens = CommonUtils.split(string);
         TimeZone tz = null;
         long timeMillis = Long.valueOf(stringTokens[0]).longValue();
         if (this.storeTimeZone.booleanValue()) {
@@ -153,7 +152,7 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
       	
         String paramStoreTimeZone = parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
         if ((paramStoreTimeZone != null) && (!paramStoreTimeZone.trim().equals(""))) {
-            this.storeTimeZone = BooleanUtils.toBooleanObject(paramStoreTimeZone);
+            this.storeTimeZone = CommonUtils.getStandardBooleanValue(paramStoreTimeZone);
         }
         
     }

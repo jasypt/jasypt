@@ -28,8 +28,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -237,7 +236,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      *               source for configuration parameters.
      */
     public synchronized void setConfig(PBEConfig config) {
-        Validate.notNull(config, "Config cannot be set null");
+        CommonUtils.validateNotNull(config, "Config cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -260,7 +259,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param algorithm the name of the algorithm to be used.
      */
     public synchronized void setAlgorithm(String algorithm) {
-        Validate.notEmpty(algorithm, "Algorithm cannot be set empty");
+        CommonUtils.validateNotEmpty(algorithm, "Algorithm cannot be set empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -284,7 +283,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param password the password to be used.
      */
     public synchronized void setPassword(String password) {
-        Validate.notEmpty(password, "Password cannot be set empty");
+        CommonUtils.validateNotEmpty(password, "Password cannot be set empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -308,7 +307,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      */
     public synchronized void setKeyObtentionIterations(
             int keyObtentionIterations) {
-        Validate.isTrue(keyObtentionIterations > 0, 
+        CommonUtils.validateIsTrue(keyObtentionIterations > 0, 
                 "Number of iterations for key obtention must be " +
                 "greater than zero");
         if (isInitialized()) {
@@ -328,7 +327,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param saltGenerator the salt generator to be used.
      */
     public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
-        Validate.notNull(saltGenerator, "Salt generator cannot be set null");
+        CommonUtils.validateNotNull(saltGenerator, "Salt generator cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -365,7 +364,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      *                     for the encryption algorithm.
      */
     public synchronized void setProviderName(String providerName) {
-        Validate.notNull(providerName, "Provider name cannot be set null");
+        CommonUtils.validateNotNull(providerName, "Provider name cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -395,7 +394,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param provider the provider to be asked for the chosen algorithm
      */
     public synchronized void setProvider(Provider provider) {
-        Validate.notNull(provider, "Provider cannot be set null");
+        CommonUtils.validateNotNull(provider, "Provider cannot be set null");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -474,21 +473,21 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 
                 String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
-                    Validate.notEmpty(configAlgorithm, 
+                    CommonUtils.validateNotEmpty(configAlgorithm, 
                             "Algorithm cannot be set empty");
                 }
                 
                 
                 String configPassword = this.config.getPassword();
                 if (configPassword != null) {
-                    Validate.notEmpty(configPassword, 
+                    CommonUtils.validateNotEmpty(configPassword, 
                             "Password cannot be set empty");
                 }
                 
                 Integer configKeyObtentionIterations = 
                     this.config.getKeyObtentionIterations();
                 if (configKeyObtentionIterations != null) {
-                    Validate.isTrue(configKeyObtentionIterations.intValue() > 0, 
+                    CommonUtils.validateIsTrue(configKeyObtentionIterations.intValue() > 0, 
                             "Number of iterations for key obtention must be " +
                             "greater than zero");
                 }
@@ -497,7 +496,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 
                 String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
-                    Validate.notEmpty(configProviderName,
+                    CommonUtils.validateNotEmpty(configProviderName,
                             "Provider name cannot be empty");
                 }
                 
@@ -680,7 +679,17 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             // and the result of the encryption. This is done only
             // if the salt generator we are using specifies to do so.
             if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                encryptedMessage = ArrayUtils.addAll(salt, encryptedMessage);
+                
+                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                    
+                    // Insert unhashed salt before the encryption result (default behaviour)
+                    return CommonUtils.appendArrays(salt, encryptedMessage);
+
+                }
+                    
+                // Append unhashed salt after the encryption result
+                return CommonUtils.appendArrays(encryptedMessage, salt);
+                
             }
 
             
@@ -750,11 +759,46 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             // there. If not, the salt is supposed to be fixed and thus the
             // salt generator can be safely asked for it again.
             byte[] salt = null; 
+            byte[] encryptedMessageKernel = null; 
             if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                salt = ArrayUtils.subarray(
-                        encryptedMessage, 0, this.saltSizeBytes);
+                
+                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                    
+                    final int saltStart = 0;
+                    final int saltSize = 
+                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
+                    final int encMesKernelStart =
+                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
+                    final int encMesKernelSize = 
+                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
+                    
+                    salt = new byte[saltSize];
+                    encryptedMessageKernel = new byte[encMesKernelSize];
+                    
+                    System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
+                    System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
+                    
+                } else {
+
+                    final int saltStart = 
+                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
+                    final int saltSize = 
+                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
+                    final int encMesKernelStart = 0;
+                    final int encMesKernelSize = 
+                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
+                    
+                    salt = new byte[saltSize];
+                    encryptedMessageKernel = new byte[encMesKernelSize];
+                    
+                    System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
+                    System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
+                    
+                }
+                
             } else {
                 salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
+                encryptedMessageKernel = encryptedMessage;
             }
             
             
@@ -765,19 +809,6 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 new PBEParameterSpec(salt, this.keyObtentionIterations);
 
             byte[] decryptedMessage = null;
-            
-            // If we are using a salt generator which specifies the salt
-            // to be included into the encrypted message itself, we need to
-            // extract the part of the encrypted message which really belongs
-            // to the encryption result, and not the prepended salt.
-            byte[] encryptedMessageKernel = null; 
-            if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                encryptedMessageKernel = 
-                    ArrayUtils.subarray(encryptedMessage, this.saltSizeBytes, 
-                            encryptedMessage.length);
-            } else {
-                encryptedMessageKernel = encryptedMessage; 
-            }
                  
             synchronized (this.decryptCipher) {
                 this.decryptCipher.init(

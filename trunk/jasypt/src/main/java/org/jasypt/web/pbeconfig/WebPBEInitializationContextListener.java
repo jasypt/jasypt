@@ -22,7 +22,7 @@ package org.jasypt.web.pbeconfig;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.commons.lang.StringUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.WebPBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
@@ -79,7 +79,7 @@ public class WebPBEInitializationContextListener
             sce.getServletContext().getInitParameter(
                     INIT_PARAM_INITIALIZER_CLASS_NAME);
         
-        if (StringUtils.isEmpty(className)) {
+        if (CommonUtils.isEmpty(className)) {
             throw new EncryptionInitializationException(
                     INIT_PARAM_INITIALIZER_CLASS_NAME + " context " +
                     "initialization parameter not set in web.xml");

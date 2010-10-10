@@ -43,7 +43,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class RandomSaltGenerator implements SaltGenerator {
+public class RandomSaltGenerator implements SaltGenerator {
     
     /**
      * The default algorithm to be used for secure random number 
@@ -105,6 +105,17 @@ public final class RandomSaltGenerator implements SaltGenerator {
      */
     public boolean includePlainSaltInEncryptionResults() {
         return true;
+    }
+
+
+    /**
+     * This salt generator keeps the default behaviour (salt is inserted
+     * before encryption/digesting message result).
+     * 
+     * @return false
+     */
+    public boolean invertPositionOfPlainSaltInEncryptionResults() {
+        return false;
     }
 
     

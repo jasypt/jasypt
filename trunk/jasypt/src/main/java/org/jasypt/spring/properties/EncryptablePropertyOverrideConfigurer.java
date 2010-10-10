@@ -19,7 +19,7 @@
  */
 package org.jasypt.spring.properties;
 
-import org.apache.commons.lang.Validate;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
 import org.jasypt.util.text.TextEncryptor;
@@ -72,7 +72,7 @@ public class EncryptablePropertyOverrideConfigurer
 	public EncryptablePropertyOverrideConfigurer(
 			StringEncryptor stringEncryptor) {
 		super();
-		Validate.notNull(stringEncryptor, "Encryptor cannot be null");
+		CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = stringEncryptor;
 		this.textEncryptor = null;
 	}
@@ -89,7 +89,7 @@ public class EncryptablePropertyOverrideConfigurer
 	 */
 	public EncryptablePropertyOverrideConfigurer(TextEncryptor textEncryptor) {
 		super();
-		Validate.notNull(textEncryptor, "Encryptor cannot be null");
+		CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = null;
 		this.textEncryptor = textEncryptor;
 	}

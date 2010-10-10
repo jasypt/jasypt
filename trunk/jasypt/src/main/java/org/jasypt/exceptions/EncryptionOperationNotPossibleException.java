@@ -19,7 +19,6 @@
  */
 package org.jasypt.exceptions;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**
  * <p>
@@ -37,8 +36,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class EncryptionOperationNotPossibleException 
-        extends NestableRuntimeException {
+public class EncryptionOperationNotPossibleException extends RuntimeException {
 
     private static final long serialVersionUID = 6304674109588715145L;
 

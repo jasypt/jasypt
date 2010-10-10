@@ -22,7 +22,7 @@ package org.jasypt.encryption.pbe;
 import java.math.BigInteger;
 import java.security.Provider;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
@@ -422,8 +422,7 @@ public final class StandardPBEBigIntegerEncryptor
             
             // Append the length bytes to the encrypted message
             byte[] encryptionResult = 
-                ArrayUtils.addAll(
-                        encryptedMessage, encryptedMessageLengthBytes);
+                CommonUtils.appendArrays(encryptedMessage, encryptedMessageLengthBytes);
 
             // Finally, return a new number built from the encrypted bytes
             return new BigInteger(encryptionResult);

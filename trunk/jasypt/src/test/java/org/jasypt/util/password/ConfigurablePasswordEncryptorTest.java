@@ -24,8 +24,8 @@ import java.security.Security;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 
 public class ConfigurablePasswordEncryptorTest extends TestCase {
 

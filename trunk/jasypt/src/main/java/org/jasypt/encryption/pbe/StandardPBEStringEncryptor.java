@@ -21,9 +21,8 @@ package org.jasypt.encryption.pbe;
 
 import java.security.Provider;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.Validate;
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.encryption.pbe.config.StringPBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -392,7 +391,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @param stringOutputType the string output type.
      */
     public synchronized void setStringOutputType(String stringOutputType) {
-        Validate.notEmpty(stringOutputType, 
+        CommonUtils.validateNotEmpty(stringOutputType, 
                 "String output type cannot be set empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();

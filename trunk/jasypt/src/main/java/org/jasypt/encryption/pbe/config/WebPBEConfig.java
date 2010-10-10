@@ -19,9 +19,7 @@
  */
 package org.jasypt.encryption.pbe.config;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.jasypt.encryption.pbe.config.SimplePBEConfig;
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.web.pbeconfig.WebPBEConfigRegistry;
 
 /**
@@ -93,7 +91,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @param name the unique name which will identify this config object.
      */
     public void setName(String name) {
-        Validate.notEmpty(name, "Name cannot be set empty");
+        CommonUtils.validateNotEmpty(name, "Name cannot be set empty");
         this.name = name;
     }
 
@@ -126,7 +124,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @param validation the validation word to be assigned to this config object
      */
     public void setValidationWord(String validation) {
-        Validate.notEmpty(validation, "Validation word cannot be set empty");
+        CommonUtils.validateNotEmpty(validation, "Validation word cannot be set empty");
         this.validationWord = validation;
     }
     
@@ -140,8 +138,8 @@ public class WebPBEConfig extends SimplePBEConfig {
      * @return whether the config object is complete or not.
      */
     public boolean isComplete() {
-        return ((StringUtils.isNotEmpty(this.name)) && 
-                (StringUtils.isNotEmpty(this.validationWord)));
+        return ((CommonUtils.isNotEmpty(this.name)) && 
+                (CommonUtils.isNotEmpty(this.validationWord)));
     }
 
 }

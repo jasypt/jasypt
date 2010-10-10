@@ -36,7 +36,7 @@ import java.util.Arrays;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class ZeroSaltGenerator implements SaltGenerator {
+public class ZeroSaltGenerator implements SaltGenerator {
     
     /**
      * Creates a new instance of <tt>ZeroSaltGenerator</tt>
@@ -69,6 +69,17 @@ public final class ZeroSaltGenerator implements SaltGenerator {
      * @return false
      */
     public boolean includePlainSaltInEncryptionResults() {
+        return false;
+    }
+
+
+    /**
+     * This salt generator keeps the default behaviour (salt is inserted
+     * before encryption/digesting message result).
+     * 
+     * @return false
+     */
+    public boolean invertPositionOfPlainSaltInEncryptionResults() {
         return false;
     }
 

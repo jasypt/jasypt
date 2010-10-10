@@ -65,4 +65,22 @@ public interface SaltGenerator {
      */
     public boolean includePlainSaltInEncryptionResults();
     
+    
+    /**
+     * <p>
+     * Returns <tt>true</tt> if the plain (not encrypted, not hashed) salt is to 
+     * be appended after the encryption/digesting message result. The default 
+     * behaviour is to prepend it before the encryption/digesting message result, 
+     * but setting this configuration item to <tt>true</tt> enables compatibility 
+     * with some external systems.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @return whether plain salt will be appended after the encryption/digesting 
+     *         message result instead of inserted before it (which is the 
+     *         default).
+     */
+    public boolean invertPositionOfPlainSaltInEncryptionResults();
+    
 }
