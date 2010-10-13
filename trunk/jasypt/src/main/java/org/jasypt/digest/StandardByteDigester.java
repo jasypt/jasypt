@@ -197,7 +197,14 @@ public final class StandardByteDigester implements ByteDigester {
     // java.security.Provider instance which will be asked for the selected
     // algorithm
     private Provider provider = null;
-
+    // Whether salt bytes will be appended after message before digesting or
+    // inserted before it (which is the default).
+    private boolean invertPositionOfSaltInMessageBeforeDigesting = false;
+    // Whether plain (unhashed) salt bytes will be appended after the digest
+    // operation result or inserted before it (which is the default).
+    private boolean invertPositionOfPlainSaltInEncryptionResults = false;
+    
+    
     
     /*
      * Config: this object can set a configuration by bringing the values in 
@@ -219,6 +226,8 @@ public final class StandardByteDigester implements ByteDigester {
     private boolean saltGeneratorSet = false;
     private boolean providerNameSet = false;
     private boolean providerSet = false;
+    private boolean invertPositionOfSaltInMessageBeforeDigestingSet = false;
+    private boolean invertPositionOfPlainSaltInEncryptionResultsSet = false;
 
     /*
      * Flag which indicates whether the digester has been initialized or not.
@@ -458,6 +467,70 @@ public final class StandardByteDigester implements ByteDigester {
         this.provider = provider;
         this.providerSet = true;
     }
+    
+    
+    /**
+     * <p>
+     * Whether the salt bytes are to be appended after the 
+     * message ones before performing the digest operation on the whole. The 
+     * default behaviour is to insert those bytes before the message bytes, but 
+     * setting this configuration item to <tt>true</tt> allows compatibility 
+     * with some external systems and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (insertion of salt before message) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfSaltInMessageBeforeDigesting
+     *        whether salt will be appended after the message before applying 
+     *        the digest operation on the whole, instead of inserted before it
+     *        (which is the default).
+     */
+    public synchronized void setInvertPositionOfSaltInMessageBeforeDigesting(
+            final boolean invertPositionOfSaltInMessageBeforeDigesting) {
+        
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.invertPositionOfSaltInMessageBeforeDigesting = invertPositionOfSaltInMessageBeforeDigesting;
+        this.invertPositionOfSaltInMessageBeforeDigestingSet = true;
+        
+    }
+    
+    
+    /**
+     * <p>
+     * Whether the plain (not hashed) salt bytes are to 
+     * be appended after the digest operation result bytes. The default behaviour is 
+     * to insert them before the digest result, but setting this configuration 
+     * item to <tt>true</tt> allows compatibility with some external systems
+     * and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (insertion of plain salt before digest result) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfPlainSaltInEncryptionResults
+     *        whether plain salt will be appended after the digest operation 
+     *        result instead of inserted before it (which is the 
+     *        default).
+     */
+    public synchronized void setInvertPositionOfPlainSaltInEncryptionResults(
+            final boolean invertPositionOfPlainSaltInEncryptionResults) {
+        
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.invertPositionOfPlainSaltInEncryptionResults = invertPositionOfPlainSaltInEncryptionResults;
+        this.invertPositionOfPlainSaltInEncryptionResultsSet = true;
+        
+    }
 
     
 
@@ -557,6 +630,12 @@ public final class StandardByteDigester implements ByteDigester {
                 
                 final Provider configProvider = this.config.getProvider();
                 
+                final Boolean configInvertPositionOfSaltInMessageBeforeDigesting =
+                    this.config.getInvertPositionOfSaltInMessageBeforeDigesting();
+
+                final Boolean configInvertPositionOfPlainSaltInEncryptionResults =
+                    this.config.getInvertPositionOfPlainSaltInEncryptionResults();
+                
 
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
@@ -576,6 +655,12 @@ public final class StandardByteDigester implements ByteDigester {
                 this.provider = 
                     ((this.providerSet) || (configProvider == null))?
                             this.provider : configProvider;
+                this.invertPositionOfSaltInMessageBeforeDigesting =
+                    ((this.invertPositionOfSaltInMessageBeforeDigestingSet) || (configInvertPositionOfSaltInMessageBeforeDigesting == null))?
+                            this.invertPositionOfSaltInMessageBeforeDigesting : configInvertPositionOfSaltInMessageBeforeDigesting.booleanValue();
+                this.invertPositionOfPlainSaltInEncryptionResults =
+                    ((this.invertPositionOfPlainSaltInEncryptionResultsSet) || (configInvertPositionOfPlainSaltInEncryptionResults == null))?
+                            this.invertPositionOfPlainSaltInEncryptionResults : configInvertPositionOfPlainSaltInEncryptionResults.booleanValue();
                 
             }
             
@@ -728,10 +813,27 @@ public final class StandardByteDigester implements ByteDigester {
                 this.md.reset();
                 
                 if (salt != null) {
-                    // The salt bytes are added before the message to be digested
-                    this.md.update(salt);
+                    
+                    if (!this.invertPositionOfSaltInMessageBeforeDigesting) {
+                        
+                        // The salt bytes are added before the message to be digested
+                        this.md.update(salt);
+                        this.md.update(message);
+                        
+                    } else {
+                        
+                        // The salt bytes are appended after the message to be digested
+                        this.md.update(message);
+                        this.md.update(salt);
+                        
+                    }
+                    
+                } else {
+                    
+                    //No salt to be added
+                    this.md.update(message);
+                    
                 }
-                this.md.update(message);
                 
                 digest = this.md.digest();
                 for (int i = 0; i < (this.iterations - 1); i++) {
@@ -746,7 +848,7 @@ public final class StandardByteDigester implements ByteDigester {
             // if the salt generator we are using specifies to do so.
             if (this.saltGenerator.includePlainSaltInEncryptionResults() && salt != null) {
 
-                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                if (!this.invertPositionOfPlainSaltInEncryptionResults) {
                     
                     // Insert unhashed salt before the hashing result (default behaviour)
                     return CommonUtils.appendArrays(salt, digest);
@@ -821,7 +923,7 @@ public final class StandardByteDigester implements ByteDigester {
                 // If not, the salt is supposed to be fixed and thus the
                 // salt generator can be safely asked for it again.
                 if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                    if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
+                    if (!this.invertPositionOfPlainSaltInEncryptionResults) {
                         final int saltStart = 0;
                         final int saltSize = 
                             (this.saltSizeBytes < digest.length? this.saltSizeBytes : digest.length);

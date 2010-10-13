@@ -454,6 +454,58 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
+     * Whether the salt bytes are to be appended after the 
+     * message ones before performing the digest operation on the whole. The 
+     * default behaviour is to insert those bytes before the message bytes, but 
+     * setting this configuration item to <tt>true</tt> allows compatibility 
+     * with some external systems and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (insertion of salt before message) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfSaltInMessageBeforeDigesting
+     *        whether salt will be appended after the message before applying 
+     *        the digest operation on the whole, instead of inserted before it
+     *        (which is the default).
+     */
+    public synchronized void setInvertPositionOfSaltInMessageBeforeDigesting(
+            final boolean invertPositionOfSaltInMessageBeforeDigesting) {
+        this.byteDigester.setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);
+    }
+    
+    
+    /**
+     * <p>
+     * Whether the plain (not hashed) salt bytes are to 
+     * be appended after the digest operation result bytes. The default behaviour is 
+     * to insert them before the digest result, but setting this configuration 
+     * item to <tt>true</tt> allows compatibility with some external systems
+     * and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (insertion of plain salt before digest result) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfPlainSaltInEncryptionResults
+     *        whether plain salt will be appended after the digest operation 
+     *        result instead of inserted before it (which is the 
+     *        default).
+     */
+    public synchronized void setInvertPositionOfPlainSaltInEncryptionResults(
+            final boolean invertPositionOfPlainSaltInEncryptionResults) {
+        this.byteDigester.setInvertPositionOfPlainSaltInEncryptionResults(invertPositionOfPlainSaltInEncryptionResults);
+    }
+    
+    
+    /**
+     * <p>
      * Sets whether the unicode text normalization step should be ignored.
      * </p>
      * <p>

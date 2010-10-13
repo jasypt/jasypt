@@ -3,9 +3,20 @@
 ===
 - Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
   without depedencies on JDK version >= 6.
-- Added configuration parameter "invertPositionOfPlainSaltInEncryptionResults" to
-  salt generators so that plain salt can be added at the end of the encryption/digest
-  result instead of only at the beginning.
+- Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
+  obtaining the names of all the available digest/PBE algorithms.
+- Added method "getInvertPositionOfSaltInMessageBeforeDigesting()" to DigesterConfig
+  and "setInvertPositionOfSaltInMessageBeforeDigesting(...)" to StandardByteDigester 
+  and StandardStringDigester in order to being able to append the salt after the message
+  before digesting instead of the default behaviour (insert it before the message).
+  This is useful for enhancing compatibility with some common LDAP password encryption
+  schemes like {SSHA}.
+- Added method "getInvertPositionOfPlainSaltInEncryptionResults()" to DigesterConfig
+  and "setInvertPositionOfPlainSaltInEncryptionResults(...)" to StandardByteDigester 
+  and StandardStringDigester in order to being able to append the plain (unhashed) 
+  salt after the digest instead of the default behaviour (insert it before the digest).
+  This is useful for enhancing compatibility with some common LDAP password encryption
+  schemes like {SSHA}.
 
 1.6
 ===

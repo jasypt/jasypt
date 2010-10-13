@@ -196,4 +196,43 @@ public interface DigesterConfig {
      */
     public Provider getProvider();
     
+    
+    /**
+     * <p>
+     * Returns <tt>Boolean.TRUE</tt> if the salt bytes are to be appended after the 
+     * message ones before performing the digest operation on the whole. The 
+     * default behaviour is to insert those bytes before the message bytes, but 
+     * setting this configuration item to <tt>true</tt> allows compatibility 
+     * with some external systems and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @return whether salt will be appended after the message before applying 
+     *         the digest operation on the whole, instead of inserted before it
+     *         (which is the default). If null is returned, the default 
+     *         behaviour will be applied.
+     */
+    public Boolean getInvertPositionOfSaltInMessageBeforeDigesting();
+    
+    
+    /**
+     * <p>
+     * Returns <tt>Boolean.TRUE</tt> if the plain (not hashed) salt bytes are to 
+     * be appended after the digest operation result bytes. The default behaviour is 
+     * to insert them before the digest result, but setting this configuration 
+     * item to <tt>true</tt> allows compatibility with some external systems
+     * and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @return whether plain salt will be appended after the digest operation 
+     *         result instead of inserted before it (which is the 
+     *         default). If null is returned, the default behaviour will be 
+     *         applied.
+     */
+    public Boolean getInvertPositionOfPlainSaltInEncryptionResults();
+
+    
 }
