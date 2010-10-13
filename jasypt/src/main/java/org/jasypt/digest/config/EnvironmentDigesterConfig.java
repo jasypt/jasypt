@@ -21,6 +21,7 @@ package org.jasypt.digest.config;
 
 import java.security.Provider;
 
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -56,6 +57,8 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String saltGeneratorClassNameEnvName = null;
     private String providerNameEnvName = null;
     private String providerClassNameEnvName = null;
+    private String invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
+    private String invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
 
     private String algorithmSysPropertyName = null;
     private String iterationsSysPropertyName = null;
@@ -63,6 +66,8 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String saltGeneratorClassNameSysPropertyName = null;
     private String providerNameSysPropertyName = null;
     private String providerClassNameSysPropertyName = null;
+    private String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
+    private String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
     
 
     /**
@@ -466,10 +471,179 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
             super.setProviderClassName(providerClassName);
         }
     }
+
     
     
 
 
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the value for the invertPositionOfSaltInMessageBeforeDigesting
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the variable
+     */
+    public String getInvertPositionOfSaltInMessageBeforeDigestingEnvName() {
+        return this.invertPositionOfSaltInMessageBeforeDigestingEnvName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the invertPositionOfSaltInMessageBeforeDigesting
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfSaltInMessageBeforeDigestingEnvName the name of the environment variable
+     */
+    public void setInvertPositionOfSaltInMessageBeforeDigestingEnvName(String invertPositionOfSaltInMessageBeforeDigestingEnvName) {
+        this.invertPositionOfSaltInMessageBeforeDigestingEnvName = invertPositionOfSaltInMessageBeforeDigestingEnvName;
+        if (invertPositionOfSaltInMessageBeforeDigestingEnvName == null) {
+            super.setInvertPositionOfSaltInMessageBeforeDigesting(null);
+        } else {
+            this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
+            super.setInvertPositionOfSaltInMessageBeforeDigesting(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getenv(invertPositionOfSaltInMessageBeforeDigestingEnvName)));
+        }
+    }
+    
+    
+
+    
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the value for the invertPositionOfSaltInMessageBeforeDigesting
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getInvertPositionOfSaltInMessageBeforeDigestingSysPropertyName() {
+        return this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the invertPositionOfSaltInMessageBeforeDigesting
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfSaltInMessageBeforeDigestingSysPropertyName the name of the property
+     */
+    public void setInvertPositionOfSaltInMessageBeforeDigestingSysPropertyName(String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName) {
+        this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = invertPositionOfSaltInMessageBeforeDigestingSysPropertyName;
+        if (invertPositionOfSaltInMessageBeforeDigestingSysPropertyName == null) {
+            super.setInvertPositionOfSaltInMessageBeforeDigesting(null);
+        } else {
+            this.invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
+            super.setInvertPositionOfSaltInMessageBeforeDigesting(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getProperty(invertPositionOfSaltInMessageBeforeDigestingSysPropertyName)));
+        }
+    }
+    
+    
+
+    
+    
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the value for the invertPositionOfPlainSaltInEncryptionResults
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the variable
+     */
+    public String getInvertPositionOfPlainSaltInEncryptionResultsEnvName() {
+        return this.invertPositionOfPlainSaltInEncryptionResultsEnvName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the invertPositionOfPlainSaltInEncryptionResults
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfPlainSaltInEncryptionResultsEnvName the name of the environment variable
+     */
+    public void setInvertPositionOfPlainSaltInEncryptionResultsEnvName(String invertPositionOfPlainSaltInEncryptionResultsEnvName) {
+        this.invertPositionOfPlainSaltInEncryptionResultsEnvName = invertPositionOfPlainSaltInEncryptionResultsEnvName;
+        if (invertPositionOfPlainSaltInEncryptionResultsEnvName == null) {
+            super.setInvertPositionOfPlainSaltInEncryptionResults(null);
+        } else {
+            this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
+            super.setInvertPositionOfPlainSaltInEncryptionResults(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getenv(invertPositionOfPlainSaltInEncryptionResultsEnvName)));
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the value for the invertPositionOfPlainSaltInEncryptionResults
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getInvertPositionOfPlainSaltInEncryptionResultsSysPropertyName() {
+        return this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the invertPositionOfPlainSaltInEncryptionResults
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfPlainSaltInEncryptionResultsSysPropertyName the name of the property
+     */
+    public void setInvertPositionOfPlainSaltInEncryptionResultsSysPropertyName(String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName) {
+        this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = invertPositionOfPlainSaltInEncryptionResultsSysPropertyName;
+        if (invertPositionOfPlainSaltInEncryptionResultsSysPropertyName == null) {
+            super.setInvertPositionOfPlainSaltInEncryptionResults(null);
+        } else {
+            this.invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
+            super.setInvertPositionOfPlainSaltInEncryptionResults(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getProperty(invertPositionOfPlainSaltInEncryptionResultsSysPropertyName)));
+        }
+    }
+
+    
+    
     
     public void setAlgorithm(String algorithm) {
         this.algorithmEnvName = null;
@@ -542,6 +716,25 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         this.providerClassNameSysPropertyName = null;
         super.setProviderClassName(providerClassName);
     }
+
+
+
+    public void setInvertPositionOfPlainSaltInEncryptionResults(Boolean invertPositionOfPlainSaltInEncryptionResults) {
+        this.invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
+        this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
+        super.setInvertPositionOfPlainSaltInEncryptionResults(invertPositionOfPlainSaltInEncryptionResults);
+    }
+
+
+
+    public void setInvertPositionOfSaltInMessageBeforeDigesting(Boolean invertPositionOfSaltInMessageBeforeDigesting) {
+        this.invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
+        this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
+        super.setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);
+    }
+
+    
+
 
     
 }

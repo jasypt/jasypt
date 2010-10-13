@@ -37,6 +37,8 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Salt size (in bytes).</li>
  *   <li>Hashing iterations.</li>
  *   <li>Salt generator.</li>
+ *   <li>Position of salt in relation to the message to be digested.</li>
+ *   <li>Position of plain salt in relation to the encryption results (digest).</li>
  * </ul>
  * Providing this interface lets the user create new <tt>DigesterConfig</tt>
  * classes which retrieve values for this parameters from different

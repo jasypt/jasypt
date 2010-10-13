@@ -19,6 +19,8 @@
  */
 package org.jasypt.digest.config;
 
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+
 
 /**
  * <p>
@@ -37,6 +39,8 @@ package org.jasypt.digest.config;
  *   <li>Salt generator.</li>
  *   <li>Use of Unicode normalization mechanisms.</li>
  *   <li>Output type (base64, hexadecimal).</li>
+ *   <li>Prefix</li>
+ *   <li>Suffix</li>
  * </ul>
  * Providing this interface lets the user create new <tt>StringDigesterConfig</tt>
  * classes which retrieve values for this parameters from different
@@ -88,6 +92,7 @@ public interface StringDigesterConfig extends DigesterConfig {
      */
     public Boolean isUnicodeNormalizationIgnored();
 
+    
     /**
      * <p>
      * This parameter lets the user specify the form in which String output
@@ -102,5 +107,34 @@ public interface StringDigesterConfig extends DigesterConfig {
      */
     public String getStringOutputType();
 
+
+    /**
+     * <p>
+     * Adds the returned (plain) prefix at the beginning of generated digests,
+     * and also expects to find it in any plain message provided for matching
+     * operations (raising an {@link EncryptionOperationNotPossibleException}
+     * if not).
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @return the prefix to be added to all digests
+     */
+    public String getPrefix();
+
+    
+    /**
+     * <p>
+     * Adds the returned (plain) suffix at the end of generated digests,
+     * and also expects to find it in any plain message provided for matching
+     * operations (raising an {@link EncryptionOperationNotPossibleException}
+     * if not).
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @return the suffix to be added to all digests
+     */
+    public String getSuffix();
     
 }
