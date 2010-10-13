@@ -123,16 +123,5 @@ public class FixedStringSaltGenerator implements SaltGenerator {
         return false;
     }
 
-
-    /**
-     * This salt generator keeps the default behaviour (salt is inserted
-     * before encryption/digesting message result).
-     * 
-     * @return false
-     */
-    public boolean invertPositionOfPlainSaltInEncryptionResults() {
-        return false;
-    }
-
     
 }

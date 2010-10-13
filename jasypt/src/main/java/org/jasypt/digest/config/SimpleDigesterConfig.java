@@ -58,6 +58,8 @@ public class SimpleDigesterConfig implements DigesterConfig {
     private SaltGenerator saltGenerator = null;
     private String providerName = null;
     private Provider provider = null;
+    private Boolean invertPositionOfSaltInMessageBeforeDigesting = null;
+    private Boolean invertPositionOfPlainSaltInEncryptionResults = null;
     
 
     /**
@@ -342,6 +344,63 @@ public class SimpleDigesterConfig implements DigesterConfig {
             this.provider = null;
         }
     }
+    
+    
+    /**
+     * <p>
+     * Whether the salt bytes are to be appended after the 
+     * message ones before performing the digest operation on the whole. The 
+     * default behaviour is to insert those bytes before the message bytes, but 
+     * setting this configuration item to <tt>true</tt> allows compatibility 
+     * with some external systems and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getInvertPositionOfSaltInMessageBeforeDigesting()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfSaltInMessageBeforeDigesting
+     *        whether salt will be appended after the message before applying 
+     *        the digest operation on the whole, instead of inserted before it
+     *        (which is the default).
+     */
+    public void setInvertPositionOfSaltInMessageBeforeDigesting(
+            final Boolean invertPositionOfSaltInMessageBeforeDigesting) {
+        this.invertPositionOfSaltInMessageBeforeDigesting = invertPositionOfSaltInMessageBeforeDigesting;
+    }
+    
+    
+    /**
+     * <p>
+     * Whether the plain (not hashed) salt bytes are to 
+     * be appended after the digest operation result bytes. The default behaviour is 
+     * to insert them before the digest result, but setting this configuration 
+     * item to <tt>true</tt> allows compatibility with some external systems
+     * and specifications (e.g. LDAP {SSHA}).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getInvertPositionOfPlainSaltInEncryptionResults()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param invertPositionOfPlainSaltInEncryptionResults
+     *        whether plain salt will be appended after the digest operation 
+     *        result instead of inserted before it (which is the 
+     *        default).
+     */
+    public void setInvertPositionOfPlainSaltInEncryptionResults(
+            final Boolean invertPositionOfPlainSaltInEncryptionResults) {
+        this.invertPositionOfPlainSaltInEncryptionResults = invertPositionOfPlainSaltInEncryptionResults;
+    }
+
 
     
     public String getAlgorithm() {
@@ -369,6 +428,14 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     public Provider getProvider() {
         return this.provider;
+    }
+    
+    public Boolean getInvertPositionOfSaltInMessageBeforeDigesting() {
+        return this.invertPositionOfSaltInMessageBeforeDigesting;
+    }
+    
+    public Boolean getInvertPositionOfPlainSaltInEncryptionResults() {
+        return this.invertPositionOfPlainSaltInEncryptionResults;
     }
 
     

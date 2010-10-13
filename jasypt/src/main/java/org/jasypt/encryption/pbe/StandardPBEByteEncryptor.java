@@ -680,15 +680,8 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             // if the salt generator we are using specifies to do so.
             if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
                 
-                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
-                    
-                    // Insert unhashed salt before the encryption result (default behaviour)
-                    return CommonUtils.appendArrays(salt, encryptedMessage);
-
-                }
-                    
-                // Append unhashed salt after the encryption result
-                return CommonUtils.appendArrays(encryptedMessage, salt);
+                // Insert unhashed salt before the encryption result
+                return CommonUtils.appendArrays(salt, encryptedMessage);
                 
             }
 
@@ -762,43 +755,25 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             byte[] encryptedMessageKernel = null; 
             if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
                 
-                if (!this.saltGenerator.invertPositionOfPlainSaltInEncryptionResults()) {
-                    
-                    final int saltStart = 0;
-                    final int saltSize = 
-                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
-                    final int encMesKernelStart =
-                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
-                    final int encMesKernelSize = 
-                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
-                    
-                    salt = new byte[saltSize];
-                    encryptedMessageKernel = new byte[encMesKernelSize];
-                    
-                    System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
-                    System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
-                    
-                } else {
-
-                    final int saltStart = 
-                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
-                    final int saltSize = 
-                        (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
-                    final int encMesKernelStart = 0;
-                    final int encMesKernelSize = 
-                        (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
-                    
-                    salt = new byte[saltSize];
-                    encryptedMessageKernel = new byte[encMesKernelSize];
-                    
-                    System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
-                    System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
-                    
-                }
+                final int saltStart = 0;
+                final int saltSize = 
+                    (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
+                final int encMesKernelStart =
+                    (this.saltSizeBytes < encryptedMessage.length? this.saltSizeBytes : encryptedMessage.length);
+                final int encMesKernelSize = 
+                    (this.saltSizeBytes < encryptedMessage.length? (encryptedMessage.length - this.saltSizeBytes) : 0);
+                
+                salt = new byte[saltSize];
+                encryptedMessageKernel = new byte[encMesKernelSize];
+                
+                System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
+                System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
                 
             } else {
+                
                 salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
                 encryptedMessageKernel = encryptedMessage;
+                
             }
             
             
