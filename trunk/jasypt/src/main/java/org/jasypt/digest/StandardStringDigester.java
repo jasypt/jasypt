@@ -249,6 +249,12 @@ public final class StandardStringDigester implements StringDigester {
     // and also a boolean variable for faster comparison
     private String stringOutputType = DEFAULT_STRING_OUTPUT_TYPE;
     private boolean stringOutputTypeBase64 = true;
+    
+
+    // Prefix and suffix to be added to encryption results (if any)
+    private String prefix = null;
+    private String suffix = null;
+    
 
     /*
      * Set of booleans which indicate whether the config or default values
@@ -257,6 +263,8 @@ public final class StandardStringDigester implements StringDigester {
      */
     private boolean unicodeNormalizationIgnoredSet = false;
     private boolean stringOutputTypeSet = false;
+    private boolean prefixSet = false;
+    private boolean suffixSet = false;
     
     
     // BASE64 encoder which will make sure the returned digests are
@@ -567,6 +575,52 @@ public final class StandardStringDigester implements StringDigester {
                 getStandardStringOutputType(stringOutputType);
         this.stringOutputTypeSet = true;
     }
+    
+    
+    /**
+     * <p>
+     * Sets the prefix to be added at the beginning of encryption results, and also to
+     * be expected at the beginning of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * By default, no prefix will be added to encryption results.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param prefix the prefix to be set
+     */
+    public synchronized void setPrefix(String prefix) {
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.prefix = prefix;
+        this.prefixSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the suffix to be added at the end of encryption results, and also to
+     * be expected at the end of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * By default, no suffix will be added to encryption results.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param suffix the suffix to be set
+     */
+    public synchronized void setSuffix(String suffix) {
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.suffix = suffix;
+        this.suffixSet = true;
+    }
 
     
     /**
@@ -644,6 +698,10 @@ public final class StandardStringDigester implements StringDigester {
                     this.stringDigesterConfig.isUnicodeNormalizationIgnored();
                 String configStringOutputType = 
                     this.stringDigesterConfig.getStringOutputType();
+                String configPrefix = 
+                    this.stringDigesterConfig.getPrefix();
+                String configSuffix =
+                    this.stringDigesterConfig.getSuffix();
 
                 this.unicodeNormalizationIgnored = 
                     ((this.unicodeNormalizationIgnoredSet) || (configUnicodeNormalizationIgnored == null))?
@@ -651,6 +709,12 @@ public final class StandardStringDigester implements StringDigester {
                 this.stringOutputType = 
                     ((this.stringOutputTypeSet) || (configStringOutputType == null))?
                             this.stringOutputType : configStringOutputType;
+                this.prefix =
+                    ((this.prefixSet) || (configPrefix == null))?
+                            this.prefix : configPrefix;
+                this.suffix =
+                    ((this.suffixSet) || (configSuffix == null))?
+                            this.suffix : configSuffix;
                 
             }
             
@@ -767,20 +831,32 @@ public final class StandardStringDigester implements StringDigester {
 
             // The StandardByteDigester does its job.
             byte[] digest = this.byteDigester.digest(messageBytes);
+
+            // We build the result variable
+            StringBuffer result = new StringBuffer();
+            
+            if (this.prefix != null) {
+                // Prefix is added
+                result.append(this.prefix);
+            }
             
             // We encode the result in BASE64 or HEXADECIMAL so that we obtain
             // the safest result String possible.
-            String result = null;
             if (this.stringOutputTypeBase64) {
                 synchronized (this.base64) {
                     digest = this.base64.encode(digest);
                 }
-                result = new String(digest, DIGEST_CHARSET); 
+                result.append(new String(digest, DIGEST_CHARSET)); 
             } else {
-                result = CommonUtils.toHexadecimal(digest);
+                result.append(CommonUtils.toHexadecimal(digest));
             }
             
-            return result; 
+            if (this.suffix != null) {
+                // Suffix is added
+                result.append(this.suffix);
+            }
+            
+            return result.toString(); 
 
         } catch (EncryptionInitializationException e) {
             throw e;
@@ -825,14 +901,35 @@ public final class StandardStringDigester implements StringDigester {
      *         be correctly done (for example, if the digest algorithm chosen
      *         cannot be used).
      */
-    public boolean matches(String message, String digest) {
+    public boolean matches(final String message, final String digest) {
+
+        String processedDigest = digest;
+        
+        if (processedDigest != null) {
+            if (this.prefix != null) {
+                if (!processedDigest.startsWith(this.prefix)) {
+                    throw new EncryptionOperationNotPossibleException(
+                            "Digest does not start with required prefix \"" + this.prefix + "\"");
+                }
+                processedDigest = processedDigest.substring(this.prefix.length()); 
+            }
+            if (this.suffix != null) {
+                if (!processedDigest.endsWith(this.suffix)) {
+                    throw new EncryptionOperationNotPossibleException(
+                            "Digest does not end with required suffix \"" + this.suffix + "\"");
+                }
+                processedDigest = processedDigest.substring(0, processedDigest.length() - this.suffix.length());
+            }
+        }
+        
 
         if (message == null) {
-            return (digest == null);
-        } else if (digest == null) {
+            return (processedDigest == null);
+        } else if (processedDigest == null) {
             return false;
         }
 
+        
         // Check initialization
         if (!isInitialized()) {
             initialize();
@@ -858,12 +955,12 @@ public final class StandardStringDigester implements StringDigester {
             byte[] digestBytes = null;
             if (this.stringOutputTypeBase64) {
                 // The digest must be a US-ASCII String BASE64-encoded
-                digestBytes = digest.getBytes(DIGEST_CHARSET);
+                digestBytes = processedDigest.getBytes(DIGEST_CHARSET);
                 synchronized (this.base64) {
                     digestBytes = this.base64.decode(digestBytes);
                 }
             } else {
-                digestBytes = CommonUtils.fromHexadecimal(digest);
+                digestBytes = CommonUtils.fromHexadecimal(processedDigest);
             }
             
             // The StandardByteDigester is asked to match message to digest.

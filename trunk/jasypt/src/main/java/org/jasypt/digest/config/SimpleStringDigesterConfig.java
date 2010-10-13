@@ -20,6 +20,7 @@
 package org.jasypt.digest.config;
 
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 /**
@@ -45,6 +46,8 @@ public class SimpleStringDigesterConfig
     
     private Boolean unicodeNormalizationIgnored = null;
     private String stringOutputType = null;
+    private String prefix = null;
+    private String suffix = null;
     
 
     /**
@@ -160,6 +163,51 @@ public class SimpleStringDigesterConfig
     }
 
     
+    /**
+     * <p>
+     * Sets the prefix to be added at the beginning of encryption results, and also to
+     * be expected at the beginning of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPrefix()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param prefix
+     */
+    public void setPrefix(final String prefix) {
+        this.prefix = prefix;
+    }
+    
+
+    /**
+     * <p>
+     * Sets the suffix to be added at the end of encryption results, and also to
+     * be expected at the end of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getSuffix()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param suffix
+     */
+    public void setSuffix(final String suffix) {
+        this.suffix = suffix;
+    }
+    
+    
+    
     public Boolean isUnicodeNormalizationIgnored() {
         return this.unicodeNormalizationIgnored;
     }
@@ -167,6 +215,14 @@ public class SimpleStringDigesterConfig
     
     public String getStringOutputType() {
         return this.stringOutputType;
+    }
+
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    public String getSuffix() {
+        return this.suffix;
     }
 
     

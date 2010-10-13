@@ -20,6 +20,7 @@
 package org.jasypt.digest.config;
 
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 /**
  * <p>
@@ -52,12 +53,19 @@ public class EnvironmentStringDigesterConfig
     
     private Boolean unicodeNormalizationIgnored = null;
     private String stringOutputType = null;
+    private String prefix = null;
+    private String suffix = null;
     
     private String unicodeNormalizationIgnoredEnvName = null;
     private String stringOutputTypeEnvName = null;
+    private String prefixEnvName = null;
+    private String suffixEnvName = null;
 
     private String unicodeNormalizationIgnoredSysPropertyName = null;
     private String stringOutputTypeSysPropertyName = null;
+    private String prefixSysPropertyName = null;
+    private String suffixSysPropertyName = null;
+    
     
 
     /**
@@ -307,7 +315,55 @@ public class EnvironmentStringDigesterConfig
     }
     
     
+
+
+    /**
+     * <p>
+     * Sets the prefix to be added at the beginning of encryption results, and also to
+     * be expected at the beginning of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPrefix()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param prefix
+     */
+    public void setPrefix(String prefix) {
+        this.prefixEnvName = null;
+        this.prefixSysPropertyName = null;
+        this.prefix = prefix;
+    }
     
+
+
+    /**
+     * <p>
+     * Sets the suffix to be added at the end of encryption results, and also to
+     * be expected at the end of plain messages provided for matching operations
+     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getSuffix()}
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param suffix
+     */
+    public void setSuffix(String suffix) {
+        this.suffixEnvName = null;
+        this.suffixSysPropertyName = null;
+        this.suffix = suffix;
+    }
     
     
     
@@ -320,5 +376,162 @@ public class EnvironmentStringDigesterConfig
         return this.stringOutputType;
     }
 
+
+
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+
+    public String getSuffix() {
+        return this.suffix;
+    }
+
+    
+    
+    
+    
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as a value for the "prefix" parameter.
+     *
+     * @since 1.7
+     * 
+     * @return the name of the variable
+     */
+    public String getPrefixEnvName() {
+        return this.prefixEnvName;
+    }
+
+
+
+    /**
+     * Set the config object to use the specified environment variable to
+     * load the value for the "prefix" parameter.
+     * 
+     * @since 1.7
+     * 
+     * @param prefixEnvName the name of the environment 
+     *        variable
+     */
+    public void setPrefixEnvName(String prefixEnvName) {
+        this.prefixEnvName = prefixEnvName;
+        if (prefixEnvName == null) {
+            this.prefix = null;
+        } else {
+            this.prefixSysPropertyName = null;
+            this.prefix = System.getenv(prefixEnvName);
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as a value for the "prefix" parameter.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getPrefixSysPropertyName() {
+        return this.prefixSysPropertyName;
+    }
+
+
+
+    /**
+     * Set the config object to use the specified JVM system property to
+     * load a value for the "prefix" parameter.
+     * 
+     * @since 1.7
+     * 
+     * @param prefixSysPropertyName the name of the property
+     */
+    public void setPrefixSysPropertyName(String prefixSysPropertyName) {
+        this.prefixSysPropertyName = prefixSysPropertyName;
+        if (prefixSysPropertyName == null) {
+            this.prefix = null;
+        } else {
+            this.prefixEnvName = null;
+            this.prefix = System.getProperty(prefixSysPropertyName);
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as a value for the "suffix" parameter.
+     *
+     * @since 1.7
+     * 
+     * @return the name of the variable
+     */
+    public String getSuffixEnvName() {
+        return this.suffixEnvName;
+    }
+
+
+
+    /**
+     * Set the config object to use the specified environment variable to
+     * load the value for the "suffix" parameter.
+     * 
+     * @since 1.7
+     * 
+     * @param suffixEnvName the name of the environment 
+     *        variable
+     */
+    public void setSuffixEnvName(String suffixEnvName) {
+        this.suffixEnvName = suffixEnvName;
+        if (suffixEnvName == null) {
+            this.suffix = null;
+        } else {
+            this.suffixSysPropertyName = null;
+            this.suffix = System.getenv(suffixEnvName);
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as a value for the "suffix" parameter.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getSuffixSysPropertyName() {
+        return this.suffixSysPropertyName;
+    }
+
+
+
+    /**
+     * Set the config object to use the specified JVM system property to
+     * load a value for the "suffix" parameter.
+     * 
+     * @since 1.7
+     * 
+     * @param suffixSysPropertyName the name of the property
+     */
+    public void setSuffixSysPropertyName(String suffixSysPropertyName) {
+        this.suffixSysPropertyName = suffixSysPropertyName;
+        if (suffixSysPropertyName == null) {
+            this.suffix = null;
+        } else {
+            this.suffixEnvName = null;
+            this.suffix = System.getProperty(suffixSysPropertyName);
+        }
+    }
+
+
+    
+    
+    
     
 }
