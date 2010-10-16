@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -97,14 +97,14 @@ public class EnvironmentStringDigesterConfig
      * @param unicodeNormalizationIgnoredEnvName the name of the environment 
      *        variable
      */
-    public void setUnicodeNormalizationIgnoredEnvName(String unicodeNormalizationIgnoredEnvName) {
+    public void setUnicodeNormalizationIgnoredEnvName(final String unicodeNormalizationIgnoredEnvName) {
         this.unicodeNormalizationIgnoredEnvName = 
             unicodeNormalizationIgnoredEnvName;
         if (unicodeNormalizationIgnoredEnvName == null) {
             this.unicodeNormalizationIgnored = null;
         } else {
             this.unicodeNormalizationIgnoredSysPropertyName = null;
-            String unicodeNormalizationIgnoredValue = 
+            final String unicodeNormalizationIgnoredValue = 
                 System.getenv(unicodeNormalizationIgnoredEnvName);
             if (unicodeNormalizationIgnoredValue != null) {
                 this.unicodeNormalizationIgnored =
@@ -134,14 +134,14 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param unicodeNormalizationIgnoredSysPropertyName the name of the property
      */
-    public void setUnicodeNormalizationIgnoredSysPropertyName(String unicodeNormalizationIgnoredSysPropertyName) {
+    public void setUnicodeNormalizationIgnoredSysPropertyName(final String unicodeNormalizationIgnoredSysPropertyName) {
         this.unicodeNormalizationIgnoredSysPropertyName = 
             unicodeNormalizationIgnoredSysPropertyName;
         if (unicodeNormalizationIgnoredSysPropertyName == null) {
             this.unicodeNormalizationIgnored = null;
         } else {
             this.unicodeNormalizationIgnoredEnvName = null;
-            String unicodeNormalizationIgnoredValue = 
+            final String unicodeNormalizationIgnoredValue = 
                 System.getProperty(unicodeNormalizationIgnoredSysPropertyName);
             if (unicodeNormalizationIgnoredValue != null) {
                 this.unicodeNormalizationIgnored =
@@ -171,7 +171,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param stringOutputTypeEnvName the name of the environment variable
      */
-    public void setStringOutputTypeEnvName(String stringOutputTypeEnvName) {
+    public void setStringOutputTypeEnvName(final String stringOutputTypeEnvName) {
         this.stringOutputTypeEnvName = stringOutputTypeEnvName;
         if (stringOutputTypeEnvName == null) {
             this.stringOutputType = null;
@@ -201,7 +201,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param stringOutputTypeSysPropertyName the name of the property
      */
-    public void setStringOutputTypeSysPropertyName(String stringOutputTypeSysPropertyName) {
+    public void setStringOutputTypeSysPropertyName(final String stringOutputTypeSysPropertyName) {
         this.stringOutputTypeSysPropertyName = stringOutputTypeSysPropertyName;
         if (stringOutputTypeSysPropertyName == null) {
             this.stringOutputType = null;
@@ -242,7 +242,7 @@ public class EnvironmentStringDigesterConfig
      * @param unicodeNormalizationIgnored whether the unicode text 
      *        normalization step should be ignored or not.
      */
-    public void setUnicodeNormalizationIgnored(Boolean unicodeNormalizationIgnored) {
+    public void setUnicodeNormalizationIgnored(final Boolean unicodeNormalizationIgnored) {
         this.unicodeNormalizationIgnoredEnvName = null;
         this.unicodeNormalizationIgnoredSysPropertyName = null;
         this.unicodeNormalizationIgnored = unicodeNormalizationIgnored;
@@ -279,7 +279,7 @@ public class EnvironmentStringDigesterConfig
      * @param unicodeNormalizationIgnored whether the unicode text 
      *        normalization step should be ignored or not.
      */
-    public void setUnicodeNormalizationIgnored(String unicodeNormalizationIgnored) {
+    public void setUnicodeNormalizationIgnored(final String unicodeNormalizationIgnored) {
         this.unicodeNormalizationIgnoredEnvName = null;
         this.unicodeNormalizationIgnoredSysPropertyName = null;
         if (unicodeNormalizationIgnored != null) {
@@ -306,7 +306,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param stringOutputType the string output type.
      */
-    public void setStringOutputType(String stringOutputType) {
+    public void setStringOutputType(final String stringOutputType) {
         this.stringOutputTypeEnvName = null;
         this.stringOutputTypeSysPropertyName = null;
         this.stringOutputType =
@@ -334,7 +334,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param prefix
      */
-    public void setPrefix(String prefix) {
+    public void setPrefix(final String prefix) {
         this.prefixEnvName = null;
         this.prefixSysPropertyName = null;
         this.prefix = prefix;
@@ -359,7 +359,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param suffix
      */
-    public void setSuffix(String suffix) {
+    public void setSuffix(final String suffix) {
         this.suffixEnvName = null;
         this.suffixSysPropertyName = null;
         this.suffix = suffix;
@@ -416,7 +416,7 @@ public class EnvironmentStringDigesterConfig
      * @param prefixEnvName the name of the environment 
      *        variable
      */
-    public void setPrefixEnvName(String prefixEnvName) {
+    public void setPrefixEnvName(final String prefixEnvName) {
         this.prefixEnvName = prefixEnvName;
         if (prefixEnvName == null) {
             this.prefix = null;
@@ -450,7 +450,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param prefixSysPropertyName the name of the property
      */
-    public void setPrefixSysPropertyName(String prefixSysPropertyName) {
+    public void setPrefixSysPropertyName(final String prefixSysPropertyName) {
         this.prefixSysPropertyName = prefixSysPropertyName;
         if (prefixSysPropertyName == null) {
             this.prefix = null;
@@ -485,7 +485,7 @@ public class EnvironmentStringDigesterConfig
      * @param suffixEnvName the name of the environment 
      *        variable
      */
-    public void setSuffixEnvName(String suffixEnvName) {
+    public void setSuffixEnvName(final String suffixEnvName) {
         this.suffixEnvName = suffixEnvName;
         if (suffixEnvName == null) {
             this.suffix = null;
@@ -519,7 +519,7 @@ public class EnvironmentStringDigesterConfig
      * 
      * @param suffixSysPropertyName the name of the property
      */
-    public void setSuffixSysPropertyName(String suffixSysPropertyName) {
+    public void setSuffixSysPropertyName(final String suffixSysPropertyName) {
         this.suffixSysPropertyName = suffixSysPropertyName;
         if (suffixSysPropertyName == null) {
             this.suffix = null;

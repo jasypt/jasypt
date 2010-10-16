@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -45,22 +45,22 @@ import org.jasypt.util.text.TextEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class PropertyValueEncryptionUtils {
+public final class PropertyValueEncryptionUtils {
 
     private static final String ENCRYPTED_VALUE_PREFIX = "ENC(";
     private static final String ENCRYPTED_VALUE_SUFFIX = ")";
 
     
-    public static boolean isEncryptedValue(String value) {
+    public static boolean isEncryptedValue(final String value) {
         if (value == null) {
             return false;
         }
-        String trimmedValue = value.trim();
+        final String trimmedValue = value.trim();
         return (trimmedValue.startsWith(ENCRYPTED_VALUE_PREFIX) && 
                 trimmedValue.endsWith(ENCRYPTED_VALUE_SUFFIX));
     }
     
-    private static String getInnerEncryptedValue(String value) {
+    private static String getInnerEncryptedValue(final String value) {
         return value.substring(
                 ENCRYPTED_VALUE_PREFIX.length(),
                 (value.length() - ENCRYPTED_VALUE_SUFFIX.length()));
@@ -68,19 +68,19 @@ public class PropertyValueEncryptionUtils {
 
     
     public static String decrypt(
-            String encodedValue, StringEncryptor encryptor) {
+            final String encodedValue, final StringEncryptor encryptor) {
         return encryptor.decrypt(getInnerEncryptedValue(encodedValue.trim()));
     }
 
     
     public static String decrypt(
-            String encodedValue, TextEncryptor encryptor) {
+            final String encodedValue, final TextEncryptor encryptor) {
         return encryptor.decrypt(getInnerEncryptedValue(encodedValue.trim()));
     }
 
     
     public static String encrypt(
-            String decodedValue, StringEncryptor encryptor) {
+            final String decodedValue, final StringEncryptor encryptor) {
         return 
             ENCRYPTED_VALUE_PREFIX + 
             encryptor.encrypt(decodedValue) +
@@ -89,7 +89,7 @@ public class PropertyValueEncryptionUtils {
 
     
     public static String encrypt(
-            String decodedValue, TextEncryptor encryptor) {
+            final String decodedValue, final TextEncryptor encryptor) {
         return 
             ENCRYPTED_VALUE_PREFIX + 
             encryptor.encrypt(decodedValue) +

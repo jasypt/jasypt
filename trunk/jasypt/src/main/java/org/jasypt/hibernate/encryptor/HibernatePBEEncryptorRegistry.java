@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -87,15 +87,15 @@ public final class HibernatePBEEncryptorRegistry {
 
     
     // The singleton instance
-    private static HibernatePBEEncryptorRegistry instance = 
+    private static final HibernatePBEEncryptorRegistry instance = 
         new HibernatePBEEncryptorRegistry();
     
     
     // Registry maps
-    private HashMap stringEncryptors = new HashMap();
-    private HashMap bigIntegerEncryptors = new HashMap();
-    private HashMap bigDecimalEncryptors = new HashMap();
-    private HashMap byteEncryptors = new HashMap();
+    private final HashMap stringEncryptors = new HashMap();
+    private final HashMap bigIntegerEncryptors = new HashMap();
+    private final HashMap bigDecimalEncryptors = new HashMap();
+    private final HashMap byteEncryptors = new HashMap();
     
     
     /**
@@ -121,8 +121,8 @@ public final class HibernatePBEEncryptorRegistry {
      * @param encryptor the encryptor to be registered.
      */
     public synchronized void registerPBEStringEncryptor(
-            String registeredName, PBEStringEncryptor encryptor) {
-        HibernatePBEStringEncryptor hibernateEncryptor = 
+            final String registeredName, final PBEStringEncryptor encryptor) {
+        final HibernatePBEStringEncryptor hibernateEncryptor = 
             new HibernatePBEStringEncryptor(registeredName, encryptor);
         this.stringEncryptors.put(registeredName, hibernateEncryptor);
     }
@@ -132,7 +132,7 @@ public final class HibernatePBEEncryptorRegistry {
     // Not public: this is used from 
     // HibernatePBEStringEncryptor.setRegisteredName.
     synchronized void registerHibernatePBEStringEncryptor(
-            HibernatePBEStringEncryptor hibernateEncryptor) {
+            final HibernatePBEStringEncryptor hibernateEncryptor) {
         this.stringEncryptors.put(
                 hibernateEncryptor.getRegisteredName(), 
                 hibernateEncryptor);
@@ -141,7 +141,7 @@ public final class HibernatePBEEncryptorRegistry {
     
     // Not public: this is used from 
     // HibernatePBEStringEncryptor.setRegisteredName.
-    synchronized void unregisterHibernatePBEStringEncryptor(String name) {
+    synchronized void unregisterHibernatePBEStringEncryptor(final String name) {
         this.stringEncryptors.remove(name);
     }
 
@@ -156,8 +156,8 @@ public final class HibernatePBEEncryptorRegistry {
      *         that name.
      */
     public synchronized PBEStringEncryptor getPBEStringEncryptor(
-            String registeredName) {
-        HibernatePBEStringEncryptor hibernateEncryptor = 
+            final String registeredName) {
+        final HibernatePBEStringEncryptor hibernateEncryptor = 
             (HibernatePBEStringEncryptor) this.stringEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
@@ -178,8 +178,8 @@ public final class HibernatePBEEncryptorRegistry {
      * @param encryptor the encryptor to be registered.
      */
     public synchronized void registerPBEBigIntegerEncryptor(
-            String registeredName, PBEBigIntegerEncryptor encryptor) {
-        HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
+            final String registeredName, final PBEBigIntegerEncryptor encryptor) {
+        final HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
             new HibernatePBEBigIntegerEncryptor(registeredName, encryptor);
         this.bigIntegerEncryptors.put(registeredName, hibernateEncryptor);
     }
@@ -189,7 +189,7 @@ public final class HibernatePBEEncryptorRegistry {
     // Not public: this is used from 
     // HibernatePBEBigIntegerEncryptor.setRegisteredName.
     synchronized void registerHibernatePBEBigIntegerEncryptor(
-            HibernatePBEBigIntegerEncryptor hibernateEncryptor) {
+            final HibernatePBEBigIntegerEncryptor hibernateEncryptor) {
         this.bigIntegerEncryptors.put(
                 hibernateEncryptor.getRegisteredName(), 
                 hibernateEncryptor);
@@ -198,7 +198,7 @@ public final class HibernatePBEEncryptorRegistry {
     
     // Not public: this is used from 
     // HibernatePBEBigIntegerEncryptor.setRegisteredName.
-    synchronized void unregisterHibernatePBEBigIntegerEncryptor(String name) {
+    synchronized void unregisterHibernatePBEBigIntegerEncryptor(final String name) {
         this.bigIntegerEncryptors.remove(name);
     }
 
@@ -213,8 +213,8 @@ public final class HibernatePBEEncryptorRegistry {
      *         that name.
      */
     public synchronized PBEBigIntegerEncryptor getPBEBigIntegerEncryptor(
-            String registeredName) {
-        HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
+            final String registeredName) {
+        final HibernatePBEBigIntegerEncryptor hibernateEncryptor = 
             (HibernatePBEBigIntegerEncryptor) this.bigIntegerEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
@@ -234,8 +234,8 @@ public final class HibernatePBEEncryptorRegistry {
      * @param encryptor the encryptor to be registered.
      */
     public synchronized void registerPBEBigDecimalEncryptor(
-            String registeredName, PBEBigDecimalEncryptor encryptor) {
-        HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
+            final String registeredName, final PBEBigDecimalEncryptor encryptor) {
+        final HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
             new HibernatePBEBigDecimalEncryptor(registeredName, encryptor);
         this.bigDecimalEncryptors.put(registeredName, hibernateEncryptor);
     }
@@ -245,7 +245,7 @@ public final class HibernatePBEEncryptorRegistry {
     // Not public: this is used from 
     // HibernatePBEBigDecimalEncryptor.setRegisteredName.
     synchronized void registerHibernatePBEBigDecimalEncryptor(
-            HibernatePBEBigDecimalEncryptor hibernateEncryptor) {
+            final HibernatePBEBigDecimalEncryptor hibernateEncryptor) {
         this.bigDecimalEncryptors.put(
                 hibernateEncryptor.getRegisteredName(), 
                 hibernateEncryptor);
@@ -254,7 +254,7 @@ public final class HibernatePBEEncryptorRegistry {
     
     // Not public: this is used from 
     // HibernatePBEBigDecimalEncryptor.setRegisteredName.
-    synchronized void unregisterHibernatePBEBigDecimalEncryptor(String name) {
+    synchronized void unregisterHibernatePBEBigDecimalEncryptor(final String name) {
         this.bigDecimalEncryptors.remove(name);
     }
 
@@ -269,8 +269,8 @@ public final class HibernatePBEEncryptorRegistry {
      *         that name.
      */
     public synchronized PBEBigDecimalEncryptor getPBEBigDecimalEncryptor(
-            String registeredName) {
-        HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
+            final String registeredName) {
+        final HibernatePBEBigDecimalEncryptor hibernateEncryptor = 
             (HibernatePBEBigDecimalEncryptor) this.bigDecimalEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;
@@ -292,8 +292,8 @@ public final class HibernatePBEEncryptorRegistry {
      * @param encryptor the encryptor to be registered.
      */
     public synchronized void registerPBEByteEncryptor(
-            String registeredName, PBEByteEncryptor encryptor) {
-        HibernatePBEByteEncryptor hibernateEncryptor = 
+            final String registeredName, final PBEByteEncryptor encryptor) {
+        final HibernatePBEByteEncryptor hibernateEncryptor = 
             new HibernatePBEByteEncryptor(registeredName, encryptor);
         this.byteEncryptors.put(registeredName, hibernateEncryptor);
     }
@@ -305,7 +305,7 @@ public final class HibernatePBEEncryptorRegistry {
     // Not public: this is used from 
     // HibernatePBEByteEncryptor.setRegisteredName.
     synchronized void registerHibernatePBEByteEncryptor(
-            HibernatePBEByteEncryptor hibernateEncryptor) {
+            final HibernatePBEByteEncryptor hibernateEncryptor) {
         this.byteEncryptors.put(
                 hibernateEncryptor.getRegisteredName(), 
                 hibernateEncryptor);
@@ -314,7 +314,7 @@ public final class HibernatePBEEncryptorRegistry {
     
     // Not public: this is used from 
     // HibernatePBEByteEncryptor.setRegisteredName.
-    synchronized void unregisterHibernatePBEByteEncryptor(String name) {
+    synchronized void unregisterHibernatePBEByteEncryptor(final String name) {
         this.byteEncryptors.remove(name);
     }
 
@@ -329,8 +329,8 @@ public final class HibernatePBEEncryptorRegistry {
      *         that name.
      */
     public synchronized PBEByteEncryptor getPBEByteEncryptor(
-            String registeredName) {
-        HibernatePBEByteEncryptor hibernateEncryptor = 
+            final String registeredName) {
+        final HibernatePBEByteEncryptor hibernateEncryptor = 
             (HibernatePBEByteEncryptor) this.byteEncryptors.get(registeredName);
         if (hibernateEncryptor == null) {
             return null;

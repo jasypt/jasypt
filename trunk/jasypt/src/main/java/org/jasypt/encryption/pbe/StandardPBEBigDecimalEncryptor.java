@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -165,7 +165,7 @@ public final class StandardPBEBigDecimalEncryptor
      * @param config the <tt>PBEConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public void setConfig(PBEConfig config) {
+    public void setConfig(final PBEConfig config) {
         this.byteEncryptor.setConfig(config);
     }
 
@@ -184,7 +184,7 @@ public final class StandardPBEBigDecimalEncryptor
      * 
      * @param algorithm the name of the algorithm to be used.
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.byteEncryptor.setAlgorithm(algorithm);
     }
 
@@ -203,7 +203,7 @@ public final class StandardPBEBigDecimalEncryptor
      * 
      * @param password the password to be used.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.byteEncryptor.setPassword(password);
     }
     
@@ -221,7 +221,7 @@ public final class StandardPBEBigDecimalEncryptor
      * 
      * @param keyObtentionIterations the number of iterations
      */
-    public void setKeyObtentionIterations(int keyObtentionIterations) {
+    public void setKeyObtentionIterations(final int keyObtentionIterations) {
         this.byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
 
@@ -234,7 +234,7 @@ public final class StandardPBEBigDecimalEncryptor
      * 
      * @param saltGenerator the salt generator to be used.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.byteEncryptor.setSaltGenerator(saltGenerator);
     }
     
@@ -266,7 +266,7 @@ public final class StandardPBEBigDecimalEncryptor
      * @param providerName the name of the security provider to be asked
      *                     for the encryption algorithm.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.byteEncryptor.setProviderName(providerName);
     }
     
@@ -291,7 +291,7 @@ public final class StandardPBEBigDecimalEncryptor
      * 
      * @param provider the provider to be asked for the chosen algorithm
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.byteEncryptor.setProvider(provider);
     }
 
@@ -404,7 +404,7 @@ public final class StandardPBEBigDecimalEncryptor
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public BigDecimal encrypt(BigDecimal message) {
+    public BigDecimal encrypt(final BigDecimal message) {
         
         if (message == null) {
             return null;
@@ -413,25 +413,25 @@ public final class StandardPBEBigDecimalEncryptor
         try {
             
             // Get the scale of the decimal number
-            int scale = message.scale();
+            final int scale = message.scale();
             
             // Get the number in binary form (without scale)
-            BigInteger unscaledMessage = message.unscaledValue();
-            byte[] messageBytes = unscaledMessage.toByteArray();
+            final BigInteger unscaledMessage = message.unscaledValue();
+            final byte[] messageBytes = unscaledMessage.toByteArray();
             
             // The StandardPBEByteEncryptor does its job.
-            byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
+            final byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
 
             // The length of the encrypted message will be stored
             // with the result itself so that we can correctly rebuild
             // the complete byte array when decrypting (BigInteger will
             // ignore all "0x0" bytes in the leftmost side, and also "-0x1" 
             // in the leftmost side will be translated as signum).
-            byte[] encryptedMessageLengthBytes =
+            final byte[] encryptedMessageLengthBytes =
                 NumberUtils.byteArrayFromInt(encryptedMessage.length);
             
             // Append the length bytes to the encrypted message
-            byte[] encryptionResult = 
+            final byte[] encryptionResult = 
                 CommonUtils.appendArrays(encryptedMessage, encryptedMessageLengthBytes);
 
             // Finally, return a new number built from the encrypted bytes

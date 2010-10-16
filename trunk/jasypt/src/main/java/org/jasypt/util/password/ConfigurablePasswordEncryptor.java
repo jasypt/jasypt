@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @param config the DigesterConfig object to be set for configuration.
      * @see StandardStringDigester#setConfig(DigesterConfig)
      */
-    public void setConfig(DigesterConfig config) {
+    public void setConfig(final DigesterConfig config) {
         this.digester.setConfig(config);
     }
 
@@ -117,7 +117,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @param algorithm the name of the algorithm to be used.
      * @see StandardStringDigester#setAlgorithm(String)
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.digester.setAlgorithm(algorithm);
     }
     
@@ -153,7 +153,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      *         {@link #checkPassword(String, String)} have been called at least
      *         once.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.digester.setProviderName(providerName);
     }
     
@@ -182,7 +182,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      *         {@link #checkPassword(String, String)} have been called at least
      *         once.
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.digester.setProvider(provider);
     }
     
@@ -197,7 +197,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @param plainDigest true for using plain digests, false for the strong
      *        salt and iteration count based mechanism.
      */
-    public void setPlainDigest(boolean plainDigest) {
+    public void setPlainDigest(final boolean plainDigest) {
         if (plainDigest) {
             this.digester.setIterations(1);
             this.digester.setSaltSizeBytes(0);
@@ -221,7 +221,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * 
      * @param stringOutputType the string output type.
      */
-    public void setStringOutputType(String stringOutputType) {
+    public void setStringOutputType(final String stringOutputType) {
         this.digester.setStringOutputType(stringOutputType);
     }
     
@@ -233,7 +233,7 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @return the resulting digest.
      * @see StandardStringDigester#digest(String)
      */
-    public String encryptPassword(String password) {
+    public String encryptPassword(final String password) {
         return this.digester.digest(password);
     }
 
@@ -247,8 +247,8 @@ public final class ConfigurablePasswordEncryptor implements PasswordEncryptor {
      * @return true if passwords match, false if not.
      * @see StandardStringDigester#matches(String, String)
      */
-    public boolean checkPassword(String plainPassword, 
-            String encryptedPassword) {
+    public boolean checkPassword(final String plainPassword, 
+            final String encryptedPassword) {
         return this.digester.matches(plainPassword, encryptedPassword);
     }
     

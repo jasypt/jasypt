@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public final class Digester {
      * the algorithm to be used.
      * </p>
      */
-    public Digester(String algorithm) {
+    public Digester(final String algorithm) {
         super();
         this.digester = new StandardByteDigester();
         this.digester.setIterations(ITERATIONS);
@@ -110,7 +110,7 @@ public final class Digester {
      * 
      * @since 1.3
      */
-    public Digester(String algorithm, String providerName) {
+    public Digester(final String algorithm, final String providerName) {
         super();
         this.digester = new StandardByteDigester();
         this.digester.setIterations(ITERATIONS);
@@ -128,7 +128,7 @@ public final class Digester {
      * 
      * @since 1.3
      */
-    public Digester(String algorithm, Provider provider) {
+    public Digester(final String algorithm, final Provider provider) {
         super();
         this.digester = new StandardByteDigester();
         this.digester.setIterations(ITERATIONS);
@@ -167,7 +167,7 @@ public final class Digester {
      *         this is, if {@link #digest(byte[])} has been called at least
      *         once.
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.digester.setAlgorithm(algorithm);
     }
 
@@ -202,7 +202,7 @@ public final class Digester {
      *         this is, if {@link #digest(byte[])} has been called at least
      *         once.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.digester.setProviderName(providerName);
     }
     
@@ -230,7 +230,7 @@ public final class Digester {
      *         this is, if {@link #digest(byte[])} has been called at least
      *         once.
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.digester.setProvider(provider);
     }
 
@@ -242,7 +242,7 @@ public final class Digester {
      * @return the resulting digest.
      * @see StandardByteDigester#digest(byte[])
      */
-    public byte[] digest(byte[] binary) {
+    public byte[] digest(final byte[] binary) {
         return this.digester.digest(binary);
     }
 

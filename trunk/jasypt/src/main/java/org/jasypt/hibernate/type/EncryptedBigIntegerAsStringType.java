@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ public final class EncryptedBigIntegerAsStringType extends AbstractEncryptedAsSt
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
-    protected Object convertToObject(String string) {
+    protected Object convertToObject(final String string) {
         return new BigInteger(string);
     }
 

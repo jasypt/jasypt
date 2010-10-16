@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -70,18 +70,18 @@ public abstract class AbstractEncryptedAsStringType
      * @param string the string value
      * @return the object form of the passed String
      */
-    protected abstract Object convertToObject(String string);
+    protected abstract Object convertToObject(final String string);
     
     /**
      * Converts given Object to its String form.
      * @param object the object value
      * @return the string form of the passes Object
      */
-    protected String convertToString(Object object) {
+    protected String convertToString(final Object object) {
         return object == null? null : object.toString();
     }
     
-    public int[] sqlTypes() {
+    public final int[] sqlTypes() {
         return (int[]) sqlTypes.clone();
     }
 
@@ -89,19 +89,19 @@ public abstract class AbstractEncryptedAsStringType
     public abstract Class returnedClass();
 
     
-    public boolean equals(Object x, Object y) 
+    public final boolean equals(final Object x, final Object y) 
             throws HibernateException {
         return EqualsHelper.equals(x, y);
     }
     
     
-    public Object deepCopy(Object value)
+    public final Object deepCopy(final Object value)
             throws HibernateException {
         return value;
     }
     
     
-    public Object assemble(Serializable cached, Object owner)
+    public final Object assemble(final Serializable cached, final Object owner)
             throws HibernateException {
         if (cached == null) {
             return null;
@@ -110,7 +110,7 @@ public abstract class AbstractEncryptedAsStringType
     }
 
     
-    public Serializable disassemble(Object value) 
+    public final Serializable disassemble(final Object value) 
             throws HibernateException {
         if (value == null) {
             return null;
@@ -119,32 +119,32 @@ public abstract class AbstractEncryptedAsStringType
     }
 
     
-    public boolean isMutable() {
+    public final boolean isMutable() {
         return false;
     }
 
 
-    public int hashCode(Object x)
+    public final int hashCode(final Object x)
             throws HibernateException {
         return x.hashCode();
     }
 
     
-    public Object replace(Object original, Object target, Object owner) 
+    public final Object replace(final Object original, final Object target, final Object owner) 
             throws HibernateException {
         return original;
     }
 
     
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+    public final Object nullSafeGet(final ResultSet rs, final String[] names, final Object owner)
             throws HibernateException, SQLException {
         checkInitialization();
-        String message = rs.getString(names[0]);
+        final String message = rs.getString(names[0]);
         return rs.wasNull() ? null : convertToObject(this.encryptor.decrypt(message));
     }
 
     
-    public void nullSafeSet(PreparedStatement st, Object value, int index)
+    public final void nullSafeSet(final PreparedStatement st, final Object value, final int index)
             throws HibernateException, SQLException {
         checkInitialization();
         if (value == null) {
@@ -155,19 +155,19 @@ public abstract class AbstractEncryptedAsStringType
     }
 
     
-    public synchronized void setParameterValues(Properties parameters) {
+    public synchronized void setParameterValues(final Properties parameters) {
         
-        String paramEncryptorName =
+        final String paramEncryptorName =
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        String paramAlgorithm =
+        final String paramAlgorithm =
             parameters.getProperty(ParameterNaming.ALGORITHM);
-        String paramProviderName =
+        final String paramProviderName =
             parameters.getProperty(ParameterNaming.PROVIDER_NAME);
-        String paramPassword =
+        final String paramPassword =
             parameters.getProperty(ParameterNaming.PASSWORD);
-        String paramKeyObtentionIterations =
+        final String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
-        String paramStringOutputType =
+        final String paramStringOutputType =
             parameters.getProperty(ParameterNaming.STRING_OUTPUT_TYPE);
         
         this.useEncryptorName = false;
@@ -235,15 +235,15 @@ public abstract class AbstractEncryptedAsStringType
 
     
     
-    protected synchronized void checkInitialization() {
+    protected synchronized final void checkInitialization() {
         
         if (!this.initialized) {
             
             if (this.useEncryptorName) {
 
-                HibernatePBEEncryptorRegistry registry = 
+                final HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEStringEncryptor pbeEncryptor = 
+                final PBEStringEncryptor pbeEncryptor = 
                     registry.getPBEStringEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
@@ -254,7 +254,7 @@ public abstract class AbstractEncryptedAsStringType
                 
             } else {
                 
-                StandardPBEStringEncryptor newEncryptor = 
+                final StandardPBEStringEncryptor newEncryptor = 
                     new StandardPBEStringEncryptor();
                 
                 newEncryptor.setPassword(this.password);

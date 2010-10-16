@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * 
      * @param password the password to be set.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.encryptor.setPassword(password);
     }
 
@@ -91,7 +91,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * @param message the message to be encrypted.
      * @see StandardPBEStringEncryptor#encrypt(String)
      */
-    public String encrypt(String message) {
+    public String encrypt(final String message) {
         return this.encryptor.encrypt(message);
     }
     
@@ -102,7 +102,7 @@ public final class StrongTextEncryptor implements TextEncryptor {
      * @param encryptedMessage the message to be decrypted.
      * @see StandardPBEStringEncryptor#decrypt(String)
      */
-    public String decrypt(String encryptedMessage) {
+    public String decrypt(final String encryptedMessage) {
         return this.encryptor.decrypt(encryptedMessage);
     }
     

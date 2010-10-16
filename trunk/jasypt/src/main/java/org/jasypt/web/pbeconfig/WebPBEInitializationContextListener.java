@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -62,20 +62,20 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class WebPBEInitializationContextListener 
+public final class WebPBEInitializationContextListener 
         implements ServletContextListener {
 
     public static final String INIT_PARAM_INITIALIZER_CLASS_NAME = 
         "webPBEInitializerClassName"; 
     
     
-    public void contextDestroyed(ServletContextEvent sce) {
+    public void contextDestroyed(final ServletContextEvent sce) {
         // nothing to be done here
     }
 
-    public void contextInitialized(ServletContextEvent sce) {
+    public void contextInitialized(final ServletContextEvent sce) {
         
-        String className = 
+        final String className = 
             sce.getServletContext().getInitParameter(
                     INIT_PARAM_INITIALIZER_CLASS_NAME);
         

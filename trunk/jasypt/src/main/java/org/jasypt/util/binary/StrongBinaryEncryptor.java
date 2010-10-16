@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * 
      * @param password the password to be set.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.encryptor.setPassword(password);
     }
 
@@ -86,7 +86,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * @param binary the byte array to be encrypted.
      * @see StandardPBEByteEncryptor#encrypt(byte[])
      */
-    public byte[] encrypt(byte[] binary) {
+    public byte[] encrypt(final byte[] binary) {
         return this.encryptor.encrypt(binary);
     }
 
@@ -97,7 +97,7 @@ public final class StrongBinaryEncryptor implements BinaryEncryptor {
      * @param encryptedBinary the byte array to be decrypted.
      * @see StandardPBEByteEncryptor#decrypt(byte[])
      */
-    public byte[] decrypt(byte[] encryptedBinary) {
+    public byte[] decrypt(final byte[] encryptedBinary) {
         return this.encryptor.decrypt(encryptedBinary);
     }
 

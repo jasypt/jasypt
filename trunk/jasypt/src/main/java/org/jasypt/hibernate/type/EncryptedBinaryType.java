@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -118,9 +118,9 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
 
     private static final int BLOCK_SIZE = 2048;
     
-    private static NullableType nullableType = Hibernate.BINARY;
-    private static int sqlType = nullableType.sqlType();
-    private static int[] sqlTypes = new int[]{ sqlType };
+    private static final NullableType nullableType = Hibernate.BINARY;
+    private static final int sqlType = nullableType.sqlType();
+    private static final int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;
     private boolean useEncryptorName = false;
@@ -143,7 +143,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
     
-    public boolean equals(Object x, Object y) 
+    public boolean equals(final Object x, final Object y) 
             throws HibernateException {
         
         return (x == y) || 
@@ -152,21 +152,21 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
     
     
-    public Object deepCopy(Object value)
+    public Object deepCopy(final Object value)
             throws HibernateException {
         
         if (value == null) {
             return null;
         }
-        byte[] valueBytes = (byte[]) value;
-        byte[] copyBytes = new byte[valueBytes.length];
+        final byte[] valueBytes = (byte[]) value;
+        final byte[] copyBytes = new byte[valueBytes.length];
         System.arraycopy(valueBytes, 0, copyBytes, 0, valueBytes.length);
         return copyBytes;
         
     }
     
     
-    public Object assemble(Serializable cached, Object owner)
+    public Object assemble(final Serializable cached, final Object owner)
             throws HibernateException {
         if (cached == null) {
             return null;
@@ -175,7 +175,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
     
-    public Serializable disassemble(Object value) 
+    public Serializable disassemble(final Object value) 
             throws HibernateException {
         if (value == null) {
             return null;
@@ -189,10 +189,10 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
 
-    public int hashCode(Object x)
+    public int hashCode(final Object x)
             throws HibernateException {
         
-        byte[] valueBytes = (byte[]) x;
+        final byte[] valueBytes = (byte[]) x;
         int result = 1;
         for (int i = 0; i < valueBytes.length; i++ ) {
             result = (result * 17) + valueBytes[i];
@@ -202,13 +202,13 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
     
-    public Object replace(Object original, Object target, Object owner) 
+    public Object replace(final Object original, final Object target, final Object owner) 
             throws HibernateException {
         return (original == null)? null : deepCopy(original);
     }
 
     
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+    public Object nullSafeGet(final ResultSet rs, final String[] names, final Object owner)
             throws HibernateException, SQLException {
 
         checkInitialization();
@@ -216,14 +216,14 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
         byte[] encryptedValue = null;
         if (Environment.useStreamsForBinary()) {
 
-            InputStream inputStream = rs.getBinaryStream(names[0]);
+            final InputStream inputStream = rs.getBinaryStream(names[0]);
             if (rs.wasNull()) {
                 return null;
             }
             
-            ByteArrayOutputStream outputStream = 
+            final ByteArrayOutputStream outputStream = 
                 new ByteArrayOutputStream(BLOCK_SIZE);
-            byte[] inputBuff = new byte[BLOCK_SIZE];
+            final byte[] inputBuff = new byte[BLOCK_SIZE];
             try {
                 int readBytes = 0;
                 while (readBytes != -1) {
@@ -264,7 +264,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
     
-    public void nullSafeSet(PreparedStatement st, Object value, int index)
+    public void nullSafeSet(final PreparedStatement st, final Object value, final int index)
             throws HibernateException, SQLException {
 
         checkInitialization();
@@ -272,7 +272,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            byte[] encryptedValue = this.encryptor.encrypt((byte[]) value);
+            final byte[] encryptedValue = this.encryptor.encrypt((byte[]) value);
             if (Environment.useStreamsForBinary()) {
                 st.setBinaryStream(
                         index, 
@@ -286,15 +286,15 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
     }
 
     
-    public synchronized void setParameterValues(Properties parameters) {
+    public synchronized void setParameterValues(final Properties parameters) {
         
-        String paramEncryptorName =
+        final String paramEncryptorName =
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        String paramAlgorithm =
+        final String paramAlgorithm =
             parameters.getProperty(ParameterNaming.ALGORITHM);
-        String paramPassword =
+        final String paramPassword =
             parameters.getProperty(ParameterNaming.PASSWORD);
-        String paramKeyObtentionIterations =
+        final String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
         
         this.useEncryptorName = false;
@@ -360,9 +360,9 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
             
             if (this.useEncryptorName) {
 
-                HibernatePBEEncryptorRegistry registry = 
+                final HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEByteEncryptor pbeEncryptor = 
+                final PBEByteEncryptor pbeEncryptor = 
                     registry.getPBEByteEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
@@ -373,7 +373,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
                 
             } else {
                 
-                StandardPBEByteEncryptor newEncryptor = 
+                final StandardPBEByteEncryptor newEncryptor = 
                     new StandardPBEByteEncryptor();
                 
                 newEncryptor.setPassword(this.password);

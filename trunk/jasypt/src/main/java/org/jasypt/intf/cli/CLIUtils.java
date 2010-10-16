@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -34,13 +34,13 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * Internal class for managing common CLI operations like argument extraction
  * or rendering command output/errors.
  */
-class CLIUtils {
+final class CLIUtils {
 
     
     /*
      * Renders the execution environment.
      */
-    static void showEnvironment(boolean verbose) {
+    static void showEnvironment(final boolean verbose) {
         
         if (verbose) {
             System.out.println("\n----ENVIRONMENT-----------------\n");
@@ -57,14 +57,13 @@ class CLIUtils {
     /*
      * Renders the command arguments as accepted for execution.
      */
-    static void showArgumentDescription(Properties argumentValues, 
-            boolean verbose) {
+    static void showArgumentDescription(final Properties argumentValues, final boolean verbose) {
         
         if (verbose) {
             System.out.println("\n----ARGUMENTS-------------------\n");
-            Iterator entriesIter = argumentValues.entrySet().iterator();
+            final Iterator entriesIter = argumentValues.entrySet().iterator();
             while (entriesIter.hasNext()) {
-                Map.Entry entry = (Map.Entry) entriesIter.next();
+                final Map.Entry entry = (Map.Entry) entriesIter.next();
                 System.out.println(
                         entry.getKey() + ": " + entry.getValue());
             }
@@ -77,7 +76,7 @@ class CLIUtils {
     /*
      * Renders the command output.
      */
-    static void showOutput(String output, boolean verbose) {
+    static void showOutput(final String output, final boolean verbose) {
 
         if (verbose) {
             System.out.println("\n----OUTPUT----------------------\n");
@@ -93,7 +92,7 @@ class CLIUtils {
     /*
      * Renders an error occurred during execution.
      */
-    static void showError(Throwable t, boolean verbose) {
+    static void showError(final Throwable t, final boolean verbose) {
 
         if (verbose) {
 
@@ -132,10 +131,10 @@ class CLIUtils {
     /*
      * Defines whether the user has turned verbosity off or not.
      */
-    static boolean getVerbosity(String[] args) {
+    static boolean getVerbosity(final String[] args) {
         for (int i = 0; i < args.length; i++) {
-            String key = CommonUtils.substringBefore(args[i], "=");
-            String value = CommonUtils.substringAfter(args[i], "=");
+            final String key = CommonUtils.substringBefore(args[i], "=");
+            final String value = CommonUtils.substringAfter(args[i], "=");
             if (CommonUtils.isEmpty(key) || CommonUtils.isEmpty(value)) {
                 continue;
             }
@@ -152,10 +151,10 @@ class CLIUtils {
     /*
      * Extracts the argument values and checks its wellformedness.
      */
-    static Properties getArgumentValues(String appName, String[] args, 
-            String[][] requiredArgNames, String[][] optionalArgNames) {
+    static Properties getArgumentValues(final String appName, final String[] args, 
+            final String[][] requiredArgNames, final String[][] optionalArgNames) {
         
-        Set argNames = new HashSet();
+        final Set argNames = new HashSet();
         for (int i = 0; i < requiredArgNames.length; i++) {
             argNames.addAll(Arrays.asList(requiredArgNames[i]));
         }
@@ -163,10 +162,10 @@ class CLIUtils {
             argNames.addAll(Arrays.asList(optionalArgNames[i]));
         }
 
-        Properties argumentValues = new Properties();
+        final Properties argumentValues = new Properties();
         for (int i = 0; i < args.length; i++) {
-            String key = CommonUtils.substringBefore(args[i], "=");
-            String value = CommonUtils.substringAfter(args[i], "=");
+            final String key = CommonUtils.substringBefore(args[i], "=");
+            final String value = CommonUtils.substringAfter(args[i], "=");
             if (CommonUtils.isEmpty(key) || CommonUtils.isEmpty(value)) {
                 throw new IllegalArgumentException("Bad argument: " + args[i]);
             }
@@ -204,8 +203,8 @@ class CLIUtils {
     /*
      * Renders the usage instructions and exits with error.
      */
-    static void showUsageAndExit(String appName,
-            String[][] requiredArgNames, String[][] optionalArgNames) {
+    static void showUsageAndExit(final String appName,
+            final String[][] requiredArgNames, final String[][] optionalArgNames) {
         
         System.err.println("\nUSAGE: " + appName + " [ARGUMENTS]\n");
         System.err.println("  * Arguments must apply to format:\n");

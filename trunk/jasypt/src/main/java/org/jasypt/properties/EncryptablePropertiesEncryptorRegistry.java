@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ import org.jasypt.util.text.TextEncryptor;
  */
 final class EncryptablePropertiesEncryptorRegistry {
 
-    private static EncryptablePropertiesEncryptorRegistry instance =
+    private static final EncryptablePropertiesEncryptorRegistry instance =
         new EncryptablePropertiesEncryptorRegistry();
     
-    private Map stringEncryptors = Collections.synchronizedMap(new HashMap());
-    private Map textEncryptors = Collections.synchronizedMap(new HashMap());
+    private final Map stringEncryptors = Collections.synchronizedMap(new HashMap());
+    private final Map textEncryptors = Collections.synchronizedMap(new HashMap());
     
     
     static EncryptablePropertiesEncryptorRegistry getInstance() {
@@ -58,28 +58,28 @@ final class EncryptablePropertiesEncryptorRegistry {
     }
 
     
-    void removeEntries(EncryptableProperties prop) {
+    void removeEntries(final EncryptableProperties prop) {
         this.stringEncryptors.remove(prop.getIdent());
         this.textEncryptors.remove(prop.getIdent());
     }
     
     
-    StringEncryptor getStringEncryptor(EncryptableProperties prop) {
+    StringEncryptor getStringEncryptor(final EncryptableProperties prop) {
         return (StringEncryptor) this.stringEncryptors.get(prop.getIdent());
     }
     
     
-    void setStringEncryptor(EncryptableProperties prop, StringEncryptor encryptor) {
+    void setStringEncryptor(final EncryptableProperties prop, final StringEncryptor encryptor) {
         this.stringEncryptors.put(prop.getIdent(), encryptor);
     }
 
     
-    TextEncryptor getTextEncryptor(EncryptableProperties prop) {
+    TextEncryptor getTextEncryptor(final EncryptableProperties prop) {
         return (TextEncryptor) this.textEncryptors.get(prop.getIdent());
     }
     
     
-    void setTextEncryptor(EncryptableProperties prop, TextEncryptor encryptor) {
+    void setTextEncryptor(final EncryptableProperties prop, final TextEncryptor encryptor) {
         this.textEncryptors.put(prop.getIdent(), encryptor);
     }
     

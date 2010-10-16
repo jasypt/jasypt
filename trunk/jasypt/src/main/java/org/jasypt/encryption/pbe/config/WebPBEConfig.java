@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      */
     public WebPBEConfig() {
         super();
-        WebPBEConfigRegistry registry = 
+        final WebPBEConfigRegistry registry = 
             WebPBEConfigRegistry.getInstance();
         registry.registerConfig(this);
     }
@@ -90,7 +90,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * 
      * @param name the unique name which will identify this config object.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         CommonUtils.validateNotEmpty(name, "Name cannot be set empty");
         this.name = name;
     }
@@ -123,7 +123,7 @@ public class WebPBEConfig extends SimplePBEConfig {
      * 
      * @param validation the validation word to be assigned to this config object
      */
-    public void setValidationWord(String validation) {
+    public void setValidationWord(final String validation) {
         CommonUtils.validateNotEmpty(validation, "Validation word cannot be set empty");
         this.validationWord = validation;
     }

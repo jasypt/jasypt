@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class ParameterNaming {
+public final class ParameterNaming {
 
     
     /**

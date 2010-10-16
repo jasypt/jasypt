@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public class EnvironmentStringPBEConfig
      * 
      * @param stringOutputTypeEnvName the name of the environment variable
      */
-    public void setStringOutputTypeEnvName(String stringOutputTypeEnvName) {
+    public void setStringOutputTypeEnvName(final String stringOutputTypeEnvName) {
         this.stringOutputTypeEnvName = stringOutputTypeEnvName;
         if (stringOutputTypeEnvName == null) {
             this.stringOutputType = null;
@@ -115,7 +115,7 @@ public class EnvironmentStringPBEConfig
      * 
      * @param stringOutputTypeSysPropertyName the name of the property
      */
-    public void setStringOutputTypeSysPropertyName(String stringOutputTypeSysPropertyName) {
+    public void setStringOutputTypeSysPropertyName(final String stringOutputTypeSysPropertyName) {
         this.stringOutputTypeSysPropertyName = stringOutputTypeSysPropertyName;
         if (stringOutputTypeSysPropertyName == null) {
             this.stringOutputType = null;
@@ -143,7 +143,7 @@ public class EnvironmentStringPBEConfig
      * 
      * @param stringOutputType the string output type.
      */
-    public void setStringOutputType(String stringOutputType) {
+    public void setStringOutputType(final String stringOutputType) {
         this.stringOutputTypeEnvName = null;
         this.stringOutputTypeSysPropertyName = null;
         this.stringOutputType =

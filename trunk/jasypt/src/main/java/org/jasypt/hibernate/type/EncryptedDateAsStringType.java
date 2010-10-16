@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -104,8 +104,8 @@ public final class EncryptedDateAsStringType extends AbstractEncryptedAsStringTy
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
-    protected Object convertToObject(String string) {
-        long timeMillis = Long.valueOf(string).longValue();
+    protected Object convertToObject(final String string) {
+        final long timeMillis = Long.valueOf(string).longValue();
         return new Date(timeMillis);
     }
 
@@ -113,8 +113,8 @@ public final class EncryptedDateAsStringType extends AbstractEncryptedAsStringTy
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToString(java.lang.Object)
      */
-    protected String convertToString(Object object) {
-        long timeMillis = ((Date) object).getTime();
+    protected String convertToString(final Object object) {
+        final long timeMillis = ((Date) object).getTime();
         return String.valueOf(timeMillis);
     }
 

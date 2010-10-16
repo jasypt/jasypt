@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @param config the <tt>PBEConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public synchronized void setConfig(PBEConfig config) {
+    public synchronized void setConfig(final PBEConfig config) {
         this.byteEncryptor.setConfig(config);
         if ((config != null) && (config instanceof StringPBEConfig)) {
             this.stringPBEConfig = (StringPBEConfig) config;
@@ -261,7 +261,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param algorithm the name of the algorithm to be used.
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.byteEncryptor.setAlgorithm(algorithm);
     }
 
@@ -280,7 +280,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param password the password to be used.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.byteEncryptor.setPassword(password);
     }
     
@@ -298,7 +298,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param keyObtentionIterations the number of iterations
      */
-    public void setKeyObtentionIterations(int keyObtentionIterations) {
+    public void setKeyObtentionIterations(final int keyObtentionIterations) {
         this.byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
 
@@ -311,7 +311,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param saltGenerator the salt generator to be used.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.byteEncryptor.setSaltGenerator(saltGenerator);
     }
     
@@ -343,7 +343,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @param providerName the name of the security provider to be asked
      *                     for the encryption algorithm.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.byteEncryptor.setProviderName(providerName);
     }
     
@@ -368,7 +368,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param provider the provider to be asked for the chosen algorithm
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.byteEncryptor.setProvider(provider);
     }
     
@@ -390,7 +390,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * 
      * @param stringOutputType the string output type.
      */
-    public synchronized void setStringOutputType(String stringOutputType) {
+    public synchronized void setStringOutputType(final String stringOutputType) {
         CommonUtils.validateNotEmpty(stringOutputType, 
                 "String output type cannot be set empty");
         if (isInitialized()) {
@@ -471,7 +471,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
              */
             if (this.stringPBEConfig != null) {
                 
-                String configStringOutputType = 
+                final String configStringOutputType = 
                     this.stringPBEConfig.getStringOutputType();
 
                 this.stringOutputType = 
@@ -529,7 +529,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String encrypt(String message) {
+    public String encrypt(final String message) {
         
         if (message == null) {
             return null;
@@ -545,7 +545,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             // The input String is converted into bytes using MESSAGE_CHARSET
             // as a fixed charset to avoid problems with different platforms
             // having different default charsets (see MESSAGE_CHARSET doc).
-            byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
+            final byte[] messageBytes = message.getBytes(MESSAGE_CHARSET);
             
             // The StandardPBEByteEncryptor does its job.
             byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
@@ -605,7 +605,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String decrypt(String encryptedMessage) {
+    public String decrypt(final String encryptedMessage) {
         
         if (encryptedMessage == null) {
             return null;
@@ -635,7 +635,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             }
 
             // Let the byte encyptor decrypt
-            byte[] message = this.byteEncryptor.decrypt(encryptedMessageBytes);
+            final byte[] message = this.byteEncryptor.decrypt(encryptedMessageBytes);
             
             // Return the resulting decrypted String, using MESSAGE_CHARSET
             // as charset to maintain between encryption and decyption

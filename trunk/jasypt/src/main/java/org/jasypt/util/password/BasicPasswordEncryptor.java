@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public final class BasicPasswordEncryptor implements PasswordEncryptor {
      * @return the resulting digest.
      * @see StandardStringDigester#digest(String)
      */
-    public String encryptPassword(String password) {
+    public String encryptPassword(final String password) {
         return this.digester.digest(password);
     }
 
@@ -90,8 +90,8 @@ public final class BasicPasswordEncryptor implements PasswordEncryptor {
      * @return true if passwords match, false if not.
      * @see StandardStringDigester#matches(String, String)
      */
-    public boolean checkPassword(String plainPassword, 
-            String encryptedPassword) {
+    public boolean checkPassword(final String plainPassword, 
+            final String encryptedPassword) {
         return this.digester.matches(plainPassword, encryptedPassword);
     }
     

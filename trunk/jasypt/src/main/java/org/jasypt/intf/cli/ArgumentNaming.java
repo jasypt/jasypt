@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ package org.jasypt.intf.cli;
  * Internal class for holding the names of the CLI parameters. These
  * can be both direct and environment variable names. 
  */
-class ArgumentNaming {
+final class ArgumentNaming {
 
     
     static final String ARG_VERBOSE = "verbose";

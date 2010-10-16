@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public final class CommonUtils {
     }
     
     
-    public static String getStandardStringOutputType(String valueStr) {
+    public static String getStandardStringOutputType(final String valueStr) {
         if (valueStr == null) {
             return null;
         }
@@ -80,11 +80,11 @@ public final class CommonUtils {
     }
 
     
-    public static String toHexadecimal(byte[] message) {
+    public static String toHexadecimal(final byte[] message) {
         if (message == null) {
             return null;
         }
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < message.length; i++) {
             int curByte = message[i] & 0xff;
             buffer.append(hexDigits[(curByte >> 4)]);
@@ -94,7 +94,7 @@ public final class CommonUtils {
     }
     
     
-    public static byte[] fromHexadecimal(String message) {
+    public static byte[] fromHexadecimal(final String message) {
         if (message == null) {
             return null;
         }
@@ -102,10 +102,10 @@ public final class CommonUtils {
             throw new EncryptionOperationNotPossibleException();
         }
         try {
-            byte[] result = new byte[message.length() / 2];
+            final byte[] result = new byte[message.length() / 2];
             for (int i = 0; i < message.length(); i = i + 2) {
-                int first = Integer.parseInt("" + message.charAt(i), 16);
-                int second = Integer.parseInt("" + message.charAt(i + 1), 16);
+                final int first = Integer.parseInt("" + message.charAt(i), 16);
+                final int second = Integer.parseInt("" + message.charAt(i + 1), 16);
                 result[i/2] = (byte) (0x0 + ((first & 0xff) << 4) + (second & 0xff));
             }
             return result;
@@ -166,7 +166,7 @@ public final class CommonUtils {
             return null;
         }
         
-        int length = string.length();
+        final int length = string.length();
         
         if (length == 0) {
             return new String[0];
@@ -244,7 +244,7 @@ public final class CommonUtils {
         if (separator.length() == 0) {
             return "";
         }
-        int pos = string.indexOf(separator);
+        final int pos = string.indexOf(separator);
         if (pos == -1) {
             return string;
         }
@@ -261,7 +261,7 @@ public final class CommonUtils {
         if (separator == null) {
             return "";
         }
-        int pos = string.indexOf(separator);
+        final int pos = string.indexOf(separator);
         if (pos == -1) {
             return "";
         }

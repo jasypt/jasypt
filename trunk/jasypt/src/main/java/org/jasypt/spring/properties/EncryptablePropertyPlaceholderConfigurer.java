@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
  * 
  */
-public class EncryptablePropertyPlaceholderConfigurer 
+public final class EncryptablePropertyPlaceholderConfigurer 
         extends PropertyPlaceholderConfigurer {
 	/*
 	 * Only one of these instances will be initialized, the other one will be
@@ -70,7 +70,7 @@ public class EncryptablePropertyPlaceholderConfigurer
 	 *            can not be null.
 	 */
 	public EncryptablePropertyPlaceholderConfigurer(
-			StringEncryptor stringEncryptor) {
+	        final StringEncryptor stringEncryptor) {
 		super();
 		CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = stringEncryptor;
@@ -87,7 +87,7 @@ public class EncryptablePropertyPlaceholderConfigurer
 	 *            the {@link TextEncryptor} to be used do decrypt values. It can
 	 *            not be null.
 	 */
-	public EncryptablePropertyPlaceholderConfigurer(TextEncryptor textEncryptor) {
+	public EncryptablePropertyPlaceholderConfigurer(final TextEncryptor textEncryptor) {
 		super();
 		CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = null;
@@ -99,7 +99,7 @@ public class EncryptablePropertyPlaceholderConfigurer
 	 * 
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
 	 */
-	protected String convertPropertyValue(String originalValue) {
+	protected String convertPropertyValue(final String originalValue) {
 		if (!PropertyValueEncryptionUtils.isEncryptedValue(originalValue)) {
 			return originalValue;
 		}

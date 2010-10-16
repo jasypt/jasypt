@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
+public final class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
 
 
     // The internal encryptor 
@@ -77,7 +77,7 @@ public class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * 
      * @param password the password to be set.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.encryptor.setPassword(password);
     }
 
@@ -88,7 +88,7 @@ public class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * @param number the number to be encrypted.
      * @see StandardPBEBigIntegerEncryptor#encrypt(BigInteger)
      */
-    public BigInteger encrypt(BigInteger number) {
+    public BigInteger encrypt(final BigInteger number) {
         return this.encryptor.encrypt(number);
     }
     
@@ -99,7 +99,7 @@ public class StrongIntegerNumberEncryptor implements IntegerNumberEncryptor {
      * @param encryptedNumber the number to be decrypted.
      * @see StandardPBEBigIntegerEncryptor#decrypt(BigInteger)
      */
-    public BigInteger decrypt(BigInteger encryptedNumber) {
+    public BigInteger decrypt(final BigInteger encryptedNumber) {
         return this.encryptor.decrypt(encryptedNumber);
     }
 

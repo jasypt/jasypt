@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ public class ZeroSaltGenerator implements SaltGenerator {
      * @param lengthBytes length in bytes.
      * @return the generated salt. 
      */
-    public byte[] generateSalt(int lengthBytes) {
-        byte[] result = new byte[lengthBytes];
+    public byte[] generateSalt(final int lengthBytes) {
+        final byte[] result = new byte[lengthBytes];
         Arrays.fill(result, (byte)0);
         return result;
     }

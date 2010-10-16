@@ -2,7 +2,7 @@
 
 <!-- ======================================================================= -->
 <!--                                                                         -->
-<!--   Copyright (c) 2007, The JASYPT team (http://www.jasypt.org)           -->
+<!--   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)      -->
 <!--                                                                         -->
 <!--   Licensed under the Apache License, Version 2.0 (the "License");       -->
 <!--   you may not use this file except in compliance with the License.      -->
@@ -164,6 +164,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly-deps</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+         
         <executions>
           <execution>
             <id>make-assembly-cli-bundle</id>
@@ -195,7 +211,8 @@
           </execution>
         </executions>
       </plugin>
--->      
+-->
+
     </plugins>
     
   </build>
