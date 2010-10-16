@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ package org.jasypt.exceptions;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class EncryptionOperationNotPossibleException extends RuntimeException {
+public final class EncryptionOperationNotPossibleException extends RuntimeException {
 
     private static final long serialVersionUID = 6304674109588715145L;
 
@@ -44,11 +44,11 @@ public class EncryptionOperationNotPossibleException extends RuntimeException {
         super();
     }
 
-    public EncryptionOperationNotPossibleException(Throwable t) {
+    public EncryptionOperationNotPossibleException(final Throwable t) {
         super(t);
     }
     
-    public EncryptionOperationNotPossibleException(String message) {
+    public EncryptionOperationNotPossibleException(final String message) {
         super(message);
     }
     

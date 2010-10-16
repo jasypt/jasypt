@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param algorithm the name of the algorithm to be used
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.algorithm = algorithm;
     }
 
@@ -99,7 +99,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param password the password to be used.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -113,7 +113,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param keyObtentionIterations the number of iterations.
      */
-    public void setKeyObtentionIterations(Integer keyObtentionIterations) {
+    public void setKeyObtentionIterations(final Integer keyObtentionIterations) {
         this.keyObtentionIterations = keyObtentionIterations;
     }
 
@@ -129,7 +129,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param keyObtentionIterations the number of iterations.
      */
-    public void setKeyObtentionIterations(String keyObtentionIterations) {
+    public void setKeyObtentionIterations(final String keyObtentionIterations) {
         if (keyObtentionIterations != null) {
             try {
                 this.keyObtentionIterations = new Integer(keyObtentionIterations);
@@ -155,7 +155,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param saltGenerator the salt generator.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
     }
 
@@ -175,10 +175,10 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param saltGeneratorClassName the name of the salt generator class.
      */
-    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+    public void setSaltGeneratorClassName(final String saltGeneratorClassName) {
         if (saltGeneratorClassName != null) {
             try {
-                Class saltGeneratorClass = 
+                final Class saltGeneratorClass = 
                     Thread.currentThread().getContextClassLoader().loadClass(saltGeneratorClassName);
                 this.saltGenerator = 
                     (SaltGenerator) saltGeneratorClass.newInstance();
@@ -212,7 +212,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param providerName the name of the security provider.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.providerName = providerName;
     }
 
@@ -244,7 +244,7 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param provider the security provider object.
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.provider = provider;
     }
 
@@ -275,10 +275,10 @@ public class SimplePBEConfig implements PBEConfig {
      * 
      * @param providerClassName the name of the security provider class.
      */
-    public void setProviderClassName(String providerClassName) {
+    public void setProviderClassName(final String providerClassName) {
         if (providerClassName != null) {
             try {
-                Class providerClass = 
+                final Class providerClass = 
                     Thread.currentThread().getContextClassLoader().loadClass(providerClassName);
                 this.provider = (Provider) providerClass.newInstance();
             } catch (Exception e) {

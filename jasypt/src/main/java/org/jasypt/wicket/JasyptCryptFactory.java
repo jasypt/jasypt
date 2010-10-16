@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class JasyptCryptFactory implements ICryptFactory {
+public final class JasyptCryptFactory implements ICryptFactory {
 
     // Encryptor doesn't need to be instanced each time. We hold a reference.
     private final JasyptCrypt jasyptCrypt;
@@ -65,7 +65,7 @@ public class JasyptCryptFactory implements ICryptFactory {
      * 
      * @param encryptor the PBEByteEncryptor to be used.
      */
-    public JasyptCryptFactory(PBEByteEncryptor encryptor) {
+    public JasyptCryptFactory(final PBEByteEncryptor encryptor) {
         this.jasyptCrypt = new JasyptCrypt(encryptor);
     }
 

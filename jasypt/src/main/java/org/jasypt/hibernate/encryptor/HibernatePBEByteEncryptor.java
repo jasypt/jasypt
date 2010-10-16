@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -139,8 +139,8 @@ public final class HibernatePBEByteEncryptor {
      * For internal use only, by the Registry, when a PBEByteEncryptor
      * is registered programmatically.
      */
-    HibernatePBEByteEncryptor(String registeredName, 
-            PBEByteEncryptor encryptor) {
+    HibernatePBEByteEncryptor(final String registeredName, 
+            final PBEByteEncryptor encryptor) {
         this.encryptor = encryptor;
         this.registeredName = registeredName;
         this.encryptorSet = true;
@@ -163,7 +163,7 @@ public final class HibernatePBEByteEncryptor {
      * 
      * @param encryptor the encryptor.
      */
-    public void setEncryptor(PBEByteEncryptor encryptor) {
+    public void setEncryptor(final PBEByteEncryptor encryptor) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -180,13 +180,13 @@ public final class HibernatePBEByteEncryptor {
      * 
      * @param password the password to be set for the internal encryptor
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        StandardPBEByteEncryptor standardPBEByteEncryptor =
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setPassword(password);
     }
@@ -198,13 +198,13 @@ public final class HibernatePBEByteEncryptor {
      * 
      * @param algorithm the algorithm to be set for the internal encryptor
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        StandardPBEByteEncryptor standardPBEByteEncryptor =
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setAlgorithm(algorithm);
     }
@@ -216,13 +216,13 @@ public final class HibernatePBEByteEncryptor {
      * 
      * @param keyObtentionIterations to be set for the internal encryptor
      */
-    public void setKeyObtentionIterations(int keyObtentionIterations) {
+    public void setKeyObtentionIterations(final int keyObtentionIterations) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        StandardPBEByteEncryptor standardPBEByteEncryptor =
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setKeyObtentionIterations(
                 keyObtentionIterations);
@@ -236,13 +236,13 @@ public final class HibernatePBEByteEncryptor {
      * @param saltGenerator the salt generator to be set for the internal
      *                      encryptor.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        StandardPBEByteEncryptor standardPBEByteEncryptor =
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setSaltGenerator(saltGenerator);
     }
@@ -254,13 +254,13 @@ public final class HibernatePBEByteEncryptor {
      * 
      * @param config the PBEConfig to be set for the internal encryptor
      */
-    public void setConfig(PBEConfig config) {
+    public void setConfig(final PBEConfig config) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        StandardPBEByteEncryptor standardPBEByteEncryptor =
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setConfig(config);
     }
@@ -272,7 +272,7 @@ public final class HibernatePBEByteEncryptor {
      * @param message the message to be encrypted.
      * @return the encryption result.
      */
-    public byte[] encrypt(byte[] message) {
+    public byte[] encrypt(final byte[] message) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -287,7 +287,7 @@ public final class HibernatePBEByteEncryptor {
      * @param encryptedMessage the message to be decrypted.
      * @return the result of decryption.
      */
-    public byte[] decrypt(byte[] encryptedMessage) {
+    public byte[] decrypt(final byte[] encryptedMessage) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -303,7 +303,7 @@ public final class HibernatePBEByteEncryptor {
      * @param registeredName the name with which the encryptor will be
      *                       registered.
      */
-    public void setRegisteredName(String registeredName) {
+    public void setRegisteredName(final String registeredName) {
         if (this.registeredName != null) {
             // It had another name before, we have to clean
             HibernatePBEEncryptorRegistry.getInstance().

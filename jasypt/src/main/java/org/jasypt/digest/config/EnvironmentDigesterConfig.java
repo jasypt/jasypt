@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param algorithmEnvName the name of the environment variable
      */
-    public void setAlgorithmEnvName(String algorithmEnvName) {
+    public void setAlgorithmEnvName(final String algorithmEnvName) {
         this.algorithmEnvName = algorithmEnvName;
         if (algorithmEnvName == null) {
             super.setAlgorithm(null);
@@ -126,7 +126,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param algorithmSysPropertyName the name of the property
      */
-    public void setAlgorithmSysPropertyName(String algorithmSysPropertyName) {
+    public void setAlgorithmSysPropertyName(final String algorithmSysPropertyName) {
         this.algorithmSysPropertyName = algorithmSysPropertyName;
         if (algorithmSysPropertyName == null) {
             super.setAlgorithm(null);
@@ -182,7 +182,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param iterationsSysPropertyName the name of the property
      */
-    public void setIterationsSysPropertyName(String iterationsSysPropertyName) {
+    public void setIterationsSysPropertyName(final String iterationsSysPropertyName) {
         this.iterationsSysPropertyName = iterationsSysPropertyName;
         if (iterationsSysPropertyName == null) {
             super.setIterations((String)null);
@@ -210,7 +210,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param saltSizeBytesEnvName the name of the environment variable
      */
-    public void setSaltSizeBytesEnvName(String saltSizeBytesEnvName) {
+    public void setSaltSizeBytesEnvName(final String saltSizeBytesEnvName) {
         this.saltSizeBytesEnvName = saltSizeBytesEnvName;
         if (saltSizeBytesEnvName == null) {
             super.setSaltSizeBytes((String)null);
@@ -238,7 +238,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param saltSizeBytesSysPropertyName the name of the property
      */
-    public void setSaltSizeBytesSysPropertyName(String saltSizeBytesSysPropertyName) {
+    public void setSaltSizeBytesSysPropertyName(final String saltSizeBytesSysPropertyName) {
         this.saltSizeBytesSysPropertyName = saltSizeBytesSysPropertyName;
         if (saltSizeBytesSysPropertyName == null) {
             super.setSaltSizeBytes((Integer)null);
@@ -277,13 +277,13 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param saltGeneratorClassNameEnvName the name of the environment variable
      */
-    public void setSaltGeneratorClassNameEnvName(String saltGeneratorClassNameEnvName) {
+    public void setSaltGeneratorClassNameEnvName(final String saltGeneratorClassNameEnvName) {
         this.saltGeneratorClassNameEnvName = saltGeneratorClassNameEnvName;
         if (saltGeneratorClassNameEnvName == null) {
             super.setSaltGenerator(null);
         } else {
             this.saltGeneratorClassNameSysPropertyName = null;
-            String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
+            final String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
             super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
@@ -316,13 +316,13 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param saltGeneratorClassNameSysPropertyName the name of the property
      */
-    public void setSaltGeneratorClassNameSysPropertyName(String saltGeneratorClassNameSysPropertyName) {
+    public void setSaltGeneratorClassNameSysPropertyName(final String saltGeneratorClassNameSysPropertyName) {
         this.saltGeneratorClassNameSysPropertyName = saltGeneratorClassNameSysPropertyName;
         if (saltGeneratorClassNameSysPropertyName == null) {
             super.setSaltGenerator(null);
         } else {
             this.saltGeneratorClassNameEnvName = null;
-            String saltGeneratorClassName = 
+            final String saltGeneratorClassName = 
                 System.getProperty(saltGeneratorClassNameSysPropertyName);
             super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
@@ -352,7 +352,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param providerNameEnvName the name of the environment variable
      */
-    public void setProviderNameEnvName(String providerNameEnvName) {
+    public void setProviderNameEnvName(final String providerNameEnvName) {
         this.providerNameEnvName = providerNameEnvName;
         if (providerNameEnvName == null) {
             super.setProviderName(null);
@@ -384,7 +384,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param providerNameSysPropertyName the name of the property
      */
-    public void setProviderNameSysPropertyName(String providerNameSysPropertyName) {
+    public void setProviderNameSysPropertyName(final String providerNameSysPropertyName) {
         this.providerNameSysPropertyName = providerNameSysPropertyName;
         if (providerNameSysPropertyName == null) {
             super.setProviderName(null);
@@ -422,13 +422,13 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param providerClassNameEnvName the name of the environment variable
      */
-    public void setProviderClassNameEnvName(String providerClassNameEnvName) {
+    public void setProviderClassNameEnvName(final String providerClassNameEnvName) {
         this.providerClassNameEnvName = providerClassNameEnvName;
         if (providerClassNameEnvName == null) {
             super.setProvider(null);
         } else {
             this.providerClassNameSysPropertyName = null;
-            String providerClassName = System.getenv(providerClassNameEnvName);
+            final String providerClassName = System.getenv(providerClassNameEnvName);
             super.setProviderClassName(providerClassName);
         }
     }
@@ -461,13 +461,13 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param providerClassNameSysPropertyName the name of the property
      */
-    public void setProviderClassNameSysPropertyName(String providerClassNameSysPropertyName) {
+    public void setProviderClassNameSysPropertyName(final String providerClassNameSysPropertyName) {
         this.providerClassNameSysPropertyName = providerClassNameSysPropertyName;
         if (providerClassNameSysPropertyName == null) {
             super.setProvider(null);
         } else {
             this.providerClassNameEnvName = null;
-            String providerClassName = System.getProperty(providerClassNameSysPropertyName);
+            final String providerClassName = System.getProperty(providerClassNameSysPropertyName);
             super.setProviderClassName(providerClassName);
         }
     }
@@ -502,7 +502,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param invertPositionOfSaltInMessageBeforeDigestingEnvName the name of the environment variable
      */
-    public void setInvertPositionOfSaltInMessageBeforeDigestingEnvName(String invertPositionOfSaltInMessageBeforeDigestingEnvName) {
+    public void setInvertPositionOfSaltInMessageBeforeDigestingEnvName(final String invertPositionOfSaltInMessageBeforeDigestingEnvName) {
         this.invertPositionOfSaltInMessageBeforeDigestingEnvName = invertPositionOfSaltInMessageBeforeDigestingEnvName;
         if (invertPositionOfSaltInMessageBeforeDigestingEnvName == null) {
             super.setInvertPositionOfSaltInMessageBeforeDigesting(null);
@@ -546,7 +546,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param invertPositionOfSaltInMessageBeforeDigestingSysPropertyName the name of the property
      */
-    public void setInvertPositionOfSaltInMessageBeforeDigestingSysPropertyName(String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName) {
+    public void setInvertPositionOfSaltInMessageBeforeDigestingSysPropertyName(final String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName) {
         this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = invertPositionOfSaltInMessageBeforeDigestingSysPropertyName;
         if (invertPositionOfSaltInMessageBeforeDigestingSysPropertyName == null) {
             super.setInvertPositionOfSaltInMessageBeforeDigesting(null);
@@ -590,7 +590,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param invertPositionOfPlainSaltInEncryptionResultsEnvName the name of the environment variable
      */
-    public void setInvertPositionOfPlainSaltInEncryptionResultsEnvName(String invertPositionOfPlainSaltInEncryptionResultsEnvName) {
+    public void setInvertPositionOfPlainSaltInEncryptionResultsEnvName(final String invertPositionOfPlainSaltInEncryptionResultsEnvName) {
         this.invertPositionOfPlainSaltInEncryptionResultsEnvName = invertPositionOfPlainSaltInEncryptionResultsEnvName;
         if (invertPositionOfPlainSaltInEncryptionResultsEnvName == null) {
             super.setInvertPositionOfPlainSaltInEncryptionResults(null);
@@ -630,7 +630,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
      * 
      * @param invertPositionOfPlainSaltInEncryptionResultsSysPropertyName the name of the property
      */
-    public void setInvertPositionOfPlainSaltInEncryptionResultsSysPropertyName(String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName) {
+    public void setInvertPositionOfPlainSaltInEncryptionResultsSysPropertyName(final String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName) {
         this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = invertPositionOfPlainSaltInEncryptionResultsSysPropertyName;
         if (invertPositionOfPlainSaltInEncryptionResultsSysPropertyName == null) {
             super.setInvertPositionOfPlainSaltInEncryptionResults(null);
@@ -645,7 +645,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     
     
     
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.algorithmEnvName = null;
         this.algorithmSysPropertyName = null;
         super.setAlgorithm(algorithm);
@@ -653,14 +653,14 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
 
 
-    public void setIterations(Integer iterations) {
+    public void setIterations(final Integer iterations) {
         this.iterationsEnvName = null;
         this.iterationsSysPropertyName = null;
         super.setIterations(iterations);
     }
 
 
-    public void setIterations(String iterations) {
+    public void setIterations(final String iterations) {
         this.iterationsEnvName = null;
         this.iterationsSysPropertyName = null;
         super.setIterations(iterations);
@@ -668,14 +668,14 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
 
 
-    public void setSaltSizeBytes(Integer saltSizeBytes) {
+    public void setSaltSizeBytes(final Integer saltSizeBytes) {
         this.saltSizeBytesEnvName = null;
         this.saltSizeBytesSysPropertyName = null;
         super.setSaltSizeBytes(saltSizeBytes);
     }
 
 
-    public void setSaltSizeBytes(String saltSizeBytes) {
+    public void setSaltSizeBytes(final String saltSizeBytes) {
         this.saltSizeBytesEnvName = null;
         this.saltSizeBytesSysPropertyName = null;
         super.setSaltSizeBytes(saltSizeBytes);
@@ -683,35 +683,35 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
     
     
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGenerator(saltGenerator);
     }
 
 
-    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+    public void setSaltGeneratorClassName(final String saltGeneratorClassName) {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGeneratorClassName(saltGeneratorClassName);
     }
 
 
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.providerNameEnvName = null;
         this.providerNameSysPropertyName = null;
         super.setProviderName(providerName);
     }
 
     
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProvider(provider);
     }
 
 
-    public void setProviderClassName(String providerClassName) {
+    public void setProviderClassName(final String providerClassName) {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProviderClassName(providerClassName);
@@ -719,7 +719,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
 
 
-    public void setInvertPositionOfPlainSaltInEncryptionResults(Boolean invertPositionOfPlainSaltInEncryptionResults) {
+    public void setInvertPositionOfPlainSaltInEncryptionResults(final Boolean invertPositionOfPlainSaltInEncryptionResults) {
         this.invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
         this.invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
         super.setInvertPositionOfPlainSaltInEncryptionResults(invertPositionOfPlainSaltInEncryptionResults);
@@ -727,7 +727,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
 
 
-    public void setInvertPositionOfSaltInMessageBeforeDigesting(Boolean invertPositionOfSaltInMessageBeforeDigesting) {
+    public void setInvertPositionOfSaltInMessageBeforeDigesting(final Boolean invertPositionOfSaltInMessageBeforeDigesting) {
         this.invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
         this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
         super.setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);

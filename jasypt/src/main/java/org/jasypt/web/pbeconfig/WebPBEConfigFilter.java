@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -56,13 +56,13 @@ import javax.servlet.ServletResponse;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class WebPBEConfigFilter implements Filter {
+public final class WebPBEConfigFilter implements Filter {
 
     
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+            final FilterChain chain) throws IOException, ServletException {
 
-        WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
+        final WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
         if (registry.isWebConfigurationDone()) {
             // If it is initialized, quickly continue filter chain
             chain.doFilter(request, response);
@@ -76,7 +76,7 @@ public class WebPBEConfigFilter implements Filter {
     }
 
     
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(final FilterConfig filterConfig) throws ServletException {
         // Nothing to be done here.
     }
 

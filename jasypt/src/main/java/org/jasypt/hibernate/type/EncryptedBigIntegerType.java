@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -139,19 +139,19 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
     }
 
     
-    public boolean equals(Object x, Object y) 
+    public boolean equals(final Object x, final Object y) 
             throws HibernateException {
         return EqualsHelper.equals(x, y);
     }
     
     
-    public Object deepCopy(Object value)
+    public Object deepCopy(final Object value)
             throws HibernateException {
         return value;
     }
     
     
-    public Object assemble(Serializable cached, Object owner)
+    public Object assemble(final Serializable cached, final Object owner)
             throws HibernateException {
         if (cached == null) {
             return null;
@@ -160,7 +160,7 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
     }
 
     
-    public Serializable disassemble(Object value) 
+    public Serializable disassemble(final Object value) 
             throws HibernateException {
         if (value == null) {
             return null;
@@ -174,54 +174,54 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
     }
 
 
-    public int hashCode(Object x)
+    public int hashCode(final Object x)
             throws HibernateException {
         return x.hashCode();
     }
 
     
-    public Object replace(Object original, Object target, Object owner) 
+    public Object replace(final Object original, final Object target, final Object owner) 
             throws HibernateException {
         return original;
     }
 
     
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+    public Object nullSafeGet(final ResultSet rs, final String[] names, final Object owner)
             throws HibernateException, SQLException {
         checkInitialization();
-        BigDecimal decimalMessage = rs.getBigDecimal(names[0]);
+        final BigDecimal decimalMessage = rs.getBigDecimal(names[0]);
         if (rs.wasNull()) {
             return null;
         }
-        BigInteger message = 
+        final BigInteger message = 
             decimalMessage.setScale(0, BigDecimal.ROUND_UNNECESSARY).
                 unscaledValue();
         return this.encryptor.decrypt(message);
     }
 
     
-    public void nullSafeSet(PreparedStatement st, Object value, int index)
+    public void nullSafeSet(final PreparedStatement st, final Object value, final int index)
             throws HibernateException, SQLException {
         checkInitialization();
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            BigInteger encryptedMessage = 
+            final BigInteger encryptedMessage = 
                 this.encryptor.encrypt((BigInteger) value);
             st.setBigDecimal(index, new BigDecimal(encryptedMessage));
         }
     }
 
     
-    public synchronized void setParameterValues(Properties parameters) {
+    public synchronized void setParameterValues(final Properties parameters) {
         
-        String paramEncryptorName =
+        final String paramEncryptorName =
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        String paramAlgorithm =
+        final String paramAlgorithm =
             parameters.getProperty(ParameterNaming.ALGORITHM);
-        String paramPassword =
+        final String paramPassword =
             parameters.getProperty(ParameterNaming.PASSWORD);
-        String paramKeyObtentionIterations =
+        final String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
         
         this.useEncryptorName = false;
@@ -287,9 +287,9 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
             
             if (this.useEncryptorName) {
 
-                HibernatePBEEncryptorRegistry registry = 
+                final HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEBigIntegerEncryptor pbeEncryptor = 
+                final PBEBigIntegerEncryptor pbeEncryptor = 
                     registry.getPBEBigIntegerEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
@@ -300,7 +300,7 @@ public final class EncryptedBigIntegerType implements UserType, ParameterizedTyp
                 
             } else {
                 
-                StandardPBEBigIntegerEncryptor newEncryptor = 
+                final StandardPBEBigIntegerEncryptor newEncryptor = 
                     new StandardPBEBigIntegerEncryptor();
                 
                 newEncryptor.setPassword(this.password);

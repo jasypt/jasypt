@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -312,7 +312,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param config the <tt>DigesterConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public synchronized void setConfig(DigesterConfig config) {
+    public synchronized void setConfig(final DigesterConfig config) {
         this.byteDigester.setConfig(config);
         if ((config != null) && (config instanceof StringDigesterConfig)) {
             this.stringDigesterConfig = (StringDigesterConfig) config;
@@ -346,7 +346,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param algorithm the name of the algorithm to be used.
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.byteDigester.setAlgorithm(algorithm);
     }
 
@@ -365,7 +365,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param saltSizeBytes the size of the salt to be used, in bytes.
      */
-    public void setSaltSizeBytes(int saltSizeBytes) {
+    public void setSaltSizeBytes(final int saltSizeBytes) {
         this.byteDigester.setSaltSizeBytes(saltSizeBytes);
     }
 
@@ -385,7 +385,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param iterations the number of iterations.
      */
-    public void setIterations(int iterations) {
+    public void setIterations(final int iterations) {
         this.byteDigester.setIterations(iterations);
     }
 
@@ -398,7 +398,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param saltGenerator the salt generator to be used.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.byteDigester.setSaltGenerator(saltGenerator);
     }
 
@@ -430,7 +430,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param providerName the name of the security provider to be asked
      *                     for the digest algorithm.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.byteDigester.setProviderName(providerName);
     }
     
@@ -455,7 +455,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param provider the provider to be asked for the chosen algorithm
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.byteDigester.setProvider(provider);
     }
     
@@ -539,7 +539,7 @@ public final class StandardStringDigester implements StringDigester {
      * @param unicodeNormalizationIgnored whether the unicode text 
      *        normalization step should be ignored or not.
      */
-    public synchronized void setUnicodeNormalizationIgnored(boolean unicodeNormalizationIgnored) {
+    public synchronized void setUnicodeNormalizationIgnored(final boolean unicodeNormalizationIgnored) {
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -565,7 +565,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param stringOutputType the string output type.
      */
-    public synchronized void setStringOutputType(String stringOutputType) {
+    public synchronized void setStringOutputType(final String stringOutputType) {
         CommonUtils.validateNotEmpty(stringOutputType, "String output type cannot be set empty");
         if (isInitialized()) {
             throw new AlreadyInitializedException();
@@ -591,7 +591,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param prefix the prefix to be set
      */
-    public synchronized void setPrefix(String prefix) {
+    public synchronized void setPrefix(final String prefix) {
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -614,7 +614,7 @@ public final class StandardStringDigester implements StringDigester {
      * 
      * @param suffix the suffix to be set
      */
-    public synchronized void setSuffix(String suffix) {
+    public synchronized void setSuffix(final String suffix) {
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
@@ -694,13 +694,13 @@ public final class StandardStringDigester implements StringDigester {
              */
             if (this.stringDigesterConfig != null) {
                 
-                Boolean configUnicodeNormalizationIgnored = 
+                final Boolean configUnicodeNormalizationIgnored = 
                     this.stringDigesterConfig.isUnicodeNormalizationIgnored();
-                String configStringOutputType = 
+                final String configStringOutputType = 
                     this.stringDigesterConfig.getStringOutputType();
-                String configPrefix = 
+                final String configPrefix = 
                     this.stringDigesterConfig.getPrefix();
-                String configSuffix =
+                final String configSuffix =
                     this.stringDigesterConfig.getSuffix();
 
                 this.unicodeNormalizationIgnored = 
@@ -803,7 +803,7 @@ public final class StandardStringDigester implements StringDigester {
      *         be correctly done (for example, if the digest algorithm chosen
      *         cannot be used).
      */
-    public String digest(String message) {
+    public String digest(final String message) {
         
         if (message == null) {
             return null;
@@ -827,13 +827,13 @@ public final class StandardStringDigester implements StringDigester {
             // The input String is converted into bytes using MESSAGE_CHARSET
             // as a fixed charset to avoid problems with different platforms
             // having different default charsets (see MESSAGE_CHARSET doc).
-            byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
+            final byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
 
             // The StandardByteDigester does its job.
             byte[] digest = this.byteDigester.digest(messageBytes);
 
             // We build the result variable
-            StringBuffer result = new StringBuffer();
+            final StringBuffer result = new StringBuffer();
             
             if (this.prefix != null) {
                 // Prefix is added
@@ -947,7 +947,7 @@ public final class StandardStringDigester implements StringDigester {
             
             // We get a valid byte array from the message, in the 
             // fixed MESSAGE_CHARSET that the digest operations use.
-            byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
+            final byte[] messageBytes = normalizedMessage.getBytes(MESSAGE_CHARSET);
             
 
             // The BASE64 or HEXADECIMAL encoding is reversed and the digest

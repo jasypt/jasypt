@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -139,7 +139,7 @@ import org.jasypt.util.text.TextEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class PBEPasswordEncoder 
+public final class PBEPasswordEncoder 
         implements org.springframework.security.authentication.encoding.PasswordEncoder {
 
     // The text encryptor or PBE string encryptor to be internally used
@@ -164,7 +164,7 @@ public class PBEPasswordEncoder
      * 
      * @param textEncryptor the text encryptor instance to be used.
      */
-    public void setTextEncryptor(TextEncryptor textEncryptor) {
+    public void setTextEncryptor(final TextEncryptor textEncryptor) {
         this.textEncryptor = textEncryptor;
         this.useTextEncryptor = Boolean.TRUE;
     }
@@ -177,7 +177,7 @@ public class PBEPasswordEncoder
      * 
      * @param pbeStringEncryptor the PBE string encryptor instance to be used.
      */
-    public void setPbeStringEncryptor(PBEStringEncryptor pbeStringEncryptor) {
+    public void setPbeStringEncryptor(final PBEStringEncryptor pbeStringEncryptor) {
         this.pbeStringEncryptor = pbeStringEncryptor;
         this.useTextEncryptor = Boolean.FALSE;
     }
@@ -191,7 +191,7 @@ public class PBEPasswordEncoder
      * @param rawPass The password to be encoded.
      * @param salt The salt, which will be ignored. It can be null.
      */
-    public String encodePassword(String rawPass, Object salt) {
+    public String encodePassword(final String rawPass, final Object salt) {
         checkInitialization();
         if (this.useTextEncryptor.booleanValue()) {
             return this.textEncryptor.encrypt(rawPass);
@@ -209,7 +209,7 @@ public class PBEPasswordEncoder
      * @param rawPass The password to be checked.
      * @param salt The salt, which will be ignored. It can be null.
      */
-    public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
+    public boolean isPasswordValid(final String encPass, final String rawPass, final Object salt) {
         checkInitialization();
         String decPassword = null;
         if (this.useTextEncryptor.booleanValue()) {

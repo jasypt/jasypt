@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -40,10 +40,10 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class WebPBEConfigRegistry {
+public final class WebPBEConfigRegistry {
 
-    private Set names = new HashSet();
-    private List configs = new ArrayList();
+    private final Set names = new HashSet();
+    private final List configs = new ArrayList();
     private boolean webConfigurationDone = false;
     
     private static final WebPBEConfigRegistry instance = 
@@ -59,7 +59,7 @@ public class WebPBEConfigRegistry {
     }
     
     
-    public synchronized void registerConfig(WebPBEConfig config) {
+    public synchronized void registerConfig(final WebPBEConfig config) {
         if (this.webConfigurationDone) {
             throw new EncryptionInitializationException(
                     "Cannot register: Web configuration is already done");
@@ -80,7 +80,7 @@ public class WebPBEConfigRegistry {
         return (this.webConfigurationDone || (this.configs.size() == 0));
     }
 
-    public void setWebConfigurationDone(boolean configurationDone) {
+    public void setWebConfigurationDone(final boolean configurationDone) {
         this.webConfigurationDone = configurationDone;
     }
     

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -70,14 +70,14 @@ import org.jasypt.util.text.TextEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class EncryptableProperties extends Properties {
+public final class EncryptableProperties extends Properties {
 
     private static final long serialVersionUID = 6479795856725500639L;
 
     /*
      * Used as an identifier for the encryptor registry
      */
-    private Integer ident = new Integer(CommonUtils.nextRandomInt());
+    private final Integer ident = new Integer(CommonUtils.nextRandomInt());
     
     /*
      * Used as a marker to know if the object has ever been serialized
@@ -94,7 +94,7 @@ public class EncryptableProperties extends Properties {
      * @param stringEncryptor the {@link StringEncryptor} to be used do decrypt
      *                        values. It can not be null.
      */
-    public EncryptableProperties(StringEncryptor stringEncryptor) {
+    public EncryptableProperties(final StringEncryptor stringEncryptor) {
         this(null, stringEncryptor);
     }
     
@@ -108,7 +108,7 @@ public class EncryptableProperties extends Properties {
      * @param textEncryptor the {@link TextEncryptor} to be used do decrypt
      *                      values. It can not be null.
      */
-    public EncryptableProperties(TextEncryptor textEncryptor) {
+    public EncryptableProperties(final TextEncryptor textEncryptor) {
         this(null, textEncryptor);
     }
     
@@ -124,10 +124,10 @@ public class EncryptableProperties extends Properties {
      * @param stringEncryptor the {@link StringEncryptor} to be used do decrypt
      *                        values. It can not be null.
      */
-    public EncryptableProperties(Properties defaults, StringEncryptor stringEncryptor) {
+    public EncryptableProperties(final Properties defaults, final StringEncryptor stringEncryptor) {
         super(defaults);
         CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
-        EncryptablePropertiesEncryptorRegistry registry =
+        final EncryptablePropertiesEncryptorRegistry registry =
             EncryptablePropertiesEncryptorRegistry.getInstance();
         registry.setStringEncryptor(this, stringEncryptor);
     }
@@ -144,10 +144,10 @@ public class EncryptableProperties extends Properties {
      * @param textEncryptor the {@link TextEncryptor} to be used do decrypt
      *                      values. It can not be null.
      */
-    public EncryptableProperties(Properties defaults, TextEncryptor textEncryptor) {
+    public EncryptableProperties(final Properties defaults, final TextEncryptor textEncryptor) {
         super(defaults);
         CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
-        EncryptablePropertiesEncryptorRegistry registry =
+        final EncryptablePropertiesEncryptorRegistry registry =
             EncryptablePropertiesEncryptorRegistry.getInstance();
         registry.setTextEncryptor(this, textEncryptor);
     }
@@ -162,7 +162,7 @@ public class EncryptableProperties extends Properties {
      * @param key the property key
      * @return the (decrypted) value
      */
-    public String getProperty(String key) {
+    public String getProperty(final String key) {
         return decode(super.getProperty(key));
     }
     
@@ -181,7 +181,7 @@ public class EncryptableProperties extends Properties {
      * @param defaultValue the default value to return
      * @return the (decrypted) value
      */
-    public String getProperty(String key, String defaultValue) {
+    public String getProperty(final String key, final String defaultValue) {
         return decode(super.getProperty(key, defaultValue));
     }
     
@@ -197,19 +197,19 @@ public class EncryptableProperties extends Properties {
     /*
      * Internal method for decoding (decrypting) a value if needed.
      */
-    private synchronized String decode(String encodedValue) {
+    private synchronized String decode(final String encodedValue) {
         
         if (!PropertyValueEncryptionUtils.isEncryptedValue(encodedValue)) {
             return encodedValue;
         }
-        EncryptablePropertiesEncryptorRegistry registry =
+        final EncryptablePropertiesEncryptorRegistry registry =
             EncryptablePropertiesEncryptorRegistry.getInstance();
-        StringEncryptor stringEncryptor = registry.getStringEncryptor(this);
+        final StringEncryptor stringEncryptor = registry.getStringEncryptor(this);
         if (stringEncryptor != null) {
             return PropertyValueEncryptionUtils.decrypt(encodedValue, stringEncryptor);
             
         }
-        TextEncryptor textEncryptor = registry.getTextEncryptor(this);
+        final TextEncryptor textEncryptor = registry.getTextEncryptor(this);
         if (textEncryptor != null) {
             return PropertyValueEncryptionUtils.decrypt(encodedValue, textEncryptor);
         }
@@ -232,7 +232,7 @@ public class EncryptableProperties extends Properties {
     
 
     
-    private void writeObject(ObjectOutputStream outputStream) throws IOException {
+    private void writeObject(final ObjectOutputStream outputStream) throws IOException {
         this.beenSerialized = true;
         outputStream.defaultWriteObject();
     }
@@ -241,7 +241,7 @@ public class EncryptableProperties extends Properties {
     
     protected void finalize() throws Throwable {
         if (!this.beenSerialized) {
-            EncryptablePropertiesEncryptorRegistry registry =
+            final EncryptablePropertiesEncryptorRegistry registry =
                 EncryptablePropertiesEncryptorRegistry.getInstance();
             registry.removeEntries(this);
         }

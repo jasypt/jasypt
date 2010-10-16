@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class FixedStringSaltGenerator implements SaltGenerator {
      * 
      * @param salt the specified salt.
      */
-    public synchronized void setSalt(String salt) {
+    public synchronized void setSalt(final String salt) {
         CommonUtils.validateNotNull(salt, "Salt cannot be set null");
         this.salt = salt;
     }
@@ -77,7 +77,7 @@ public class FixedStringSaltGenerator implements SaltGenerator {
      * 
      * @param charset the specified charset
      */
-    public synchronized void setCharset(String charset) {
+    public synchronized void setCharset(final String charset) {
         CommonUtils.validateNotNull(charset, "Charset cannot be set null");
         this.charset = charset;
     }
@@ -89,7 +89,7 @@ public class FixedStringSaltGenerator implements SaltGenerator {
      * @param lengthBytes length in bytes.
      * @return the generated salt. 
      */
-    public byte[] generateSalt(int lengthBytes) {
+    public byte[] generateSalt(final int lengthBytes) {
         if (this.salt == null) {
             throw new EncryptionInitializationException(
                     "Salt has not been set");

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class FixedByteArraySaltGenerator implements SaltGenerator {
      * 
      * @param salt the specified salt.
      */
-    public synchronized void setSalt(byte[] salt) {
+    public synchronized void setSalt(final byte[] salt) {
         CommonUtils.validateNotNull(salt, "Salt cannot be set null");
         this.salt = (byte[]) salt.clone();
     }
@@ -70,7 +70,7 @@ public class FixedByteArraySaltGenerator implements SaltGenerator {
      * @param lengthBytes length in bytes.
      * @return the generated salt. 
      */
-    public byte[] generateSalt(int lengthBytes) {
+    public byte[] generateSalt(final int lengthBytes) {
         if (this.salt == null) {
             throw new EncryptionInitializationException(
                     "Salt has not been set");

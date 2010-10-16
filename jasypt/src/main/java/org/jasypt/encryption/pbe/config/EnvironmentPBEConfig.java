@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param algorithmEnvName the name of the environment variable
      */
-    public void setAlgorithmEnvName(String algorithmEnvName) {
+    public void setAlgorithmEnvName(final String algorithmEnvName) {
         this.algorithmEnvName = algorithmEnvName;
         if (algorithmEnvName == null) {
             super.setAlgorithm(null);
@@ -121,7 +121,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param algorithmSysPropertyName the name of the property
      */
-    public void setAlgorithmSysPropertyName(String algorithmSysPropertyName) {
+    public void setAlgorithmSysPropertyName(final String algorithmSysPropertyName) {
         this.algorithmSysPropertyName = algorithmSysPropertyName;
         if (algorithmSysPropertyName == null) {
             super.setAlgorithm(null);
@@ -149,7 +149,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param keyObtentionIterationsEnvName the name of the environment variable
      */
-    public void setKeyObtentionIterationsEnvName(String keyObtentionIterationsEnvName) {
+    public void setKeyObtentionIterationsEnvName(final String keyObtentionIterationsEnvName) {
         this.keyObtentionIterationsEnvName = keyObtentionIterationsEnvName;
         if (keyObtentionIterationsEnvName == null) {
             super.setKeyObtentionIterations((Integer)null);
@@ -178,7 +178,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param keyObtentionIterationsSysPropertyName the name of the property
      */
-    public void setKeyObtentionIterationsSysPropertyName(String keyObtentionIterationsSysPropertyName) {
+    public void setKeyObtentionIterationsSysPropertyName(final String keyObtentionIterationsSysPropertyName) {
         this.keyObtentionIterationsSysPropertyName = keyObtentionIterationsSysPropertyName;
         if (keyObtentionIterationsSysPropertyName == null) {
             super.setKeyObtentionIterations((Integer)null);
@@ -207,7 +207,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param passwordEnvName the name of the environment variable
      */
-    public void setPasswordEnvName(String passwordEnvName) {
+    public void setPasswordEnvName(final String passwordEnvName) {
         this.passwordEnvName = passwordEnvName;
         if (passwordEnvName == null) {
             super.setPassword(null);
@@ -235,7 +235,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param passwordSysPropertyName the name of the property
      */
-    public void setPasswordSysPropertyName(String passwordSysPropertyName) {
+    public void setPasswordSysPropertyName(final String passwordSysPropertyName) {
         this.passwordSysPropertyName = passwordSysPropertyName;
         if (passwordSysPropertyName == null) {
             super.setPassword(null);
@@ -273,13 +273,13 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param saltGeneratorClassNameEnvName the name of the environment variable
      */
-    public void setSaltGeneratorClassNameEnvName(String saltGeneratorClassNameEnvName) {
+    public void setSaltGeneratorClassNameEnvName(final String saltGeneratorClassNameEnvName) {
         this.saltGeneratorClassNameEnvName = saltGeneratorClassNameEnvName;
         if (saltGeneratorClassNameEnvName == null) {
             super.setSaltGenerator(null);
         } else {
             this.saltGeneratorClassNameSysPropertyName = null;
-            String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
+            final String saltGeneratorClassName = System.getenv(saltGeneratorClassNameEnvName);
             super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
@@ -312,13 +312,13 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param saltGeneratorClassNameSysPropertyName the name of the property
      */
-    public void setSaltGeneratorClassNameSysPropertyName(String saltGeneratorClassNameSysPropertyName) {
+    public void setSaltGeneratorClassNameSysPropertyName(final String saltGeneratorClassNameSysPropertyName) {
         this.saltGeneratorClassNameSysPropertyName = saltGeneratorClassNameSysPropertyName;
         if (saltGeneratorClassNameSysPropertyName == null) {
             super.setSaltGenerator(null);
         } else {
             this.saltGeneratorClassNameEnvName = null;
-            String saltGeneratorClassName = System.getProperty(saltGeneratorClassNameSysPropertyName);
+            final String saltGeneratorClassName = System.getProperty(saltGeneratorClassNameSysPropertyName);
             super.setSaltGeneratorClassName(saltGeneratorClassName);
         }
     }
@@ -347,7 +347,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param providerNameEnvName the name of the environment variable
      */
-    public void setProviderNameEnvName(String providerNameEnvName) {
+    public void setProviderNameEnvName(final String providerNameEnvName) {
         this.providerNameEnvName = providerNameEnvName;
         if (providerNameEnvName == null) {
             super.setProviderName(null);
@@ -379,7 +379,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param providerNameSysPropertyName the name of the property
      */
-    public void setProviderNameSysPropertyName(String providerNameSysPropertyName) {
+    public void setProviderNameSysPropertyName(final String providerNameSysPropertyName) {
         this.providerNameSysPropertyName = providerNameSysPropertyName;
         if (providerNameSysPropertyName == null) {
             super.setProviderName(null);
@@ -418,13 +418,13 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param providerClassNameEnvName the name of the environment variable
      */
-    public void setProviderClassNameEnvName(String providerClassNameEnvName) {
+    public void setProviderClassNameEnvName(final String providerClassNameEnvName) {
         this.providerClassNameEnvName = providerClassNameEnvName;
         if (providerClassNameEnvName == null) {
             super.setProvider(null);
         } else {
             this.providerClassNameSysPropertyName = null;
-            String providerClassName = System.getenv(providerClassNameEnvName);
+            final String providerClassName = System.getenv(providerClassNameEnvName);
             super.setProviderClassName(providerClassName);
         }
     }
@@ -457,13 +457,13 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
      * 
      * @param providerClassNameSysPropertyName the name of the property
      */
-    public void setProviderClassNameSysPropertyName(String providerClassNameSysPropertyName) {
+    public void setProviderClassNameSysPropertyName(final String providerClassNameSysPropertyName) {
         this.providerClassNameSysPropertyName = providerClassNameSysPropertyName;
         if (providerClassNameSysPropertyName == null) {
             super.setProvider(null);
         } else {
             this.providerClassNameEnvName = null;
-            String providerClassName = System.getProperty(providerClassNameSysPropertyName);
+            final String providerClassName = System.getProperty(providerClassNameSysPropertyName);
             super.setProviderClassName(providerClassName);
         }
     }
@@ -474,7 +474,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     
 
     
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.algorithmEnvName = null;
         this.algorithmSysPropertyName = null;
         super.setAlgorithm(algorithm);
@@ -482,42 +482,42 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
 
 
 
-    public void setKeyObtentionIterations(Integer keyObtentionIterations) {
+    public void setKeyObtentionIterations(final Integer keyObtentionIterations) {
         this.keyObtentionIterationsEnvName = null;
         this.keyObtentionIterationsSysPropertyName = null;
         super.setKeyObtentionIterations(keyObtentionIterations);
     }
 
 
-    public void setKeyObtentionIterations(String keyObtentionIterations) {
+    public void setKeyObtentionIterations(final String keyObtentionIterations) {
         this.keyObtentionIterationsEnvName = null;
         this.keyObtentionIterationsSysPropertyName = null;
         super.setKeyObtentionIterations(keyObtentionIterations);
     }
 
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.passwordEnvName = null;
         this.passwordSysPropertyName = null;
         super.setPassword(password);
     }
 
     
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGenerator(saltGenerator);
     }
 
 
-    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+    public void setSaltGeneratorClassName(final String saltGeneratorClassName) {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGeneratorClassName(saltGeneratorClassName);
     }
 
 
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.providerNameEnvName = null;
         this.providerNameSysPropertyName = null;
         super.setProviderName(providerName);
@@ -525,14 +525,14 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
 
     
     
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProvider(provider);
     }
 
 
-    public void setProviderClassName(String providerClassName) {
+    public void setProviderClassName(final String providerClassName) {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProviderClassName(providerClassName);

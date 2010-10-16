@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class JasyptStatelessService {
+public final class JasyptStatelessService {
 
 
 
@@ -93,34 +93,34 @@ public class JasyptStatelessService {
      *         parametrization).
      */
     public String digest(
-            String input,
-            String algorithm,
-            String algorithmEnvName,
-            String algorithmSysPropertyName,
-            String iterations,
-            String iterationsEnvName,
-            String iterationsSysPropertyName,
-            String saltSizeBytes,
-            String saltSizeBytesEnvName,
-            String saltSizeBytesSysPropertyName,
-            String saltGeneratorClassName, 
-            String saltGeneratorClassNameEnvName,
-            String saltGeneratorClassNameSysPropertyName,
-            String providerName,
-            String providerNameEnvName,
-            String providerNameSysPropertyName,
-            String providerClassName,
-            String providerClassNameEnvName,
-            String providerClassNameSysPropertyName,
-            String unicodeNormalizationIgnored, 
-            String unicodeNormalizationIgnoredEnvName, 
-            String unicodeNormalizationIgnoredSysPropertyName, 
-            String stringOutputType,
-            String stringOutputTypeEnvName,
-            String stringOutputTypeSysPropertyName) {
+            final String input,
+            final String algorithm,
+            final String algorithmEnvName,
+            final String algorithmSysPropertyName,
+            final String iterations,
+            final String iterationsEnvName,
+            final String iterationsSysPropertyName,
+            final String saltSizeBytes,
+            final String saltSizeBytesEnvName,
+            final String saltSizeBytesSysPropertyName,
+            final String saltGeneratorClassName, 
+            final String saltGeneratorClassNameEnvName,
+            final String saltGeneratorClassNameSysPropertyName,
+            final String providerName,
+            final String providerNameEnvName,
+            final String providerNameSysPropertyName,
+            final String providerClassName,
+            final String providerClassNameEnvName,
+            final String providerClassNameSysPropertyName,
+            final String unicodeNormalizationIgnored, 
+            final String unicodeNormalizationIgnoredEnvName, 
+            final String unicodeNormalizationIgnoredSysPropertyName, 
+            final String stringOutputType,
+            final String stringOutputTypeEnvName,
+            final String stringOutputTypeSysPropertyName) {
 
         
-        EnvironmentStringDigesterConfig config = 
+        final EnvironmentStringDigesterConfig config = 
             new EnvironmentStringDigesterConfig();
         
         if (algorithmEnvName != null) {
@@ -210,7 +210,7 @@ public class JasyptStatelessService {
         }
         
         
-        StandardStringDigester digester = new StandardStringDigester();
+        final StandardStringDigester digester = new StandardStringDigester();
         digester.setConfig(config);
         
         return digester.digest(input);
@@ -251,31 +251,31 @@ public class JasyptStatelessService {
      *         parametrization).
      */
     public String encrypt(
-            String input,
-            String password,
-            String passwordEnvName,
-            String passwordSysPropertyName,
-            String algorithm,
-            String algorithmEnvName,
-            String algorithmSysPropertyName,
-            String keyObtentionIterations,
-            String keyObtentionIterationsEnvName,
-            String keyObtentionIterationsSysPropertyName,
-            String saltGeneratorClassName, 
-            String saltGeneratorClassNameEnvName,
-            String saltGeneratorClassNameSysPropertyName,
-            String providerName,
-            String providerNameEnvName,
-            String providerNameSysPropertyName,
-            String providerClassName,
-            String providerClassNameEnvName,
-            String providerClassNameSysPropertyName,
-            String stringOutputType,
-            String stringOutputTypeEnvName,
-            String stringOutputTypeSysPropertyName) {
+            final String input,
+            final String password,
+            final String passwordEnvName,
+            final String passwordSysPropertyName,
+            final String algorithm,
+            final String algorithmEnvName,
+            final String algorithmSysPropertyName,
+            final String keyObtentionIterations,
+            final String keyObtentionIterationsEnvName,
+            final String keyObtentionIterationsSysPropertyName,
+            final String saltGeneratorClassName, 
+            final String saltGeneratorClassNameEnvName,
+            final String saltGeneratorClassNameSysPropertyName,
+            final String providerName,
+            final String providerNameEnvName,
+            final String providerNameSysPropertyName,
+            final String providerClassName,
+            final String providerClassNameEnvName,
+            final String providerClassNameSysPropertyName,
+            final String stringOutputType,
+            final String stringOutputTypeEnvName,
+            final String stringOutputTypeSysPropertyName) {
 
         
-        EnvironmentStringPBEConfig config = 
+        final EnvironmentStringPBEConfig config = 
             new EnvironmentStringPBEConfig();
         
         if (algorithmEnvName != null) {
@@ -355,7 +355,7 @@ public class JasyptStatelessService {
         }
         
         
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setConfig(config);
         
         return encryptor.encrypt(input);
@@ -396,31 +396,31 @@ public class JasyptStatelessService {
      *         parametrization).
      */
     public String decrypt(
-            String input,
-            String password,
-            String passwordEnvName,
-            String passwordSysPropertyName,
-            String algorithm,
-            String algorithmEnvName,
-            String algorithmSysPropertyName,
-            String keyObtentionIterations,
-            String keyObtentionIterationsEnvName,
-            String keyObtentionIterationsSysPropertyName,
-            String saltGeneratorClassName, 
-            String saltGeneratorClassNameEnvName,
-            String saltGeneratorClassNameSysPropertyName,
-            String providerName,
-            String providerNameEnvName,
-            String providerNameSysPropertyName,
-            String providerClassName,
-            String providerClassNameEnvName,
-            String providerClassNameSysPropertyName,
-            String stringOutputType,
-            String stringOutputTypeEnvName,
-            String stringOutputTypeSysPropertyName) {
+            final String input,
+            final String password,
+            final String passwordEnvName,
+            final String passwordSysPropertyName,
+            final String algorithm,
+            final String algorithmEnvName,
+            final String algorithmSysPropertyName,
+            final String keyObtentionIterations,
+            final String keyObtentionIterationsEnvName,
+            final String keyObtentionIterationsSysPropertyName,
+            final String saltGeneratorClassName, 
+            final String saltGeneratorClassNameEnvName,
+            final String saltGeneratorClassNameSysPropertyName,
+            final String providerName,
+            final String providerNameEnvName,
+            final String providerNameSysPropertyName,
+            final String providerClassName,
+            final String providerClassNameEnvName,
+            final String providerClassNameSysPropertyName,
+            final String stringOutputType,
+            final String stringOutputTypeEnvName,
+            final String stringOutputTypeSysPropertyName) {
 
         
-        EnvironmentStringPBEConfig config = 
+        final EnvironmentStringPBEConfig config = 
             new EnvironmentStringPBEConfig();
         
         if (algorithmEnvName != null) {
@@ -500,7 +500,7 @@ public class JasyptStatelessService {
         }
         
         
-        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setConfig(config);
         
         return encryptor.decrypt(input);

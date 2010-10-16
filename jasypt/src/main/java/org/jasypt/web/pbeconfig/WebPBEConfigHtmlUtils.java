@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * @author Daniel Fern&aacute;ndez
  *
  */
-class WebPBEConfigHtmlUtils {
+final class WebPBEConfigHtmlUtils {
     
     public static final String PASSWORD_SETTING_FLAG = "jasyptPwSetting";
     public static final String VALIDATION_PREFIX = "jasyptVa";
@@ -56,7 +56,7 @@ class WebPBEConfigHtmlUtils {
     
     public static String createConfigurationDoneHtml() {
         
-        StringBuffer strBuff = new StringBuffer();
+        final StringBuffer strBuff = new StringBuffer();
         addHeader(strBuff);
         strBuff.append("   <h2>All Configuration Done</h2>\n");
         addFoot(strBuff);
@@ -69,12 +69,12 @@ class WebPBEConfigHtmlUtils {
     
     
     public static String createInputFormHtml(
-            HttpServletRequest request, boolean inputError) {
+            final HttpServletRequest request, final boolean inputError) {
 
-        WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
-        List configs = registry.getConfigs();
+        final WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
+        final List configs = registry.getConfigs();
         
-        StringBuffer strBuff = new StringBuffer();
+        final StringBuffer strBuff = new StringBuffer();
         addHeader(strBuff);
         
         strBuff.append("   <h2>Please enter the PBE configuration parameters</h2>\n");
@@ -90,7 +90,7 @@ class WebPBEConfigHtmlUtils {
         strBuff.append("   <form action=\"" + request.getRequestURI() + "\" method=\"POST\">\n");
         strBuff.append("    <div>\n");
         
-        Iterator configsIter = configs.iterator();
+        final Iterator configsIter = configs.iterator();
         int i = 0;
         while (configsIter.hasNext()) {
             
@@ -129,7 +129,7 @@ class WebPBEConfigHtmlUtils {
     
     public static String createNotInitializedHtml() {
         
-        StringBuffer strBuff = new StringBuffer();
+        final StringBuffer strBuff = new StringBuffer();
         strBuff.append("<html>\n");
         strBuff.append(" <head>\n");
         strBuff.append("  <title>Forbidden</title>\n");
@@ -144,7 +144,7 @@ class WebPBEConfigHtmlUtils {
     
     
     
-    private static void addHeader(StringBuffer strBuff) {
+    private static void addHeader(final StringBuffer strBuff) {
         strBuff.append("<html>\n");
         strBuff.append(" <head>\n");
         strBuff.append("  <title>Web Password Based Encryption Configuration</title>\n");
@@ -157,7 +157,7 @@ class WebPBEConfigHtmlUtils {
         strBuff.append("   <h1>Web PBE Configuration</h1>\n");
     }
     
-    private static void addFoot(StringBuffer strBuff) {
+    private static void addFoot(final StringBuffer strBuff) {
         strBuff.append("  </div>\n");
         strBuff.append(" </body>\n");
         strBuff.append("</html>\n");

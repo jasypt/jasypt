@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ public class SimpleStringPBEConfig
      * 
      * @param stringOutputType the string output type.
      */
-    public void setStringOutputType(String stringOutputType) {
+    public void setStringOutputType(final String stringOutputType) {
         this.stringOutputType = 
             CommonUtils.
                 getStandardStringOutputType(stringOutputType);

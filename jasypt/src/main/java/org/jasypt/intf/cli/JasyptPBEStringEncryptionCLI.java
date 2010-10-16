@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.jasypt.intf.service.JasyptStatelessService;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class JasyptPBEStringEncryptionCLI {
+public final class JasyptPBEStringEncryptionCLI {
     
     /*
      * The required arguments for this CLI operation.
@@ -89,9 +89,9 @@ public class JasyptPBEStringEncryptionCLI {
      * 
      * @param args the command execution arguments
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
-        boolean verbose = CLIUtils.getVerbosity(args);
+        final boolean verbose = CLIUtils.getVerbosity(args);
 
         try {
             
@@ -106,20 +106,20 @@ public class JasyptPBEStringEncryptionCLI {
                 System.arraycopy(args, 1, arguments, 0, args.length - 1);
             }
             
-            Properties argumentValues = 
+            final Properties argumentValues = 
                 CLIUtils.getArgumentValues(
                         applicationName, arguments, 
                         VALID_REQUIRED_ARGUMENTS, VALID_OPTIONAL_ARGUMENTS);
 
             CLIUtils.showEnvironment(verbose);
 
-            JasyptStatelessService service = new JasyptStatelessService();
+            final JasyptStatelessService service = new JasyptStatelessService();
 
-            String input = argumentValues.getProperty(ArgumentNaming.ARG_INPUT);
+            final String input = argumentValues.getProperty(ArgumentNaming.ARG_INPUT);
 
             CLIUtils.showArgumentDescription(argumentValues, verbose);
             
-            String result =
+            final String result =
                 service.encrypt(
                         input, 
                         argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD),

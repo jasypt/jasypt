@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class RandomSaltGenerator implements SaltGenerator {
      * @since 1.5
      * 
      */
-    public RandomSaltGenerator(String secureRandomAlgorithm) {
+    public RandomSaltGenerator(final String secureRandomAlgorithm) {
         super();
         try {
             this.random = SecureRandom.getInstance(secureRandomAlgorithm);
@@ -87,8 +87,8 @@ public class RandomSaltGenerator implements SaltGenerator {
      * @param lengthBytes length in bytes.
      * @return the generated salt. 
      */
-    public byte[] generateSalt(int lengthBytes) {
-        byte[] salt = new byte[lengthBytes];
+    public byte[] generateSalt(final int lengthBytes) {
+        final byte[] salt = new byte[lengthBytes];
         synchronized (this.random) {
             this.random.nextBytes(salt);
         }

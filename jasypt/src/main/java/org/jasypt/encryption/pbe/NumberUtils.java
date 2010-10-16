@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ package org.jasypt.encryption.pbe;
  * @author Daniel Fern&aacute;ndez
  *
  */
-class NumberUtils {
+final class NumberUtils {
 
     
     static byte[] byteArrayFromInt(final int number) {

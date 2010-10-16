@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class PasswordEncoder 
+public final class PasswordEncoder 
         implements org.acegisecurity.providers.encoding.PasswordEncoder {
 
     // The password encryptor or string digester to be internally used
@@ -154,7 +154,7 @@ public class PasswordEncoder
      * 
      * @param passwordEncryptor the password encryptor instance to be used.
      */
-    public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {
+    public void setPasswordEncryptor(final PasswordEncryptor passwordEncryptor) {
         this.passwordEncryptor = passwordEncryptor;
         this.useEncryptor = Boolean.TRUE;
     }
@@ -167,7 +167,7 @@ public class PasswordEncoder
      * 
      * @param stringDigester the string digester instance to be used.
      */
-    public void setStringDigester(StringDigester stringDigester) {
+    public void setStringDigester(final StringDigester stringDigester) {
         this.stringDigester = stringDigester;
         this.useEncryptor = Boolean.FALSE;
     }
@@ -181,7 +181,7 @@ public class PasswordEncoder
      * @param rawPass The password to be encoded.
      * @param salt The salt, which will be ignored. It can be null.
      */
-    public String encodePassword(String rawPass, Object salt) {
+    public String encodePassword(final String rawPass, final Object salt) {
         checkInitialization();
         if (this.useEncryptor.booleanValue()) {
             return this.passwordEncryptor.encryptPassword(rawPass);
@@ -199,7 +199,7 @@ public class PasswordEncoder
      * @param rawPass The password to be checked.
      * @param salt The salt, which will be ignored. It can be null.
      */
-    public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
+    public boolean isPasswordValid(final String encPass, final String rawPass, final Object salt) {
         checkInitialization();
         if (this.useEncryptor.booleanValue()) {
             return this.passwordEncryptor.checkPassword(rawPass, encPass);

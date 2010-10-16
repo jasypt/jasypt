@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ package org.jasypt.normalization;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class Normalizer {
+public final class Normalizer {
 
     private static final String JDK_NORMALIZER_CLASS_NAME = "java.text.Normalizer";
     
@@ -48,7 +48,7 @@ public class Normalizer {
      * @param message the message to be normalized
      * @return the result of the normalization operation
      */
-    public static String normalizeToNfc(String message) {
+    public static String normalizeToNfc(final String message) {
         
         if (useJdkNormalizer == null) {
             // Still not initialized, will try to load the JDK Normalizer.

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -802,7 +802,7 @@ public final class StandardByteDigester implements ByteDigester {
      * has already been created (if needed) and the digester has already been
      * initialized.
      */
-    private byte[] digest(byte[] message, byte[] salt) {
+    private byte[] digest(final byte[] message, final byte[] salt) {
         
         try {
 
@@ -900,7 +900,7 @@ public final class StandardByteDigester implements ByteDigester {
      *         be correctly done (for example, if the digest algorithm chosen
      *         cannot be used).
      */
-    public boolean matches(byte[] message, byte[] digest) {
+    public boolean matches(final byte[] message, final byte[] digest) {
 
         if (message == null) {
             return (digest == null);
@@ -943,7 +943,7 @@ public final class StandardByteDigester implements ByteDigester {
             }
             
             // Digest the message with the extracted digest.
-            byte[] encryptedMessage = digest(message, salt);
+            final byte[] encryptedMessage = digest(message, salt);
             
             // If, using the same salt, digests match, then messages too. 
             return (Arrays.equals(encryptedMessage, digest));

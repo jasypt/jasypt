@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
+public final class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
 
 
     // The internal encryptor 
@@ -76,7 +76,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * 
      * @param password the password to be set.
      */
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.encryptor.setPassword(password);
     }
 
@@ -87,7 +87,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * @param number the number to be encrypted.
      * @see StandardPBEBigDecimalEncryptor#encrypt(BigDecimal)
      */
-    public BigDecimal encrypt(BigDecimal number) {
+    public BigDecimal encrypt(final BigDecimal number) {
         return this.encryptor.encrypt(number);
     }
     
@@ -98,7 +98,7 @@ public class BasicDecimalNumberEncryptor implements DecimalNumberEncryptor {
      * @param encryptedNumber the number to be decrypted.
      * @see StandardPBEBigDecimalEncryptor#decrypt(BigDecimal)
      */
-    public BigDecimal decrypt(BigDecimal encryptedNumber) {
+    public BigDecimal decrypt(final BigDecimal encryptedNumber) {
         return this.encryptor.decrypt(encryptedNumber);
     }
 

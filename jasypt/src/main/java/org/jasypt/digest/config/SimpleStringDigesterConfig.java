@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ public class SimpleStringDigesterConfig
      * @param unicodeNormalizationIgnored whether the unicode text 
      *        normalization step should be ignored or not.
      */
-    public void setUnicodeNormalizationIgnored(Boolean unicodeNormalizationIgnored) {
+    public void setUnicodeNormalizationIgnored(final Boolean unicodeNormalizationIgnored) {
         this.unicodeNormalizationIgnored = unicodeNormalizationIgnored;
     }
 
@@ -128,7 +128,7 @@ public class SimpleStringDigesterConfig
      * @param unicodeNormalizationIgnored whether the unicode text 
      *        normalization step should be ignored or not.
      */
-    public void setUnicodeNormalizationIgnored(String unicodeNormalizationIgnored) {
+    public void setUnicodeNormalizationIgnored(final String unicodeNormalizationIgnored) {
         if (unicodeNormalizationIgnored != null) {
             this.unicodeNormalizationIgnored = 
                 CommonUtils.getStandardBooleanValue(unicodeNormalizationIgnored);
@@ -156,7 +156,7 @@ public class SimpleStringDigesterConfig
      * 
      * @param stringOutputType the string output type.
      */
-    public void setStringOutputType(String stringOutputType) {
+    public void setStringOutputType(final String stringOutputType) {
         this.stringOutputType = 
             CommonUtils.
                 getStandardStringOutputType(stringOutputType);

@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ import org.jasypt.properties.PropertyValueEncryptionUtils;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class EncryptedPasswordC3P0ConnectionProvider 
+public final class EncryptedPasswordC3P0ConnectionProvider 
         extends C3P0ConnectionProvider {
     
     
@@ -94,14 +94,14 @@ public class EncryptedPasswordC3P0ConnectionProvider
     }
     
     
-    public void configure(Properties props) {
+    public void configure(final Properties props) {
        
-       String encryptorRegisteredName = 
+       final String encryptorRegisteredName = 
            props.getProperty(ParameterNaming.ENCRYPTOR_REGISTERED_NAME);
        
-       HibernatePBEEncryptorRegistry encryptorRegistry =
+       final HibernatePBEEncryptorRegistry encryptorRegistry =
            HibernatePBEEncryptorRegistry.getInstance();
-       PBEStringEncryptor encryptor = 
+       final PBEStringEncryptor encryptor = 
            encryptorRegistry.getPBEStringEncryptor(encryptorRegisteredName);
        
        if (encryptor == null) {
@@ -111,10 +111,10 @@ public class EncryptedPasswordC3P0ConnectionProvider
        }
 
        // Get the original values, which may be encrypted
-       String driver = props.getProperty(Environment.DRIVER);
-       String url = props.getProperty(Environment.URL);
-       String user = props.getProperty(Environment.USER);
-       String password = props.getProperty(Environment.PASS);
+       final String driver = props.getProperty(Environment.DRIVER);
+       final String url = props.getProperty(Environment.URL);
+       final String user = props.getProperty(Environment.USER);
+       final String password = props.getProperty(Environment.PASS);
 
        // Perform decryption operations as needed and store the new values
        if (PropertyValueEncryptionUtils.isEncryptedValue(driver)) {

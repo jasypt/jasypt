@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param algorithm the name of the algorithm.
      */
-    public void setAlgorithm(String algorithm) {
+    public void setAlgorithm(final String algorithm) {
         this.algorithm = algorithm;
     }
 
@@ -117,7 +117,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param iterations the number of iterations.
      */
-    public void setIterations(Integer iterations) {
+    public void setIterations(final Integer iterations) {
         this.iterations = iterations;
     }
 
@@ -137,7 +137,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param iterations the number of iterations.
      */
-    public void setIterations(String iterations) {
+    public void setIterations(final String iterations) {
         if (iterations != null) {
             try {
                 this.iterations = new Integer(iterations);
@@ -163,7 +163,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param saltSizeBytes the size of the salt, in bytes.
      */
-    public void setSaltSizeBytes(Integer saltSizeBytes) {
+    public void setSaltSizeBytes(final Integer saltSizeBytes) {
         this.saltSizeBytes = saltSizeBytes;
     }
 
@@ -183,7 +183,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param saltSizeBytes the size of the salt, in bytes.
      */
-    public void setSaltSizeBytes(String saltSizeBytes) {
+    public void setSaltSizeBytes(final String saltSizeBytes) {
         if (saltSizeBytes != null) {
             try {
                 this.saltSizeBytes = new Integer(saltSizeBytes);
@@ -211,7 +211,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param saltGenerator the salt generator.
      */
-    public void setSaltGenerator(SaltGenerator saltGenerator) {
+    public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
     }
 
@@ -231,10 +231,10 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param saltGeneratorClassName the name of the salt generator class.
      */
-    public void setSaltGeneratorClassName(String saltGeneratorClassName) {
+    public void setSaltGeneratorClassName(final String saltGeneratorClassName) {
         if (saltGeneratorClassName != null) {
             try {
-                Class saltGeneratorClass = 
+                final Class saltGeneratorClass = 
                     Thread.currentThread().getContextClassLoader().loadClass(saltGeneratorClassName);
                 this.saltGenerator = 
                     (SaltGenerator) saltGeneratorClass.newInstance();
@@ -268,7 +268,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param providerName the name of the security provider.
      */
-    public void setProviderName(String providerName) {
+    public void setProviderName(final String providerName) {
         this.providerName = providerName;
     }
     
@@ -300,7 +300,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param provider the security provider object.
      */
-    public void setProvider(Provider provider) {
+    public void setProvider(final Provider provider) {
         this.provider = provider;
     }
     
@@ -331,10 +331,10 @@ public class SimpleDigesterConfig implements DigesterConfig {
      * 
      * @param providerClassName the name of the security provider class.
      */
-    public void setProviderClassName(String providerClassName) {
+    public void setProviderClassName(final String providerClassName) {
         if (providerClassName != null) {
             try {
-                Class providerClass = 
+                final Class providerClass = 
                     Thread.currentThread().getContextClassLoader().loadClass(providerClassName);
                 this.provider = (Provider) providerClass.newInstance();
             } catch (Exception e) {

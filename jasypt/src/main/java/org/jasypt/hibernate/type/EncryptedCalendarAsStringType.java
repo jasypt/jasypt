@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -115,16 +115,16 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
-    protected Object convertToObject(String string) {
-        String[] stringTokens = CommonUtils.split(string);
+    protected Object convertToObject(final String string) {
+        final String[] stringTokens = CommonUtils.split(string);
         TimeZone tz = null;
-        long timeMillis = Long.valueOf(stringTokens[0]).longValue();
+        final long timeMillis = Long.valueOf(stringTokens[0]).longValue();
         if (this.storeTimeZone.booleanValue()) {
             tz = TimeZone.getTimeZone(stringTokens[1]);
         } else {
             tz = TimeZone.getDefault();
         }
-        Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance();
         cal.setTimeZone(tz);
         cal.setTimeInMillis(timeMillis);
         return cal;
@@ -134,9 +134,9 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToString(java.lang.Object)
      */
-    protected String convertToString(Object object) {
-        StringBuffer strBuff = new StringBuffer();
-        long timeMillis = ((Calendar) object).getTimeInMillis();
+    protected String convertToString(final Object object) {
+        final StringBuffer strBuff = new StringBuffer();
+        final long timeMillis = ((Calendar) object).getTimeInMillis();
         strBuff.append((new Long(timeMillis)).toString());
         if (this.storeTimeZone.booleanValue()) {
             strBuff.append(" ");
@@ -146,11 +146,11 @@ public final class EncryptedCalendarAsStringType extends AbstractEncryptedAsStri
     }
  
     
-    public synchronized void setParameterValues(Properties parameters) {
+    public synchronized void setParameterValues(final Properties parameters) {
         
       	super.setParameterValues(parameters);
       	
-        String paramStoreTimeZone = parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
+        final String paramStoreTimeZone = parameters.getProperty(ParameterNaming.STORE_TIME_ZONE);
         if ((paramStoreTimeZone != null) && (!paramStoreTimeZone.trim().equals(""))) {
             this.storeTimeZone = CommonUtils.getStandardBooleanValue(paramStoreTimeZone);
         }

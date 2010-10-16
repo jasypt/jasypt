@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class JasyptCrypt implements ICrypt {
+public final class JasyptCrypt implements ICrypt {
 
     // Encoding used to convert java String from and to byte[]
     private static final String CHARACTER_ENCODING = "UTF-8";
@@ -55,7 +55,7 @@ public class JasyptCrypt implements ICrypt {
      * 
      * @param encryptor the PBEByteEncryptor to be used internally.
      */
-    public JasyptCrypt(PBEByteEncryptor encryptor) {
+    public JasyptCrypt(final PBEByteEncryptor encryptor) {
         this.encryptor = encryptor;
     }
     
@@ -68,11 +68,11 @@ public class JasyptCrypt implements ICrypt {
      * @param text the text to be decrypted.
      * @return the decrypted string.
      */
-    public String decryptUrlSafe(String text) {
+    public String decryptUrlSafe(final String text) {
         
         try {
-            byte[] base64EncryptedBytes = text.getBytes();
-            byte[] encryptedBytes = 
+            final byte[] base64EncryptedBytes = text.getBytes();
+            final byte[] encryptedBytes = 
                 Base64UrlSafe.decodeBase64(base64EncryptedBytes);
             return new String(
                     this.encryptor.decrypt(encryptedBytes), CHARACTER_ENCODING);
@@ -94,8 +94,8 @@ public class JasyptCrypt implements ICrypt {
     public String encryptUrlSafe(final String plainText) {
         
         try {
-            byte[] plainBytes = plainText.getBytes(CHARACTER_ENCODING); 
-            byte[] encryptedBytes = this.encryptor.encrypt(plainBytes);
+            final byte[] plainBytes = plainText.getBytes(CHARACTER_ENCODING); 
+            final byte[] encryptedBytes = this.encryptor.encrypt(plainBytes);
             return new String(Base64UrlSafe.encodeBase64(encryptedBytes));
         } catch (Exception e) {
             throw new WicketRuntimeException(e);

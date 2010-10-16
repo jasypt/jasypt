@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -84,26 +84,26 @@ import org.jasypt.encryption.pbe.config.WebPBEConfig;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class WebPBEConfigServlet extends HttpServlet {
+public final class WebPBEConfigServlet extends HttpServlet {
 
     private static final long serialVersionUID = -7201635392816652667L;
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
         execute(req, resp);
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
         execute(req, resp);
     }
 
-    private void execute(HttpServletRequest req, HttpServletResponse resp)
+    private void execute(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
 
         try {
             
-            WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
+            final WebPBEConfigRegistry registry = WebPBEConfigRegistry.getInstance();
 
             if (registry.isWebConfigurationDone()) {
                 
@@ -114,7 +114,7 @@ public class WebPBEConfigServlet extends HttpServlet {
                 
             } else {
                 
-                String settingFlag = 
+                final String settingFlag = 
                     req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_SETTING_FLAG);
                 if (CommonUtils.isEmpty(settingFlag)) {
 
@@ -130,19 +130,19 @@ public class WebPBEConfigServlet extends HttpServlet {
                      * process the results.
                      */
                     
-                    List configs = registry.getConfigs();
+                    final List configs = registry.getConfigs();
                     Iterator configsIter = configs.iterator();
                     int i = 0;
                     int valid = 0;
                     while (configsIter.hasNext()) {
 
-                        WebPBEConfig config = (WebPBEConfig) configsIter.next();
+                        final WebPBEConfig config = (WebPBEConfig) configsIter.next();
                         
-                        String validation = 
+                        final String validation = 
                             req.getParameter(WebPBEConfigHtmlUtils.VALIDATION_PREFIX + i);
-                        String password = 
+                        final String password = 
                             req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_PREFIX + i);
-                        String retypedPassword = 
+                        final String retypedPassword = 
                             req.getParameter(WebPBEConfigHtmlUtils.PASSWORD_RETYPED_PREFIX + i);
                         
                         if (!CommonUtils.isEmpty(validation) &&
@@ -161,8 +161,8 @@ public class WebPBEConfigServlet extends HttpServlet {
                         
                     }
 
-                    SimpleDateFormat dateFormat = new SimpleDateFormat();
-                    Calendar now = Calendar.getInstance();
+                    final SimpleDateFormat dateFormat = new SimpleDateFormat();
+                    final Calendar now = Calendar.getInstance();
                     
                     if (valid < configs.size()) {
 
@@ -226,9 +226,9 @@ public class WebPBEConfigServlet extends HttpServlet {
 
     
     
-    private void writeResponse(String html, HttpServletResponse response)
+    private void writeResponse(final String html, final HttpServletResponse response)
             throws IOException {
-        PrintWriter printWriter = response.getWriter();
+        final PrintWriter printWriter = response.getWriter();
         printWriter.write(html);
         printWriter.flush();
     }

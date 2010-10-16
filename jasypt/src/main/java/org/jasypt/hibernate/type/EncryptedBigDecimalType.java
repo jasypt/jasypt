@@ -1,7 +1,7 @@
 /*
  * =============================================================================
  * 
- *   Copyright (c) 2007-2008, The JASYPT team (http://www.jasypt.org)
+ *   Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)
  * 
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -136,9 +136,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  */
 public final class EncryptedBigDecimalType implements UserType, ParameterizedType {
 
-    private static NullableType nullableType = Hibernate.BIG_DECIMAL;
-    private static int sqlType = nullableType.sqlType();
-    private static int[] sqlTypes = new int[]{ sqlType };
+    private static final NullableType nullableType = Hibernate.BIG_DECIMAL;
+    private static final int sqlType = nullableType.sqlType();
+    private static final int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;
     private boolean useEncryptorName = false;
@@ -162,19 +162,19 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
     }
 
     
-    public boolean equals(Object x, Object y) 
+    public boolean equals(final Object x, final Object y) 
             throws HibernateException {
         return EqualsHelper.equals(x, y);
     }
     
     
-    public Object deepCopy(Object value)
+    public Object deepCopy(final Object value)
             throws HibernateException {
         return value;
     }
     
     
-    public Object assemble(Serializable cached, Object owner)
+    public Object assemble(final Serializable cached, final Object owner)
             throws HibernateException {
         if (cached == null) {
             return null;
@@ -183,7 +183,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
     }
 
     
-    public Serializable disassemble(Object value) 
+    public Serializable disassemble(final Object value) 
             throws HibernateException {
         if (value == null) {
             return null;
@@ -197,59 +197,59 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
     }
 
 
-    public int hashCode(Object x)
+    public int hashCode(final Object x)
             throws HibernateException {
         return x.hashCode();
     }
 
     
-    public Object replace(Object original, Object target, Object owner) 
+    public Object replace(final Object original, final Object target, final Object owner) 
             throws HibernateException {
         return original;
     }
 
     
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
+    public Object nullSafeGet(final ResultSet rs, final String[] names, final Object owner)
             throws HibernateException, SQLException {
         checkInitialization();
-        BigDecimal storedEncryptedMessage = rs.getBigDecimal(names[0]);
+        final BigDecimal storedEncryptedMessage = rs.getBigDecimal(names[0]);
         if (rs.wasNull()) {
             return null;
         }
-        BigDecimal scaledEncryptedMessage = 
+        final BigDecimal scaledEncryptedMessage = 
             storedEncryptedMessage.setScale(
                     this.decimalScale.intValue(), BigDecimal.ROUND_UNNECESSARY); 
         return this.encryptor.decrypt(scaledEncryptedMessage);
     }
 
     
-    public void nullSafeSet(PreparedStatement st, Object value, int index)
+    public void nullSafeSet(final PreparedStatement st, final Object value, final int index)
             throws HibernateException, SQLException {
         checkInitialization();
         if (value == null) {
             st.setNull(index, sqlType);
         } else {
-            BigDecimal scaledValue = 
+            final BigDecimal scaledValue = 
                 ((BigDecimal) value).setScale(
                         this.decimalScale.intValue(), BigDecimal.ROUND_DOWN);
-            BigDecimal encryptedMessage = 
+            final BigDecimal encryptedMessage = 
                 this.encryptor.encrypt(scaledValue);
             st.setBigDecimal(index, encryptedMessage);
         }
     }
 
     
-    public synchronized void setParameterValues(Properties parameters) {
+    public synchronized void setParameterValues(final Properties parameters) {
         
-        String paramEncryptorName =
+        final String paramEncryptorName =
             parameters.getProperty(ParameterNaming.ENCRYPTOR_NAME);
-        String paramAlgorithm =
+        final String paramAlgorithm =
             parameters.getProperty(ParameterNaming.ALGORITHM);
-        String paramPassword =
+        final String paramPassword =
             parameters.getProperty(ParameterNaming.PASSWORD);
-        String paramKeyObtentionIterations =
+        final String paramKeyObtentionIterations =
             parameters.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS);
-        String paramDecimalScale =
+        final String paramDecimalScale =
             parameters.getProperty(ParameterNaming.DECIMAL_SCALE);
         
         this.useEncryptorName = false;
@@ -336,9 +336,9 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
             
             if (this.useEncryptorName) {
 
-                HibernatePBEEncryptorRegistry registry = 
+                final HibernatePBEEncryptorRegistry registry = 
                     HibernatePBEEncryptorRegistry.getInstance();
-                PBEBigDecimalEncryptor pbeEncryptor = 
+                final PBEBigDecimalEncryptor pbeEncryptor = 
                     registry.getPBEBigDecimalEncryptor(this.encryptorName);
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
@@ -349,7 +349,7 @@ public final class EncryptedBigDecimalType implements UserType, ParameterizedTyp
                 
             } else {
                 
-                StandardPBEBigDecimalEncryptor newEncryptor = 
+                final StandardPBEBigDecimalEncryptor newEncryptor = 
                     new StandardPBEBigDecimalEncryptor();
                 
                 newEncryptor.setPassword(this.password);
