@@ -5,6 +5,10 @@
   without depedencies on JDK version >= 6.
 - Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
   obtaining the names of all the available digest/PBE algorithms.
+- Created "lite" .jar package including only standard String and Byte digest and 
+  encryption: no BigDecimal or BigInteger encryption, no "util" package, 
+  no Spring/Hibernate/Wicket integrations, no Web PBE configuration, no CLI utils, 
+  no properties encryption, no Zero salt generator.
 - Added method "getInvertPositionOfSaltInMessageBeforeDigesting()" to DigesterConfig
   and "setInvertPositionOfSaltInMessageBeforeDigesting(...)" to StandardByteDigester 
   and StandardStringDigester in order to being able to append the salt after the message
@@ -20,6 +24,11 @@
 - Added an "org.jasypt.util.password.rfc2307" package containing utility classes for
   password encryption operations according to common LDAP schemes like {MD5},
   {SHA}, {SMD5} and {SSHA}.
+- Rebuilt CLI scripts: now both Windows and Linux versions can be run from outside
+  the "bin" folder.
+- Rebuilt zip distribution package: remove unneeded "cli-bundle" and added icu4j 
+  to libs.
+
 
 1.6
 ===
