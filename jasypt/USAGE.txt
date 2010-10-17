@@ -3,13 +3,24 @@
  -------------------------
  
  
- To use it in your Maven 2 applications, you will need to add it as
+ In order to use it in your Maven 2 applications, you will need to add it as
  a dependency with:
 
      <dependency>
        <groupId>org.jasypt</groupId>
        <artifactId>jasypt</artifactId>
        <version>{version}</version>
+       <scope>compile</scope>
+     </dependency>
+     
+ Or, alternatively, you can use the "lite" artifact (see online docs) by
+ specifying a classifier:
+ 
+     <dependency>
+       <groupId>org.jasypt</groupId>
+       <artifactId>jasypt</artifactId>
+       <version>{version}</version>
+       <classifier>lite</classifier>
        <scope>compile</scope>
      </dependency>
 

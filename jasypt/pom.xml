@@ -160,15 +160,16 @@
           </execution>
         </executions>
       </plugin>
-<!--       
+       
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
+          <descriptors>
+            <descriptor>src/assembly/lite.xml</descriptor>
+            <descriptor>src/assembly/dist.xml</descriptor>
+          </descriptors>
         </configuration>
         <executions>
           <execution>
@@ -179,39 +180,7 @@
             </goals>
           </execution>
         </executions>
-         
-        <executions>
-          <execution>
-            <id>make-assembly-cli-bundle</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>${basedir}/src/assembly/cli-bundle.xml</descriptor>
-              </descriptors>
-              <appendAssemblyId>true</appendAssemblyId>
-              <finalName>${artifactId}</finalName>
-            </configuration>
-          </execution>
-          <execution>
-            <id>make-assembly-dist</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-            <configuration>
-              <descriptors>
-                <descriptor>${basedir}/src/assembly/dist.xml</descriptor>
-              </descriptors>
-              <appendAssemblyId>true</appendAssemblyId>
-              <finalName>${artifactId}-${version}</finalName>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
--->
 
     </plugins>
     
