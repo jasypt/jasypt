@@ -1,10 +1,14 @@
 @ECHO OFF
-IF "%OS%" == "Windows_NT" setlocal
+IF "%OS%" == "Windows_NT" setlocal ENABLEDELAYEDEXPANSION
 
 set SCRIPT_NAME=decrypt.bat
+cd %0\..
+cd ..
 set EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI
-set CURRENT_DIR=%cd%
-set EXEC_CLASSPATH=.;"%CURRENT_DIR%\jasypt-cli-bundle.jar";"%JASYPT_CLASSPATH%"
+set EXEC_CLASSPATH=.
+FOR %%c in (.\lib\*.jar) DO set EXEC_CLASSPATH=!EXEC_CLASSPATH!;%%c
+
+echo USING CLASSPATH: %EXEC_CLASSPATH%
 
 set JAVA_EXECUTABLE=java
 if "%JAVA_HOME%" == "" goto execute
@@ -12,4 +16,3 @@ set JAVA_EXECUTABLE="%JAVA_HOME%\bin\java"
 
 :execute
 %JAVA_EXECUTABLE% -classpath %EXEC_CLASSPATH% %EXECUTABLE_CLASS% %SCRIPT_NAME% %*
-
