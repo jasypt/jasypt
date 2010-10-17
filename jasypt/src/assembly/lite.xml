@@ -26,12 +26,6 @@
         <include>org/jasypt/salt/**/*</include>
       </includes>
       <excludes>
-<!--       
-        <exclude>org/jasypt/digest/config/EnvironmentDigesterConfig.class</exclude>
-        <exclude>org/jasypt/digest/config/EnvironmentStringDigesterConfig.class</exclude>
-        <exclude>org/jasypt/encryption/pbe/config/EnvironmentPBEConfig.class</exclude>
-        <exclude>org/jasypt/encryption/pbe/config/EnvironmentStringPBEConfig.class</exclude>
--->
         <exclude>org/jasypt/encryption/pbe/config/WebPBEConfig.class</exclude>
         <exclude>org/jasypt/encryption/pbe/config/WebStringPBEConfig.class</exclude>
         <exclude>org/jasypt/encryption/pbe/PBEBigDecimalEncryptor.class</exclude>
@@ -40,10 +34,6 @@
         <exclude>org/jasypt/encryption/pbe/StandardPBEBigIntegerEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/BigDecimalEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/BigIntegerEncryptor.class</exclude>
-<!--        
-        <exclude>org/jasypt/salt/FixedByteArraySaltGenerator.class</exclude>
-        <exclude>org/jasypt/salt/FixedStringSaltGenerator.class</exclude>
--->
         <exclude>org/jasypt/salt/ZeroSaltGenerator.class</exclude>
       </excludes>
     </fileSet>
