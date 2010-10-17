@@ -209,7 +209,8 @@ final class CLIUtils {
         System.err.println("\nUSAGE: " + appName + " [ARGUMENTS]\n");
         System.err.println("  * Arguments must apply to format:\n");
         System.err.println(
-                "      \"arg1=value1 arg2=value2 arg3=value3 ...\"\n");
+                "      \"arg1=value1 arg2=value2 arg3=value3 ...\"");
+        System.err.println();
         System.err.println("  * Required arguments:\n");
         for (int i = 0; i < requiredArgNames.length; i++) {
             System.err.print("      ");
@@ -226,8 +227,8 @@ final class CLIUtils {
                 System.err.print(")");
             }
             System.err.println();
-            System.err.println();
         }
+        System.err.println();
         System.err.println("  * Optional arguments:\n");
         for (int i = 0; i < optionalArgNames.length; i++) {
             System.err.print("      ");
@@ -243,7 +244,6 @@ final class CLIUtils {
                 }
                 System.err.print(")");
             }
-            System.err.println();
             System.err.println();
         }
         System.exit(1);

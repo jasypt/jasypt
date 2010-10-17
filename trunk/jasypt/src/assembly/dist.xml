@@ -14,14 +14,6 @@
       <includes>
         <include>*.sh</include>
         <include>*.bat</include>
-        <include>*.txt</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${basedir}/target</directory>
-      <outputDirectory>/bin</outputDirectory>
-      <includes>
-        <include>${artifactId}-cli-bundle.jar</include>
       </includes>
     </fileSet>
     <fileSet>
@@ -36,6 +28,7 @@
       <outputDirectory>/dist</outputDirectory>
       <includes>
         <include>${artifactId}-${version}.jar</include>
+        <include>${artifactId}-${version}-lite.jar</include>
         <include>${artifactId}-${version}-javadoc.jar</include>
         <include>${artifactId}-${version}-sources.jar</include>
       </includes>
@@ -47,9 +40,18 @@
         <include>LICENSE.txt</include>
         <include>README.txt</include>
         <include>NOTICE.txt</include>
+        <include>ChangeLog.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${settings.localRepository}/com/ibm/icu/icu4j/3.4.4</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>icu4j-3.4.4.jar</include>
       </includes>
     </fileSet>
   </fileSets>
+  
     
     
   <dependencySets>
@@ -59,6 +61,6 @@
       <scope>runtime</scope>
     </dependencySet>
   </dependencySets> 
-  
+
   
 </assembly>

@@ -106,7 +106,7 @@ public final class JasyptStringDigestCLI {
             } else {
                 applicationName = args[0];
                 arguments = new String[args.length - 1];
-                System.arraycopy(args, 1, arguments, 0, args.length);
+                System.arraycopy(args, 1, arguments, 0, args.length - 1);
             }
             
             final Properties argumentValues = 
