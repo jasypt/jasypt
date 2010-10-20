@@ -33,7 +33,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  * configured this way:
  * <ul>
  *   <li>Algorithm: <tt>SHA-1</tt>.</li>
- *   <li>Salt size: <tt>4 bytes</tt> (default for OpenLDAP, but user-configurable).</li>
+ *   <li>Salt size: <tt>8 bytes</tt> (configurable with {@link #setSaltSizeBytes(int)}).</li>
  *   <li>Iterations: <tt>1</tt> (no hash iteration).</li>
  *   <li>Prefix: <tt>{SSHA}</tt>.</li>
  *   <li>Invert position of salt in message before digesting: <tt>true</tt>.</li>
@@ -64,7 +64,7 @@ public final class RFC2307SSHAPasswordEncryptor implements PasswordEncryptor {
         this.digester = new StandardStringDigester();
         this.digester.setAlgorithm("SHA-1");
         this.digester.setIterations(1);
-        this.digester.setSaltSizeBytes(4);
+        this.digester.setSaltSizeBytes(8);
         this.digester.setPrefix("{SSHA}");
         this.digester.setInvertPositionOfSaltInMessageBeforeDigesting(true);
         this.digester.setInvertPositionOfPlainSaltInEncryptionResults(true);
