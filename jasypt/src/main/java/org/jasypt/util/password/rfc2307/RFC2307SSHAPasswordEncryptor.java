@@ -38,6 +38,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  *   <li>Prefix: <tt>{SSHA}</tt>.</li>
  *   <li>Invert position of salt in message before digesting: <tt>true</tt>.</li>
  *   <li>Invert position of plain salt in encryption results: <tt>true</tt>.</li>
+ *   <li>Use lenient salt size check: <tt>true</tt>.</li>.
  * </ul>
  * </p>
  * <p>
@@ -68,6 +69,7 @@ public final class RFC2307SSHAPasswordEncryptor implements PasswordEncryptor {
         this.digester.setPrefix("{SSHA}");
         this.digester.setInvertPositionOfSaltInMessageBeforeDigesting(true);
         this.digester.setInvertPositionOfPlainSaltInEncryptionResults(true);
+        this.digester.setUseLenientSaltSizeCheck(true);
     }
 
     
@@ -116,8 +118,14 @@ public final class RFC2307SSHAPasswordEncryptor implements PasswordEncryptor {
 
     
     /**
+     * <p>
      * Checks an unencrypted (plain) password against an encrypted one
      * (a digest) to see if they match.
+     * </p>
+     * <p>
+     * This password encryptor expects encrypted passwords being matched to
+     * include the "{SSHA}" prefix, and will fail if not.
+     * </p>
      * 
      * @param plainPassword the plain password to check.
      * @param encryptedPassword the digest against which to check the password.

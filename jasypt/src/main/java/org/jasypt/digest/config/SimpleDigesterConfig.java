@@ -60,6 +60,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
     private Provider provider = null;
     private Boolean invertPositionOfSaltInMessageBeforeDigesting = null;
     private Boolean invertPositionOfPlainSaltInEncryptionResults = null;
+    private Boolean useLenientSaltSizeCheck = null;
     
 
     /**
@@ -400,6 +401,51 @@ public class SimpleDigesterConfig implements DigesterConfig {
             final Boolean invertPositionOfPlainSaltInEncryptionResults) {
         this.invertPositionOfPlainSaltInEncryptionResults = invertPositionOfPlainSaltInEncryptionResults;
     }
+    
+
+    /**
+     * <p>
+     * Whether digest matching operations will allow matching
+     * digests with a salt size different to the one configured in the "saltSizeBytes"
+     * property. This is possible because digest algorithms will produce a fixed-size 
+     * result, so the remaining bytes from the hashed input will be considered salt.
+     * </p>
+     * <p>
+     * This will allow the digester to match digests produced in environments which do not
+     * establish a fixed salt size as standard (for example, SSHA password encryption
+     * in LDAP systems).  
+     * </p>
+     * <p>
+     * The value of this property will <b>not</b> affect the creation of digests, 
+     * which will always have a salt of the size established by the "saltSizeBytes" 
+     * property. It will only affect digest matching.  
+     * </p>
+     * <p>
+     * Setting this property to <tt>true</tt> is not compatible with {@link SaltGenerator}
+     * implementations which return false for their 
+     * {@link SaltGenerator#includePlainSaltInEncryptionResults()} property. 
+     * </p>
+     * <p>
+     * Also, be aware that some algorithms or algorithm providers might not support
+     * knowing the size of the digests beforehand, which is also incompatible with
+     * a lenient behaviour.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getUseLenientSaltSizeCheck()}
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @param useLenientSaltSizeCheck whether the digester will allow matching of 
+     *        digests with different salt sizes than established or not (default 
+     *        is false).
+     */
+    public void setUseLenientSaltSizeCheck(final Boolean useLenientSaltSizeCheck) {
+        this.useLenientSaltSizeCheck = useLenientSaltSizeCheck;
+    }
 
 
     
@@ -436,6 +482,10 @@ public class SimpleDigesterConfig implements DigesterConfig {
     
     public Boolean getInvertPositionOfPlainSaltInEncryptionResults() {
         return this.invertPositionOfPlainSaltInEncryptionResults;
+    }
+
+    public Boolean getUseLenientSaltSizeCheck() {
+        return this.useLenientSaltSizeCheck;
     }
 
     
