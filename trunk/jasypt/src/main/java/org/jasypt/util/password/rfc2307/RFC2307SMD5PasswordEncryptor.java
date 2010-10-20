@@ -76,9 +76,7 @@ public final class RFC2307SMD5PasswordEncryptor implements PasswordEncryptor {
      * Sets the size (in bytes) of the salt to be used. 
      * </p>
      * <p>
-     * Default is 4, which is the value used by OpenLDAP. Other scenarios
-     * might require different values (for example, SunONE uses an
-     * 8-byte salt).
+     * Default is 8.
      * </p>
      * 
      * @param saltSizeBytes the salt size in bytes
