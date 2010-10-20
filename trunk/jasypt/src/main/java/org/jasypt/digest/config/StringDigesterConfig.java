@@ -37,6 +37,9 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  *   <li>Salt size (in bytes).</li>
  *   <li>Hashing iterations.</li>
  *   <li>Salt generator.</li>
+ *   <li>Position of salt in relation to the message to be digested.</li>
+ *   <li>Position of plain salt in relation to the encryption results (digest).</li>
+ *   <li>Whether to be lenient with salt sizes when matching digests.</li>
  *   <li>Use of Unicode normalization mechanisms.</li>
  *   <li>Output type (base64, hexadecimal).</li>
  *   <li>Prefix</li>

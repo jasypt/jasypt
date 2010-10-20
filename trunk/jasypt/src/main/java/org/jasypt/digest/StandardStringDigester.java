@@ -514,6 +514,49 @@ public final class StandardStringDigester implements StringDigester {
     
     /**
      * <p>
+     * Whether digest matching operations will allow matching
+     * digests with a salt size different to the one configured in the "saltSizeBytes"
+     * property. This is possible because digest algorithms will produce a fixed-size 
+     * result, so the remaining bytes from the hashed input will be considered salt.
+     * </p>
+     * <p>
+     * This will allow the digester to match digests produced in environments which do not
+     * establish a fixed salt size as standard (for example, SSHA password encryption
+     * in LDAP systems).  
+     * </p>
+     * <p>
+     * The value of this property will <b>not</b> affect the creation of digests, 
+     * which will always have a salt of the size established by the "saltSizeBytes" 
+     * property. It will only affect digest matching.  
+     * </p>
+     * <p>
+     * Setting this property to <tt>true</tt> is not compatible with {@link SaltGenerator}
+     * implementations which return false for their 
+     * {@link SaltGenerator#includePlainSaltInEncryptionResults()} property. 
+     * </p>
+     * <p>
+     * Also, be aware that some algorithms or algorithm providers might not support
+     * knowing the size of the digests beforehand, which is also incompatible with
+     * a lenient behaviour.
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (NOT lenient) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param useLenientSaltSizeCheck whether the digester will allow matching of 
+     *        digests with different salt sizes than established or not (default 
+     *        is false).
+     */
+    public synchronized void setUseLenientSaltSizeCheck(final boolean useLenientSaltSizeCheck) {
+        this.byteDigester.setUseLenientSaltSizeCheck(useLenientSaltSizeCheck);
+    }
+    
+    
+    /**
+     * <p>
      * Sets whether the unicode text normalization step should be ignored.
      * </p>
      * <p>

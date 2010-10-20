@@ -203,7 +203,9 @@ public final class StandardByteDigester implements ByteDigester {
     // Whether plain (unhashed) salt bytes will be appended after the digest
     // operation result or inserted before it (which is the default).
     private boolean invertPositionOfPlainSaltInEncryptionResults = false;
-    
+    // Whether digest matching operations will allow matching digests with a
+    // salt size different to the one configured in the "saltSizeBytes" property.
+    private boolean useLenientSaltSizeCheck = false;
     
     
     /*
@@ -228,6 +230,7 @@ public final class StandardByteDigester implements ByteDigester {
     private boolean providerSet = false;
     private boolean invertPositionOfSaltInMessageBeforeDigestingSet = false;
     private boolean invertPositionOfPlainSaltInEncryptionResultsSet = false;
+    private boolean useLenientSaltSizeCheckSet = false;
 
     /*
      * Flag which indicates whether the digester has been initialized or not.
@@ -250,6 +253,14 @@ public final class StandardByteDigester implements ByteDigester {
      * use of this variable will have to be adequately synchronized. 
      */
     private MessageDigest md = null;
+    
+    /*
+     * Length of the result digest for the specified algorithm.
+     * This might be zero if this operation is not supported by the 
+     * algorithm provider and the implementation is not cloneable. 
+     */
+    private int digestLengthBytes = 0;
+    
     
 
     
@@ -531,6 +542,55 @@ public final class StandardByteDigester implements ByteDigester {
         this.invertPositionOfPlainSaltInEncryptionResultsSet = true;
         
     }
+    
+    
+    /**
+     * <p>
+     * Whether digest matching operations will allow matching
+     * digests with a salt size different to the one configured in the "saltSizeBytes"
+     * property. This is possible because digest algorithms will produce a fixed-size 
+     * result, so the remaining bytes from the hashed input will be considered salt.
+     * </p>
+     * <p>
+     * This will allow the digester to match digests produced in environments which do not
+     * establish a fixed salt size as standard (for example, SSHA password encryption
+     * in LDAP systems).  
+     * </p>
+     * <p>
+     * The value of this property will <b>not</b> affect the creation of digests, 
+     * which will always have a salt of the size established by the "saltSizeBytes" 
+     * property. It will only affect digest matching.  
+     * </p>
+     * <p>
+     * Setting this property to <tt>true</tt> is not compatible with {@link SaltGenerator}
+     * implementations which return false for their 
+     * {@link SaltGenerator#includePlainSaltInEncryptionResults()} property. 
+     * </p>
+     * <p>
+     * Also, be aware that some algorithms or algorithm providers might not support
+     * knowing the size of the digests beforehand, which is also incompatible with
+     * a lenient behaviour.
+     * </p>
+     * <p>
+     * If this parameter is not explicitly set, the default behaviour 
+     * (NOT lenient) will be applied.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param useLenientSaltSizeCheck whether the digester will allow matching of 
+     *        digests with different salt sizes than established or not (default 
+     *        is false).
+     */
+    public synchronized void setUseLenientSaltSizeCheck(final boolean useLenientSaltSizeCheck) {
+        
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.useLenientSaltSizeCheck = useLenientSaltSizeCheck;
+        this.useLenientSaltSizeCheckSet = true;
+        
+    }
 
     
 
@@ -636,6 +696,9 @@ public final class StandardByteDigester implements ByteDigester {
                 final Boolean configInvertPositionOfPlainSaltInEncryptionResults =
                     this.config.getInvertPositionOfPlainSaltInEncryptionResults();
                 
+                final Boolean configUseLenientSaltSizeCheck =
+                    this.config.getUseLenientSaltSizeCheck();
+                
 
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
@@ -661,6 +724,9 @@ public final class StandardByteDigester implements ByteDigester {
                 this.invertPositionOfPlainSaltInEncryptionResults =
                     ((this.invertPositionOfPlainSaltInEncryptionResultsSet) || (configInvertPositionOfPlainSaltInEncryptionResults == null))?
                             this.invertPositionOfPlainSaltInEncryptionResults : configInvertPositionOfPlainSaltInEncryptionResults.booleanValue();
+                this.useLenientSaltSizeCheck =
+                    ((this.useLenientSaltSizeCheckSet) || (configUseLenientSaltSizeCheck == null))?
+                            this.useLenientSaltSizeCheck : configUseLenientSaltSizeCheck.booleanValue();
                 
             }
             
@@ -670,6 +736,22 @@ public final class StandardByteDigester implements ByteDigester {
              */
             if (this.saltGenerator == null) {
                 this.saltGenerator = new RandomSaltGenerator();
+            }
+            
+            
+            /*
+             * Test compatibility of salt generator with salt size checking
+             * behaviour
+             */
+            if (this.useLenientSaltSizeCheck) {
+                if (!this.saltGenerator.includePlainSaltInEncryptionResults()) {
+                    throw new EncryptionInitializationException(
+                            "The configured Salt Generator (" + 
+                            this.saltGenerator.getClass().getName() + 
+                            ") does not include plain salt " +
+                            "in encryption results, which is not compatible" +
+                            "with setting the salt size checking behaviour to \"lenient\".");
+                }
             }
             
             /*
@@ -696,6 +778,22 @@ public final class StandardByteDigester implements ByteDigester {
             } catch (NoSuchProviderException e) {
                 throw new EncryptionInitializationException(e);
             }
+            
+            
+            /*
+             * Store the digest length (algorithm-dependent) and check
+             * the operation is supported by the provider.
+             */
+            this.digestLengthBytes = this.md.getDigestLength();
+            if (this.digestLengthBytes <= 0) {
+                throw new EncryptionInitializationException(
+                        "The configured algorithm (" + 
+                        this.algorithm + ") or its provider do  " +
+                        "not allow knowing the digest length beforehand " +
+                        "(getDigestLength() operation), which is not compatible" +
+                        "with setting the salt size checking behaviour to \"lenient\".");
+            }
+            
             this.initialized = true;
             
         }
@@ -912,7 +1010,7 @@ public final class StandardByteDigester implements ByteDigester {
         if (!isInitialized()) {
             initialize();
         }
-        
+            
         try {
 
             // If we are using a salt, extract it to use it.
@@ -923,20 +1021,35 @@ public final class StandardByteDigester implements ByteDigester {
                 // If not, the salt is supposed to be fixed and thus the
                 // salt generator can be safely asked for it again.
                 if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
-                    if (!this.invertPositionOfPlainSaltInEncryptionResults) {
-                        final int saltStart = 0;
-                        final int saltSize = 
-                            (this.saltSizeBytes < digest.length? this.saltSizeBytes : digest.length);
-                        salt = new byte[saltSize];
-                        System.arraycopy(digest, saltStart, salt, 0, saltSize);
+                    
+                    // Compute size figures and perform length checks
+                    int digestSaltSize = this.saltSizeBytes;
+                    if (this.digestLengthBytes > 0) {
+                        if (this.useLenientSaltSizeCheck) {
+                            if (digest.length < this.digestLengthBytes) {
+                                throw new EncryptionOperationNotPossibleException();
+                            }
+                            digestSaltSize = digest.length - this.digestLengthBytes;
+                        } else {
+                            if (digest.length != (this.digestLengthBytes + this.saltSizeBytes)) {
+                                throw new EncryptionOperationNotPossibleException();
+                            }
+                        }
                     } else {
-                        final int saltStart = 
-                            (this.saltSizeBytes < digest.length? (digest.length - this.saltSizeBytes) : 0);
-                        final int saltSize = 
-                            (this.saltSizeBytes < digest.length? this.saltSizeBytes : digest.length);
-                        salt = new byte[saltSize];
-                        System.arraycopy(digest, saltStart, salt, 0, saltSize);
+                        // Salt size check behaviour cannot be set to lenient
+                        if (digest.length < this.saltSizeBytes) {
+                            throw new EncryptionOperationNotPossibleException();
+                        }
                     }
+                    
+                    if (!this.invertPositionOfPlainSaltInEncryptionResults) {
+                        salt = new byte[digestSaltSize];
+                        System.arraycopy(digest, 0, salt, 0, digestSaltSize);
+                    } else {
+                        salt = new byte[digestSaltSize];
+                        System.arraycopy(digest, digest.length - digestSaltSize, salt, 0, digestSaltSize);
+                    }
+                    
                 } else {
                     salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
                 }

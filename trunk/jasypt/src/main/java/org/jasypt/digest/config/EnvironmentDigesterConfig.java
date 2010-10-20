@@ -59,6 +59,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String providerClassNameEnvName = null;
     private String invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
     private String invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
+    private String useLenientSaltSizeCheckEnvName = null;
 
     private String algorithmSysPropertyName = null;
     private String iterationsSysPropertyName = null;
@@ -68,6 +69,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String providerClassNameSysPropertyName = null;
     private String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
     private String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
+    private String useLenientSaltSizeCheckSysPropertyName = null;
     
 
     /**
@@ -642,6 +644,98 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         }
     }
 
+
+    
+    
+    
+    
+    
+    
+
+    
+    
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the value for the useLenientSaltSizeCheck
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the variable
+     */
+    public String getUseLenientSaltSizeCheckEnvName() {
+        return this.useLenientSaltSizeCheckEnvName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the useLenientSaltSizeCheck
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param useLenientSaltSizeCheckEnvName the name of the environment variable
+     */
+    public void setUseLenientSaltSizeCheckEnvName(final String useLenientSaltSizeCheckEnvName) {
+        this.useLenientSaltSizeCheckEnvName = useLenientSaltSizeCheckEnvName;
+        if (useLenientSaltSizeCheckEnvName == null) {
+            super.setUseLenientSaltSizeCheck(null);
+        } else {
+            this.useLenientSaltSizeCheckSysPropertyName = null;
+            super.setUseLenientSaltSizeCheck(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getenv(useLenientSaltSizeCheckEnvName)));
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the value for the useLenientSaltSizeCheck
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getUseLenientSaltSizeCheckSysPropertyName() {
+        return this.useLenientSaltSizeCheckSysPropertyName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the useLenientSaltSizeCheck
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param useLenientSaltSizeCheckSysPropertyName the name of the property
+     */
+    public void setUseLenientSaltSizeCheckSysPropertyName(final String useLenientSaltSizeCheckSysPropertyName) {
+        this.useLenientSaltSizeCheckSysPropertyName = useLenientSaltSizeCheckSysPropertyName;
+        if (useLenientSaltSizeCheckSysPropertyName == null) {
+            super.setUseLenientSaltSizeCheck(null);
+        } else {
+            this.useLenientSaltSizeCheckEnvName = null;
+            super.setUseLenientSaltSizeCheck(
+                    CommonUtils.getStandardBooleanValue(
+                            System.getProperty(useLenientSaltSizeCheckSysPropertyName)));
+        }
+    }
+    
+    
+    
     
     
     
@@ -731,6 +825,14 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         this.invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
         this.invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
         super.setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);
+    }
+
+
+
+    public void setUseLenientSaltSizeCheck(final Boolean useLenientSaltSizeCheck) {
+        this.useLenientSaltSizeCheckEnvName = null;
+        this.useLenientSaltSizeCheckSysPropertyName = null;
+        super.setUseLenientSaltSizeCheck(useLenientSaltSizeCheck);
     }
 
     
