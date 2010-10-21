@@ -23,14 +23,14 @@ import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
 import org.jasypt.util.text.TextEncryptor;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer;
 
 /**
  * <p>
  * Subclass of
- * <tt>org.springframework.beans.factory.config.PropertyPlaceholderConfigurer</tt>
+ * <tt>org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer</tt>
  * which can make use of a {@link org.jasypt.encryption.StringEncryptor} or
- * {@link org.jasypt.util.text.TextEncryptor} object to decrypt property values
+ * {@link org.jasypt.util.text.TextEncryptor} object to decrypt preferences values
  * if they are encrypted in the loaded resource locations.
  * </p>
  * <p>
@@ -38,19 +38,16 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * <tt>ENC(...)</tt>, like:
  * </p>
  * <p>
- * <center> <tt>my.value=ENC(!"DGAS24FaIO$)</tt> </center>
- * </p>
- * <p>
- * Encrypted and unencrypted objects can be combined in the same resources file.
+ * <center> <tt>ENC(!"DGAS24FaIO$)</tt> </center>
  * </p>
  * 
- * @since 1.4
+ * @since 1.7
  * 
- * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
+ * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class EncryptablePropertyPlaceholderConfigurer 
-        extends PropertyPlaceholderConfigurer {
+public final class EncryptablePreferencesPlaceholderConfigurer 
+        extends PreferencesPlaceholderConfigurer {
 	/*
 	 * Only one of these instances will be initialized, the other one will be
 	 * null.
@@ -60,7 +57,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 
 	/**
 	 * <p>
-	 * Creates an <tt>EncryptablePropertyPlaceholderConfigurer</tt> instance
+	 * Creates an <tt>EncryptablePreferencesPlaceholderConfigurer</tt> instance
 	 * which will use the passed {@link StringEncryptor} object to decrypt
 	 * encrypted values.
 	 * </p>
@@ -69,7 +66,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 	 *            the {@link StringEncryptor} to be used do decrypt values. It
 	 *            can not be null.
 	 */
-	public EncryptablePropertyPlaceholderConfigurer(
+	public EncryptablePreferencesPlaceholderConfigurer(
 	        final StringEncryptor stringEncryptor) {
 		super();
 		CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
@@ -79,7 +76,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 
 	/**
 	 * <p>
-	 * Creates an <tt>EncryptablePropertyPlaceholderConfigurer</tt> instance which will use the
+	 * Creates an <tt>EncryptablePreferencesPlaceholderConfigurer</tt> instance which will use the
 	 * passed {@link TextEncryptor} object to decrypt encrypted values.
 	 * </p>
 	 * 
@@ -87,7 +84,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 	 *            the {@link TextEncryptor} to be used do decrypt values. It can
 	 *            not be null.
 	 */
-	public EncryptablePropertyPlaceholderConfigurer(final TextEncryptor textEncryptor) {
+	public EncryptablePreferencesPlaceholderConfigurer(final TextEncryptor textEncryptor) {
 		super();
 		CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
 		this.stringEncryptor = null;

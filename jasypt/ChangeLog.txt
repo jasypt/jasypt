@@ -34,7 +34,12 @@
   present in the Java Virtual Machine.
 - Rebuilt zip distribution package: remove unneeded "cli-bundle" and added icu4j 
   to libs.
-
+- Added org.jasypt.spring.properties.EncryptableServletContextPropertyPlaceholderConfigurer
+  as a sublass of org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer,
+  for transparent decryption of servlet context init parameters (like the ones in web.xml).
+- Added org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer
+  as a subclass of org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer,
+  for transparent decryption of preferences set with JDK 1.4's Preferences API.
 
 1.6
 ===
