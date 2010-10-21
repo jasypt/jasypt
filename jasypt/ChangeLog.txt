@@ -30,6 +30,8 @@
   {SHA}, {SMD5} and {SSHA}.
 - Rebuilt CLI scripts: now both Windows and Linux versions can be run from outside
   the "bin" folder. New configuration parameters added.
+- Added "listAlgorithms" CLI command that lists all digest and PBE algorithms
+  present in the Java Virtual Machine.
 - Rebuilt zip distribution package: remove unneeded "cli-bundle" and added icu4j 
   to libs.
 

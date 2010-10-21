@@ -1,10 +1,10 @@
 @ECHO OFF
 IF "%OS%" == "Windows_NT" setlocal ENABLEDELAYEDEXPANSION
 
-set SCRIPT_NAME=decrypt.bat
+set SCRIPT_NAME=listAlgorithms.bat
 cd %0\..
 cd ..
-set EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptPBEStringDecryptionCLI
+set EXECUTABLE_CLASS=org.jasypt.intf.cli.AlgorithmRegistryCLI
 set EXEC_CLASSPATH=.
 FOR %%c in (.\lib\*.jar) DO set EXEC_CLASSPATH=!EXEC_CLASSPATH!;%%c
 
