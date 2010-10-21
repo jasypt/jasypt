@@ -21,11 +21,15 @@
   salt after the digest instead of the default behaviour (insert it before the digest).
   This is useful for enhancing compatibility with some common LDAP password encryption
   schemes like {SSHA}.
+- Added method "getUseLenientSaltSizeCheck()" to DigesterConfig and 
+  "setUseLenientSaltSizeCheck(...)" to StandardByteDigester 
+  and StandardStringDigester in order to allow digesters to check digests created
+  with any size of salt (not equal to the value set for the "saltSizeBytes" property).
 - Added an "org.jasypt.util.password.rfc2307" package containing utility classes for
   password encryption operations according to common LDAP schemes like {MD5},
   {SHA}, {SMD5} and {SSHA}.
 - Rebuilt CLI scripts: now both Windows and Linux versions can be run from outside
-  the "bin" folder.
+  the "bin" folder. New configuration parameters added.
 - Rebuilt zip distribution package: remove unneeded "cli-bundle" and added icu4j 
   to libs.
 

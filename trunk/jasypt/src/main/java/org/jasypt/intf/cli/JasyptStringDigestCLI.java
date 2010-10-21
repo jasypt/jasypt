@@ -77,10 +77,25 @@ public final class JasyptStringDigestCLI {
                 ArgumentNaming.ARG_PROVIDER_CLASS_NAME
             },
             new String [] {
+                ArgumentNaming.ARG_INVERT_POSITION_OF_SALT_IN_MESSAGE_BEFORE_DIGESTING
+            },
+            new String [] {
+                ArgumentNaming.ARG_INVERT_POSITION_OF_PLAIN_SALT_IN_ENCRYPTION_RESULTS
+            },
+            new String [] {
+                ArgumentNaming.ARG_USE_LENIENT_SALT_SIZE_CHECK
+            },
+            new String [] {
                 ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED
             },
             new String [] {
                 ArgumentNaming.ARG_STRING_OUTPUT_TYPE
+            },
+            new String [] {
+                ArgumentNaming.ARG_PREFIX
+            },
+            new String [] {
+                ArgumentNaming.ARG_SUFFIX
             }
         };
     
@@ -143,10 +158,25 @@ public final class JasyptStringDigestCLI {
                         argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME),
                         null,
                         null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_INVERT_POSITION_OF_SALT_IN_MESSAGE_BEFORE_DIGESTING),
+                        null,
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_INVERT_POSITION_OF_PLAIN_SALT_IN_ENCRYPTION_RESULTS),
+                        null,
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_USE_LENIENT_SALT_SIZE_CHECK),
+                        null,
+                        null,
                         argumentValues.getProperty(ArgumentNaming.ARG_UNICODE_NORMALIZATION_IGNORED),
                         null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE),
+                        null,
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_PREFIX),
+                        null,
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_SUFFIX),
                         null,
                         null);
             
