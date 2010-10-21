@@ -19,6 +19,7 @@
  */
 package org.jasypt.intf.service;
 
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -81,12 +82,28 @@ public final class JasyptStatelessService {
      * @param providerClassName
      * @param providerClassNameEnvName
      * @param providerClassNameSysPropertyName
+     * @param invertPositionOfSaltInMessageBeforeDigesting
+     * @param invertPositionOfSaltInMessageBeforeDigestingEnvName
+     * @param invertPositionOfSaltInMessageBeforeDigestingSysPropertyName
+     * @param invertPositionOfPlainSaltInEncryptionResults
+     * @param invertPositionOfPlainSaltInEncryptionResultsEnvName
+     * @param invertPositionOfPlainSaltInEncryptionResultsSysPropertyName
+     * @param useLenientSaltSizeCheck
+     * @param useLenientSaltSizeCheckEnvName
+     * @param useLenientSaltSizeCheckSysPropertyName
      * @param unicodeNormalizationIgnored
      * @param unicodeNormalizationIgnoredEnvName
      * @param unicodeNormalizationIgnoredSysPropertyName
      * @param stringOutputType
      * @param stringOutputTypeEnvName
      * @param stringOutputTypeSysPropertyName
+     * @param prefix
+     * @param prefixEnvName
+     * @param prefixSysPropertyName
+     * @param suffix
+     * @param suffixEnvName
+     * @param suffixSysPropertyName
+     * 
      * @return the result of the digest operation
      * @throws EncryptionOperationNotPossibleException if the operation could
      *         not be performed (either because of wrong input or wrong
@@ -112,12 +129,27 @@ public final class JasyptStatelessService {
             final String providerClassName,
             final String providerClassNameEnvName,
             final String providerClassNameSysPropertyName,
+            final String invertPositionOfSaltInMessageBeforeDigesting,
+            final String invertPositionOfSaltInMessageBeforeDigestingEnvName,
+            final String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName,
+            final String invertPositionOfPlainSaltInEncryptionResults,
+            final String invertPositionOfPlainSaltInEncryptionResultsEnvName,
+            final String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName,
+            final String useLenientSaltSizeCheck,
+            final String useLenientSaltSizeCheckEnvName,
+            final String useLenientSaltSizeCheckSysPropertyName,
             final String unicodeNormalizationIgnored, 
             final String unicodeNormalizationIgnoredEnvName, 
             final String unicodeNormalizationIgnoredSysPropertyName, 
             final String stringOutputType,
             final String stringOutputTypeEnvName,
-            final String stringOutputTypeSysPropertyName) {
+            final String stringOutputTypeSysPropertyName,
+            final String prefix,
+            final String prefixEnvName,
+            final String prefixSysPropertyName,
+            final String suffix,
+            final String suffixEnvName,
+            final String suffixSysPropertyName) {
 
         
         final EnvironmentStringDigesterConfig config = 
@@ -186,6 +218,42 @@ public final class JasyptStatelessService {
             config.setProviderClassName(providerClassName);
         }
         
+        if (invertPositionOfSaltInMessageBeforeDigestingEnvName != null) {
+            config.setInvertPositionOfSaltInMessageBeforeDigestingEnvName(invertPositionOfSaltInMessageBeforeDigestingEnvName);
+        }
+        if (invertPositionOfSaltInMessageBeforeDigestingSysPropertyName != null) {
+            config.setInvertPositionOfSaltInMessageBeforeDigestingSysPropertyName(
+                    invertPositionOfSaltInMessageBeforeDigestingSysPropertyName);
+        }
+        if (invertPositionOfSaltInMessageBeforeDigesting != null) {
+            config.setInvertPositionOfSaltInMessageBeforeDigesting(
+                    CommonUtils.getStandardBooleanValue(invertPositionOfSaltInMessageBeforeDigesting));
+        }
+        
+        if (invertPositionOfPlainSaltInEncryptionResultsEnvName != null) {
+            config.setInvertPositionOfPlainSaltInEncryptionResultsEnvName(invertPositionOfPlainSaltInEncryptionResultsEnvName);
+        }
+        if (invertPositionOfPlainSaltInEncryptionResultsSysPropertyName != null) {
+            config.setInvertPositionOfPlainSaltInEncryptionResultsSysPropertyName(
+                    invertPositionOfPlainSaltInEncryptionResultsSysPropertyName);
+        }
+        if (invertPositionOfPlainSaltInEncryptionResults != null) {
+            config.setInvertPositionOfPlainSaltInEncryptionResults(
+                    CommonUtils.getStandardBooleanValue(invertPositionOfPlainSaltInEncryptionResults));
+        }
+        
+        if (useLenientSaltSizeCheckEnvName != null) {
+            config.setUseLenientSaltSizeCheckEnvName(useLenientSaltSizeCheckEnvName);
+        }
+        if (useLenientSaltSizeCheckSysPropertyName != null) {
+            config.setUseLenientSaltSizeCheckSysPropertyName(
+                    useLenientSaltSizeCheckSysPropertyName);
+        }
+        if (useLenientSaltSizeCheck != null) {
+            config.setUseLenientSaltSizeCheck(
+                    CommonUtils.getStandardBooleanValue(useLenientSaltSizeCheck));
+        }
+        
         if (unicodeNormalizationIgnoredEnvName != null) {
             config.setUnicodeNormalizationIgnoredEnvName(
                     unicodeNormalizationIgnoredEnvName);
@@ -207,6 +275,28 @@ public final class JasyptStatelessService {
         }
         if (stringOutputType != null) {
             config.setStringOutputType(stringOutputType);
+        }
+        
+        if (prefixEnvName != null) {
+            config.setPrefixEnvName(prefixEnvName);
+        }
+        if (prefixSysPropertyName != null) {
+            config.setPrefixSysPropertyName(
+                    prefixSysPropertyName);
+        }
+        if (prefix != null) {
+            config.setPrefix(prefix);
+        }
+        
+        if (suffixEnvName != null) {
+            config.setSuffixEnvName(suffixEnvName);
+        }
+        if (suffixSysPropertyName != null) {
+            config.setSuffixSysPropertyName(
+                    suffixSysPropertyName);
+        }
+        if (suffix != null) {
+            config.setSuffix(suffix);
         }
         
         

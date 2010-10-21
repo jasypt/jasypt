@@ -49,11 +49,25 @@ final class ArgumentNaming {
     
     static final String ARG_PROVIDER_NAME = "providerName";
     
+    static final String ARG_INVERT_POSITION_OF_SALT_IN_MESSAGE_BEFORE_DIGESTING =
+        "invertPositionOfSaltInMessageBeforeDigesting";
+    
+    static final String ARG_INVERT_POSITION_OF_PLAIN_SALT_IN_ENCRYPTION_RESULTS =
+        "invertPositionOfPlainSaltInEncryptionResults";
+
+    static final String ARG_USE_LENIENT_SALT_SIZE_CHECK =
+        "useLenientSaltSizeCheck";
+    
     static final String ARG_UNICODE_NORMALIZATION_IGNORED = 
         "unicodeNormalizationIgnored";
     
     static final String ARG_STRING_OUTPUT_TYPE = 
         "stringOutputType";
+    
+    static final String ARG_PREFIX = "prefix";
+    
+    static final String ARG_SUFFIX = "suffix";
+
     
     
     // Instantiation is not allowed
