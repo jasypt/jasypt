@@ -79,7 +79,7 @@ public final class EncryptablePropertyOverrideConfigurer
 
 	/**
 	 * <p>
-	 * Creates an <tt>EncryptableProperties</tt> instance which will use the
+	 * Creates an <tt>EncryptablePropertyOverrideConfigurer</tt> instance which will use the
 	 * passed {@link TextEncryptor} object to decrypt encrypted values.
 	 * </p>
 	 * 
