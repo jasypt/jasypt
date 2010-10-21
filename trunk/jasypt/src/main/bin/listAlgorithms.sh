@@ -1,7 +1,7 @@
 #!/bin/sh
 
-SCRIPT_NAME=digest.sh
-EXECUTABLE_CLASS=org.jasypt.intf.cli.JasyptStringDigestCLI
+SCRIPT_NAME=listAlgorithms.sh
+EXECUTABLE_CLASS=org.jasypt.intf.cli.AlgorithmRegistryCLI
 BIN_DIR=`dirname $0`
 DIST_DIR=$BIN_DIR/..
 LIB_DIR=$DIST_DIR/lib
