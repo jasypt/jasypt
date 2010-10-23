@@ -25,11 +25,10 @@ import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.hibernate.util.EqualsHelper;
@@ -114,8 +113,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  */
 public final class EncryptedBigIntegerType implements UserType, ParameterizedType {
 
-    private static NullableType nullableType = Hibernate.BIG_INTEGER;
-    private static int sqlType = nullableType.sqlType();
+    private static int sqlType = Types.NUMERIC;
     private static int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;

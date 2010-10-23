@@ -23,11 +23,10 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.hibernate.util.EqualsHelper;
@@ -49,8 +48,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 public abstract class AbstractEncryptedAsStringType 
         implements UserType, ParameterizedType {
 
-    static final NullableType nullableType = Hibernate.STRING;
-    static final int sqlType = nullableType.sqlType();
+    static final int sqlType = Types.VARCHAR;
     static final int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;

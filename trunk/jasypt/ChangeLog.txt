@@ -1,6 +1,7 @@
 
 1.7
 ===
+- Fixed Hibernate 3.6 compatibility
 - Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
   without depedencies on JDK version >= 6.
 - Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
