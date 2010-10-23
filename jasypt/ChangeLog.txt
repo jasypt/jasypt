@@ -41,6 +41,9 @@
 - Added org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer
   as a subclass of org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer,
   for transparent decryption of preferences set with JDK 1.4's Preferences API.
+- Added Spring Security 3 -compatible TokenBasedRememberMeServices implementation
+  using a Jasypt StandardStringDigester for digesting the data signature.  
+  
 
 1.6
 ===
