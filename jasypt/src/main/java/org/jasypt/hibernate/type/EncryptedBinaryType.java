@@ -27,12 +27,11 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Environment;
-import org.hibernate.type.NullableType;
 import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
@@ -118,8 +117,7 @@ public final class EncryptedBinaryType implements UserType, ParameterizedType {
 
     private static final int BLOCK_SIZE = 2048;
     
-    private static final NullableType nullableType = Hibernate.BINARY;
-    private static final int sqlType = nullableType.sqlType();
+    private static final int sqlType = Types.VARBINARY;
     private static final int[] sqlTypes = new int[]{ sqlType };
     
     private boolean initialized = false;
