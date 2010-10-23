@@ -40,6 +40,9 @@ import org.springframework.security.web.authentication.rememberme.InvalidCookieE
  * Jasypt {@link StandardStringDigester} passed as a parameter for performing the digest of the signature in the cookie
  * (username + ":" + expiry time + ":" + password + ":" + key).
  * </p>
+ * <p>
+ * This class is <i>thread-safe</i>
+ * </p>
  * 
  * @since 1.7
  * 
