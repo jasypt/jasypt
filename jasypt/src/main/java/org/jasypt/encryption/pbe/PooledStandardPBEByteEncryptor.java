@@ -19,135 +19,66 @@
  */
 package org.jasypt.encryption.pbe;
 
-import java.math.BigInteger;
 import java.security.Provider;
 
-import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
 
 
+
 /**
  * <p>
- * Standard implementation of the {@link PBEBigIntegerEncryptor} interface.
- * This class lets the user specify the algorithm (and provider) to be used for 
- * encryption, the password to use,
- * the number of hashing iterations and the salt generator
- * that will be applied for obtaining
- * the encryption key.
+ * Pooled implementation of {@link PBEByteEncryptor} that in fact contains
+ * an array of {@link StandardPBEByteEncryptor} objects which are used
+ * to attend encrypt and decrypt requests in round-robin. This should
+ * result in higher performance in multiprocessor systems.
  * </p>
  * <p>
- * <b>Important</b>: The size of the result of encrypting a number, depending
- * on the algorithm, may be much bigger (in bytes) than the size of the 
- * encrypted number itself. For example, encrypting a 4-byte integer can
- * result in an encrypted 16-byte number. This can lead the user into 
- * problems if the encrypted values are to be stored and not enough room 
- * has been provided.
+ * Configuration of this class is equivalent to that of
+ * {@link StandardPBEByteEncryptor}.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
  * </p>
- * <p>
- * <br/><b><u>Configuration</u></b>
- * </p>
- * <p>
- * The algorithm, provider, password, key-obtention iterations and salt generator can take 
- * values in any of these ways:
- * <ul>
- *   <li>Using its default values (except for password).</li>
- *   <li>Setting a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
- *       object which provides new 
- *       configuration values.</li>
- *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
- *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
- *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
- *       <tt>setSaltGenerator(...)</tt> methods.</li>
- * </ul>
- * And the actual values to be used for initialization will be established
- * by applying the following priorities:
- * <ol>
- *   <li>First, the default values are considered (except for password).</li>
- *   <li>Then, if a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
- *       object has been set with
- *       <tt>setConfig(...)</tt>, the non-null values returned by its
- *       <tt>getX()</tt> methods override the default values.</li>
- *   <li>Finally, if the corresponding <tt>setX(...)</tt> method has been called
- *       on the encryptor itself for any of the configuration parameters, the 
- *       values set by these calls override all of the above.</li>
- * </ol>
- * </p>
  * 
- * <p>
- * <br/><b><u>Initialization</u></b>
- * </p>
- * <p>
- * Before it is ready to encrypt, an object of this class has to be
- * <i>initialized</i>. Initialization happens:
- * <ul>
- *   <li>When <tt>initialize()</tt> is called.</li>
- *   <li>When <tt>encrypt(...)</tt> or <tt>decrypt(...)</tt> are called for the
- *       first time, if <tt>initialize()</tt> has not been called before.</li>
- * </ul>
- * Once an encryptor has been initialized, trying to
- * change its configuration will
- * result in an <tt>AlreadyInitializedException</tt> being thrown.
- * </p>
  * 
- * <p>
- * <br/><b><u>Usage</u></b>
- * </p>
- * <p>
- * An encryptor may be used for:
- * <ul>
- *   <li><i>Encrypting messages</i>, by calling the <tt>encrypt(...)</tt> method.</li>
- *   <li><i>Decrypting messages</i>, by calling the <tt>decrypt(...)</tt> method.</li> 
- * </ul>
- * <b>If a random salt generator is used, two encryption results for 
- * the same message will always be different
- * (except in the case of random salt coincidence)</b>. This may enforce
- * security by difficulting brute force attacks on sets of data at a time
- * and forcing attackers to perform a brute force attack on each separate
- * piece of encrypted data.
- * </p>
- * <p>     
- * To learn more about the mechanisms involved in encryption, read
- * <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
- * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
- * </p>
- * 
- * @since 1.2
+ * @since 1.7
  * 
  * @author Daniel Fern&aacute;ndez
- * 
+ *
  */
-public final class StandardPBEBigIntegerEncryptor 
-        implements PBEBigIntegerEncryptor {
+public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
 
     
-    // The StandardPBEByteEncryptor that will be internally used.
-    private final StandardPBEByteEncryptor byteEncryptor;
+    private final int poolSize;
+    private final StandardPBEByteEncryptor[] pool;
+    private int roundRobin = 0;
+    
+    
+    /*
+     * Flag which indicates whether the encryptor has been initialized or not.
+     * 
+     * Once initialized, no further modifications to its configuration will
+     * be allowed.
+     */
+    private boolean initialized = false;
 
+    
     
     
     /**
-     * Creates a new instance of <tt>StandardPBEBigIntegerEncryptor</tt>.
+     * Creates a new instance of <tt>PooledStandardPBEByteEncryptor</tt>.
      */
-    public StandardPBEBigIntegerEncryptor() {
+    public PooledStandardPBEByteEncryptor(final int poolSize) {
         super();
-        this.byteEncryptor = new StandardPBEByteEncryptor();
-    }
-
-
-    
-    /*
-     * Creates a new instance of <tt>StandardPBEBigIntegerEncryptor</tt> using
-     * the specified byte digester (constructor used for cloning)
-     */
-    private StandardPBEBigIntegerEncryptor(final StandardPBEByteEncryptor standardPBEByteEncryptor) {
-        super();
-        this.byteEncryptor = standardPBEByteEncryptor;
+        if (poolSize < 1) {
+            throw new IllegalArgumentException("Pool size must be > 0");
+        }
+        this.poolSize = poolSize;
+        this.pool = new StandardPBEByteEncryptor[this.poolSize];
+        this.pool[0] = new StandardPBEByteEncryptor();
     }
 
     
@@ -176,8 +107,8 @@ public final class StandardPBEBigIntegerEncryptor
      * @param config the <tt>PBEConfig</tt> object to be used as the 
      *               source for configuration parameters.
      */
-    public void setConfig(final PBEConfig config) {
-        this.byteEncryptor.setConfig(config);
+    public synchronized void setConfig(PBEConfig config) {
+        this.pool[0].setConfig(config);
     }
 
     
@@ -195,10 +126,10 @@ public final class StandardPBEBigIntegerEncryptor
      * 
      * @param algorithm the name of the algorithm to be used.
      */
-    public void setAlgorithm(final String algorithm) {
-        this.byteEncryptor.setAlgorithm(algorithm);
+    public synchronized void setAlgorithm(String algorithm) {
+        this.pool[0].setAlgorithm(algorithm);
     }
-
+    
     
     /**
      * <p>
@@ -214,11 +145,11 @@ public final class StandardPBEBigIntegerEncryptor
      * 
      * @param password the password to be used.
      */
-    public void setPassword(final String password) {
-        this.byteEncryptor.setPassword(password);
+    public synchronized void setPassword(String password) {
+        this.pool[0].setPassword(password);
     }
     
-
+    
     /**
      * <p>
      * Set the number of hashing iterations applied to obtain the
@@ -232,8 +163,9 @@ public final class StandardPBEBigIntegerEncryptor
      * 
      * @param keyObtentionIterations the number of iterations
      */
-    public void setKeyObtentionIterations(final int keyObtentionIterations) {
-        this.byteEncryptor.setKeyObtentionIterations(keyObtentionIterations);
+    public synchronized void setKeyObtentionIterations(
+            int keyObtentionIterations) {
+        this.pool[0].setKeyObtentionIterations(keyObtentionIterations);
     }
 
     
@@ -245,8 +177,8 @@ public final class StandardPBEBigIntegerEncryptor
      * 
      * @param saltGenerator the salt generator to be used.
      */
-    public void setSaltGenerator(final SaltGenerator saltGenerator) {
-        this.byteEncryptor.setSaltGenerator(saltGenerator);
+    public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
+        this.pool[0].setSaltGenerator(saltGenerator);
     }
     
     
@@ -272,13 +204,11 @@ public final class StandardPBEBigIntegerEncryptor
      * provider will be used.
      * </p>
      * 
-     * @since 1.3
-     * 
      * @param providerName the name of the security provider to be asked
      *                     for the encryption algorithm.
      */
-    public void setProviderName(final String providerName) {
-        this.byteEncryptor.setProviderName(providerName);
+    public synchronized void setProviderName(String providerName) {
+        this.pool[0].setProviderName(providerName);
     }
     
     
@@ -298,40 +228,15 @@ public final class StandardPBEBigIntegerEncryptor
      * provider will be used.
      * </p>
      * 
-     * @since 1.3
-     * 
      * @param provider the provider to be asked for the chosen algorithm
      */
-    public void setProvider(final Provider provider) {
-        this.byteEncryptor.setProvider(provider);
+    public synchronized void setProvider(Provider provider) {
+        this.pool[0].setProvider(provider);
     }
 
     
-
-    
-
-
     
     
-    
-    
-    /*
-     * Clone this encryptor.
-     */
-    StandardPBEBigIntegerEncryptor cloneEncryptor() {
-        
-        // Check initialization
-        if (!isInitialized()) {
-            initialize();
-        }
-        
-        return new StandardPBEBigIntegerEncryptor(this.byteEncryptor.cloneEncryptor());
-        
-    }
-    
-    
-    
-
     /**
      * <p>
      *   Returns true if the encryptor has already been initialized, false if
@@ -352,8 +257,8 @@ public final class StandardPBEBigIntegerEncryptor
      * @return true if the encryptor has already been initialized, false if
      *         not.
      */
-    public boolean isInitialized() {
-        return this.byteEncryptor.isInitialized();
+    public synchronized boolean isInitialized() {
+        return this.initialized;
     }
 
     
@@ -388,22 +293,25 @@ public final class StandardPBEBigIntegerEncryptor
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public void initialize() {
-        this.byteEncryptor.initialize();
+    public synchronized void initialize() {
+        
+        // Double-check to avoid synchronization issues
+        if (!this.initialized) {
+
+            for (int i = 1; i < this.poolSize; i++) {
+                this.pool[i] = this.pool[i - 1].cloneEncryptor();
+            }
+            
+            this.initialized = true;
+            
+        }
+            
     }
-    
-    
+
+
     /**
      * <p>
      * Encrypts a message using the specified configuration.
-     * </p>
-     * <p>
-     * <b>Important</b>: The size of the result of encrypting a number, depending
-     * on the algorithm, may be much bigger (in bytes) than the size of the 
-     * encrypted number itself. For example, encrypting a 4-byte integer can
-     * result in an encrypted 16-byte number. This can lead the user into 
-     * problems if the encrypted values are to be stored and not enough room 
-     * has been provided.
      * </p>
      * <p>
      * The mechanisms applied to perform the encryption operation are described
@@ -427,7 +335,7 @@ public final class StandardPBEBigIntegerEncryptor
      * piece of encrypted data.
      * </p>
      * 
-     * @param message the BigInteger message to be encrypted
+     * @param message the byte array message to be encrypted
      * @return the result of encryption 
      * @throws EncryptionOperationNotPossibleException if the encryption 
      *         operation fails, ommitting any further information about the
@@ -435,48 +343,25 @@ public final class StandardPBEBigIntegerEncryptor
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public BigInteger encrypt(BigInteger message) {
-        
-        if (message == null) {
-            return null;
+    public byte[] encrypt(final byte[] message) 
+            throws EncryptionOperationNotPossibleException {
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
         }
         
-        try {
-            
-            // Get the number in binary form
-            final byte[] messageBytes = message.toByteArray();
-            
-            // The StandardPBEByteEncryptor does its job.
-            final byte[] encryptedMessage = this.byteEncryptor.encrypt(messageBytes);
-
-            // The length of the encrypted message will be stored
-            // with the result itself so that we can correctly rebuild
-            // the complete byte array when decrypting (BigInteger will
-            // ignore all "0x0" bytes in the leftmost side, and also "-0x1" 
-            // in the leftmost side will be translated as signum).
-            final byte[] encryptedMessageLengthBytes =
-                NumberUtils.byteArrayFromInt(encryptedMessage.length);
-            
-            // Append the length bytes to the encrypted message
-            final byte[] encryptionResult = 
-                CommonUtils.appendArrays(encryptedMessage, encryptedMessageLengthBytes);
-
-            // Finally, return a new number built from the encrypted bytes
-            return new BigInteger(encryptionResult);
-        
-        } catch (EncryptionInitializationException e) {
-            throw e;
-        } catch (EncryptionOperationNotPossibleException e) {
-            throw e;
-        } catch (Exception e) {
-            // If encryption fails, it is more secure not to return any 
-            // information about the cause in nested exceptions. Simply fail.
-            throw new EncryptionOperationNotPossibleException();
+        int poolPosition;
+        synchronized(this) {
+            poolPosition = this.roundRobin;
+            this.roundRobin = (this.roundRobin + 1) % this.poolSize;
         }
+        
+        return this.pool[poolPosition].encrypt(message);
         
     }
 
-    
+
     /**
      * <p>
      * Decrypts a message using the specified configuration.
@@ -493,7 +378,7 @@ public final class StandardPBEBigIntegerEncryptor
      * correctly performed (there is no other way of knowing it).
      * </p>
      * 
-     * @param encryptedMessage the BigInteger message to be decrypted
+     * @param encryptedMessage the byte array message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
      *         operation fails, ommitting any further information about the
@@ -501,39 +386,23 @@ public final class StandardPBEBigIntegerEncryptor
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public BigInteger decrypt(BigInteger encryptedMessage) {
-        
-        if (encryptedMessage == null) {
-            return null;
+    public byte[] decrypt(final byte[] encryptedMessage) 
+            throws EncryptionOperationNotPossibleException {
+
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
         }
         
-        try {
-
-            // Get the number in binary form
-            byte[] encryptedMessageBytes = encryptedMessage.toByteArray();
-
-            // Process the encrypted byte array (check size, pad if needed...)
-            encryptedMessageBytes = 
-                NumberUtils.processBigIntegerEncryptedByteArray(
-                        encryptedMessageBytes, encryptedMessage.signum());
-            
-            // Let the byte encyptor decrypt
-            byte[] message = this.byteEncryptor.decrypt(encryptedMessageBytes);
-
-            // Finally, return a new number built from the decrypted bytes
-            return new BigInteger(message);
-        
-        } catch (EncryptionInitializationException e) {
-            throw e;
-        } catch (EncryptionOperationNotPossibleException e) {
-            throw e;
-        } catch (Exception e) {
-            // If decryption fails, it is more secure not to return any 
-            // information about the cause in nested exceptions. Simply fail.
-            throw new EncryptionOperationNotPossibleException();
+        int poolPosition;
+        synchronized(this) {
+            poolPosition = this.roundRobin;
+            this.roundRobin = (this.roundRobin + 1) % this.poolSize;
         }
-
-    }
-
+        
+        return this.pool[poolPosition].decrypt(encryptedMessage);
+        
+    }    
     
 }
+

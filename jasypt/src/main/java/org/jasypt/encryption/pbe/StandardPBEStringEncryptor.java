@@ -211,6 +211,19 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         this.byteEncryptor = new StandardPBEByteEncryptor();
         this.base64 = new Base64();
     }
+
+
+    
+    /*
+     * Creates a new instance of <tt>StandardPBEStringEncryptor</tt> using
+     * the specified byte digester (constructor used for cloning)
+     */
+    private StandardPBEStringEncryptor(final StandardPBEByteEncryptor standardPBEByteEncryptor) {
+        super();
+        this.byteEncryptor = standardPBEByteEncryptor;
+        this.base64 = new Base64();
+    }
+
     
     
     /**
@@ -402,6 +415,37 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         this.stringOutputTypeSet = true;
     }
 
+    
+
+    
+
+
+    
+    
+    
+    
+    /*
+     * Clone this encryptor.
+     */
+    StandardPBEStringEncryptor cloneEncryptor() {
+        
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
+        
+        final StandardPBEStringEncryptor cloned = 
+            new StandardPBEStringEncryptor(this.byteEncryptor.cloneEncryptor());
+        if (CommonUtils.isNotEmpty(this.stringOutputType)) {
+            cloned.setStringOutputType(this.stringOutputType);
+        }
+        
+        return cloned;
+        
+    }
+    
+    
+    
 
     /**
      * <p>

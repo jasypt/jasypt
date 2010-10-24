@@ -24,6 +24,9 @@ package org.jasypt.salt;
  * Common interface for all salt generators which can be applied in digest
  * or encryption operations.
  * </p>
+ * <p>
+ * <b>Every implementation of this interface must be thread-safe</b>.
+ * </p>
  * 
  * @since 1.2
  * 

@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.encryption.pbe;
+package org.jasypt.digest;
 
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,16 +25,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.StopWatch;
 
-public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
+public class PooledStandardStringDigesterThreadedTest extends TestCase {
 
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(10,100) == 0);
+        assertTrue(launcher.launch(20,1000) == 0);
     }
     
-    protected abstract PBEStringEncryptor createEncryptor();
     
     protected class TesterLauncher {
 
@@ -45,17 +45,13 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
             
             this.numThreads = numOfThreads;
             
-            PBEStringEncryptor encryptor = createEncryptor();
-            
-            String password = "A_PASSWORD";
-            encryptor.setPassword(password);
-            
+            PooledStandardStringDigester digester = new PooledStandardStringDigester(20);
             AtomicInteger errors = new AtomicInteger(0);
             this.runningThreads = new AtomicInteger(0);
             
             for (int i = 0; i < numOfThreads; i++) {
                 TesterRunnable tester = 
-                    new TesterRunnable(encryptor, numIters, errors, 
+                    new TesterRunnable(digester, numIters, errors, 
                             this.runningThreads, this);
                 Thread testerThread = new Thread(tester);
                 testerThread.start();
@@ -80,17 +76,17 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
     
     private class TesterRunnable implements Runnable {
 
-        private PBEStringEncryptor encryptor = null;
+        private StringDigester digester = null;
         private int numIters = 0;
         private String message = null;
         private AtomicInteger errors = null;
         private AtomicInteger finishedThreads = null;
         private TesterLauncher launcher = null;
         
-        public TesterRunnable(PBEStringEncryptor encryptor, int numIters,  
+        public TesterRunnable(StringDigester digester, int numIters,  
                 AtomicInteger errors, AtomicInteger finishedThreads,
                 TesterLauncher launcher) {
-            this.encryptor = encryptor;
+            this.digester = digester;
             this.numIters = numIters;
             this.message = RandomStringUtils.randomAscii(20);
             this.errors = errors;
@@ -103,8 +99,8 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
             int localErrors = 0;
             for (int i = 0; i < this.numIters; i++) {
                 try {
-                    String encryptedMessage = this.encryptor.encrypt(this.message);
-                    if (!this.message.equals(this.encryptor.decrypt(encryptedMessage))) {
+                    String encryptedMessage = this.digester.digest(this.message);
+                    if (!this.digester.matches(this.message, encryptedMessage)) {
                         localErrors++;
                     }
                 } catch (Exception e) {
@@ -123,6 +119,24 @@ public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
         }
         
         
+    }
+    
+    
+    public static void main(String[] args) {
+        try {
+            
+            PooledStandardStringDigesterThreadedTest test = new PooledStandardStringDigesterThreadedTest();
+            
+            System.out.println("Starting test");
+            StopWatch sw = new StopWatch();
+            sw.start();
+            test.testThreadedDigest();
+            sw.stop();
+            System.out.println("Test finished in: " + sw.toString());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 }

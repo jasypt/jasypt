@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jasypt.commons.CommonUtils;
-import org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StringDigester;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
@@ -37,7 +37,7 @@ import org.springframework.security.web.authentication.rememberme.InvalidCookieE
  * Implementation of <tt>org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices</tt>
  * which provides a "remember-me" cookie arranged in the same way as
  * <tt>org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices</tt>, but using a
- * Jasypt {@link StandardStringDigester} passed as a parameter for performing the digest of the signature in the cookie
+ * Jasypt {@link StringDigester} passed as a parameter for performing the digest of the signature in the cookie
  * (username + ":" + expiry time + ":" + password + ":" + key).
  * </p>
  * <p>
@@ -52,11 +52,11 @@ import org.springframework.security.web.authentication.rememberme.InvalidCookieE
 public final class TokenBasedRememberMeServices extends AbstractRememberMeServices {
 
     
-    private StandardStringDigester digester = null;
+    private StringDigester digester = null;
     
     
 
-    public void setDigester(final StandardStringDigester digester) {
+    public void setDigester(final StringDigester digester) {
         this.digester = digester;
     }
 

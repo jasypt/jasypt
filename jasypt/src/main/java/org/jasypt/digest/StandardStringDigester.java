@@ -170,7 +170,8 @@ import org.jasypt.salt.SaltGenerator;
  * 
  */
 public final class StandardStringDigester implements StringDigester {
-
+static int idC = 0;
+int id = idC++;
     /**
      * <p>
      * Charset to be used to obtain "digestable" byte arrays from input Strings.
@@ -279,6 +280,18 @@ public final class StandardStringDigester implements StringDigester {
     public StandardStringDigester() {
         super();
         this.byteDigester = new StandardByteDigester();
+        this.base64 = new Base64();
+    }
+
+
+    
+    /*
+     * Creates a new instance of <tt>StandardStringDigester</tt> using
+     * the specified byte digester (constructor used for cloning)
+     */
+    private StandardStringDigester(final StandardByteDigester standardByteDigester) {
+        super();
+        this.byteDigester = standardByteDigester;
         this.base64 = new Base64();
     }
 
@@ -666,6 +679,38 @@ public final class StandardStringDigester implements StringDigester {
     }
 
     
+
+
+    
+    
+    
+    
+    /*
+     * Clone this digester.
+     */
+    StandardStringDigester cloneDigester() {
+        
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
+        
+        final StandardStringDigester cloned = 
+            new StandardStringDigester(this.byteDigester.cloneDigester());
+        cloned.setPrefix(this.prefix);
+        cloned.setSuffix(this.suffix);
+        if (CommonUtils.isNotEmpty(this.stringOutputType)) {
+            cloned.setStringOutputType(this.stringOutputType);
+        }
+        cloned.setUnicodeNormalizationIgnored(this.unicodeNormalizationIgnored);
+        
+        return cloned;
+        
+    }
+    
+    
+    
+    
     /**
      * <p>
      *   Returns true if the digester has already been initialized, false if
@@ -847,7 +892,7 @@ public final class StandardStringDigester implements StringDigester {
      *         cannot be used).
      */
     public String digest(final String message) {
-        
+
         if (message == null) {
             return null;
         }

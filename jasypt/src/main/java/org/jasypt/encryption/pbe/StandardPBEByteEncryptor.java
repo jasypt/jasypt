@@ -123,7 +123,8 @@ import org.jasypt.salt.SaltGenerator;
  * 
  */
 public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
-    
+
+
     /**
      * The default algorithm to be used if none specified: PBEWithMD5AndDES.
      */
@@ -402,6 +403,47 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         this.providerSet = true;
     }
 
+
+    
+    
+
+
+    
+    
+    
+    
+    /*
+     * Clone this encryptor.
+     */
+    StandardPBEByteEncryptor cloneEncryptor() {
+        
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
+        
+        final StandardPBEByteEncryptor cloned = new StandardPBEByteEncryptor();
+        cloned.setPassword(this.password);
+        if (CommonUtils.isNotEmpty(this.algorithm)) {
+            cloned.setAlgorithm(this.algorithm);
+        }
+        cloned.setKeyObtentionIterations(this.keyObtentionIterations);
+        if (this.provider != null) {
+            cloned.setProvider(this.provider);
+        }
+        if (this.providerName != null) {
+            cloned.setProviderName(this.providerName);
+        }
+        if (this.saltGenerator != null) {
+            cloned.setSaltGenerator(this.saltGenerator);
+        }
+        
+        return cloned;
+        
+    }
+    
+    
+    
     
     /**
      * <p>
@@ -645,7 +687,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public byte[] encrypt(byte[] message) 
+    public byte[] encrypt(final byte[] message) 
             throws EncryptionOperationNotPossibleException {
         
         if (message == null) {
@@ -660,12 +702,13 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         try {
             
             // Create salt
-            byte[] salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
+            final byte[] salt = 
+                this.saltGenerator.generateSalt(this.saltSizeBytes);
 
             /*
              * Perform encryption using the Cipher
              */
-            PBEParameterSpec parameterSpec = 
+            final PBEParameterSpec parameterSpec = 
                 new PBEParameterSpec(salt, this.keyObtentionIterations);
 
             byte[] encryptedMessage = null;
@@ -726,7 +769,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public byte[] decrypt(byte[] encryptedMessage) 
+    public byte[] decrypt(final byte[] encryptedMessage) 
             throws EncryptionOperationNotPossibleException {
         
         if (encryptedMessage == null) {
@@ -780,7 +823,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
             /*
              * Perform decryption using the Cipher
              */
-            PBEParameterSpec parameterSpec = 
+            final PBEParameterSpec parameterSpec = 
                 new PBEParameterSpec(salt, this.keyObtentionIterations);
 
             byte[] decryptedMessage = null;
