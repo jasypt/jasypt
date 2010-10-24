@@ -542,6 +542,7 @@ public final class StandardByteDigester implements ByteDigester {
         this.invertPositionOfPlainSaltInEncryptionResultsSet = true;
         
     }
+
     
     
     /**
@@ -591,6 +592,45 @@ public final class StandardByteDigester implements ByteDigester {
         this.useLenientSaltSizeCheckSet = true;
         
     }
+
+
+    
+    
+    
+    
+    /*
+     * Clone this digester.
+     */
+    StandardByteDigester cloneDigester() {
+        
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
+        
+        final StandardByteDigester cloned = new StandardByteDigester();
+        if (CommonUtils.isNotEmpty(this.algorithm)) {
+            cloned.setAlgorithm(this.algorithm);
+        }
+        cloned.setInvertPositionOfPlainSaltInEncryptionResults(this.invertPositionOfPlainSaltInEncryptionResults);
+        cloned.setInvertPositionOfSaltInMessageBeforeDigesting(this.invertPositionOfSaltInMessageBeforeDigesting);
+        cloned.setIterations(this.iterations);
+        if (this.provider != null) {
+            cloned.setProvider(this.provider);
+        }
+        if (this.providerName != null) {
+            cloned.setProviderName(this.providerName);
+        }
+        if (this.saltGenerator != null) {
+            cloned.setSaltGenerator(this.saltGenerator);
+        }
+        cloned.setSaltSizeBytes(this.saltSizeBytes);
+        cloned.setUseLenientSaltSizeCheck(this.useLenientSaltSizeCheck);
+        
+        return cloned;
+        
+    }
+    
 
     
 

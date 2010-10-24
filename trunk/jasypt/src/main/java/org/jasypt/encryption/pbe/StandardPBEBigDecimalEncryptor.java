@@ -139,6 +139,18 @@ public final class StandardPBEBigDecimalEncryptor
         super();
         this.byteEncryptor = new StandardPBEByteEncryptor();
     }
+
+
+    
+    /*
+     * Creates a new instance of <tt>StandardPBEBigDecimalEncryptor</tt> using
+     * the specified byte digester (constructor used for cloning)
+     */
+    private StandardPBEBigDecimalEncryptor(final StandardPBEByteEncryptor standardPBEByteEncryptor) {
+        super();
+        this.byteEncryptor = standardPBEByteEncryptor;
+    }
+
     
     
     /**
@@ -295,6 +307,31 @@ public final class StandardPBEBigDecimalEncryptor
         this.byteEncryptor.setProvider(provider);
     }
 
+    
+
+    
+
+
+    
+    
+    
+    
+    /*
+     * Clone this encryptor.
+     */
+    StandardPBEBigDecimalEncryptor cloneEncryptor() {
+        
+        // Check initialization
+        if (!isInitialized()) {
+            initialize();
+        }
+        
+        return new StandardPBEBigDecimalEncryptor(this.byteEncryptor.cloneEncryptor());
+        
+    }
+    
+    
+    
 
     /**
      * <p>

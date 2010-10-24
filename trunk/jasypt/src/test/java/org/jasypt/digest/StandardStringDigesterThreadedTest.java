@@ -25,13 +25,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.time.StopWatch;
 
 public class StandardStringDigesterThreadedTest extends TestCase {
 
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(5,50) == 0);
+        assertTrue(launcher.launch(20,1000) == 0);
     }
     
     
@@ -118,6 +119,24 @@ public class StandardStringDigesterThreadedTest extends TestCase {
         }
         
         
+    }
+    
+    
+    public static void main(String[] args) {
+        try {
+            
+            StandardStringDigesterThreadedTest test = new StandardStringDigesterThreadedTest();
+            
+            System.out.println("Starting test");
+            StopWatch sw = new StopWatch();
+            sw.start();
+            test.testThreadedDigest();
+            sw.stop();
+            System.out.println("Test finished in: " + sw.toString());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 }
