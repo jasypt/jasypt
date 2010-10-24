@@ -363,7 +363,7 @@ public class PooledStandardByteDigester implements ByteDigester {
      * @return true if the digester has already been initialized, false if
      *   not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.initialized;
     }
     

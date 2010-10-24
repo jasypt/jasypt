@@ -26,7 +26,7 @@ public class PooledPBEWithMD5AndDESStringEncryptorThreadedTest
         extends AbstractPBEStringEncryptorThreadedTest {
 
     protected PBEStringEncryptor createEncryptor() {
-        PooledStandardPBEStringEncryptor encryptor = new PooledStandardPBEStringEncryptor(5);
+        PooledStandardPBEStringEncryptor encryptor = new PooledStandardPBEStringEncryptor(1);
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor;
     }

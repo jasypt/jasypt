@@ -279,7 +279,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @return true if the encryptor has already been initialized, false if
      *         not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.initialized;
     }
 
