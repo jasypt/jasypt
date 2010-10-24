@@ -270,6 +270,7 @@ int id = idC++;
     
     // BASE64 encoder which will make sure the returned digests are
     // valid US-ASCII strings (if the user chooses BASE64 output).
+    // The Bsae64 encoder is THREAD-SAFE
     private final Base64 base64;
 
 
@@ -732,7 +733,7 @@ int id = idC++;
      * @return true if the digester has already been initialized, false if
      *   not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.byteDigester.isInitialized();
     }
 
@@ -931,9 +932,7 @@ int id = idC++;
             // We encode the result in BASE64 or HEXADECIMAL so that we obtain
             // the safest result String possible.
             if (this.stringOutputTypeBase64) {
-                synchronized (this.base64) {
-                    digest = this.base64.encode(digest);
-                }
+                digest = this.base64.encode(digest);
                 result.append(new String(digest, DIGEST_CHARSET)); 
             } else {
                 result.append(CommonUtils.toHexadecimal(digest));
@@ -1044,9 +1043,7 @@ int id = idC++;
             if (this.stringOutputTypeBase64) {
                 // The digest must be a US-ASCII String BASE64-encoded
                 digestBytes = processedDigest.getBytes(DIGEST_CHARSET);
-                synchronized (this.base64) {
-                    digestBytes = this.base64.decode(digestBytes);
-                }
+                digestBytes = this.base64.decode(digestBytes);
             } else {
                 digestBytes = CommonUtils.fromHexadecimal(processedDigest);
             }

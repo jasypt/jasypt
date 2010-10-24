@@ -199,6 +199,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
     
     // BASE64 encoder which will make sure the returned results are
     // valid US-ASCII strings.
+    // The Base64 encoder is THREAD-SAFE
     private final Base64 base64;
 
     
@@ -467,7 +468,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
      * @return true if the encryptor has already been initialized, false if
      *         not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.byteEncryptor.isInitialized();
     }
 
@@ -598,9 +599,7 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             // the safest result String possible.
             String result = null;
             if (this.stringOutputTypeBase64) {
-                synchronized (this.base64) {
-                    encryptedMessage = this.base64.encode(encryptedMessage);
-                }
+                encryptedMessage = this.base64.encode(encryptedMessage);
                 result = new String(encryptedMessage,ENCRYPTED_MESSAGE_CHARSET);
             } else {
                 result = CommonUtils.toHexadecimal(encryptedMessage);
@@ -669,10 +668,8 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
             if (this.stringOutputTypeBase64) {
                 encryptedMessageBytes = 
                     encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
-                synchronized (this.base64) {
-                    encryptedMessageBytes = 
-                        this.base64.decode(encryptedMessageBytes);
-                }
+                encryptedMessageBytes = 
+                    this.base64.decode(encryptedMessageBytes);
             } else {
                 encryptedMessageBytes = 
                     CommonUtils.fromHexadecimal(encryptedMessage);

@@ -32,7 +32,7 @@ public class PooledStandardStringDigesterThreadedTest extends TestCase {
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(20,1000) == 0);
+        assertTrue(launcher.launch(20,100) == 0);
     }
     
     

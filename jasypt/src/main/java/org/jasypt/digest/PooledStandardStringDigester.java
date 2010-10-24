@@ -456,7 +456,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @return true if the digester has already been initialized, false if
      *   not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.initialized;
     }
     

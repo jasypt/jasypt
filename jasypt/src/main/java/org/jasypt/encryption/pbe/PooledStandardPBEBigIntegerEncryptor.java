@@ -260,7 +260,7 @@ public final class PooledStandardPBEBigIntegerEncryptor implements PBEBigInteger
      * @return true if the encryptor has already been initialized, false if
      *         not.
      */
-    public synchronized boolean isInitialized() {
+    public boolean isInitialized() {
         return this.initialized;
     }
 
