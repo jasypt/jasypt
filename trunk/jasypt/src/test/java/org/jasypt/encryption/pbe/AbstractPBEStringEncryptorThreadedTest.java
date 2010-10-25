@@ -28,10 +28,25 @@ import org.apache.commons.lang.RandomStringUtils;
 
 public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
 
+
+    private int numThreads = 10;
+    private int numIters = 100;
+    
+    
+    public AbstractPBEStringEncryptorThreadedTest() {
+        super();
+    }
+    
+    public AbstractPBEStringEncryptorThreadedTest(final int numThreads, final int numIters) {
+        super();
+        this.numThreads = numThreads;
+        this.numIters = numIters;
+    }
+
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(10,100) == 0);
+        assertTrue(launcher.launch(this.numThreads,this.numIters) == 0);
     }
     
     protected abstract PBEStringEncryptor createEncryptor();

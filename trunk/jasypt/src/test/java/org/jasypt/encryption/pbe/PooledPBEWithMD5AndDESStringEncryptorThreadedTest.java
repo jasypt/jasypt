@@ -19,16 +19,53 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.apache.commons.lang.time.StopWatch;
+
 
 
 
 public class PooledPBEWithMD5AndDESStringEncryptorThreadedTest 
         extends AbstractPBEStringEncryptorThreadedTest {
 
+    protected int poolSize = 2;
+    
+    
+    public PooledPBEWithMD5AndDESStringEncryptorThreadedTest() {
+        super();
+    }
+    
+    public PooledPBEWithMD5AndDESStringEncryptorThreadedTest(final int numThreads, final int numIters, final int poolSize) {
+        super(numThreads, numIters);
+        this.poolSize = poolSize;
+    }
+
     protected PBEStringEncryptor createEncryptor() {
-        PooledStandardPBEStringEncryptor encryptor = new PooledStandardPBEStringEncryptor(1);
+        PooledStandardPBEStringEncryptor encryptor = new PooledStandardPBEStringEncryptor(poolSize);
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor;
+    }
+    
+    
+    public static void main(String[] args) {
+        try {
+            
+            final int numThreads = Integer.valueOf(args[0]).intValue();
+            final int numIters = Integer.valueOf(args[1]).intValue();
+            final int poolSize = Integer.valueOf(args[2]).intValue();
+            
+            PooledPBEWithMD5AndDESStringEncryptorThreadedTest test = 
+                new PooledPBEWithMD5AndDESStringEncryptorThreadedTest(numThreads, numIters, poolSize);
+            
+            System.out.println("Starting test. NumThreads: " + numThreads + " NumIters: " + numIters + " PoolSize: " + poolSize);
+            StopWatch sw = new StopWatch();
+            sw.start();
+            test.testThreadedDigest();
+            sw.stop();
+            System.out.println("Test finished in: " + sw.toString());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     
