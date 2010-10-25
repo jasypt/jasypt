@@ -6,10 +6,26 @@
 
 What is new in Jasypt 1.7 
 
-    * Fixed Hibernate 3.6 compatibility.
+* Hibernate 3.6 compatibility
+
+  Hibernate 3.6.0.Final introduced some changes to its custom type API which made jasypt transparent
+  encryption types produce exceptions during initialization.
+  
+  This issue has been fixed while keeping backwards compatibility with older 3.x versions
+  of Hibernate.
+   
+
+* Removal of third-party dependencies
     
-    * Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
-      without depedencies on JDK version >= 6.
+  Dependencies on both the Apache Commons-Lang and Apache Commons-Codec libraries have been
+  removed. All you need now to run jasypt is:
+  
+    * <<<jasypt-1.7.jar>>> if you are using Java version 6 or newer.
+    
+    * <<<jasypt-1.7.jar>>> and <<<icu4j-3.4.4.jar>>> if you are using Java version 5 or older.  
+
+
+* Improved performance in multi-processor systems
       
     * Added pool-based implementations of Standard digesters and PBE encryptors to improve
       performance in multiprocessor systems.
