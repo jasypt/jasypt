@@ -3,6 +3,70 @@
   -------
 
 
+
+Changes from 1.6 to 1.7
+
+    * Fixed Hibernate 3.6 compatibility.
+    
+    * Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
+      without depedencies on JDK version >= 6.
+      
+    * Added pool-based implementations of Standard digesters and PBE encryptors to improve
+      performance in multiprocessor systems.
+        
+    * Created "lite" .jar package including only standard String and Byte digest and 
+      encryption: no BigDecimal or BigInteger encryption, no "util" package, 
+      no Spring/Hibernate/Wicket integrations, no Web PBE configuration, no CLI utils, 
+      no properties encryption, no Zero salt generator.
+      
+    * Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
+      obtaining the names of all the available digest/PBE algorithms.
+      
+    * Added method "getInvertPositionOfSaltInMessageBeforeDigesting()" to DigesterConfig
+      and "setInvertPositionOfSaltInMessageBeforeDigesting(...)" to StandardByteDigester 
+      and StandardStringDigester in order to being able to append the salt after the message
+      before digesting instead of the default behaviour (insert it before the message).
+      This is useful for enhancing compatibility with some common LDAP password encryption
+      schemes like {SSHA}.
+      
+    * Added method "getInvertPositionOfPlainSaltInEncryptionResults()" to DigesterConfig
+      and "setInvertPositionOfPlainSaltInEncryptionResults(...)" to StandardByteDigester 
+      and StandardStringDigester in order to being able to append the plain (unhashed) 
+      salt after the digest instead of the default behaviour (insert it before the digest).
+      This is useful for enhancing compatibility with some common LDAP password encryption
+      schemes like {SSHA}.
+      
+    * Added method "getUseLenientSaltSizeCheck()" to DigesterConfig and 
+      "setUseLenientSaltSizeCheck(...)" to StandardByteDigester 
+      and StandardStringDigester in order to allow digesters to check digests created
+      with any size of salt (not equal to the value set for the "saltSizeBytes" property).
+      
+    * Added an "org.jasypt.util.password.rfc2307" package containing utility classes for
+      password encryption operations according to common LDAP schemes like {MD5},
+      {SHA}, {SMD5} and {SSHA}.
+      
+    * Rebuilt CLI scripts: now both Windows and Linux versions can be run from outside
+      the "bin" folder. New configuration parameters added.
+      
+    * Added "listAlgorithms" CLI command that lists all digest and PBE algorithms
+      present in the Java Virtual Machine.
+      
+    * Rebuilt zip distribution package: remove unneeded "cli-bundle" and added icu4j 
+      to libs.
+      
+    * Added org.jasypt.spring.properties.EncryptableServletContextPropertyPlaceholderConfigurer
+      as a sublass of org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer,
+      for transparent decryption of servlet context init parameters (like the ones in web.xml).
+      
+    * Added org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer
+      as a subclass of org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer,
+      for transparent decryption of preferences set with JDK 1.4's Preferences API.
+      
+    * Added Spring Security 3 -compatible TokenBasedRememberMeServices implementation
+      using a Jasypt StandardStringDigester for digesting the data signature.
+
+
+
 Changes from 1.5 to 1.6
 
     * Modified Class.forName calls to use current thread's context classloader.
