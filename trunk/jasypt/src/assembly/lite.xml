@@ -32,6 +32,8 @@
         <exclude>org/jasypt/encryption/pbe/PBEBigIntegerEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/pbe/StandardPBEBigDecimalEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/pbe/StandardPBEBigIntegerEncryptor.class</exclude>
+        <exclude>org/jasypt/encryption/pbe/PooledPBEBigDecimalEncryptor.class</exclude>
+        <exclude>org/jasypt/encryption/pbe/PooledPBEBigIntegerEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/BigDecimalEncryptor.class</exclude>
         <exclude>org/jasypt/encryption/BigIntegerEncryptor.class</exclude>
         <exclude>org/jasypt/salt/ZeroSaltGenerator.class</exclude>
