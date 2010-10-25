@@ -21,7 +21,9 @@ package org.jasypt.encryption.pbe;
 
 import java.security.Provider;
 
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
@@ -49,14 +51,19 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
+public final class PooledPBEByteEncryptor implements PBEByteEncryptor {
 
     
-    private final int poolSize;
-    private final StandardPBEByteEncryptor[] pool;
+    private final StandardPBEByteEncryptor firstEncryptor;
+    
+    private PBEConfig config = null;
+    private int poolSize = 0;
+    private boolean poolSizeSet = false;
+    
+    private StandardPBEByteEncryptor[] pool;
     private int roundRobin = 0;
-    
-    
+
+
     /*
      * Flag which indicates whether the encryptor has been initialized or not.
      * 
@@ -71,14 +78,9 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
     /**
      * Creates a new instance of <tt>PooledStandardPBEByteEncryptor</tt>.
      */
-    public PooledStandardPBEByteEncryptor(final int poolSize) {
+    public PooledPBEByteEncryptor() {
         super();
-        if (poolSize < 1) {
-            throw new IllegalArgumentException("Pool size must be > 0");
-        }
-        this.poolSize = poolSize;
-        this.pool = new StandardPBEByteEncryptor[this.poolSize];
-        this.pool[0] = new StandardPBEByteEncryptor();
+        this.firstEncryptor = new StandardPBEByteEncryptor();
     }
 
     
@@ -108,7 +110,8 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      *               source for configuration parameters.
      */
     public synchronized void setConfig(PBEConfig config) {
-        this.pool[0].setConfig(config);
+        this.firstEncryptor.setConfig(config);
+        this.config = config;
     }
 
     
@@ -127,7 +130,7 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param algorithm the name of the algorithm to be used.
      */
     public synchronized void setAlgorithm(String algorithm) {
-        this.pool[0].setAlgorithm(algorithm);
+        this.firstEncryptor.setAlgorithm(algorithm);
     }
     
     
@@ -146,7 +149,7 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param password the password to be used.
      */
     public synchronized void setPassword(String password) {
-        this.pool[0].setPassword(password);
+        this.firstEncryptor.setPassword(password);
     }
     
     
@@ -165,7 +168,7 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      */
     public synchronized void setKeyObtentionIterations(
             int keyObtentionIterations) {
-        this.pool[0].setKeyObtentionIterations(keyObtentionIterations);
+        this.firstEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
 
     
@@ -178,7 +181,7 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param saltGenerator the salt generator to be used.
      */
     public synchronized void setSaltGenerator(SaltGenerator saltGenerator) {
-        this.pool[0].setSaltGenerator(saltGenerator);
+        this.firstEncryptor.setSaltGenerator(saltGenerator);
     }
     
     
@@ -208,7 +211,7 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      *                     for the encryption algorithm.
      */
     public synchronized void setProviderName(String providerName) {
-        this.pool[0].setProviderName(providerName);
+        this.firstEncryptor.setProviderName(providerName);
     }
     
     
@@ -231,7 +234,28 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
      * @param provider the provider to be asked for the chosen algorithm
      */
     public synchronized void setProvider(Provider provider) {
-        this.pool[0].setProvider(provider);
+        this.firstEncryptor.setProvider(provider);
+    }
+
+    
+    
+    /**
+     * <p>
+     * Sets the size of the pool of digesters to be created.
+     * </p>
+     * <p>
+     * This parameter is <b>required</b>.
+     * </p>
+     * 
+     * @param poolSize size of the pool
+     */
+    public synchronized void setPoolSize(final int poolSize) {
+        CommonUtils.validateIsTrue(poolSize > 0, "Pool size be > 0");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.poolSize = poolSize;
+        this.poolSizeSet = true;
     }
 
     
@@ -297,6 +321,24 @@ public final class PooledStandardPBEByteEncryptor implements PBEByteEncryptor {
         
         // Double-check to avoid synchronization issues
         if (!this.initialized) {
+
+            if (this.config != null) {
+                
+                final Integer configPoolSize = this.config.getPoolSize();
+
+                this.poolSize = 
+                    ((this.poolSizeSet) || (configPoolSize == null))?
+                            this.poolSize : configPoolSize.intValue();
+                
+            }
+            
+            if (this.poolSize <= 0) {
+                throw new IllegalArgumentException("Pool size must be set and > 0");
+            }
+            
+            this.pool = new StandardPBEByteEncryptor[this.poolSize];
+            this.pool[0] = this.firstEncryptor;
+
 
             for (int i = 1; i < this.poolSize; i++) {
                 this.pool[i] = this.pool[i - 1].cloneEncryptor();

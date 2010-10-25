@@ -33,15 +33,7 @@ import org.jasypt.salt.SaltGenerator;
  * {@link org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor} objects. 
  * </p>
  * <p>
- * Objects of classes implementing this interface will provide values for:
- * <ul>
- *   <li>Algorithm.</li>
- *   <li>Security provider (or provider name).</li>
- *   <li>Password.</li>
- *   <li>Hashing iterations for obtaining the encryption key.</li>
- *   <li>Salt generator.</li>
- * </ul>
- * Providing this interface lets the user create new <tt>PBEConfig</tt>
+ * This interface lets the user create new <tt>PBEConfig</tt>
  * classes which retrieve values for this parameters from different
  * (and maybe more secure) sources (remote servers, LDAP, other databases...),
  * and do this transparently for the encryptor object. 
@@ -179,6 +171,26 @@ public interface PBEConfig {
      *         algorithm.
      */
     public Provider getProvider();
+
+    
+    
+
+    
+    
+    /**
+     * <p>
+     * Get the size of the pool of encryptors to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled encryptor</b>.
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @return the size of the pool to be used if this configuration is used with a
+     *         pooled encryptor
+     */
+    public Integer getPoolSize();
 
     
 }

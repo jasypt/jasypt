@@ -30,22 +30,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
  * String digesting. 
  * </p>
  * <p>
- * Objects of classes implementing this interface will provide values for:
- * <ul>
- *   <li>Algorithm.</li>
- *   <li>Security provider (or provider name).</li>
- *   <li>Salt size (in bytes).</li>
- *   <li>Hashing iterations.</li>
- *   <li>Salt generator.</li>
- *   <li>Position of salt in relation to the message to be digested.</li>
- *   <li>Position of plain salt in relation to the encryption results (digest).</li>
- *   <li>Whether to be lenient with salt sizes when matching digests.</li>
- *   <li>Use of Unicode normalization mechanisms.</li>
- *   <li>Output type (base64, hexadecimal).</li>
- *   <li>Prefix</li>
- *   <li>Suffix</li>
- * </ul>
- * Providing this interface lets the user create new <tt>StringDigesterConfig</tt>
+ * This interface lets the user create new <tt>StringDigesterConfig</tt>
  * classes which retrieve values for this parameters from different
  * (and maybe more secure) sources (remote servers, LDAP, other databases...),
  * and do this transparently for the digester object. 

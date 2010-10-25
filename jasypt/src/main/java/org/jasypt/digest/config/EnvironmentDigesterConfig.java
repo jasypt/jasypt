@@ -60,6 +60,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String invertPositionOfSaltInMessageBeforeDigestingEnvName = null;
     private String invertPositionOfPlainSaltInEncryptionResultsEnvName = null;
     private String useLenientSaltSizeCheckEnvName = null;
+    private String poolSizeEnvName = null;
 
     private String algorithmSysPropertyName = null;
     private String iterationsSysPropertyName = null;
@@ -70,6 +71,7 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
     private String invertPositionOfSaltInMessageBeforeDigestingSysPropertyName = null;
     private String invertPositionOfPlainSaltInEncryptionResultsSysPropertyName = null;
     private String useLenientSaltSizeCheckSysPropertyName = null;
+    private String poolSizeSysPropertyName = null;
     
 
     /**
@@ -646,11 +648,6 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
 
 
     
-    
-    
-    
-    
-    
 
     
     
@@ -733,6 +730,89 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
                             System.getProperty(useLenientSaltSizeCheckSysPropertyName)));
         }
     }
+    
+
+    
+    
+
+    
+    
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the value for the poolSize
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the variable
+     */
+    public String getPoolSizeEnvName() {
+        return this.poolSizeEnvName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the poolSize
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param poolSizeEnvName the name of the environment variable
+     */
+    public void setPoolSizeEnvName(final String poolSizeEnvName) {
+        this.poolSizeEnvName = poolSizeEnvName;
+        if (poolSizeEnvName == null) {
+            super.setPoolSize((String)null);
+        } else {
+            this.poolSizeSysPropertyName = null;
+            super.setPoolSize(System.getenv(poolSizeEnvName));
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the value for the poolSize
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getPoolSizeSysPropertyName() {
+        return this.poolSizeSysPropertyName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the useLenientSaltSizeCheck
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param poolSizeSysPropertyName the name of the property
+     */
+    public void setPoolSizeSysPropertyName(final String poolSizeSysPropertyName) {
+        this.poolSizeSysPropertyName = poolSizeSysPropertyName;
+        if (poolSizeSysPropertyName == null) {
+            super.setPoolSize((String)null);
+        } else {
+            this.poolSizeEnvName = null;
+            super.setPoolSize(System.getProperty(poolSizeSysPropertyName));
+        }
+    }
+    
     
     
     
@@ -835,7 +915,19 @@ public class EnvironmentDigesterConfig extends SimpleDigesterConfig {
         super.setUseLenientSaltSizeCheck(useLenientSaltSizeCheck);
     }
 
-    
+
+    public void setPoolSize(final Integer poolSize) {
+        this.poolSizeEnvName = null;
+        this.poolSizeSysPropertyName = null;
+        super.setPoolSize(poolSize);
+    }
+
+
+    public void setPoolSize(final String poolSize) {
+        this.poolSizeEnvName = null;
+        this.poolSizeSysPropertyName = null;
+        super.setPoolSize(poolSize);
+    }
 
 
     

@@ -61,7 +61,8 @@ public class PooledStandardStringDigesterThreadedTest extends TestCase {
             
             this.numThreads = numOfThreads;
             
-            PooledStandardStringDigester digester = new PooledStandardStringDigester(poolSize);
+            PooledStringDigester digester = new PooledStringDigester();
+            digester.setPoolSize(poolSize);
             AtomicInteger errors = new AtomicInteger(0);
             this.runningThreads = new AtomicInteger(0);
             

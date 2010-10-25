@@ -59,6 +59,7 @@ public class SimplePBEConfig implements PBEConfig {
     private SaltGenerator saltGenerator = null;
     private String providerName = null;
     private Provider provider = null;
+    private Integer poolSize = null;
 
 
     /**
@@ -290,6 +291,68 @@ public class SimplePBEConfig implements PBEConfig {
     }
 
     
+    
+    
+    
+    /**
+     * <p>
+     * Sets the size of the pool of encryptors to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled encryptor</b>.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPoolSize()}
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @param poolSize the size of the pool to be used if this configuration is used with a
+     *         pooled encryptor
+     */
+    public void setPoolSize(final Integer poolSize) {
+        this.poolSize = poolSize;
+    }
+    
+
+    /**
+     * <p>
+     * Sets the size of the pool of encryptors to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled encryptor</b>.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPoolSize()}
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @param poolSize the size of the pool to be used if this configuration is used with a
+     *         pooled encryptor
+     */
+    public void setPoolSize(final String poolSize) {
+        if (poolSize != null) {
+            try {
+                this.poolSize = new Integer(poolSize);
+            } catch (NumberFormatException e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.poolSize = null;
+        }
+    }
+
+    
+    
+    
+    
     public String getAlgorithm() {
         return this.algorithm;
     }
@@ -315,6 +378,10 @@ public class SimplePBEConfig implements PBEConfig {
     
     public Provider getProvider() {
         return this.provider;
+    }
+
+    public Integer getPoolSize() {
+        return this.poolSize;
     }
 
     

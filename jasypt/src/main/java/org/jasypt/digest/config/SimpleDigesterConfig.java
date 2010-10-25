@@ -61,6 +61,7 @@ public class SimpleDigesterConfig implements DigesterConfig {
     private Boolean invertPositionOfSaltInMessageBeforeDigesting = null;
     private Boolean invertPositionOfPlainSaltInEncryptionResults = null;
     private Boolean useLenientSaltSizeCheck = null;
+    private Integer poolSize = null;
     
 
     /**
@@ -446,6 +447,62 @@ public class SimpleDigesterConfig implements DigesterConfig {
     public void setUseLenientSaltSizeCheck(final Boolean useLenientSaltSizeCheck) {
         this.useLenientSaltSizeCheck = useLenientSaltSizeCheck;
     }
+    
+
+    /**
+     * <p>
+     * Sets the size of the pool of digesters to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled digester</b>.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPoolSize()}
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @param poolSize the size of the pool to be used if this configuration is used with a
+     *         pooled digester
+     */
+    public void setPoolSize(final Integer poolSize) {
+        this.poolSize = poolSize;
+    }
+    
+
+    /**
+     * <p>
+     * Sets the size of the pool of digesters to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled digester</b>.
+     * </p>
+     * <p>
+     * If not set, null will be returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPoolSize()}
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @param poolSize the size of the pool to be used if this configuration is used with a
+     *         pooled digester
+     */
+    public void setPoolSize(final String poolSize) {
+        if (poolSize != null) {
+            try {
+                this.poolSize = new Integer(poolSize);
+            } catch (NumberFormatException e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.poolSize = null;
+        }
+    }
 
 
     
@@ -486,6 +543,10 @@ public class SimpleDigesterConfig implements DigesterConfig {
 
     public Boolean getUseLenientSaltSizeCheck() {
         return this.useLenientSaltSizeCheck;
+    }
+
+    public Integer getPoolSize() {
+        return this.poolSize;
     }
 
     
