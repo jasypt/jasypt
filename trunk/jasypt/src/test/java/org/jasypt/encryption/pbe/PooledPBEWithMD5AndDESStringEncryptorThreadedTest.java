@@ -40,7 +40,8 @@ public class PooledPBEWithMD5AndDESStringEncryptorThreadedTest
     }
 
     protected PBEStringEncryptor createEncryptor() {
-        PooledStandardPBEStringEncryptor encryptor = new PooledStandardPBEStringEncryptor(poolSize);
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        encryptor.setPoolSize(poolSize);
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor;
     }

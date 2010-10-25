@@ -21,8 +21,9 @@ package org.jasypt.digest;
 
 import java.security.Provider;
 
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.config.DigesterConfig;
-import org.jasypt.digest.config.StringDigesterConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
@@ -31,14 +32,14 @@ import org.jasypt.salt.SaltGenerator;
 
 /**
  * <p>
- * Pooled implementation of {@link StringDigester} that in fact contains
- * an array of {@link StandardStringDigester} objects which are used
+ * Pooled implementation of {@link ByteDigester} that in fact contains
+ * an array of {@link StandardByteDigester} objects which are used
  * to attend digest and match requests in round-robin. This should
  * result in higher performance in multiprocessor systems.
  * </p>
  * <p>
  * Configuration of this class is equivalent to that of
- * {@link StandardStringDigester}.
+ * {@link StandardByteDigester}.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -50,11 +51,15 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public class PooledStandardStringDigester implements StringDigester {
-
+public class PooledByteDigester implements ByteDigester {
     
-    private final int poolSize;
-    private final StandardStringDigester[] pool;
+    private final StandardByteDigester firstDigester;
+    
+    private DigesterConfig config = null;
+    private int poolSize = 0;
+    private boolean poolSizeSet = false;
+    
+    private StandardByteDigester[] pool;
     private int roundRobin = 0;
 
 
@@ -69,23 +74,17 @@ public class PooledStandardStringDigester implements StringDigester {
     
     
     /**
-     * Creates a new instance of <tt>PooledStandardStringDigester</tt>.
+     * Creates a new instance of <tt>PooledStandardByteDigester</tt>.
      */
-    public PooledStandardStringDigester(final int poolSize) {
+    public PooledByteDigester() {
         super();
-        if (poolSize < 1) {
-            throw new IllegalArgumentException("Pool size must be > 0");
-        }
-        this.poolSize = poolSize;
-        this.pool = new StandardStringDigester[this.poolSize];
-        this.pool[0] = new StandardStringDigester();
+        this.firstDigester = new StandardByteDigester();
     }
     
     
     /**
      * <p>
-     * Sets a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> 
-     * or {@link StringDigesterConfig} object 
+     * Sets a <tt>{@link org.jasypt.digest.config.DigesterConfig}</tt> object 
      * for the digester. If this config
      * object is set, it will be asked values for:
      * </p>
@@ -96,10 +95,8 @@ public class PooledStandardStringDigester implements StringDigester {
      *   <li>Salt size</li>
      *   <li>Hashing iterations</li>
      *   <li>Salt generator</li>
-     *   <li>Use of Unicode normalization mechanisms 
-     *       (only <tt>StringDigesterConfig</tt>)</li>
-     *   <li>Output type (base64, hexadecimal) 
-     *       (only <tt>StringDigesterConfig</tt>)</li>
+     *   <li>Location of the salt in relation to the encrypted message 
+     *       (default: before)</li>
      * </ul>
      * 
      * <p>
@@ -112,7 +109,8 @@ public class PooledStandardStringDigester implements StringDigester {
      *               source for configuration parameters.
      */
     public synchronized void setConfig(final DigesterConfig config) {
-        this.pool[0].setConfig(config);
+        this.firstDigester.setConfig(config);
+        this.config = config;
     }
     
     
@@ -143,7 +141,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @param algorithm the name of the algorithm to be used.
      */
     public synchronized void setAlgorithm(final String algorithm) {
-        this.pool[0].setAlgorithm(algorithm);
+        this.firstDigester.setAlgorithm(algorithm);
     }
     
     
@@ -162,7 +160,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @param saltSizeBytes the size of the salt to be used, in bytes.
      */
     public synchronized void setSaltSizeBytes(final int saltSizeBytes) {
-        this.pool[0].setSaltSizeBytes(saltSizeBytes);
+        this.firstDigester.setSaltSizeBytes(saltSizeBytes);
     }
 
     
@@ -182,7 +180,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @param iterations the number of iterations.
      */
     public synchronized void setIterations(final int iterations) {
-        this.pool[0].setIterations(iterations);
+        this.firstDigester.setIterations(iterations);
     }
 
     
@@ -195,7 +193,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @param saltGenerator the salt generator to be used.
      */
     public synchronized void setSaltGenerator(final SaltGenerator saltGenerator) {
-        this.pool[0].setSaltGenerator(saltGenerator);
+        this.firstDigester.setSaltGenerator(saltGenerator);
     }
     
     
@@ -225,7 +223,7 @@ public class PooledStandardStringDigester implements StringDigester {
      *                     for the digest algorithm.
      */
     public synchronized void setProviderName(final String providerName) {
-        this.pool[0].setProviderName(providerName);
+        this.firstDigester.setProviderName(providerName);
     }
     
     
@@ -248,7 +246,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * @param provider the provider to be asked for the chosen algorithm
      */
     public synchronized void setProvider(final Provider provider) {
-        this.pool[0].setProvider(provider);
+        this.firstDigester.setProvider(provider);
     }
     
     
@@ -272,7 +270,7 @@ public class PooledStandardStringDigester implements StringDigester {
      */
     public synchronized void setInvertPositionOfSaltInMessageBeforeDigesting(
             final boolean invertPositionOfSaltInMessageBeforeDigesting) {
-        this.pool[0].setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);
+        this.firstDigester.setInvertPositionOfSaltInMessageBeforeDigesting(invertPositionOfSaltInMessageBeforeDigesting);
     }
     
     
@@ -298,7 +296,7 @@ public class PooledStandardStringDigester implements StringDigester {
      */
     public synchronized void setInvertPositionOfPlainSaltInEncryptionResults(
             final boolean invertPositionOfPlainSaltInEncryptionResults) {
-        this.pool[0].setInvertPositionOfPlainSaltInEncryptionResults(invertPositionOfPlainSaltInEncryptionResults);
+        this.firstDigester.setInvertPositionOfPlainSaltInEncryptionResults(invertPositionOfPlainSaltInEncryptionResults);
     }
 
     
@@ -340,98 +338,30 @@ public class PooledStandardStringDigester implements StringDigester {
      *        is false).
      */
     public synchronized void setUseLenientSaltSizeCheck(final boolean useLenientSaltSizeCheck) {
-        this.pool[0].setUseLenientSaltSizeCheck(useLenientSaltSizeCheck);
-    }
-    
-    
-    
-    /**
-     * <p>
-     * Sets whether the unicode text normalization step should be ignored.
-     * </p>
-     * <p>
-     * The Java Virtual Machine internally handles all Strings as UNICODE. When
-     * digesting or matching digests in jasypt, these Strings are first 
-     * <b>normalized to 
-     * its NFC form</b> so that digest matching is not affected by the specific
-     * form in which the messages where input.
-     * </p>
-     * <p>
-     * <b>It is normally safe (and recommended) to leave this parameter set to 
-     * its default FALSE value (and thus DO perform normalization 
-     * operations)</b>. But in some specific cases in which issues with legacy
-     * software could arise, it might be useful to set this to TRUE.
-     * </p>
-     * <p>
-     * For more information on unicode text normalization, see this issue of 
-     * <a href="http://java.sun.com/mailers/techtips/corejava/2007/tt0207.html">Core Java Technologies Tech Tips</a>.
-     * </p>
-     * 
-     * @param unicodeNormalizationIgnored whether the unicode text 
-     *        normalization step should be ignored or not.
-     */
-    public synchronized void setUnicodeNormalizationIgnored(final boolean unicodeNormalizationIgnored) {
-        this.pool[0].setUnicodeNormalizationIgnored(unicodeNormalizationIgnored);
-    }
-    
-    
-    
-    /**
-     * <p>
-     * Sets the the form in which String output
-     * will be encoded. Available encoding types are:
-     * </p>
-     * <ul>
-     *   <li><tt><b>base64</b></tt> (default)</li>
-     *   <li><tt><b>hexadecimal</b></tt></li>
-     * </ul>
-     * <p>
-     * If not set, null will be returned.
-     * </p>
-     * 
-     * @param stringOutputType the string output type.
-     */
-    public synchronized void setStringOutputType(final String stringOutputType) {
-        this.pool[0].setStringOutputType(stringOutputType);
-    }
-    
-    
-    
-    /**
-     * <p>
-     * Sets the prefix to be added at the beginning of encryption results, and also to
-     * be expected at the beginning of plain messages provided for matching operations
-     * (raising an {@link EncryptionOperationNotPossibleException} if not).
-     * </p>
-     * <p>
-     * By default, no prefix will be added to encryption results.
-     * </p>
-     * 
-     * @param prefix the prefix to be set
-     */
-    public synchronized void setPrefix(final String prefix) {
-        this.pool[0].setPrefix(prefix);
+        this.firstDigester.setUseLenientSaltSizeCheck(useLenientSaltSizeCheck);
     }
 
     
     
     /**
      * <p>
-     * Sets the suffix to be added at the end of encryption results, and also to
-     * be expected at the end of plain messages provided for matching operations
-     * (raising an {@link EncryptionOperationNotPossibleException} if not).
+     * Sets the size of the pool of digesters to be created.
      * </p>
      * <p>
-     * By default, no suffix will be added to encryption results.
+     * This parameter is <b>required</b>.
      * </p>
      * 
-     * @param suffix the suffix to be set
+     * @param poolSize size of the pool
      */
-    public synchronized void setSuffix(final String suffix) {
-        this.pool[0].setSuffix(suffix);
+    public synchronized void setPoolSize(final int poolSize) {
+        CommonUtils.validateIsTrue(poolSize > 0, "Pool size be > 0");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.poolSize = poolSize;
+        this.poolSizeSet = true;
     }
-    
-    
+
 
 
     
@@ -500,6 +430,23 @@ public class PooledStandardStringDigester implements StringDigester {
         // Double-check to avoid synchronization issues
         if (!this.initialized) {
 
+            if (this.config != null) {
+                
+                final Integer configPoolSize = this.config.getPoolSize();
+
+                this.poolSize = 
+                    ((this.poolSizeSet) || (configPoolSize == null))?
+                            this.poolSize : configPoolSize.intValue();
+                
+            }
+            
+            if (this.poolSize <= 0) {
+                throw new IllegalArgumentException("Pool size must be set and > 0");
+            }
+            
+            this.pool = new StandardByteDigester[this.poolSize];
+            this.pool[0] = this.firstDigester;
+
             for (int i = 1; i < this.poolSize; i++) {
                 this.pool[i] = this.pool[i - 1].cloneDigester();
             }
@@ -515,14 +462,13 @@ public class PooledStandardStringDigester implements StringDigester {
     
     /**
      * <p>
-     * Performs a digest operation on a String message.
+     * Performs a digest operation on a byte array message.
      * </p>
      * <p>
      * The steps taken for creating the digest are:
      * <ol>
-     *   <li>The String message is converted to a byte array.</li>
      *   <li>A salt of the specified size is generated (see 
-     *       {@link org.jasypt.salt.SaltGenerator}).</li>
+     *       {@link SaltGenerator}).</li>
      *   <li>The salt bytes are added to the message.</li>
      *   <li>The hash function is applied to the salt and message altogether, 
      *       and then to the
@@ -532,9 +478,6 @@ public class PooledStandardStringDigester implements StringDigester {
      *       {@link org.jasypt.salt.SaltGenerator#includePlainSaltInEncryptionResults()}), 
      *       the <i>undigested</i> salt and the final result of the hash
      *       function are concatenated and returned as a result.</li>
-     *   <li>The result of the concatenation is encoded in BASE64 (default) 
-     *       or HEXADECIMAL
-     *       and returned as an ASCII String.</li>
      * </ol>
      * Put schematically in bytes:
      * <ul>
@@ -578,7 +521,7 @@ public class PooledStandardStringDigester implements StringDigester {
      * <tt>matches</tt> method).
      * </p>
      * 
-     * @param message the String to be digested 
+     * @param message the byte array to be digested 
      * @return the digest result
      * @throws EncryptionOperationNotPossibleException if the digest operation
      *         fails, ommitting any further information about the cause for
@@ -586,8 +529,9 @@ public class PooledStandardStringDigester implements StringDigester {
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, if the digest algorithm chosen
      *         cannot be used).
+     *         
      */
-    public String digest(final String message) {
+    public byte[] digest(byte[] message) {
 
         // Check initialization
         if (!isInitialized()) {
@@ -599,6 +543,7 @@ public class PooledStandardStringDigester implements StringDigester {
             poolPosition = this.roundRobin;
             this.roundRobin = (this.roundRobin + 1) % this.poolSize;
         }
+        
         return this.pool[poolPosition].digest(message);
         
     }
@@ -635,7 +580,7 @@ public class PooledStandardStringDigester implements StringDigester {
      *         be correctly done (for example, if the digest algorithm chosen
      *         cannot be used).
      */
-    public boolean matches(final String message, final String digest) {
+    public boolean matches(final byte[] message, final byte[] digest) {
 
         // Check initialization
         if (!isInitialized()) {

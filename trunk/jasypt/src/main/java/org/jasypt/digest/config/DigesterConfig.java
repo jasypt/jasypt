@@ -26,22 +26,14 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Common interface for config classes applicable to 
- * {@link org.jasypt.digest.StandardByteDigester} or 
- * {@link org.jasypt.digest.StandardStringDigester} objects. 
+ * {@link org.jasypt.digest.StandardByteDigester}, 
+ * {@link org.jasypt.digest.StandardStringDigester},
+ * {@link org.jasypt.digest.PooledByteDigester} or
+ * {@link org.jasypt.digest.PooledStringDigester}
+ * objects. 
  * </p>
  * <p>
- * Objects of classes implementing this interface will provide values for:
- * <ul>
- *   <li>Algorithm.</li>
- *   <li>Security provider (or provider name).</li>
- *   <li>Salt size (in bytes).</li>
- *   <li>Hashing iterations.</li>
- *   <li>Salt generator.</li>
- *   <li>Position of salt in relation to the message to be digested.</li>
- *   <li>Position of plain salt in relation to the encryption results (digest).</li>
- *   <li>Whether to be lenient with salt sizes when matching digests.</li>
- * </ul>
- * Providing this interface lets the user create new <tt>DigesterConfig</tt>
+ * This interface lets the user create new <tt>DigesterConfig</tt>
  * classes which retrieve values for this parameters from different
  * (and maybe more secure) sources (remote servers, LDAP, other databases...),
  * and do this transparently for the digester object. 
@@ -277,5 +269,23 @@ public interface DigesterConfig {
      *         salt sizes than established or not (default is false).
      */
     public Boolean getUseLenientSaltSizeCheck();
+    
+
+    
+    
+    /**
+     * <p>
+     * Get the size of the pool of digesters to be created.
+     * </p>
+     * <p>
+     * <b>This parameter will be ignored if used with a non-pooled digester</b>.
+     * </p>
+     *
+     * @since 1.7
+     * 
+     * @return the size of the pool to be used if this configuration is used with a
+     *         pooled digester
+     */
+    public Integer getPoolSize();
     
 }

@@ -56,6 +56,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     private String saltGeneratorClassNameEnvName = null;
     private String providerNameEnvName = null;
     private String providerClassNameEnvName = null;
+    private String poolSizeEnvName = null;
 
     private String algorithmSysPropertyName = null;
     private String keyObtentionIterationsSysPropertyName = null;
@@ -63,6 +64,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     private String saltGeneratorClassNameSysPropertyName = null;
     private String providerNameSysPropertyName = null;
     private String providerClassNameSysPropertyName = null;
+    private String poolSizeSysPropertyName = null;
     
 
     /**
@@ -472,6 +474,93 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
 
     
     
+    
+
+    
+    
+
+
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the value for the poolSize
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the variable
+     */
+    public String getPoolSizeEnvName() {
+        return this.poolSizeEnvName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the poolSize
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param poolSizeEnvName the name of the environment variable
+     */
+    public void setPoolSizeEnvName(final String poolSizeEnvName) {
+        this.poolSizeEnvName = poolSizeEnvName;
+        if (poolSizeEnvName == null) {
+            super.setPoolSize((String)null);
+        } else {
+            this.poolSizeSysPropertyName = null;
+            super.setPoolSize(System.getenv(poolSizeEnvName));
+        }
+    }
+
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the value for the poolSize
+     * property.
+     * 
+     * @since 1.7
+     *   
+     * @return the name of the property
+     */
+    public String getPoolSizeSysPropertyName() {
+        return this.poolSizeSysPropertyName;
+    }
+
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the useLenientSaltSizeCheck
+     * property.
+     * </p>
+     * 
+     * @since 1.7
+     * 
+     * @param poolSizeSysPropertyName the name of the property
+     */
+    public void setPoolSizeSysPropertyName(final String poolSizeSysPropertyName) {
+        this.poolSizeSysPropertyName = poolSizeSysPropertyName;
+        if (poolSizeSysPropertyName == null) {
+            super.setPoolSize((String)null);
+        } else {
+            this.poolSizeEnvName = null;
+            super.setPoolSize(System.getProperty(poolSizeSysPropertyName));
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 
     
     public void setAlgorithm(final String algorithm) {
@@ -536,6 +625,20 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         this.providerClassNameEnvName = null;
         this.providerClassNameSysPropertyName = null;
         super.setProviderClassName(providerClassName);
+    }
+
+
+    public void setPoolSize(final Integer poolSize) {
+        this.poolSizeEnvName = null;
+        this.poolSizeSysPropertyName = null;
+        super.setPoolSize(poolSize);
+    }
+
+
+    public void setPoolSize(final String poolSize) {
+        this.poolSizeEnvName = null;
+        this.poolSizeSysPropertyName = null;
+        super.setPoolSize(poolSize);
     }
 
     

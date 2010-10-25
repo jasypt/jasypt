@@ -19,9 +19,12 @@
  */
 package org.jasypt.encryption.pbe;
 
+import java.math.BigInteger;
 import java.security.Provider;
 
+import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
@@ -32,14 +35,14 @@ import org.jasypt.salt.SaltGenerator;
 
 /**
  * <p>
- * Pooled implementation of {@link PBEStringEncryptor} that in fact contains
- * an array of {@link StandardPBEStringEncryptor} objects which are used
+ * Pooled implementation of {@link PBEBigIntegerEncryptor} that in fact contains
+ * an array of {@link StandardPBEBigIntegerEncryptor} objects which are used
  * to attend encrypt and decrypt requests in round-robin. This should
  * result in higher performance in multiprocessor systems.
  * </p>
  * <p>
  * Configuration of this class is equivalent to that of
- * {@link StandardPBEStringEncryptor}.
+ * {@link StandardPBEBigIntegerEncryptor}.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -51,11 +54,16 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public final class PooledStandardPBEStringEncryptor implements PBEStringEncryptor {
+public final class PooledPBEBigIntegerEncryptor implements PBEBigIntegerEncryptor {
 
     
-    private final int poolSize;
-    private final StandardPBEStringEncryptor[] pool;
+    private final StandardPBEBigIntegerEncryptor firstEncryptor;
+    
+    private PBEConfig config = null;
+    private int poolSize = 0;
+    private boolean poolSizeSet = false;
+    
+    private StandardPBEBigIntegerEncryptor[] pool;
     private int roundRobin = 0;
 
 
@@ -70,16 +78,11 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
     
     
     /**
-     * Creates a new instance of <tt>PooledStandardPBEStringEncryptor</tt>.
+     * Creates a new instance of <tt>PooledStandardPBEBigIntegerEncryptor</tt>.
      */
-    public PooledStandardPBEStringEncryptor(final int poolSize) {
+    public PooledPBEBigIntegerEncryptor() {
         super();
-        if (poolSize < 1) {
-            throw new IllegalArgumentException("Pool size must be > 0");
-        }
-        this.poolSize = poolSize;
-        this.pool = new StandardPBEStringEncryptor[this.poolSize];
-        this.pool[0] = new StandardPBEStringEncryptor();
+        this.firstEncryptor = new StandardPBEBigIntegerEncryptor();
     }
 
     
@@ -111,7 +114,8 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      *               source for configuration parameters.
      */
     public synchronized void setConfig(final PBEConfig config) {
-        this.pool[0].setConfig(config);
+        this.firstEncryptor.setConfig(config);
+        this.config = config;
     }
 
     
@@ -130,7 +134,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @param algorithm the name of the algorithm to be used.
      */
     public void setAlgorithm(final String algorithm) {
-        this.pool[0].setAlgorithm(algorithm);
+        this.firstEncryptor.setAlgorithm(algorithm);
     }
 
     
@@ -149,7 +153,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @param password the password to be used.
      */
     public void setPassword(final String password) {
-        this.pool[0].setPassword(password);
+        this.firstEncryptor.setPassword(password);
     }
     
 
@@ -167,7 +171,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @param keyObtentionIterations the number of iterations
      */
     public void setKeyObtentionIterations(final int keyObtentionIterations) {
-        this.pool[0].setKeyObtentionIterations(keyObtentionIterations);
+        this.firstEncryptor.setKeyObtentionIterations(keyObtentionIterations);
     }
 
     
@@ -180,7 +184,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @param saltGenerator the salt generator to be used.
      */
     public void setSaltGenerator(final SaltGenerator saltGenerator) {
-        this.pool[0].setSaltGenerator(saltGenerator);
+        this.firstEncryptor.setSaltGenerator(saltGenerator);
     }
     
     
@@ -210,7 +214,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      *                     for the encryption algorithm.
      */
     public void setProviderName(final String providerName) {
-        this.pool[0].setProviderName(providerName);
+        this.firstEncryptor.setProviderName(providerName);
     }
     
     
@@ -233,27 +237,28 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @param provider the provider to be asked for the chosen algorithm
      */
     public void setProvider(final Provider provider) {
-        this.pool[0].setProvider(provider);
+        this.firstEncryptor.setProvider(provider);
     }
+
     
     
     /**
      * <p>
-     * Sets the the form in which String output
-     * will be encoded. Available encoding types are:
+     * Sets the size of the pool of digesters to be created.
      * </p>
-     * <ul>
-     *   <li><tt><b>base64</b></tt> (default)</li>
-     *   <li><tt><b>hexadecimal</b></tt></li>
-     * </ul>
      * <p>
-     * If not set, null will be returned.
+     * This parameter is <b>required</b>.
      * </p>
      * 
-     * @param stringOutputType the string output type.
+     * @param poolSize size of the pool
      */
-    public synchronized void setStringOutputType(final String stringOutputType) {
-        this.pool[0].setStringOutputType(stringOutputType);
+    public synchronized void setPoolSize(final int poolSize) {
+        CommonUtils.validateIsTrue(poolSize > 0, "Pool size be > 0");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.poolSize = poolSize;
+        this.poolSizeSet = true;
     }
 
     
@@ -320,6 +325,24 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
         // Double-check to avoid synchronization issues
         if (!this.initialized) {
 
+            if (this.config != null) {
+                
+                final Integer configPoolSize = this.config.getPoolSize();
+
+                this.poolSize = 
+                    ((this.poolSizeSet) || (configPoolSize == null))?
+                            this.poolSize : configPoolSize.intValue();
+                
+            }
+            
+            if (this.poolSize <= 0) {
+                throw new IllegalArgumentException("Pool size must be set and > 0");
+            }
+            
+            this.pool = new StandardPBEBigIntegerEncryptor[this.poolSize];
+            this.pool[0] = this.firstEncryptor;
+
+
             for (int i = 1; i < this.poolSize; i++) {
                 this.pool[i] = this.pool[i - 1].cloneEncryptor();
             }
@@ -329,15 +352,23 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
         }
         
     }
+
+
     
+
+
     
     /**
      * <p>
      * Encrypts a message using the specified configuration.
      * </p>
-     * </p>
-     * The Strings returned by this method are BASE64-encoded (default) or
-     * HEXADECIMAL ASCII Strings.
+     * <p>
+     * <b>Important</b>: The size of the result of encrypting a number, depending
+     * on the algorithm, may be much bigger (in bytes) than the size of the 
+     * encrypted number itself. For example, encrypting a 4-byte integer can
+     * result in an encrypted 16-byte number. This can lead the user into 
+     * problems if the encrypted values are to be stored and not enough room 
+     * has been provided.
      * </p>
      * <p>
      * The mechanisms applied to perform the encryption operation are described
@@ -361,7 +392,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * piece of encrypted data.
      * </p>
      * 
-     * @param message the String message to be encrypted
+     * @param message the BigInteger message to be encrypted
      * @return the result of encryption 
      * @throws EncryptionOperationNotPossibleException if the encryption 
      *         operation fails, ommitting any further information about the
@@ -369,7 +400,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String encrypt(final String message) {
+    public BigInteger encrypt(final BigInteger message) {
 
         // Check initialization
         if (!isInitialized()) {
@@ -392,10 +423,6 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * Decrypts a message using the specified configuration.
      * </p>
      * <p>
-     * This method expects to receive a BASE64-encoded (default)
-     * or HEXADECIMAL ASCII String.
-     * </p>
-     * <p>
      * The mechanisms applied to perform the decryption operation are described
      * in <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127" 
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
@@ -407,7 +434,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * correctly performed (there is no other way of knowing it).
      * </p>
      * 
-     * @param encryptedMessage the String message to be decrypted
+     * @param encryptedMessage the BigInteger message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
      *         operation fails, ommitting any further information about the
@@ -415,7 +442,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
      * @throws EncryptionInitializationException if initialization could not
      *         be correctly done (for example, no password has been set).
      */
-    public String decrypt(final String encryptedMessage) {
+    public BigInteger decrypt(final BigInteger encryptedMessage) {
 
         // Check initialization
         if (!isInitialized()) {
@@ -432,5 +459,7 @@ public final class PooledStandardPBEStringEncryptor implements PBEStringEncrypto
         
     }
 
+    
+    
     
 }

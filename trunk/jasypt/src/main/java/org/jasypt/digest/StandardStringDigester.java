@@ -170,8 +170,8 @@ import org.jasypt.salt.SaltGenerator;
  * 
  */
 public final class StandardStringDigester implements StringDigester {
-static int idC = 0;
-int id = idC++;
+
+
     /**
      * <p>
      * Charset to be used to obtain "digestable" byte arrays from input Strings.

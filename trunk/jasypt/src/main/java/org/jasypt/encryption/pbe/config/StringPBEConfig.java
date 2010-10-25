@@ -29,16 +29,7 @@ package org.jasypt.encryption.pbe.config;
  * to String encryption. 
  * </p>
  * <p>
- * Objects of classes implementing this interface will provide values for:
- * <ul>
- *   <li>Algorithm.</li>
- *   <li>Security provider (or provider name).</li>
- *   <li>Password.</li>
- *   <li>Hashing iterations for obtaining the encryption key.</li>
- *   <li>Salt generator.</li>
- *   <li>Output type (base64, hexadecimal).</li>
- * </ul>
- * Providing this interface lets the user create new <tt>PBEConfig</tt>
+ * This interface lets the user create new <tt>PBEConfig</tt>
  * classes which retrieve values for this parameters from different
  * (and maybe more secure) sources (remote servers, LDAP, other databases...),
  * and do this transparently for the encryptor object. 
