@@ -29,10 +29,26 @@ import org.apache.commons.lang.time.StopWatch;
 
 public class PooledStandardStringDigesterThreadedTest extends TestCase {
 
+    private int numThreads = 20;
+    private int numIters = 1000;
+    protected int poolSize = 2;
+    
+    
+    public PooledStandardStringDigesterThreadedTest() {
+        super();
+    }
+    
+    public PooledStandardStringDigesterThreadedTest(final int numThreads, final int numIters, final int poolSize) {
+        super();
+        this.numThreads = numThreads;
+        this.numIters = numIters;
+        this.poolSize = poolSize;
+    }
+    
     
     public void testThreadedDigest() throws Exception {
         TesterLauncher launcher = new TesterLauncher();
-        assertTrue(launcher.launch(20,100) == 0);
+        assertTrue(launcher.launch(this.numThreads,this.numIters) == 0);
     }
     
     
@@ -45,7 +61,7 @@ public class PooledStandardStringDigesterThreadedTest extends TestCase {
             
             this.numThreads = numOfThreads;
             
-            PooledStandardStringDigester digester = new PooledStandardStringDigester(20);
+            PooledStandardStringDigester digester = new PooledStandardStringDigester(poolSize);
             AtomicInteger errors = new AtomicInteger(0);
             this.runningThreads = new AtomicInteger(0);
             
@@ -125,9 +141,14 @@ public class PooledStandardStringDigesterThreadedTest extends TestCase {
     public static void main(String[] args) {
         try {
             
-            PooledStandardStringDigesterThreadedTest test = new PooledStandardStringDigesterThreadedTest();
+            final int numThreads = Integer.valueOf(args[0]).intValue();
+            final int numIters = Integer.valueOf(args[1]).intValue();
+            final int poolSize = Integer.valueOf(args[2]).intValue();
             
-            System.out.println("Starting test");
+            PooledStandardStringDigesterThreadedTest test = 
+                new PooledStandardStringDigesterThreadedTest(numThreads, numIters, poolSize);
+            
+            System.out.println("Starting test. NumThreads: " + numThreads + " NumIters: " + numIters + " PoolSize: " + poolSize);
             StopWatch sw = new StopWatch();
             sw.start();
             test.testThreadedDigest();
