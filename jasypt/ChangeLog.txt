@@ -4,6 +4,8 @@
 - Fixed Hibernate 3.6 compatibility
 - Removed dependencies on commons-lang and commons-codec. Jasypt can now operate
   without depedencies on JDK version >= 6.
+- Added pool-based implementations of Standard digesters and PBE encryptors to improve
+  performance in multiprocessor systems.  
 - Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
   obtaining the names of all the available digest/PBE algorithms.
 - Created "lite" .jar package including only standard String and Byte digest and 
@@ -43,8 +45,6 @@
   for transparent decryption of preferences set with JDK 1.4's Preferences API.
 - Added Spring Security 3 -compatible TokenBasedRememberMeServices implementation
   using a Jasypt StandardStringDigester for digesting the data signature.
-- Added pool-based implementations of Standard digesters and PBE encryptors to improve
-  performance in multiprocessor systems.  
   
 
 1.6
