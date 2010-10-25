@@ -2,17 +2,10 @@
   Main
   -------
 
-  <<Jasypt 1.6 RELEASED!>> (January 7th, 2010). [{{{download.html}DOWNLOAD}}][{{{changelog.html}ChangeLog}} ]
+  <<Jasypt 1.7 RELEASED!>> (November 1st, 2010). [{{{download.html}DOWNLOAD}}] [{{{changelog.html}ChangeLog}}]
   
-  What's new:
-  
-    * Added compatibility with Spring Framework 3.0.x and Spring Security 3.0.x.
-    
-    * Tested compatibility with Apache Wicket 1.4.x and Hibernate 3.2.x.
-    
-    * Added missing registerPBE*Encryptor methods in HibernatePBEEncryptorRegistry
-    
-    * Some other really minor fixes.
+  This is an important release of Jasypt including a lot of exciting new features! 
+  See {{{whatsnew17.html}<<WHAT'S NEW IN 1.7>>}}.
     
 
 Java Simplified Encryption
@@ -28,10 +21,12 @@ Java Simplified Encryption
     * Transparent integration with <<Hibernate>>.
     
     * Suitable for integration into <<Spring>>-based applications and also
-      transparently integrable with <<Spring Security>> (formerly ACEGI).
+      transparently integrable with <<Spring Security>>.
       
     * Integrated capabilities for encrypting the configuration of applications
       (i.e. datasources).
+      
+    * Specific features for <<high-performance encryption>> in multi-processor systems.
 
     * Open API for use with any JCE provider.
 
@@ -79,10 +74,4 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
   advanced features...
   
 
-
-* Encryption can be simple to use, spread the word!
-  
-  Have you written an article, tutorial or review about Jasypt in English or
-  in your own language? <<{{{team.html}Tell us}}>> so that we can link it from the
-  {{{externalresources.html}External Resources}} page.
   

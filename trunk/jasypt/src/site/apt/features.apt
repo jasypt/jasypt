@@ -39,6 +39,16 @@ Features
      * Completely <<thread-safe>>.
      
      []
+     
+     * Support for encryptor/digester pooling, in order to achieve <<high performance
+     in multi-processor systems>>.
+     
+     []
+     
+     * Includes a <<lightweight ("lite") version of the library>> for better manageability
+     in size-restrictive environments like mobile platforms. 
+     
+     []
 
      * Provides both <<easy, no-configuration encryption tools>> for users new to 
      encryption, and also <<highly configurable standard encryption tools>>, 

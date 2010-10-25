@@ -30,7 +30,7 @@
       <item name="Main" href="index.html" />
       <item name="Download" href="download.html" />
       <item name="Features" href="features.html" />
-      <item name="Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
+      <item name="Users Forum" href="http://old.nabble.com/Jasypt---Users-f21330.html"/>
       <item name="Sourceforge.net Project Page" href="http://www.sourceforge.net/projects/jasypt" />
     </links>
 
@@ -50,10 +50,9 @@
     </menu>
 
     <menu name="Community">
-      <item name="· Users Forum" href="http://www.nabble.com/Jasypt---Users-f21330.html"/>
+      <item name="· Users Forum" href="http://old.nabble.com/Jasypt---Users-f21330.html"/>
       <item name="· Mailing Lists" href="mailinglists.html"/>
       <item name="· Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
-      <item name="· External Resources" href="externalresources.html"/>
     </menu>
 
     <menu name="Guides">
