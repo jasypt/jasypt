@@ -41,7 +41,7 @@ Features
      []
      
      * Support for encryptor/digester pooling, in order to achieve <<high performance
-     in multi-processor systems>>.
+     in multi-processor/multi-core systems>>.
      
      []
      

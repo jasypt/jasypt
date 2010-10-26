@@ -56,8 +56,7 @@
     </menu>
 
     <menu name="Guides">
-      <item name="· Getting Started" href="getting-started.html">
-        <item name="· Jasypt at a Glance" href="ataglance.html" />
+      <item name="· Getting Started">
         <item name="· Easy Tools" href="getting-started-easy.html" />
         <item name="· Standard Tools" href="getting-started-standard.html" />
       </item>

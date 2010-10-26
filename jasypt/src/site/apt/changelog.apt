@@ -22,6 +22,10 @@ Changes from 1.6 to 1.7
     * Added class org.jasypt.registry.AlgorithmRegistry with utility methods for 
       obtaining the names of all the available digest/PBE algorithms.
       
+    * Added "prefix" and "suffix" configuration parameters to String digesters, in order
+      to add a prefix and/or suffix to all digest results (and also expect these prefixes or
+      suffixes when matching existing digests).
+      
     * Added method "getInvertPositionOfSaltInMessageBeforeDigesting()" to DigesterConfig
       and "setInvertPositionOfSaltInMessageBeforeDigesting(...)" to StandardByteDigester 
       and StandardStringDigester in order to being able to append the salt after the message
@@ -56,7 +60,7 @@ Changes from 1.6 to 1.7
       
     * Added org.jasypt.spring.properties.EncryptableServletContextPropertyPlaceholderConfigurer
       as a sublass of org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer,
-      for transparent decryption of servlet context init parameters (like the ones in web.xml).
+      for transparent decryption of servlet context parameters (like the ones in web.xml).
       
     * Added org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer
       as a subclass of org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer,
