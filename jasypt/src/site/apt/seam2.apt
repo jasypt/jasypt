@@ -135,10 +135,10 @@ public class Person implements Serializable {
 * Step 4: Provide the encryptor to Hibernate  
 
   This was a problem in earlier version of Seam because
-  there was not an easy way to run code when the application was initialized. 
+  there was not an easy way to run code when the application was initialised. 
   Seam 2 solves this problem by providing the
   <<postInitialization>> event.  The <postInitialization> event fires right after
-  Seam has initialized and started up all components. This provides the
+  Seam has initialised and started up all components. This provides the
   perfect place to stick the code that provides the encryptor to Hibernate.
    
   To make use of the event, we simply define a class with a method that acts

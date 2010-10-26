@@ -1,16 +1,16 @@
   -------
-  Getting Started with Standard Tools
+  General Usage
   -------
 
 
-Getting Started with JASYPT standard encryption tools
+General Usage
 
 * Digesters
 
-  Digesters are classes specialized in creating <<message digests>> from
+  Digesters are classes specialised in creating <<message digests>> (also called <<hashes>>) from
   input.
   
-  Message digests are the results of <hash> functions, and they are
+  Message digests are the results of <digest> (or <hash>) functions, and they are
   <<unidirectional>>, this is, starting from a message digest, the original message
   cannot be reconstructed.
   
@@ -25,7 +25,7 @@ Getting Started with JASYPT standard encryption tools
       
       * <<StringDigester>> for creating digests from String input.
       
-  And the following default implementations:
+  And the following standard implementations:
   
       * <<StandardByteDigester>>: very configurable and extremely secure 
       implementation of ByteDigester, implemented following the directives
@@ -34,6 +34,16 @@ Getting Started with JASYPT standard encryption tools
       * <<StandardStringDigester>>: String counterpart to StandardByteDigester,
       receiving String input and returning charset-safe, BASE64 
       (or hexadecimal) encoded String output.
+
+  ...with their corresponding pool-based implementations for high performance in multi-processor/multi-core systems:
+  
+      * <<PooledByteDigester>>: same API as <<StandardByteDigester>>, but
+      in fact contains a pool of these objects that are used to serve digest/check
+      requests in round-robin.
+      
+      * <<PooledStringDigester>>: same API as <<StandardStringDigester>>, but
+      in fact contains a pool of these objects that are used to serve digest/check
+      requests in round-robin.
 
 
   It's basic usage can be very simple:
@@ -48,7 +58,7 @@ String digest = digester.digest(myMessage);
 ...
 ------------------
 
-  Standard*Digesters implement a coherent and secure set of default configuration values, 
+  These digesters, both standard and pooled, implement a coherent and secure set of default configuration values, 
   but they can be additionally configured in two ways:
   
       * By calling to its <<<setX(...)>>> methods (algorithm, provider, salt size, etc.)
@@ -59,6 +69,40 @@ String digest = digester.digest(myMessage);
         one to be able to retrieve configuration parameters in whichever
         ways he/she needs.
 
+
+
+  <<Improving performance in multi-processor/multi-core systems>> 
+
+  Pooled digesters have exactly the same API as their
+  non-pooled <<<Standard>>> relatives --so they can be used interchangeably-- but add a new required configuration
+  method called <<<setPoolSize()>>> which establishes the amount of <standard> digesters they
+  will internally hold.
+
+---
+...
+PooledStringDigester digester = new PooledStringDigester();
+digester.setPoolSize(4);          // This would be a good value for a 4-core system 
+digester.setAlgorithm("SHA-1");
+digester.setIterations("50000");
+...
+String digest = digester.digest(myMessage);
+...
+---
+  
+  These pooled objects will use their internal <<<Standard*>>> digesters to serve the
+  requests in round-robin, so the amount of thread blocking caused by the
+  synchronised code in the <standard> artifacts is reduced to a minimum.
+  
+  These implementations do not create new threads, so they can be safely used in container-controlled
+  environments which do not allow the creation of new threads. 
+  
+  The pool size recommended for a specific application and machine depends on many factors, but will
+  be approximately equal to the number of processors/cores in the machine.
+
+
+
+  <<More info>> 
+
   Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
   for more information about usage and functionality.
 
@@ -67,7 +111,7 @@ String digest = digester.digest(myMessage);
 
 * Encryptors
 
-  Encryptors are classes specialized in performing <<bi-directional>> encryption
+  Encryptors are classes specialised in performing <<bi-directional>> encryption
   operations. This is, they can both encrypt plain data and decrypt encrypted
   data.
   
@@ -107,7 +151,7 @@ String digest = digester.digest(myMessage);
       
       * <<PBEBigDecimalEncryptor>> for password-based encryption and decryption of BigDecimals.
 
-  And the default implementations provided are:
+  And the following standard implementations:
   
       * <<StandardPBEByteEncryptor>>: very configurable and extremely secure 
       implementation of PBEByteEncryptor, implemented following the directives
@@ -122,7 +166,25 @@ String digest = digester.digest(myMessage);
       
       * <<StandardPBEBigDecimalEncryptor>>: Equivalent to StandardPBEByteEncryptor,
       receiving BigDecimal input and returning BigDecimal output.
+
+  ...with their corresponding pool-based implementations for high performance in multi-processor/multi-core systems:
   
+      * <<PooledPBEByteEncryptor>>: same API as <<StandardPBEByteEncryptor>>, but
+      in fact contains a pool of these objects that are used to serve encrypt/decrypt
+      requests in round-robin.
+      
+      * <<PooledPBEStringEncryptor>>: same API as <<StandardPBEStringEncryptor>>, but
+      in fact contains a pool of these objects that are used to serve encrypt/decrypt
+      requests in round-robin.
+      
+      * <<PooledPBEBigIntegerEncryptor>>: same API as <<StandardPBEBigIntegerEncryptor>>, but
+      in fact contains a pool of these objects that are used to serve encrypt/decrypt
+      requests in round-robin.
+      
+      * <<PooledPBEBigDecimalEncryptor>>: same API as <<StandardPBEBigDecimalEncryptor>>, but
+      in fact contains a pool of these objects that are used to serve encrypt/decrypt
+      requests in round-robin.
+
 
   It's basic usage can be very simple:
   
@@ -150,6 +212,43 @@ String plainText = encryptor.decrypt(encryptedText);  // encryptedText.equals(pl
         one to be able to retrieve configuration parameters in whichever
         ways he/she needs (for instance, retrieve the password from a remote server).
 
+
+
+  <<Improving performance in multi-processor/multi-core systems>> 
+
+  Pooled encryptors have exactly the same API as their
+  non-pooled <<<Standard>>> relatives --so they can be used interchangeably-- but add a new required configuration
+  method called <<<setPoolSize()>>> which establishes the amount of <standard> encryptors they
+  will internally hold.
+
+---
+...
+PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+encryptor.setPassword("jasypt");
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
+...
+String encryptedText = encryptor.encrypt(myText);
+...
+---
+  
+  These pooled objects will use their internal <<<Standard*>>> encryptors to serve the
+  requests in round-robin, so the amount of thread blocking caused by the
+  synchronised code in the <standard> artifacts is reduced to a minimum.
+  
+  These implementations do not create new threads, so they can be safely used in container-controlled
+  environments which do not allow the creation of new threads. 
+  
+  The pool size recommended for a specific application and machine depends on many factors, but will
+  be approximately equal to the number of processors/cores in the machine.
+
+
+
+  <<More info>> 
+
   Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
   for more information about usage and functionality.
-  
+
+
+
+

@@ -93,7 +93,7 @@ Features
      []
      
      * Provides easy to use <<CLI (Command Line Interface) tools>>
-     to allow developers initialize their encrypted data and include
+     to allow developers initialise their encrypted data and include
      encryption/decryption/digest operations in maintenance tasks or scripts.
      {{{cli.html}Learn more}}.
 

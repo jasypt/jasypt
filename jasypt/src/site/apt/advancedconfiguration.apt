@@ -48,7 +48,7 @@ Advanced configuration for encyptors and digesters
         environment variables or JVM system properties. This will allow the user,
         for example, to set an encryption password in an environment variable,
         start the application or application server, let the jasypt encryptor
-        object initialize, and then unset the variable (thus hiding it).
+        object initialise, and then unset the variable (thus hiding it).
         Their <String-specific> variants are
         <<org.jasypt.digest.config.EnvironmentStringDigesterConfig>> and 
         <<org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig>>.

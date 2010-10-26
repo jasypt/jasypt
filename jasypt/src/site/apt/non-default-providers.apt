@@ -25,7 +25,7 @@ Using Jasypt with non-default JCE providers
   
 * What is a JCE provider?
 
-  For you as a non-specialized developer, it will be good to know that a 
+  For you as a non-specialised developer, it will be good to know that a 
   JCE provider is just a piece of software which implements encryption
   algorithms, and which bundles at least one class that implements the 
   <<java.security.Provider>> interface.

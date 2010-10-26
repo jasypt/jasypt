@@ -1,16 +1,19 @@
   -------
-  Getting Started with Easy Tools
+  Easy usage: the utils
   -------
 
 
-Getting Started with JASYPT easy encryption tools
+Easy usage: the utils
 
-  Jasypt provides several <easy> encryption tools. These are classes which
-  allow (with little or no configuration, and with no need of knowing what
-  is happening "behind the scenes") the execution of some of the most common
-  encryption tasks.
+  The easiest way to use Jasypt is using its <easy> encryption tools, 
+  which are called <<the utils>>, because they live in the <<org.jasypt.util>>
+  package.
   
-  These tools are categorized depending on the task they are intended to do:
+  They are called <utils> because they are ready-to-use, preconfigured
+  digesters and encryptors you can use without knowing much about their 
+  configuration.
+   
+  These utils are categorised depending on the task they are intended to do:
 
       * General digesting (<<<org.jasypt.util.digest.*>>>)
       
@@ -29,6 +32,10 @@ Getting Started with JASYPT easy encryption tools
       []
 
       * Binary encryption (<<<org.jasypt.util.binary.*>>>)
+
+
+  (Note that, generally, when we talk about <"password encryption">, we are in fact
+  talking about <"password digesting">, which is the technically correct term)
 
 
 * General digesting

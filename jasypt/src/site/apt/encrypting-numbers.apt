@@ -65,14 +65,14 @@ Encrypting numbers
 ** Initialization
 
   Before it is ready to encrypt, an object of this class has to be
-  <initialized>. Initialization happens:
+  <initialised>. Initialisation happens:
 
      * When <<<initialize()>>> is called.
      
      * When <<<encrypt(...)>>> or <<<decrypt(...)>>> are called for the
        first time, if <<<initialize()>>> has not been called before
 
-     * Once an encryptor has been initialized, trying to
+     * Once an encryptor has been initialised, trying to
        change its configuration willresult in an 
        <<<AlreadyInitializedException>>> being thrown.
 

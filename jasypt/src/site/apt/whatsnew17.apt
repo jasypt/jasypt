@@ -48,7 +48,7 @@ What is new in Jasypt 1.7
   
   These pooled objects will use their internal Standard* digesters/encryptors to serve the
   requests in round-robin, so the amount of thread blocking caused by the
-  synchronized code in the Standard* artifacts is reduced to a minimum.
+  synchronised code in the Standard* artifacts is reduced to a minimum.
   
   These implementations do not create new threads, so they can be safely used in container-controlled
   environments which do not allow the creation of new threads. 
