@@ -34,16 +34,16 @@ Web PBE Configuration
     []
     
     * A <<servlet>>, <<<org.jasypt.web.pbeconfig.WebPBEConfigServlet>>>, which
-      will show the authorized user a form with which he/she can set the
+      will show the authorised user a form with which he/she can set the
       encryption passwods for all encryptors with a <<<WebPBEConfig>>>.
       
 * WebPBEConfig
 
   For an encryptor to be assigned a password from the web, it only has
-  to be assigned a WebPBEConfig object, which must be initialized with
+  to be assigned a WebPBEConfig object, which must be initialised with
   <both> a unique name an a validation word. The name will identify
   the config object (and thus the encryptor) and the validation word will
-  make sure that only an authorized person (for example, the application
+  make sure that only an authorised person (for example, the application
   deployer) sets the passwords.
       
 * WebPBEInitializationContextListener
@@ -99,7 +99,7 @@ Web PBE Configuration
 
   <<Important>>: If the web application uses <<Spring Framework>>, <<<WebPBEConfig>>> 
   objects are declared as beans in the Spring context and this Spring context
-  is initialized at application deploy time 
+  is initialised at application deploy time 
   (with Spring's <<<ContextLoaderListener>>>), the use 
   of this context listener will become unnecessary.
   
@@ -139,7 +139,7 @@ Web PBE Configuration
 
     * The <validation word> must be input to the value set on the 
       <<<WebPBEConfig>>> object with its <<<setValidationWord(...)>>>
-      method. This will ensure that only an authorized person will set
+      method. This will ensure that only an authorised person will set
       the encryption passwords.
       
     * The <password> (retyped) must be input to the value which is

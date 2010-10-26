@@ -189,7 +189,7 @@ Encrypting application configuration files
  <!-- Our datasource is configured here, in the usual way. Jasypt's        -->
  <!-- EncryptedPropertyPlaceholderConfigurer will make sure that the       -->
  <!-- ${datasource.password} file gets decrypted and the DBCP DataSource   -->
- <!-- will be correctly initialized.                                       -->
+ <!-- will be correctly initialised.                                       -->
  <!--                                                                      -->
  <bean id="dataSource"
      class="org.apache.commons.dbcp.BasicDataSource"

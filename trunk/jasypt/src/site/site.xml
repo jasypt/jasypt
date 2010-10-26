@@ -56,10 +56,8 @@
     </menu>
 
     <menu name="Guides">
-      <item name="· Getting Started">
-        <item name="· Easy Tools" href="getting-started-easy.html" />
-        <item name="· Standard Tools" href="getting-started-standard.html" />
-      </item>
+      <item name="· Easy Usage: the utils" href="easy-usage.html" />
+      <item name="· General Usage" href="general-usage.html" />
       <item name="· Advanced encryptor/digester configuration" href="advancedconfiguration.html" />
       <item name="· Web PBE configuration" href="webconfiguration.html" />
       <item name="· Encrypting passwords" href="encrypting-passwords.html" />
