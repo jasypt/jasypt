@@ -2,6 +2,9 @@
   Encrypting texts
   -------
 
+  <This guide contains low-level technical information. Maybe you should start first with
+  the {{{easy-usage.html}Easy Usage}} or {{{general-usage.html}General Usage}} guides?>
+
 
 Encrypting texts
 
@@ -88,6 +91,67 @@ Encrypting texts
 
  To learn more about the mechanisms involved in encryption, read
  {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
+
+
+  
+  
+* Code examples
+
+  Easiest use: the <<<BasicTextEncryptor>>> util class:
+  
+----------------
+...
+BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+textEncryptor.setPassword(myEncryptionPassword);
+...
+String myEncryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
+
+  More security: the <<<StrongTextEncryptor>>> util class with a much more secure (but slower!)
+  algorithm (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+  Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it):
+
+----------------
+...
+StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
+textEncryptor.setPassword(myEncryptionPassword);
+...
+String myEncryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
+  
+  All these <util> classes are in fact pre-configured, easy-to-use versions of <<<StandardPBEStringEncryptor>>>,
+  so let's use the original class for total control:
+  
+------------------
+...
+StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+encryptor.setPassword("jasypt");                     // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+...
+String encryptedText = encryptor.encrypt(myText);
+...
+String plainText = encryptor.decrypt(encryptedText);  // myText.equals(plainText)
+...
+------------------
+
+  And we can even use a pooled version for higher performance in multi-processor/multi-core systems:
+  
+---
+...
+PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+encryptor.setPassword("jasypt");
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
+...
+String encryptedText = encryptor.encrypt(myText);
+...
+---
 
   
   

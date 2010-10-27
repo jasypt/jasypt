@@ -2,6 +2,9 @@
   Encrypting application configuration files
   -------
 
+  <This guide contains low-level technical information. Maybe you should start first with
+  the {{{easy-usage.html}Easy Usage}} or {{{general-usage.html}General Usage}} guides?>
+
 
 Encrypting application configuration files
 
