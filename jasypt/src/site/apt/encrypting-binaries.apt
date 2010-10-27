@@ -3,6 +3,10 @@
   -------
 
 
+  <This guide contains low-level technical information. Maybe you should start first with
+  the {{{easy-usage.html}Easy Usage}} or {{{general-usage.html}General Usage}} guides?>
+
+
 Encrypting binaries
 
   Jasypt offers support for performing PBE (Password Based Encryption)
@@ -79,6 +83,71 @@ Encrypting binaries
  To learn more about the mechanisms involved in encryption, read
  {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
 
+
+
+  
+  
+* Code examples
+
+  Easiest use: the <<<BasicBinaryEncryptor>>> util class:
+  
+----------------
+...
+BasicBinaryEncryptor binaryEncryptor = new BasicBinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+byte[] myEncryptedBytes = binaryEncryptor.encrypt(myBytes);
+...
+byte[] plainBytes = binaryEncryptor.decrypt(myEncryptedBytes);
+...
+----------------
+
+  More security: the <<<StrongBinaryEncryptor>>> util class with a much more secure (but slower!)
+  algorithm (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+  Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use it):
+
+----------------
+...
+StrongBinaryEncryptor binaryEncryptor = new StrongBinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+byte[] myEncryptedBytes = binaryEncryptor.encrypt(myBytes);
+...
+byte[] plainBytes = binaryEncryptor.decrypt(myEncryptedBytes);
+...
+----------------
+  
+  All these <util> classes are in fact pre-configured, easy-to-use versions of <<<StandardPBEByteEncryptor>>>,
+  so let's use the original class for total control:
+  
+------------------
+...
+StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
+encryptor.setPassword("jasypt");                     // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+...
+byte[] encryptedBytes = encryptor.encrypt(myBytes);
+...
+byte[] plainBytes = encryptor.decrypt(encryptedBytes);  // myBytes.equals(plainBytes)
+...
+------------------
+
+  And we can even use a pooled version for higher performance in multi-processor/multi-core systems:
+  
+---
+...
+PooledPBEByteEncryptor encryptor = new PooledPBEByteEncryptor();
+encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+encryptor.setPassword("jasypt");
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
+...
+byte[] encryptedBytes = encryptor.encrypt(myBytes);
+...
+---
+
+  
+  
+  
   
   
   

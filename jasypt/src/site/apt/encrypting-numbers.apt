@@ -3,6 +3,10 @@
   -------
 
 
+  <This guide contains low-level technical information. Maybe you should start first with
+  the {{{easy-usage.html}Easy Usage}} or {{{general-usage.html}General Usage}} guides?>
+
+
 Encrypting numbers
 
   Jasypt offers support for performing PBE (Password Based Encryption)
@@ -97,5 +101,78 @@ Encrypting numbers
  {{{http://www.rsasecurity.com/rsalabs/node.asp?id=2127}PKCS #5: Password-Based Cryptography Standard}}.
 
   
+
+  
+  
+* Code examples
+
+  Easiest use: the <<<BasicIntegerNumberEncryptor>>> and <<<BasicDecimalNumberEncryptor>>> util classes:
+  
+----------------
+...
+BigInteger myNumber = ...;
+...
+BasicIntegerNumberEncryptor numberEncryptor = new BasicIntegerNumberEncryptor();
+numberEncryptor.setPassword(myEncryptionPassword);
+...
+BigInteger myEncryptedNumber = numberEncryptor.encrypt(myNumber);
+...
+BigInteger plainNumber = numberEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+
+  More security: the <<<StrongIntegerNumberEncryptor>>> and <<<StrongDecimalNumberEncryptor>>> util classes 
+  with a much more secure (but slower!)
+  algorithm (you may need to download and install the {{{http://java.sun.com/javase/downloads}Java Cryptography 
+  Extension (JCE) Unlimited Strength Jurisdiction Policy Files}} to use them):
+
+----------------
+...
+BigDecimal myNumber = ...;
+...
+StrongDecimalNumberEncryptor numberEncryptor = new StrongDecimalNumberEncryptor();
+numberEncryptor.setPassword(myEncryptionPassword);
+...
+BigDecimal myEncryptedNumber = numberEncryptor.encrypt(myNumber);
+...
+BigDecimal plainNumber = numberEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
+  
+  All these <util> classes are in fact pre-configured, easy-to-use versions of their
+  corresponding full-featured classes <<<StandardPBEBigIntegerEncryptor>>> and, <<<StandardPBEBigDecimalEncryptor>>>
+  so let's use the original classes for total control:
+  
+------------------
+...
+BigDecimal myNumber = ...;
+...
+StandardPBEBigDecimalEncryptor encryptor = new StandardPBEBigDecimalEncryptor();
+encryptor.setPassword("jasypt");                     // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+...
+BigDecimal myEncryptedNumber = encryptor.encrypt(myNumber);
+...
+BigDecimal plainNumber = encryptor.decrypt(myEncryptedNumber);
+...
+------------------
+
+  And we can even use a pooled version for higher performance in multi-processor/multi-core systems:
+  
+---
+...
+BigInteger myNumber = ...;
+...
+PooledPBEBigIntegerEncryptor encryptor = new PooledPBEBigIntegerEncryptor();
+encryptor.setPoolSize(4);          // This would be a good value for a 4-core system
+encryptor.setPassword("jasypt");
+encryptor.setAlgorithm("PBEWithMD5AndTripleDES");
+...
+BigInteger myEncryptedNumber = encryptor.encrypt(myNumber);
+...
+BigInteger plainNumber = encryptor.decrypt(myEncryptedNumber);
+...
+---
+
   
   
