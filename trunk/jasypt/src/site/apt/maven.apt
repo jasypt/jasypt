@@ -17,6 +17,19 @@ Using Jasypt from Maven 2
     </dependency>
 ---------
 
+  Alternatively, by specifying a classifier you can use the <lite> artifact, which contains only
+  the essentials in a much smaller .jar file. [{{{lite.html}More Info}}].
+
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>{version}</version>
+      <classifier>lite</classifier>
+      <scope>compile</scope>
+    </dependency>
+---------
+
 
 Using jasypt from Maven 1.x
 

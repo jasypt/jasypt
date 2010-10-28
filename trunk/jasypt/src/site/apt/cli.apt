@@ -11,13 +11,6 @@ Encrypting from the command line: Jasypt CLI Tools
   To use this tools, you should {{{download.html}download}} the <distribution>
   zip file (named <<<jasypt-$VERSION-dist.zip>>>) and unzip it. Once done,
   you will find a <<<jasypt-$VERSION/bin>>> directory containing:
-  
-    * <<<jasypt-cli-bundle.jar>>>: A jar file containing a specially
-    prepared version of jasypt, including the CLI tools and all the required
-    jasypt dependencies, <<which you should never add into your projects'
-    classpath>>.
-    
-    []
     
     * A set of <<.bat>> files for Windows execution:
     
@@ -26,6 +19,8 @@ Encrypting from the command line: Jasypt CLI Tools
       * <<<decrypt.bat>>>: for PBE (Password Based Encryption) decryption operations.
       
       * <<<digest.bat>>>: for message digest operations.
+      
+      * <<<listAlgorithms.bat>>>: for listing the digest and PBE encryption algorithms available in your JVM.
     
     []
     
@@ -37,12 +32,14 @@ Encrypting from the command line: Jasypt CLI Tools
       
       * <<<digest.sh>>>: for message digest operations.
       
+      * <<<listAlgorithms.sh>>>: for listing the digest and PBE encryption algorithms available in your JVM.
+      
       <(Please note that before using the .sh files, you might need to add execution 
       permissions to them with something like "chmod u+x *.sh".)> 
     
     []
     
-  All the commands are executed with the following syntax:
+  Most of these commands are executed with the following syntax:
   
 ---
 [command] [argument1]=[value1] [argument2]=[value2] ...
@@ -62,7 +59,7 @@ Encrypting from the command line: Jasypt CLI Tools
   icu4j's jars to the classpath (which are not included with jasypt's distribucion
   any more).
   
-  <<Verbosity>>: All these commands admit a <<<verbose>>> parameter
+  <<Verbosity>>: Most of these commands admit a <<<verbose>>> parameter
   (which can be set to <true> (default) or <false>) which let the user switch
   from an explanatory output to a very reduced one, showing only the result
   of the operation (specially useful for scripting).
@@ -80,6 +77,7 @@ Encrypting from the command line: Jasypt CLI Tools
   
 ---
 $ ./encrypt.sh
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
 
 USAGE: encrypt.sh [ARGUMENTS]
 
@@ -90,23 +88,16 @@ USAGE: encrypt.sh [ARGUMENTS]
   * Required arguments:
 
       input
-
       password
 
   * Optional arguments:
 
       verbose
-
       algorithm
-
       keyObtentionIterations
-
       saltGeneratorClassName
-
       providerName
-
       providerClassName
-
       stringOutputType
 ---
   
@@ -160,6 +151,7 @@ uv9+BnQFuZbfTV5Kf45oBOr0eJzBW5AS+XaYY+Lu5XWYhGgl0Ee41P0QUGpIrfyD
   
 ---
 $ ./decrypt.sh
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
 
 USAGE: decrypt.sh [ARGUMENTS]
 
@@ -170,23 +162,16 @@ USAGE: decrypt.sh [ARGUMENTS]
   * Required arguments:
 
       input
-
       password
 
   * Optional arguments:
 
       verbose
-
       algorithm
-
       keyObtentionIterations
-
       saltGeneratorClassName
-
       providerName
-
       providerClassName
-
       stringOutputType
 ---
   
@@ -241,7 +226,7 @@ This is my message to be encrypted
   
 ---
 $ ./digest.sh
-I:\Projects\workspace\jasypt\target\jasypt-1.4-dev\bin>digest
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
 
 USAGE: digest.sh [ARGUMENTS]
 
@@ -256,22 +241,19 @@ USAGE: digest.sh [ARGUMENTS]
   * Optional arguments:
 
       verbose
-
       algorithm
-
       iterations
-
       saltSizeBytes
-
       saltGeneratorClassName
-
       providerName
-
       providerClassName
-
+      invertPositionOfSaltInMessageBeforeDigesting
+      invertPositionOfPlainSaltInEncryptionResults
+      useLenientSaltSizeCheck
       unicodeNormalizationIgnored
-
       stringOutputType
+      prefix
+      suffix
 ---
   
   
@@ -305,5 +287,34 @@ RSeN4JXTJwVFK6YYnxr6kYzK5I7aDqnJ
 $ ./digest.sh input="userDaTaBaSe_pass_word" verbose=false
 3oZF4OzyW/0OZEDG/EU+22b+0ZJg9FSc
 ---
+
+
+
+
+
+* Listing algorithms
+
+  The <<<listAlgorithms[.sh|.bat]>>> script will list the digest and PBE
+  (Password-Based-Encryption) algorithms available in your Java VM.
+  
+  It receives no arguments and its usage is extremely simple:
+  
+---
+$ ./listAlgorithms.sh
+
+DIGEST ALGORITHMS:   [MD2, MD5, SHA, SHA-256, SHA-384, SHA-512]
+
+PBE ALGORITHMS:      [PBEWITHMD5ANDDES, PBEWITHMD5ANDTRIPLEDES, PBEWITHSHA1ANDDESEDE, PBEWITHSHA1ANDRC2_40]
+
+---
+  
+  Please note that this command will not list any arguments from non-default JCE providers like
+  Bouncy Castle unless you have registered such providers at the JVM installation by copying 
+  the provider's jar files to the extensions directory of our JRE installation ($JRE_HOME/lib/ext) 
+  and then appending the name of the Provider class at the end of the provider list 
+  at the java.security file in $JRE_HOME/lib/security. 
+  See {{{non-default-providers.html}Using Non-Default Providers}} or 
+  {{{bouncy-castle.html}Jasypt + Bouncy Castle}} for more details.
+  
 
   
