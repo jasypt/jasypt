@@ -67,6 +67,7 @@
       <item name="· Encrypting application configuration files" href="encrypting-configuration.html" />
       <item name="· Encrypting from the command line" href="cli.html" />
       <item name="· Using non-default JCE providers" href="non-default-providers.html" />
+      <item name="· Using the lite artifact" href="lite.html" />
       <item name="· Jasypt + Maven" href="maven.html"/>
       <item name="· Jasypt + Hibernate 3" href="hibernate3.html"/>
       <item name="· Jasypt + Spring" href="spring.html"/>

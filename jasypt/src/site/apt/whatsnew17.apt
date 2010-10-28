@@ -90,6 +90,7 @@ What is new in Jasypt 1.7
       <artifactId>jasypt</artifactId>
       <version>1.7</version>
       <classifier>lite</classifier>
+      <scope>compile</scope>
     </dependency>
 ---  
   
