@@ -27,6 +27,20 @@ Encrypting application configuration files
       
     []
     
+    * <<Encryption-aware Spring's ServletContextPropertyPlaceholderConfigurer>>:
+      Jasypt provides an implementation of this configuration-related Spring
+      class which can read context parameters in web.xml files with encrypted values
+      and handle them transparently to the rest of the Spring application beans.
+      
+    []
+    
+    * <<Encryption-aware Spring's PreferencesPlaceholderConfigurer>>:
+      Jasypt provides an implementation of this configuration-related Spring
+      class which can preferences set with JDK 1.4's Preferences API with encrypted values
+      and handle them transparently to the rest of the Spring application beans.
+      
+    []
+    
     * <<Encryption of datasource parameters in Hibernate's hibernate.cfg.xml file>>:
       Jasypt provides two <connection provider> classes for Hibernate
       (DriverManager- and C3P0-based) which allow the basic datasource
@@ -218,6 +232,36 @@ Encrypting application configuration files
   constructor argument both an <<<org.jasypt.encryption.StringEncryptor>>> 
   implementation or an <<<org.jasypt.util.TextEncryptor>>> object.
 
+  
+
+
+* Encryptable ServletContextPropertyPlaceholderConfigurer implementation for Spring
+      
+  Jasypt includes <<<org.jasypt.spring.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer>>>
+  which allows the transparent decryption of servlet context parameters in web applications (for example,
+  parameters in <<<WEB-INF/web.xml>>>).
+
+  These encrypted parameters can be specified in a way equivalent to that of encrypted parameters 
+  in <<<.properties>>> files:
+  
+---
+    ...
+    <context-param>
+        <param-name>someParameter</param-name>
+        <param-value>ENC(...)</param-value>
+    </context-param>
+    ...
+---  
+
+
+
+* Encryptable PreferencesPlaceholderConfigurer implementation for Spring
+      
+  Jasypt includes <<<org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer>>>
+  which allows the transparent decryption preferences set with JDK 1.4's Preferences API.
+  
   
   
 * Database password encryption in hibernate.cfg.xml

@@ -50,6 +50,12 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   integration scenarios.
 
 
+  Also, jasypt includes org.jasypt.spring.security3.TokenBasedRememberMeServices for 
+  Spring Security 3, which works in the same way as 
+  org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices 
+  but creating a jasypt-digested data signature for inclusion in rememeber-me cookies.
+
+
 * org.jasypt.spring.security|security2|security3.PasswordEncoder
 
   These <<<PasswordEncoder>>> 

@@ -147,10 +147,13 @@ Integrating Jasypt with Hibernate 3
 ** Providing the encryptor to Hibernate
 
   If we have chosen to use the <encryptorRegisteredName> parameter in our Hibernate 
-  mapping file, we will need to bind somehow an encryptor object to that name.
-
-  This can be done in two different manners, depending on whether we are using
+  mapping file, we will need to bind somehow an encryptor object to that name. This 
+  can be done in two different manners, depending on whether we are using
   an IoC container like Spring or not.
+  
+  Using this way of configuring encryption allows us to use pool-based versions of the
+  encryptor (like <<<org.jasypt.encryption.pbe.PooledPBEStringEncryptor>>>), which
+  will enhance performance in multi-processor/multi-core systems.
 
        * <<Using Spring>> we simply need to create our encryptor, and then a
          <HibernatePBEEncryptor> object to wrap it and set a <registered name>
@@ -158,12 +161,15 @@ Integrating Jasypt with Hibernate 3
          
 -------------------             
   <bean id="strongEncryptor"
-    class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+    class="org.jasypt.encryption.pbe.PooledPBEStringEncryptor">
     <property name="algorithm">
         <value>PBEWithMD5AndTripleDES</value>
     </property>
     <property name="password">
         <value>jasypt</value>
+    </property>
+    <property name="poolSize">
+        <value>4</value>
     </property>
   </bean>
   
@@ -179,7 +185,9 @@ Integrating Jasypt with Hibernate 3
 -------------------             
          Also, we can do it all in the <hibernateStringEncryptor> declaration, if
          we don't want to use the <strongEncryptor> outside of Hibernate and we
-         are OK with the standard encryptor implementation:
+         are OK with the standard encryptor implementation. Also be aware that
+         this approach uses a StandardPBEStringEncryptor instead of a pool-based
+         one, and so performace could be affected in multi-processor systems:
   
 -------------------             
   <bean id="hibernateStringEncryptor"
