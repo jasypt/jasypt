@@ -23,5 +23,4 @@ then
   JAVA_EXECUTABLE=$JAVA_HOME/bin/java
 fi
 
-echo Using classpath: $EXEC_CLASSPATH
 $JAVA_EXECUTABLE -classpath $EXEC_CLASSPATH $EXECUTABLE_CLASS $SCRIPT_NAME "$@"
