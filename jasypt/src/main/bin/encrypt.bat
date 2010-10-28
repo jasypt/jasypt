@@ -17,5 +17,4 @@ if "%JAVA_HOME%" == "" goto execute
 set JAVA_EXECUTABLE="%JAVA_HOME%\bin\java"
 
 :execute
-echo Using classpath: %EXEC_CLASSPATH%
 %JAVA_EXECUTABLE% -classpath %EXEC_CLASSPATH% %EXECUTABLE_CLASS% %SCRIPT_NAME% %*
