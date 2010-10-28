@@ -47,8 +47,8 @@
   
   <scm>
     <url>http://jasypt.cvs.sourceforge.net/jasypt/</url>
-    <connection>scm:cvs:pserver:anonymous:@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</connection>
-    <developerConnection>scm:cvs:ext:developername:@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</developerConnection>
+    <connection>scm:cvs:pserver:username@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</connection>
+    <developerConnection>scm:cvs:ext:username@jasypt.cvs.sourceforge.net:/cvsroot/jasypt:jasypt</developerConnection>
   </scm>
   
   <developers>
