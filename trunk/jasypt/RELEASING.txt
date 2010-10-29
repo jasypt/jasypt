@@ -4,6 +4,8 @@ In order to prepare a release, this steps have to be taken:
    Start the pageant daemon including the private key for sourceforge CVS server.
    Make sure the CVS_RSH variable has value "plink"
    Make sure the "plink" executable is in the path
+   Create a cvs checkout from the commmand line (to avoid conflicts with eclipse's "extssh" method)
+   and work from this checkout.
 
 1. In settings.xml, these entries must exist:
 
