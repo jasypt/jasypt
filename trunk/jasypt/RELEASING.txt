@@ -2,6 +2,8 @@ In order to prepare a release, this steps have to be taken:
 
 0. Ensure a cvs command-line client is installed and accessible with the "cvs" command.
    Start the pageant daemon including the private key for sourceforge CVS server.
+   Make sure the CVS_RSH variable has value "plink"
+   Make sure the "plink" executable is in the path
 
 1. In settings.xml, these entries must exist:
 
