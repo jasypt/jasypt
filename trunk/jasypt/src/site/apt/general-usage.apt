@@ -52,7 +52,7 @@ General Usage
 ...
 StandardStringDigester digester = new StandardStringDigester();
 digester.setAlgorithm("SHA-1");   // optionally set the algorithm
-digester.setIterations("50000");  // increase security by performing 50000 hashing iterations
+digester.setIterations(50000);  // increase security by performing 50000 hashing iterations
 ...
 String digest = digester.digest(myMessage);
 ...
@@ -83,7 +83,7 @@ String digest = digester.digest(myMessage);
 PooledStringDigester digester = new PooledStringDigester();
 digester.setPoolSize(4);          // This would be a good value for a 4-core system 
 digester.setAlgorithm("SHA-1");
-digester.setIterations("50000");
+digester.setIterations(50000);
 ...
 String digest = digester.digest(myMessage);
 ...
