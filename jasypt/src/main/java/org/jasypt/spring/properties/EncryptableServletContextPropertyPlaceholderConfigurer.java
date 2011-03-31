@@ -19,6 +19,8 @@
  */
 package org.jasypt.spring.properties;
 
+import java.util.Properties;
+
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
@@ -107,4 +109,19 @@ public final class EncryptableServletContextPropertyPlaceholderConfigurer
 		}
 		return PropertyValueEncryptionUtils.decrypt(originalValue, this.textEncryptor);
 	}
+	
+	
+	
+    /*
+     * Spring's ServletContextPropertyPlaceholderConfigurer never creates a complete
+     * map of properties, and so never really applies the "convertPropertyValue" method
+     * to them. Instead it gets properties on the fly and returns them without conversion
+     * (as of Spring 3.0.5).
+     * 
+     * This fix makes sure that variables are decrypted before being returned.
+     */
+    protected String resolvePlaceholder(final String placeholder, final Properties props) {
+        return convertPropertyValue(super.resolvePlaceholder(placeholder, props));
+    }
+    
 }
