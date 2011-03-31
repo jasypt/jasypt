@@ -1,4 +1,9 @@
 
+1.7.1
+=====
+- Fixed EncryptableServletContextPropertyPlaceholderConfigurer 
+
+
 1.7
 ===
 - Fixed Hibernate 3.6 compatibility.
