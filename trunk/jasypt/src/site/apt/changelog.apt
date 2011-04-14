@@ -3,6 +3,10 @@
   -------
 
 
+Changes from 1.7 to 1.7.1
+
+    * Fixed EncryptableServletContextPropertyPlaceholderConfigurer
+
 
 Changes from 1.6 to 1.7
 
