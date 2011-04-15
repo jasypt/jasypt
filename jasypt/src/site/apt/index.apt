@@ -3,8 +3,10 @@
   -------
 
   <<Jasypt 1.7.1 RELEASED!>> (April 15th, 2011). [{{{download.html}DOWNLOAD}}] [{{{changelog.html}ChangeLog}}]
+
+  1.7.1 is a maintenance bugfixing release. 
   
-  1.7 is an important release of Jasypt including a lot of exciting new features! 
+  1.7 was an important release of Jasypt including a lot of exciting new features! 
   See {{{whatsnew17.html}<<WHAT'S NEW IN 1.7>>}}.
     
 
