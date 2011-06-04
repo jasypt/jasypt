@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe;
 
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+
 
 /**
  * 
@@ -49,9 +51,10 @@ final class NumberUtils {
                     "Cannot convert an empty array into an int");
         }
         int result = (0xff & byteArray[0]);
-        for (int i = 0; i < byteArray.length; i++) {
+        for (int i = 1; i < byteArray.length; i++) {
             result = (result << 8) | (0xff & byteArray[i]);
         }
+        
         return result;
     }
 
@@ -72,6 +75,9 @@ final class NumberUtils {
             
             final int expectedSize = 
                 NumberUtils.intFromByteArray(encryptedMessageExpectedSizeBytes);
+            if (expectedSize < 0) {
+                throw new EncryptionOperationNotPossibleException("Invalid input");
+            }
 
             // If expected and real sizes do not match, we will need to pad
             // (this happens because BigInteger removes 0x0's and -0x1's in
@@ -110,5 +116,6 @@ final class NumberUtils {
     private NumberUtils() {
         super();
     }
+    
     
 }
