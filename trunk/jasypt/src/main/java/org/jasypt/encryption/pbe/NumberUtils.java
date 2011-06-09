@@ -119,6 +119,11 @@ final class NumberUtils {
         // malformations or manipulation of encrypted data, we will
         // only consider "safe" the allocation of numbers with a size
         // in bytes less or equal to half the available free memory.
+        //
+        // Available free memory is computed as current free memory
+        // (in the amount of memory currently allocated by the JVM) plus
+        // all the amount of memory that the JVM will be allowed to
+        // allocate in the future (until maxMemory).
         final long max = Runtime.getRuntime().maxMemory();
         final long free = Runtime.getRuntime().freeMemory();
         final long total = Runtime.getRuntime().totalMemory();
