@@ -76,7 +76,7 @@ final class NumberUtils {
             final int expectedSize = 
                 NumberUtils.intFromByteArray(encryptedMessageExpectedSizeBytes);
             if (expectedSize < 0 || expectedSize > maxSafeSizeInBytes()) {
-                throw new EncryptionOperationNotPossibleException("Invalid input");
+                throw new EncryptionOperationNotPossibleException();
             }
 
             // If expected and real sizes do not match, we will need to pad
@@ -122,7 +122,7 @@ final class NumberUtils {
         final long max = Runtime.getRuntime().maxMemory();
         final long free = Runtime.getRuntime().freeMemory();
         final long total = Runtime.getRuntime().totalMemory();
-        return (int)(free + (max - total));
+        return (int)((free + (max - total)) / 2);
     }
     
     
