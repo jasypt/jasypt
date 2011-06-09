@@ -75,7 +75,7 @@ final class NumberUtils {
             
             final int expectedSize = 
                 NumberUtils.intFromByteArray(encryptedMessageExpectedSizeBytes);
-            if (expectedSize < 0) {
+            if (expectedSize < 0 || expectedSize > maxSafeSizeInBytes()) {
                 throw new EncryptionOperationNotPossibleException("Invalid input");
             }
 
@@ -110,6 +110,19 @@ final class NumberUtils {
             
         return (byte[]) byteArray.clone();
         
+    }
+    
+
+    
+    private static int maxSafeSizeInBytes() {
+        // In order to avoid Java heap size exceptions due to
+        // malformations or manipulation of encrypted data, we will
+        // only consider "safe" the allocation of numbers with a size
+        // in bytes less or equal to half the available free memory.
+        final long max = Runtime.getRuntime().maxMemory();
+        final long free = Runtime.getRuntime().freeMemory();
+        final long total = Runtime.getRuntime().totalMemory();
+        return (int)(free + (max - total));
     }
     
     
