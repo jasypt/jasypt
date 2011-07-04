@@ -76,6 +76,7 @@
       <item name="· Jasypt + Bouncy Castle" href="bouncy-castle.html"/>
       <item name="· Jasypt + Seam 2" href="seam2.html"/>
       <item name="· Jasypt + Tapestry" href="tapestry.html"/>
+      <item name="· Jasypt + JAXB 2.0" href="jaxb.html"/>
     </menu>
 
     <menu name="Articles">
