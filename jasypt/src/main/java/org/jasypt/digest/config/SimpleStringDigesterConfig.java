@@ -20,6 +20,7 @@
 package org.jasypt.digest.config;
 
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 /**
