@@ -24,8 +24,6 @@ import java.security.Provider;
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
-import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -53,7 +51,7 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  *
  */
-public final class PooledPBEStringEncryptor implements PBEStringEncryptor {
+public final class PooledPBEStringEncryptor implements PBEStringCleanablePasswordEncryptor {
 
     
     private final StandardPBEStringEncryptor firstEncryptor;
@@ -153,6 +151,39 @@ public final class PooledPBEStringEncryptor implements PBEStringEncryptor {
      */
     public void setPassword(final String password) {
         this.firstEncryptor.setPassword(password);
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the password to be used, as a char[].
+     * </p>
+     * <p>
+     * This allows the password to be specified as a <i>cleanable</i>
+     * char[] instead of a String, in extreme security conscious environments
+     * in which no copy of the password as an immutable String should
+     * be kept in memory.
+     * </p>
+     * <p>
+     * <b>Important</b>: the array specified as a parameter WILL BE COPIED
+     * in order to be stored as encryptor configuration. The caller of
+     * this method will therefore be responsible for its cleaning (jasypt
+     * will only clean the internally stored copy).
+     * </p>
+     * <p>
+     * <b>There is no default value for password</b>, so not setting
+     * this parameter either from a 
+     * {@link org.jasypt.encryption.pbe.config.PBEConfig} object or from
+     * a call to <tt>setPassword</tt> will result in an
+     * EncryptionInitializationException being thrown during initialization.
+     * </p>
+     * 
+     * @since 1.8
+     * 
+     * @param password the password to be used.
+     */
+    public synchronized void setPasswordCharArray(char[] password) {
+        this.firstEncryptor.setPasswordCharArray(password);
     }
     
 
@@ -358,13 +389,7 @@ public final class PooledPBEStringEncryptor implements PBEStringEncryptor {
                 throw new IllegalArgumentException("Pool size must be set and > 0");
             }
             
-            this.pool = new StandardPBEStringEncryptor[this.poolSize];
-            this.pool[0] = this.firstEncryptor;
-
-
-            for (int i = 1; i < this.poolSize; i++) {
-                this.pool[i] = this.pool[i - 1].cloneEncryptor();
-            }
+            this.pool = this.firstEncryptor.cloneAndInitializeEncryptor(this.poolSize);
             
             this.initialized = true;
             

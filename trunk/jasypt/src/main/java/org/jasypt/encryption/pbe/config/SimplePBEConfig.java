@@ -22,6 +22,7 @@ package org.jasypt.encryption.pbe.config;
 import java.security.Provider;
 
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.exceptions.PasswordAlreadyCleanedException;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -45,22 +46,36 @@ import org.jasypt.salt.SaltGenerator;
  * should not be called together (a call to <tt>setProviderClassName()</tt> 
  * will override any previous call to <tt>setProvider()</tt>).
  * </p>
+ * <p>
+ * Also note that, in order to satisfy the needs of extreme security-conscious
+ * environments in which no immutable String containing the password is allowed
+ * to be kept in memory, this configuration objects stores the password as char[]
+ * that is cleaned (reset to '') by the jasypt engine as soon as encryption operations
+ * start (and therefore the specified password is no longer needed as an attribute)
+ * (see {@link CleanablePassword}).
+ * </p>
+ * <p>
+ * Setting and getting the password as a char[] is also allowed via the 
+ * {@link #getPasswordCharArray()} and {@link #setPasswordCharArray(char[])} methods.
+ * </p>
  * 
  * @since 1.0
  * 
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class SimplePBEConfig implements PBEConfig {
+public class SimplePBEConfig implements PBEConfig, CleanablePassword {
     
     private String algorithm = null;
-    private String password = null;
+    private char[] password = null;
     private Integer keyObtentionIterations = null;
     private SaltGenerator saltGenerator = null;
     private String providerName = null;
     private Provider provider = null;
     private Integer poolSize = null;
 
+    private boolean passwordCleaned = false;
+    
 
     /**
      * <p>
@@ -95,13 +110,59 @@ public class SimplePBEConfig implements PBEConfig {
     /**
      * Sets the password to be used for encryption.
      * <p>
-     * Determines the result of: {@link #getPassword()}
+     * Determines the result of: {@link #getPassword()} and 
+     * {@link #getPasswordCharArray()}.
      * </p>
      * 
      * @param password the password to be used.
      */
     public void setPassword(final String password) {
-        this.password = password;
+        if (this.password != null) {
+            // We clean the old password, if there is one.
+            cleanPassword();
+        }
+        if (password == null) {
+            this.password = null;
+        } else {
+            this.password = password.toCharArray();
+        }
+    }
+
+
+    /**
+     * Sets the password to be used for encryption, as a char[].
+     * <p>
+     * This allows the password to be specified as a <i>cleanable</i>
+     * char[] instead of a String, in extreme security conscious environments
+     * in which no copy of the password as an immutable String should
+     * be kept in memory.
+     * </p>
+     * <p>
+     * <b>Important</b>: the array specified as a parameter WILL BE COPIED
+     * in order to be stored in the configuration object. The caller of
+     * this method will therefore be responsible for its cleaning (jasypt
+     * will only clean the internally stored copy).
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getPassword()} and 
+     * {@link #getPasswordCharArray()}.
+     * </p>
+     * 
+     * @since 1.8
+     * 
+     * @param password the password to be used.
+     */
+    public void setPasswordCharArray(final char[] password) {
+        if (this.password != null) {
+            // We clean the old password, if there is one.
+            cleanPassword();
+        }
+        if (password == null) {
+            this.password = null;
+        } else {
+            this.password = new char[password.length];
+            System.arraycopy(password, 0, this.password, 0, password.length);
+        }
     }
 
     
@@ -359,7 +420,20 @@ public class SimplePBEConfig implements PBEConfig {
 
     
     public String getPassword() {
-        return this.password;
+        if (this.passwordCleaned) {
+            throw new PasswordAlreadyCleanedException();
+        }
+        return new String(this.password);
+    }
+
+    
+    public char[] getPasswordCharArray() {
+        if (this.passwordCleaned) {
+            throw new PasswordAlreadyCleanedException();
+        }
+        final char[] result = new char[this.password.length];
+        System.arraycopy(this.password, 0, result, 0, this.password.length);
+        return result;
     }
 
     
@@ -382,6 +456,19 @@ public class SimplePBEConfig implements PBEConfig {
 
     public Integer getPoolSize() {
         return this.poolSize;
+    }
+
+
+    
+    public void cleanPassword() {
+        if (this.password != null) {
+            final int pwdLength = this.password.length;
+            for (int i = 0; i < pwdLength; i++) {
+                this.password[i] = (char)0;
+            }
+            this.password = new char[0];
+        }
+        this.passwordCleaned = true;
     }
 
     

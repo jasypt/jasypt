@@ -29,6 +29,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 import org.jasypt.commons.CommonUtils;
+import org.jasypt.encryption.pbe.config.CleanablePassword;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -122,7 +123,7 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
+public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordEncryptor {
 
 
     /**
@@ -150,7 +151,7 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     
     // Password to be applied. This will NOT have a default value. If none
     // is set during configuration, an exception will be thrown.
-    private String password = null;
+    private char[] password = null;
     
     // Number of hashing iterations to be applied for obtaining the encryption
     // key from the specified password.
@@ -288,7 +289,55 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         if (isInitialized()) {
             throw new AlreadyInitializedException();
         }
-        this.password = password;
+        if (this.password != null) {
+            // We clean the old password, if there is one.
+            cleanPassword(this.password);
+        }
+        this.password = password.toCharArray();
+        this.passwordSet = true;
+    }
+    
+    
+    /**
+     * <p>
+     * Sets the password to be used, as a char[].
+     * </p>
+     * <p>
+     * This allows the password to be specified as a <i>cleanable</i>
+     * char[] instead of a String, in extreme security conscious environments
+     * in which no copy of the password as an immutable String should
+     * be kept in memory.
+     * </p>
+     * <p>
+     * <b>Important</b>: the array specified as a parameter WILL BE COPIED
+     * in order to be stored as encryptor configuration. The caller of
+     * this method will therefore be responsible for its cleaning (jasypt
+     * will only clean the internally stored copy).
+     * </p>
+     * <p>
+     * <b>There is no default value for password</b>, so not setting
+     * this parameter either from a 
+     * {@link org.jasypt.encryption.pbe.config.PBEConfig} object or from
+     * a call to <tt>setPassword</tt> will result in an
+     * EncryptionInitializationException being thrown during initialization.
+     * </p>
+     * 
+     * @since 1.8
+     * 
+     * @param password the password to be used.
+     */
+    public synchronized void setPasswordCharArray(char[] password) {
+        CommonUtils.validateNotNull(password, "Password cannot be set null");
+        CommonUtils.validateIsTrue(password.length > 0, "Password cannot be set empty");
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        if (this.password != null) {
+            // We clean the old password, if there is one.
+            cleanPassword(this.password);
+        }
+        this.password = new char[password.length];
+        System.arraycopy(password, 0, this.password, 0, password.length);
         this.passwordSet = true;
     }
     
@@ -413,32 +462,57 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
     
     
     /*
-     * Clone this encryptor.
+     * Clone this encryptor 'size' times and initialize it.
+     * This encryptor will be at position 0 itself.
+     * Clones will NOT be initialized.
      */
-    StandardPBEByteEncryptor cloneEncryptor() {
+    synchronized StandardPBEByteEncryptor[] cloneAndInitializeEncryptor(final int size) {
+
+        if (isInitialized()) {
+            throw new EncryptionInitializationException(
+                    "Cannot clone encryptor if it has been already initialized");
+        }
+
+        // If there is a config object, this forces the password configured value 
+        // (if any) into the this.password property.
+        resolveConfigurationPassword();
         
-        // Check initialization
-        if (!isInitialized()) {
-            initialize();
+        final char[] copiedPassword = new char[this.password.length];
+        System.arraycopy(this.password, 0, copiedPassword, 0, this.password.length);
+
+        // Initialize the encryptor - note that this will clean the 
+        // password (that's why copied it before)
+        initialize();
+
+        final StandardPBEByteEncryptor[] clones = new StandardPBEByteEncryptor[size];
+
+        clones[0] = this;
+        
+        for (int i = 1; i < size; i++) {
+            
+            final StandardPBEByteEncryptor clone = new StandardPBEByteEncryptor();
+            clone.setPasswordCharArray(copiedPassword);
+            if (CommonUtils.isNotEmpty(this.algorithm)) {
+                clone.setAlgorithm(this.algorithm);
+            }
+            clone.setKeyObtentionIterations(this.keyObtentionIterations);
+            if (this.provider != null) {
+                clone.setProvider(this.provider);
+            }
+            if (this.providerName != null) {
+                clone.setProviderName(this.providerName);
+            }
+            if (this.saltGenerator != null) {
+                clone.setSaltGenerator(this.saltGenerator);
+            }
+            
+            clones[i] = clone;
+            
         }
         
-        final StandardPBEByteEncryptor cloned = new StandardPBEByteEncryptor();
-        cloned.setPassword(this.password);
-        if (CommonUtils.isNotEmpty(this.algorithm)) {
-            cloned.setAlgorithm(this.algorithm);
-        }
-        cloned.setKeyObtentionIterations(this.keyObtentionIterations);
-        if (this.provider != null) {
-            cloned.setProvider(this.provider);
-        }
-        if (this.providerName != null) {
-            cloned.setProviderName(this.providerName);
-        }
-        if (this.saltGenerator != null) {
-            cloned.setSaltGenerator(this.saltGenerator);
-        }
+        cleanPassword(copiedPassword);
         
-        return cloned;
+        return clones;
         
     }
     
@@ -512,18 +586,13 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
              * corresponding "setX" method has not been called).
              */
             if (this.config != null) {
+
+                resolveConfigurationPassword();
                 
                 String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
                     CommonUtils.validateNotEmpty(configAlgorithm, 
                             "Algorithm cannot be set empty");
-                }
-                
-                
-                String configPassword = this.config.getPassword();
-                if (configPassword != null) {
-                    CommonUtils.validateNotEmpty(configPassword, 
-                            "Password cannot be set empty");
                 }
                 
                 Integer configKeyObtentionIterations = 
@@ -547,9 +616,6 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
                             this.algorithm : configAlgorithm;
-                this.password = 
-                    ((this.passwordSet) || (configPassword == null))?
-                            this.password : configPassword;
                 this.keyObtentionIterations = 
                     ((this.iterationsSet) || 
                      (configKeyObtentionIterations == null))?
@@ -584,13 +650,17 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
                 }
                 
                 // Normalize password to NFC form
-                this.password = Normalizer.normalizeToNfc(this.password);
+                final char[] normalizedPassword = Normalizer.normalizeToNfc(this.password);
                 
                 /*
                  * Encryption and decryption Ciphers are created the usual way.
                  */
-                PBEKeySpec pbeKeySpec = 
-                    new PBEKeySpec(this.password.toCharArray());
+                PBEKeySpec pbeKeySpec = new PBEKeySpec(normalizedPassword);
+                
+                // We don't need the char[] passwords anymore -> clean!
+                cleanPassword(this.password);
+                cleanPassword(normalizedPassword);
+                
                 
                 if (this.provider != null) {
                     
@@ -652,6 +722,67 @@ public final class StandardPBEByteEncryptor implements PBEByteEncryptor {
         
     }
 
+
+    
+    private synchronized void resolveConfigurationPassword() {
+        
+        // Double-check to avoid synchronization issues
+        if (!this.initialized) {
+            
+            if (this.config != null && !this.passwordSet) {
+                
+                // Get the configured password. If the config object implements
+                // CleanablePassword, we get password directly as a char array
+                // in order to avoid unnecessary creation of immutable Strings
+                // containing such password.
+                char[] configPassword = null;
+                if (this.config instanceof CleanablePassword) {
+                    configPassword = ((CleanablePassword)this.config).getPasswordCharArray();
+                } else {
+                    final String configPwd = this.config.getPassword();
+                    if (configPwd != null) {
+                        configPassword = configPwd.toCharArray();
+                    }
+                }
+
+                if (configPassword != null) {
+                    CommonUtils.validateIsTrue(configPassword.length > 0, 
+                            "Password cannot be set empty");
+                }
+
+                if (configPassword != null) {
+                    this.password = new char[configPassword.length];
+                    System.arraycopy(configPassword, 0, this.password, 0, configPassword.length);
+                    this.passwordSet = true;
+                    cleanPassword(configPassword);
+                }
+                
+                // Finally, clean the password at the configuration object
+                if (this.config instanceof CleanablePassword) {
+                    ((CleanablePassword)this.config).cleanPassword();
+                }
+                
+                
+            }
+            
+        }
+        
+    }
+
+        
+    
+    private static void cleanPassword(final char[] password) {
+        if (password != null) {
+            synchronized (password) {
+                final int pwdLength = password.length;
+                for (int i = 0; i < pwdLength; i++) {
+                    password[i] = (char)0;
+                }
+            }
+        }
+    }
+    
+    
 
     /**
      * <p>

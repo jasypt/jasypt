@@ -17,36 +17,45 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.connectionprovider;
+package org.jasypt.encryption.pbe.config;
 
 
 
 /**
  * <p>
- * Constant names of the parameters that can be used by a jasypt's 
- * Hibernate connection provider.
  * </p>
  * 
- * @since 1.4
+ * @since 1.8
  * 
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class ParameterNaming {
+public interface CleanablePassword {
 
     
     /**
-     * Property in <tt>hibernate.cfg.xml</tt> or 
-     * <tt>hibernate.properties</tt> which contains the registered name
-     * (in {@link HibernatePBEEncryptorRegistry}) of the encryptor which 
-     * will be used to decrypt the datasource parameters.
+     * <p>
+     * </p>
+     * <p>
+     * <b>Important</b>: the returned array MUST BE A COPY of the one
+     * stored in the configuration object. The caller of
+     * this method is therefore be responsible for cleaning this 
+     * resulting char[].
+     * </p>
+     * 
+     * @since 1.8
+     * 
      */
-    public static final String ENCRYPTOR_REGISTERED_NAME = 
-        "hibernate.connection.encryptor_registered_name";
-
+    public char[] getPasswordCharArray();
     
-    private ParameterNaming() {
-        super();
-    }
+    /**
+     * <p>
+     * </p>
+     * 
+     * @since 1.8
+     * 
+     */
+    public void cleanPassword();
+
     
 }
