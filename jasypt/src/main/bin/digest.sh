@@ -12,7 +12,7 @@ then
   EXEC_CLASSPATH=$EXEC_CLASSPATH:$JASYPT_CLASSPATH
 fi
 
-for a in `find $LIB_DIR -name *.jar`
+for a in `find $LIB_DIR -name '*.jar'`
 do
   EXEC_CLASSPATH=$EXEC_CLASSPATH:$a
 done
