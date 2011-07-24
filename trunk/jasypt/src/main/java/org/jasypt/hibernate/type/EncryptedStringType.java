@@ -19,6 +19,9 @@
  */
 package org.jasypt.hibernate.type;
 
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
+
 
 
 /**
