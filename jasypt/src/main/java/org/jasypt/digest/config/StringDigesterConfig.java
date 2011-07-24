@@ -19,7 +19,6 @@
  */
 package org.jasypt.digest.config;
 
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 /**

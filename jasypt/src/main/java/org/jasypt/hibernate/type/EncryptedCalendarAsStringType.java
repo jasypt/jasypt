@@ -24,8 +24,6 @@ import java.util.Properties;
 import java.util.TimeZone;
 
 import org.jasypt.commons.CommonUtils;
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
 /**
  * <p>

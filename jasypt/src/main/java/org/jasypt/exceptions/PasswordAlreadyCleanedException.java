@@ -17,36 +17,29 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.connectionprovider;
-
+package org.jasypt.exceptions;
 
 
 /**
- * <p>
- * Constant names of the parameters that can be used by a jasypt's 
- * Hibernate connection provider.
- * </p>
+ * Exception thrown when an attempt is made to access the configured
+ * password of an encryptor when this password has already been
+ * cleaned (so that it appears no more as an immutable String in memory).
  * 
- * @since 1.4
+ * 
+ * @since 1.8
  * 
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class ParameterNaming {
+public final class PasswordAlreadyCleanedException extends RuntimeException {
 
-    
-    /**
-     * Property in <tt>hibernate.cfg.xml</tt> or 
-     * <tt>hibernate.properties</tt> which contains the registered name
-     * (in {@link HibernatePBEEncryptorRegistry}) of the encryptor which 
-     * will be used to decrypt the datasource parameters.
-     */
-    public static final String ENCRYPTOR_REGISTERED_NAME = 
-        "hibernate.connection.encryptor_registered_name";
+    private static final long serialVersionUID = 7988484935273871733L;
 
-    
-    private ParameterNaming() {
-        super();
+    public PasswordAlreadyCleanedException() {
+        super("Password already cleaned: The encryptor that uses this password has " +
+                "already been initialized and therefore this password has been cleaned so "+
+                "that it is no more present in memory. An exception has been raised when accessing " +
+                "this property in order to avoid inconsistencies.");
     }
-    
+
 }

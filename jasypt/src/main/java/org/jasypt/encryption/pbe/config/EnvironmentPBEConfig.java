@@ -591,6 +591,13 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         super.setPassword(password);
     }
 
+
+    public void setPasswordCharArray(final char[] password) {
+        this.passwordEnvName = null;
+        this.passwordSysPropertyName = null;
+        super.setPasswordCharArray(password);
+    }
+
     
     public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGeneratorClassNameEnvName = null;

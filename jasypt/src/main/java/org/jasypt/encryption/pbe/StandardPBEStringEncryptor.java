@@ -119,7 +119,7 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
+public final class StandardPBEStringEncryptor implements PBEStringCleanablePasswordEncryptor {
 
     /**
      * <p>
@@ -298,6 +298,39 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
         this.byteEncryptor.setPassword(password);
     }
     
+    
+    /**
+     * <p>
+     * Sets the password to be used, as a char[].
+     * </p>
+     * <p>
+     * This allows the password to be specified as a <i>cleanable</i>
+     * char[] instead of a String, in extreme security conscious environments
+     * in which no copy of the password as an immutable String should
+     * be kept in memory.
+     * </p>
+     * <p>
+     * <b>Important</b>: the array specified as a parameter WILL BE COPIED
+     * in order to be stored as encryptor configuration. The caller of
+     * this method will therefore be responsible for its cleaning (jasypt
+     * will only clean the internally stored copy).
+     * </p>
+     * <p>
+     * <b>There is no default value for password</b>, so not setting
+     * this parameter either from a 
+     * {@link org.jasypt.encryption.pbe.config.PBEConfig} object or from
+     * a call to <tt>setPassword</tt> will result in an
+     * EncryptionInitializationException being thrown during initialization.
+     * </p>
+     * 
+     * @since 1.8
+     * 
+     * @param password the password to be used.
+     */
+    public void setPasswordCharArray(char[] password) {
+        this.byteEncryptor.setPasswordCharArray(password);
+    }
+    
 
     /**
      * <p>
@@ -426,22 +459,27 @@ public final class StandardPBEStringEncryptor implements PBEStringEncryptor {
     
     
     /*
-     * Clone this encryptor.
+     * Clone this encryptor 'size' times and initialize it.
+     * This encryptor will be at position 0 itself.
+     * Clones will NOT be initialized.
      */
-    StandardPBEStringEncryptor cloneEncryptor() {
+    synchronized StandardPBEStringEncryptor[] cloneAndInitializeEncryptor(final int size) {
         
-        // Check initialization
-        if (!isInitialized()) {
-            initialize();
+        final StandardPBEByteEncryptor[] byteEncryptorClones =
+            this.byteEncryptor.cloneAndInitializeEncryptor(size);
+        
+        final StandardPBEStringEncryptor[] clones = new StandardPBEStringEncryptor[size];
+        
+        for (int i = 0; i < size; i++) {
+            clones[i] = new StandardPBEStringEncryptor(byteEncryptorClones[i]);
+            if (i > 0) {
+                if (CommonUtils.isNotEmpty(this.stringOutputType)) {
+                    clones[i].setStringOutputType(this.stringOutputType);
+                }
+            }
         }
         
-        final StandardPBEStringEncryptor cloned = 
-            new StandardPBEStringEncryptor(this.byteEncryptor.cloneEncryptor());
-        if (CommonUtils.isNotEmpty(this.stringOutputType)) {
-            cloned.setStringOutputType(this.stringOutputType);
-        }
-        
-        return cloned;
+        return clones;
         
     }
     

@@ -22,7 +22,6 @@ package org.jasypt.wicket;
 import org.apache.wicket.util.crypt.ICrypt;
 import org.apache.wicket.util.crypt.ICryptFactory;
 import org.jasypt.encryption.pbe.PBEByteEncryptor;
-import org.jasypt.encryption.pbe.PBEStringEncryptor;
 
 
 /**
