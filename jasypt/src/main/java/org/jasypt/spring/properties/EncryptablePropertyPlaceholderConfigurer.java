@@ -47,6 +47,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * @since 1.4
  * 
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
+ * @author Carlos Fern&aacute;ndez
  * 
  */
 public final class EncryptablePropertyPlaceholderConfigurer 
@@ -110,4 +111,15 @@ public final class EncryptablePropertyPlaceholderConfigurer
 		}
 		return PropertyValueEncryptionUtils.decrypt(originalValue, this.textEncryptor);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @since 1.8
+	 * @see org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#resolveSystemProperty(java.lang.String)
+	 */
+    protected String resolveSystemProperty(final String key) {
+        return convertPropertyValue(super.resolveSystemProperty(key));
+    }
+    
 }
