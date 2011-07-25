@@ -40,7 +40,8 @@ import org.jasypt.salt.SaltGenerator;
  * <b>It is not mandatory that a <tt>PBEByteEncryptor</tt> be explicitly set
  * with {@link #setEncryptor(PBEByteEncryptor)}</b>. If not, a
  * <tt>StandardPBEByteEncryptor</tt> object will be created internally
- * and it will be configurable with the {@link #setPassword(String)},
+ * and it will be configurable with the 
+ * {@link #setPassword(String)}/{@link #setPasswordCharArray(char[])},
  * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
  * {@link #setSaltGenerator(SaltGenerator)}
  * and  {@link #setConfig(PBEConfig)} methods.
@@ -189,6 +190,25 @@ public final class HibernatePBEByteEncryptor {
         final StandardPBEByteEncryptor standardPBEByteEncryptor =
             (StandardPBEByteEncryptor) this.encryptor;
         standardPBEByteEncryptor.setPassword(password);
+    }
+
+
+    /**
+     * Sets the password to be used by the internal encryptor (as a char[]), if a specific
+     * encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     *
+     * @since 1.8
+     * @param password the password to be set for the internal encryptor
+     */
+    public void setPasswordCharArray(final char[] password) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                    "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setPasswordCharArray(password);
     }
 
 

@@ -58,7 +58,8 @@ Using jasypt from Maven 1.x
       <version>1.1</version>
     </dependency>
     <!-- 
-       ICU4J is not needed if you are using Java 6 or higher.
+       ICU4J is not needed if you are using Java 6 or higher, but it will be
+       used if it is present in classpath.
     -->
     <dependency>
       <groupId>com.ibm.icu</groupId>

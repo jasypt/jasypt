@@ -19,5 +19,9 @@ Base dependencies for jasypt
   If you are using Java SE version 5 or lower, you will need:
     
     * {{{http://www.icu-project.org/}International Components for Unicode (ICU)}} 3.4.4 or higher
+    
+  Also note that from 1.8, ICU (icu4j) will be used for normalizing unicode if it is present in
+  classpath, even if Java >= 6 is used (nevertheless, icu4j and <<<java.text.Normalizer>>> implementations
+  are completely compatible).
   
     

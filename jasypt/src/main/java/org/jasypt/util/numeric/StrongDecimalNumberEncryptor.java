@@ -41,7 +41,8 @@ import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
  * The required steps to use it are:
  * <ol>
  *   <li>Create an instance (using <tt>new</tt>).</li>
- *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt>).</li>
+ *   <li>Set a password (using <tt>{@link #setPassword(String)}</tt> or
+ *       <tt>{@link #setPasswordCharArray(char[])}</tt>).</li>
  *   <li>Perform the desired <tt>{@link #encrypt(BigDecimal)}</tt> or 
  *       <tt>{@link #decrypt(BigDecimal)}</tt> operations.</li> 
  * </ol> 
@@ -79,6 +80,17 @@ public final class StrongDecimalNumberEncryptor implements DecimalNumberEncrypto
      */
     public void setPassword(final String password) {
         this.encryptor.setPassword(password);
+    }
+
+    
+    /**
+     * Sets a password, as a char[].
+     * 
+     * @since 1.8
+     * @param password the password to be set.
+     */
+    public void setPasswordCharArray(final char[] password) {
+        this.encryptor.setPasswordCharArray(password);
     }
 
 
