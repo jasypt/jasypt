@@ -77,7 +77,7 @@ Encrypting from the command line: Jasypt CLI Tools
   
 ---
 $ ./encrypt.sh
-Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
 
 USAGE: encrypt.sh [ARGUMENTS]
 
@@ -151,7 +151,7 @@ uv9+BnQFuZbfTV5Kf45oBOr0eJzBW5AS+XaYY+Lu5XWYhGgl0Ee41P0QUGpIrfyD
   
 ---
 $ ./decrypt.sh
-Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
 
 USAGE: decrypt.sh [ARGUMENTS]
 
@@ -226,7 +226,7 @@ This is my message to be encrypted
   
 ---
 $ ./digest.sh
-Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.7.jar
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
 
 USAGE: digest.sh [ARGUMENTS]
 

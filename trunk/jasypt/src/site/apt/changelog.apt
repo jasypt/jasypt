@@ -3,6 +3,25 @@
   -------
 
 
+Changes from 1.7.1 to 1.8
+    
+    * Modified in-memory storage of PBE passwords to avoid having Strings in memory that contain
+      the password being used. Now PBE passwords are stored as char[] objects that are zeroed as
+      soon as they are used. New "setPasswordCharArray(char[] password)" methods allow users to
+      specify passwords as char[] also, so that there is no need to create String passwords.
+      
+    * Modified the order in which Normalizer implementations are used: now icu4j is used if it is
+      in the classpath (even if Java >= 6 is being used). If icu4j is not present, java.text.Normalizer
+      is used (if Java >= 6).
+      
+    * Added to EncryptablePropertyPlaceholderConfigurer the ability to decrypt system properties.
+      
+    * Fixed CLI scripts: *.jar in "find" command was matching jar files in the current folder 
+      instead of those in the lib folder. Fixed by surrounding "*.jar" by simple inverted commas.
+
+    * Small bugfixing for large BigInteger number decryption.
+
+
 Changes from 1.7 to 1.7.1
 
     * Fixed EncryptableServletContextPropertyPlaceholderConfigurer
