@@ -52,7 +52,7 @@ import org.jasypt.salt.SaltGenerator;
  * to be kept in memory, this configuration objects stores the password as char[]
  * that is cleaned (reset to '') by the jasypt engine as soon as encryption operations
  * start (and therefore the specified password is no longer needed as an attribute)
- * (see {@link CleanablePassword}).
+ * (see {@link PBECleanablePasswordConfig}).
  * </p>
  * <p>
  * Setting and getting the password as a char[] is also allowed via the 
@@ -64,7 +64,7 @@ import org.jasypt.salt.SaltGenerator;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public class SimplePBEConfig implements PBEConfig, CleanablePassword {
+public class SimplePBEConfig implements PBEConfig, PBECleanablePasswordConfig {
     
     private String algorithm = null;
     private char[] password = null;

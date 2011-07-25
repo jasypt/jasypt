@@ -11,6 +11,7 @@
   is used (if Java >= 6).
 - Fixed CLI scripts: *.jar in "find" command was matching jar files in the current folder 
   instead of those in the lib folder. Fixed by surrounding "*.jar" by simple inverted commas.
+- Added to EncryptablePropertyPlaceholderConfigurer the ability to decrypt system properties.
 
 
 1.7.1

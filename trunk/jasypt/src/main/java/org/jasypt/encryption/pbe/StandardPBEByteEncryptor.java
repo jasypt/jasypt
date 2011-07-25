@@ -29,7 +29,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 import org.jasypt.commons.CommonUtils;
-import org.jasypt.encryption.pbe.config.CleanablePassword;
+import org.jasypt.encryption.pbe.config.PBECleanablePasswordConfig;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -736,8 +736,8 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 // in order to avoid unnecessary creation of immutable Strings
                 // containing such password.
                 char[] configPassword = null;
-                if (this.config instanceof CleanablePassword) {
-                    configPassword = ((CleanablePassword)this.config).getPasswordCharArray();
+                if (this.config instanceof PBECleanablePasswordConfig) {
+                    configPassword = ((PBECleanablePasswordConfig)this.config).getPasswordCharArray();
                 } else {
                     final String configPwd = this.config.getPassword();
                     if (configPwd != null) {
@@ -758,8 +758,8 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 }
                 
                 // Finally, clean the password at the configuration object
-                if (this.config instanceof CleanablePassword) {
-                    ((CleanablePassword)this.config).cleanPassword();
+                if (this.config instanceof PBECleanablePasswordConfig) {
+                    ((PBECleanablePasswordConfig)this.config).cleanPassword();
                 }
                 
                 
