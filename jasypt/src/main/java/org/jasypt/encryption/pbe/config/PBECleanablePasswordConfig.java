@@ -23,6 +23,8 @@ package org.jasypt.encryption.pbe.config;
 
 /**
  * <p>
+ *  Common interface for all PBEConfig implementations that store passwords as char[] instead
+ *  of String and also allow this passwords to be set as char[] instead of Strings.
  * </p>
  * 
  * @since 1.8
@@ -30,11 +32,12 @@ package org.jasypt.encryption.pbe.config;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public interface CleanablePassword {
+public interface PBECleanablePasswordConfig {
 
     
     /**
      * <p>
+     * Return the password set, as a char array.
      * </p>
      * <p>
      * <b>Important</b>: the returned array MUST BE A COPY of the one
@@ -50,6 +53,11 @@ public interface CleanablePassword {
     
     /**
      * <p>
+     * Clean the password stored in this configuration object.
+     * </p>
+     * <p>
+     * A common implementation of this <i>cleaning</i> operation consists of
+     * iterating the array of chars and setting each of its positions to <tt>(char)0</tt>.
      * </p>
      * 
      * @since 1.8
