@@ -47,8 +47,8 @@
       <answer>
         <p>
           No, it does not. Commercial support is not offered at the moment, but
-          there are <a href="http://old.nabble.com/Jasypt---Users-f21330.html">User
-          Forums</a> and <a href="mailinglists.html">Mailing Lists</a> at your disposal.
+          there are <a href="http://forum.jasypt.org">User
+          Forums</a> at your disposal.
         </p>
       </answer>
     </faq>
@@ -60,7 +60,7 @@
           In many ways:
         </p>
         <ul>
-          <li>You can write in the <a href="http://old.nabble.com/Jasypt---Users-f21330.html">User 
+          <li>You can write in the <a href="http://forum.jasypt.org">User 
               Forums</a> (or directly to the <a href="team.html">Team</a>) with your
               ideas for improving Jasypt.</li>
           <li>You can contribute some code, write a patch for a new feature
