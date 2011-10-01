@@ -1,5 +1,4 @@
 @ECHO OFF
-IF "%OS%" == "Windows_NT" setlocal ENABLEDELAYEDEXPANSION
 
 set SCRIPT_NAME=encrypt.bat
 cd %0\..
@@ -10,7 +9,9 @@ if "%JASYPT_CLASSPATH%" == "" goto computeclasspath
 set EXEC_CLASSPATH=%EXEC_CLASSPATH%;%JASYPT_CLASSPATH%
 
 :computeclasspath
+IF "%OS%" == "Windows_NT" setlocal ENABLEDELAYEDEXPANSION
 FOR %%c in (.\lib\*.jar) DO set EXEC_CLASSPATH=!EXEC_CLASSPATH!;%%c
+IF "%OS%" == "Windows_NT" setlocal DISABLEDELAYEDEXPANSION
 
 set JAVA_EXECUTABLE=java
 if "%JAVA_HOME%" == "" goto execute
