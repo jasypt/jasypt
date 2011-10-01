@@ -249,6 +249,54 @@
         </p>
       </answer>
     </faq>
+
+    <faq id="use-snapshot">
+      <question>How can I use a SNAPSHOT release of Jasypt?</question>
+      <answer>
+        <p>    
+          From time to time, Jasypt will produce a <i>snapshot</i> release that will allow
+          you to test new or being-developed features. These are <b>non production ready</b>
+          releases, but will be stable enough for most testing purposes, and will enable you
+          to try new features before they are generally available.
+        </p> 
+        <p>
+          In order to use snapshot releases, you need to add the Sonatype OSS Snapshots
+          repository in your Maven <tt>pom.xml</tt> file, like this (the · dots are only for 
+          indenting, remove them in your code):
+        </p>
+        <code>
+          &lt;repositories&gt;<br />
+          ··&lt;repository&gt;<br />
+          ····&lt;id&gt;sonatype-nexus-snapshots&lt;/id&gt;<br />
+          ····&lt;name&gt;Sonatype Nexus Snapshots&lt;/name&gt;<br />
+          ····&lt;url&gt;<b>https://oss.sonatype.org/content/repositories/snapshots</b>&lt;/url&gt;<br />
+          ····&lt;snapshots&gt;<br />
+          ······&lt;enabled&gt;true&lt;/enabled&gt;<br />
+          ····&lt;/snapshots&gt;<br />
+          ··&lt;/repository&gt;<br />
+          &lt;/repositories&gt;
+        </code>
+        <p>
+          Also, you will have to modify your Jasypt dependency/ies to use a 
+          <i>snapshot version</i>, which usually consists of the version number of the
+          <b>next</b> release (not the current one), followed by <tt>-SNAPSHOT</tt>.
+          For example, while <tt>1.8</tt> is the latest published stable release,
+          snapshots will probably appear under the <tt>1.9-SNAPSHOT</tt> or
+          maybe <tt>2.0-SNAPSHOT</tt> version numbers:
+        </p>
+        <code>
+            &lt;dependency&gt;<br />
+            ··&lt;groupId&gt;org.jasypt&lt;/groupId&gt;<br />
+            ··&lt;artifactId&gt;jasypt&lt;/artifactId&gt;<br />
+            ··&lt;version&gt;<b>1.9-SNAPSHOT</b>&lt;/version&gt;<br />
+            ··&lt;scope&gt;compile&lt;/scope&gt;<br />
+            &lt;/dependency&gt;
+        </code>
+      </answer>
+    </faq>
+    
+
+
     
   </part>
 
