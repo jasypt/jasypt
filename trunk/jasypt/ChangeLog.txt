@@ -1,4 +1,10 @@
 
+1.9
+===
+- Fixed error in CLI .bat files resulting in bad processing of CLI commands
+  which involved passwords containing exclamation mark symbols.
+  
+
 1.8
 ===
 - Small bugfixing for large BigInteger number decryption.
