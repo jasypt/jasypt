@@ -1,0 +1,34 @@
+
+ Building JASYPT-HIBERNATE3
+ --------------------------
+ 
+ To build JASYPT-HIBERNATE3 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-HIBERNATE3
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-hibernate3-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-hibernate3/{version}/jasypt-hibernate3-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-HIBERNATE3
+ ----------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-HIBERNATE3, execute this 
+ from the JASYPT-HIBERNATE3 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 
