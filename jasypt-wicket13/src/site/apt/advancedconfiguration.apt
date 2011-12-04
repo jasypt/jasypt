@@ -1,0 +1,75 @@
+  -------
+  Advanced Configuration
+  -------
+
+
+Advanced configuration for encyptors and digesters
+
+  Jasypt allows its provided encryptors and digesters to be configured in
+  any specific ways the user may need.
+  
+  This is achieved by letting the user define his/her own <Config> classes,
+  implementing specific interfaces, and putting these objects in charge
+  of retrieving the configuration parameters in the user's preferred way.
+  
+  The <*Config> interfaces which have to be implemented are:
+  
+      * <<org.jasypt.digest.config.DigesterConfig>> for the configuration of
+      <<<StandardByteDigester>>> and <<<StandardStringDigester>>> objects
+      (by calling their respective <<<setConfig()>>> methods). There also
+      is an <<org.jasypt.digest.config.StringDigesterConfig>> interface
+      for adding configuration parameters specific to String digesting.
+      
+      []
+      
+      * <<org.jasypt.encryption.pbe.config.PBEConfig>> for the configuration of
+      <<<StandardPBEByteEncryptor>>>, <<<StandardPBEStringEncryptor>>>,
+      <<<StandardPBEBigIntegerEncryptor>>> and <<<StandardPBEBigDecimalEncryptor>>>
+      objects (also by calling their respective <<<setConfig()>>> methods). There also
+      is an <<org.jasypt.encryption.pbe.config.StringPBEConfig>> interface
+      for adding configuration parameters specific to String encryption.
+      
+  Jasypt provides at the moment two <standard implementations> of the   
+  <*Config> interfaces for digesters, and three for encryptors:
+  
+      * <<org.jasypt.digest.config.SimpleDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.SimplePBEConfig>>, which allow
+        setting configuration properties in a <bean way> (via
+        <<<setX>>> methods). Their <String-specific> variants are
+        <<org.jasypt.digest.config.SimpleStringDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.SimpleStringPBEConfig>>.
+        
+      []
+      
+      * <<org.jasypt.digest.config.EnvironmentDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.EnvironmentPBEConfig>>, which 
+        besides allowing <<<setX>>> configuration, also
+        allow the values of the configuration properties to be set in 
+        environment variables or JVM system properties. This will allow the user,
+        for example, to set an encryption password in an environment variable,
+        start the application or application server, let the jasypt encryptor
+        object initialise, and then unset the variable (thus hiding it).
+        Their <String-specific> variants are
+        <<org.jasypt.digest.config.EnvironmentStringDigesterConfig>> and 
+        <<org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig>>.
+        
+      []
+      
+      * <<org.jasypt.encryption.pbe.config.WebPBEConfig>> (and
+      <<org.jasypt.encryption.pbe.config.WebStringPBEConfig>>), only for
+      Password Based Encryption, which allow the configuration of encryptor
+      passwords in web applications from the web itself, once the webapp
+      has been deployed (and thus allowing developers not to store the
+      encryption passwords in any file, simply providing it to the app each
+      time it is deployed). {{{webconfiguration.html}Learn more}}.
+      
+        
+  <<Important>>: If a *Config object returns <<<null>>> for a configuration
+  value, then it will be simply ignored, and other configuration mechanisms
+  (like default values or the encryptor's or digester's own <<<setX>>> methods)
+  will be honored. <This allows the implementation of *Config classes that
+  only provide some of the configuration parameters>.
+  
+  
+  
+  
