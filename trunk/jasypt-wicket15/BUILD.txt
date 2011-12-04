@@ -1,0 +1,34 @@
+
+ Building JASYPT-WICKET15
+ ------------------------
+ 
+ To build JASYPT-WICKET15 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-WICKET15
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-wicket15-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-wicket15/{version}/jasypt-wicket15-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-WICKET15
+ --------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-WICKET15, execute this 
+ from the JASYPT-WICKET15 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 
