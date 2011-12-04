@@ -1,0 +1,71 @@
+  -------
+  Using Jasypt from Maven 2
+  -------
+
+
+Using Jasypt from Maven 2
+
+  Adding jasypt to your Maven 2 project is very easy,
+  you just need to add the following dependency to your pom.xml:
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>{version}</version>
+      <scope>compile</scope>
+    </dependency>
+---------
+
+  Alternatively, by specifying a classifier you can use the <lite> artifact, which contains only
+  the essentials in a much smaller .jar file. [{{{lite.html}More Info}}].
+
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>{version}</version>
+      <classifier>lite</classifier>
+      <scope>compile</scope>
+    </dependency>
+---------
+
+
+Using jasypt from Maven 1.x
+
+  Adding jasypt to your Maven 1.x project is almost as easy
+  as it is for Maven 2, except for the lack of support for transitive dependencies.
+  So, you will need to add the following dependencies to your project.xml:
+      
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>{version}</version>
+    </dependency>
+    <!-- 
+       If you already have dependencies on commons-lang, commons-codec or icu,
+       you should skip the following ones.
+    -->
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <!-- 
+       ICU4J is not needed if you are using Java 6 or higher, but it will be
+       used if it is present in classpath.
+    -->
+    <dependency>
+      <groupId>com.ibm.icu</groupId>
+      <artifactId>icu4j</artifactId>
+      <version>3.4.4</version>
+    </dependency>
+
+---------
+      

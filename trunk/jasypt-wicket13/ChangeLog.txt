@@ -1,0 +1,5 @@
+
+1.9.0
+=====
+
+- Extracted jasypt-wicket13 package from previous monolithic jasypt module.
