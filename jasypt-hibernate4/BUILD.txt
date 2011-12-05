@@ -1,0 +1,34 @@
+
+ Building JASYPT-HIBERNATE4
+ --------------------------
+ 
+ To build JASYPT-HIBERNATE4 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-HIBERNATE4
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-hibernate4-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-hibernate4/{version}/jasypt-hibernate4-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-HIBERNATE4
+ ----------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-HIBERNATE4, execute this 
+ from the JASYPT-HIBERNATE4 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 

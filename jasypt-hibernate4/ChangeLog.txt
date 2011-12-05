@@ -1,0 +1,5 @@
+
+1.9.0
+=====
+
+- Created new jasypt-hibernate4 module for Hibernate 4 integration.
