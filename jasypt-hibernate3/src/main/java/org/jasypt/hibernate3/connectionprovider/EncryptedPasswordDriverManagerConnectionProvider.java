@@ -17,21 +17,21 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.connectionprovider;
+package org.jasypt.hibernate3.connectionprovider;
 
 import java.util.Properties;
 
 import org.hibernate.cfg.Environment;
-import org.hibernate.connection.C3P0ConnectionProvider;
+import org.hibernate.connection.DriverManagerConnectionProvider;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
 
 /**
  *
  * <p>
- * Extension of {@link C3P0ConnectionProvider} that allows the user
+ * Extension of {@link DriverManagerConnectionProvider} that allows the user
  * to write the datasource configuration parameters in an encrypted manner in the 
  * <tt>hibernate.cfg.xml</tt> or <tt>hibernate.properties</tt> file
  * </p>
@@ -59,17 +59,15 @@ import org.jasypt.properties.PropertyValueEncryptionUtils;
  *
  *    &lt;session-factory>
  *
- *      <!-- Database connection settings -->
- *      &lt;property name="<b>connection.provider_class</b>">org.jasypt.hibernate.connectionprovider.EncryptedPasswordC3P0ConnectionProvider&lt;/property>
+ *      &lt;!-- Database connection settings -->
+ *      &lt;property name="<b>connection.provider_class</b>">org.jasypt.hibernate.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider&lt;/property>
  *      &lt;property name="<b>connection.encryptor_registered_name</b>">stringEncryptor&lt;/property>
  *      &lt;property name="connection.driver_class">org.postgresql.Driver&lt;/property>
  *      &lt;property name="connection.url">jdbc:postgresql://localhost/mydatabase&lt;/property>
  *      &lt;property name="connection.username">myuser&lt;/property>
  *      &lt;property name="connection.password">ENC(T6DAe34NasW==)&lt;/property>
- *      &lt;property name="c3p0.min_size">5&lt;/property>
- *      &lt;property name="c3p0.max_size">20&lt;/property>
- *      &lt;property name="c3p0.timeout">1800&lt;/property>
- *      &lt;property name="c3p0.max_statements">50&lt;/property>
+ *      &lt;property name="connection.pool_size">5&lt;/property>
+ *      
  *      ...
  *      
  *    &lt;/session-factory>
@@ -80,19 +78,17 @@ import org.jasypt.properties.PropertyValueEncryptionUtils;
  * </pre>
  * </p>
  * 
- * @since 1.4
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.connectionprovider since 1.4)
  * 
  * @author Daniel Fern&aacute;ndez
  * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
- * 
  */
-public final class EncryptedPasswordC3P0ConnectionProvider 
-        extends C3P0ConnectionProvider {
+public final class EncryptedPasswordDriverManagerConnectionProvider 
+        extends DriverManagerConnectionProvider {
     
     
-    public EncryptedPasswordC3P0ConnectionProvider() {
+    public EncryptedPasswordDriverManagerConnectionProvider() {
         super();
     }
     
@@ -141,7 +137,7 @@ public final class EncryptedPasswordC3P0ConnectionProvider
                    PropertyValueEncryptionUtils.decrypt(password, encryptor));
        }
        
-       // Let Hibernate do the rest
+       // Let Hibernate process
        super.configure(props);
        
     } 

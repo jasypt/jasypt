@@ -17,17 +17,17 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.type;
+package org.jasypt.hibernate3.type;
 
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEStringEncryptor;
 
 
 
 /**
  * <p>
  * A <b>Hibernate</b> <tt>UserType</tt> implementation which allows 
- * encryption of Byte values into String (VARCHAR) database fields
+ * encryption of Short values into String (VARCHAR) database fields
  * during persistence of entities.
  * </p>
  * <p>
@@ -43,13 +43,13 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedByteAsString</b>" class="org.jasypt.hibernate.type.EncryptedByteAsStringType">
+ *    &lt;typedef name="<b>encryptedShortAsString</b>" class="org.jasypt.hibernate.type.EncryptedShortAsStringType">
  *      &lt;param name="encryptorRegisteredName"><b><i>myHibernateStringEncryptor</i></b>&lt;/param>
  *    &lt;/typedef>
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="salary" column="SALARY" type="<b>encryptedByteAsString</b>" />
+ *      &lt;property name="salary" column="SALARY" type="<b>encryptedShortAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -71,7 +71,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * <pre>
  *  &lt;hibernate-mapping package="myapp">
  *    ...
- *    &lt;typedef name="<b>encryptedByteAsString</b>" class="org.jasypt.hibernate.type.EncryptedByteAsStringType">
+ *    &lt;typedef name="<b>encryptedShortAsString</b>" class="org.jasypt.hibernate.type.EncryptedShortAsStringType">
  *      &lt;param name="algorithm"><b><i>PBEWithMD5AndTripleDES</i></b>&lt;/param>
  *      &lt;param name="password"><b><i>XXXXX</i></b>&lt;/param>
  *      &lt;param name="keyObtentionIterations"><b><i>1000</i></b>&lt;/param>
@@ -79,7 +79,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *    ...
  *    &lt;class name="UserData" table="USER_DATA">
  *      ...
- *      &lt;property name="salary" column="SALARY" type="<b>encryptedByteAsString</b>" />
+ *      &lt;property name="salary" column="SALARY" type="<b>encryptedShortAsString</b>" />
  *      ...
  *    &lt;class>
  *    ...
@@ -93,26 +93,26 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * </p>
  * 
  * 
- * @since 1.2
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.type since 1.2)
  * 
  * @author Daniel Fern&aacute;ndez
  * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
- * 
  */
-public final class EncryptedByteAsStringType extends AbstractEncryptedAsStringType{
+public final class EncryptedShortAsStringType extends AbstractEncryptedAsStringType {
 
     /**
      * @see org.jasypt.hibernate.type.AbstractEncryptedAsStringType#convertToObject(java.lang.String)
      */
     protected Object convertToObject(final String string) {
-       return new Byte(string);
+        return new Short(string);
     }
 
     public Class returnedClass() {
-        return Byte.class;
+        return Short.class;
     }
+
+    
 
     
 }

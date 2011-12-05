@@ -26,7 +26,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
 /**
  * <p>
- * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
+ * A <b>Hibernate</b> <tt>UserType</tt> implementation which allows transparent 
  * encryption of String values during persistence of entities.
  * </p>
  * <p>
@@ -96,6 +96,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  *        which existed since 1.0)
  * 
  * @author Daniel Fern&aacute;ndez
+ * 
+ * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
+ *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class EncryptedStringType extends AbstractEncryptedAsStringType{

@@ -26,7 +26,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
 
 /**
  * <p>
- * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows 
+ * A <b>Hibernate</b> <tt>UserType</tt> implementation which allows 
  * encryption of Integer values into String (VARCHAR) database fields
  * during persistence of entities.
  * </p>
@@ -96,6 +96,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez
+ * 
+ * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
+ *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class EncryptedIntegerAsStringType extends AbstractEncryptedAsStringType{

@@ -42,7 +42,7 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
 
 /**
  * <p>
- * A <b>Hibernate 3</b> <tt>UserType</tt> implementation which allows transparent 
+ * A <b>Hibernate</b> <tt>UserType</tt> implementation which allows transparent 
  * encryption of byte[] values during persistence of entities.
  * </p>
  * <p>
@@ -111,6 +111,9 @@ import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
  * @since 1.2
  * 
  * @author Daniel Fern&aacute;ndez
+ * 
+ * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
+ *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class EncryptedBinaryType implements UserType, ParameterizedType {

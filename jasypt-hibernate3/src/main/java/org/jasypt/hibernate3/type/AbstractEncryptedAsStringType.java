@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.type;
+package org.jasypt.hibernate3.type;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
@@ -33,19 +33,17 @@ import org.hibernate.util.EqualsHelper;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
 
 /**
  *
  * Base class for <b>Hibernate</b> <tt>UserType</tt>s to store 
  * values as encrypted strings.
  * 
- * @since 1.2
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.type since 1.2)
  * @author Daniel Fern&aacute;ndez
  * @author Iv&aacute;n Garc&iacute;a S&aacute;inz-Aja
- * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public abstract class AbstractEncryptedAsStringType 

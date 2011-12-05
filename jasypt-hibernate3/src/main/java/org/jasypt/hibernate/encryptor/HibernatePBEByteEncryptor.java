@@ -115,6 +115,9 @@ import org.jasypt.salt.SaltGenerator;
  * 
  * @author Daniel Fern&aacute;ndez
  * 
+ * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
+ *             has been renamed as org.jasypt.hibernate3.connectionprovider.
+ * 
  */
 public final class HibernatePBEByteEncryptor {
 

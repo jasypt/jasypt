@@ -17,31 +17,29 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.encryptor;
+package org.jasypt.hibernate3.encryptor;
 
-import java.math.BigInteger;
-
-import org.jasypt.encryption.pbe.PBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
+import org.jasypt.encryption.pbe.PBEByteEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.salt.SaltGenerator;
 
 /**
  * <p>
- * Placeholder class for <tt>PBEBigIntegerEncryptor</tt> objects which are
+ * Placeholder class for <tt>PBEByteEncryptor</tt> objects which are
  * eligible for use from Hibernate. 
  * </p>
  * <p>
- * This class acts as a wrapper on a <tt>PBEBigIntegerEncryptor</tt>, allowing
+ * This class acts as a wrapper on a <tt>PBEByteEncryptor</tt>, allowing
  * to be set a <b>registered name</b> (see {@link #setRegisteredName(String)})
  * and performing the needed registry operations against the 
  * {@link HibernatePBEEncryptorRegistry}.
  * </p>
  * <p>
- * <b>It is not mandatory that a <tt>PBEBigIntegerEncryptor</tt> be explicitly set
- * with {@link #setEncryptor(PBEBigIntegerEncryptor)}</b>. If not, a
- * <tt>StandardPBEBigIntegerEncryptor</tt> object will be created internally
+ * <b>It is not mandatory that a <tt>PBEByteEncryptor</tt> be explicitly set
+ * with {@link #setEncryptor(PBEByteEncryptor)}</b>. If not, a
+ * <tt>StandardPBEByteEncryptor</tt> object will be created internally
  * and it will be configurable with the 
  * {@link #setPassword(String)}/{@link #setPasswordCharArray(char[])},
  * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
@@ -72,8 +70,8 @@ import org.jasypt.salt.SaltGenerator;
  *  ...
  *  &lt;-- Optional, as the hibernateEncryptor could be directly set an     -->
  *  &lt;-- algorithm and password.                                          -->
- *  &lt;bean id="bigIntegerEncryptor"
- *    class="org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor">
+ *  &lt;bean id="byteEncryptor"
+ *    class="org.jasypt.encryption.pbe.StandardPBEByteEncryptor">
  *    &lt;property name="algorithm">
  *        &lt;value>PBEWithMD5AndDES&lt;/value>
  *    &lt;/property>
@@ -83,12 +81,12 @@ import org.jasypt.salt.SaltGenerator;
  *  &lt;/bean>
  *  
  *  &lt;bean id="hibernateEncryptor"
- *    class="org.jasypt.hibernate.encryptor.HibernatePBEBigIntegerEncryptor">
+ *    class="org.jasypt.hibernate.encryptor.HibernatePBEByteEncryptor">
  *    &lt;property name="registeredName">
- *        &lt;value><b>myHibernateBigIntegerEncryptor</b>&lt;/value>
+ *        &lt;value><b>myHibernateByteEncryptor</b>&lt;/value>
  *    &lt;/property>
  *    &lt;property name="encryptor">
- *        &lt;ref bean="bigIntegerEncryptor" />
+ *        &lt;ref bean="byteEncryptor" />
  *    &lt;/property>
  *  &lt;/bean>
  *  ...
@@ -99,54 +97,52 @@ import org.jasypt.salt.SaltGenerator;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBigIntegerType">
- *      &lt;param name="encryptorRegisteredName"><b>myHibernateBigIntegerEncryptor</b>&lt;/param>
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBinaryType">
+ *      &lt;param name="encryptorRegisteredName"><b>myHibernateByteEncryptor</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>
  * </p>
  * <p>
- * An important thing to note is that, when using <tt>HibernatePBEBigIntegerEncryptor</tt>
- * objects this way to wrap <tt>PBEBigIntegerEncryptor</tt>s, <u>it is not
+ * An important thing to note is that, when using <tt>HibernatePBEByteEncryptor</tt>
+ * objects this way to wrap <tt>PBEByteEncryptor</tt>s, <u>it is not
  * necessary to deal with {@link HibernatePBEEncryptorRegistry}</u>, 
- * because <tt>HibernatePBEBigIntegerEncryptor</tt> objects get automatically registered
+ * because <tt>HibernatePBEByteEncryptor</tt> objects get automatically registered
  * in the encryptor registry when their {@link #setRegisteredName(String)}
  * method is called.
  * </p>
  * 
- * @since 1.2
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.encryptor since 1.2)
  * 
  * @author Daniel Fern&aacute;ndez
  * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
- * 
  */
-public final class HibernatePBEBigIntegerEncryptor {
+public final class HibernatePBEByteEncryptor {
 
     private String registeredName = null;
-    private PBEBigIntegerEncryptor encryptor = null;
+    private PBEByteEncryptor encryptor = null;
     private boolean encryptorSet = false;
     
     
     
     /**
-     * Creates a new instance of <tt>HibernatePBEBigIntegerEncryptor</tt> It also
-     * creates a <tt>StandardPBEBigIntegerEncryptor</tt> for internal use, which
-     * can be overriden by calling <tt>setEncryptor(...)</tt>.  
+     * Creates a new instance of <tt>HibernatePBEByteEncryptor</tt> It also
+     * creates a <tt>StandardPBEByteEncryptor</tt> for internal use, which
+     * can be overriden by calling <tt>setEncryptor(...)</tt>. 
      */
-    public HibernatePBEBigIntegerEncryptor() {
+    public HibernatePBEByteEncryptor() {
         super();
-        this.encryptor = new StandardPBEBigIntegerEncryptor();
+        this.encryptor = new StandardPBEByteEncryptor();
         this.encryptorSet = false;
     }
 
 
     /*
-     * For internal use only, by the Registry, when a PBEBigIntegerEncryptor
+     * For internal use only, by the Registry, when a PBEByteEncryptor
      * is registered programmatically.
      */
-    HibernatePBEBigIntegerEncryptor(final String registeredName, 
-            final PBEBigIntegerEncryptor encryptor) {
+    HibernatePBEByteEncryptor(final String registeredName, 
+            final PBEByteEncryptor encryptor) {
         this.encryptor = encryptor;
         this.registeredName = registeredName;
         this.encryptorSet = true;
@@ -158,18 +154,18 @@ public final class HibernatePBEBigIntegerEncryptor {
      * 
      * @return the encryptor.
      */
-    public PBEBigIntegerEncryptor getEncryptor() {
+    public PBEByteEncryptor getEncryptor() {
         return this.encryptor;
     }
     
     
     /**
-     * Sets the <tt>PBEBigIntegerEncryptor</tt> to be held (wrapped) by this
+     * Sets the <tt>PBEByteEncryptor</tt> to be held (wrapped) by this
      * object. This method is optional and can be only called once.
      * 
      * @param encryptor the encryptor.
      */
-    public void setEncryptor(final PBEBigIntegerEncryptor encryptor) {
+    public void setEncryptor(final PBEByteEncryptor encryptor) {
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -192,9 +188,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setPassword(password);
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setPassword(password);
     }
 
 
@@ -211,9 +207,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setPasswordCharArray(password);
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setPasswordCharArray(password);
     }
 
 
@@ -229,9 +225,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setAlgorithm(algorithm);
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setAlgorithm(algorithm);
     }
     
 
@@ -247,9 +243,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setKeyObtentionIterations(
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setKeyObtentionIterations(
                 keyObtentionIterations);
     }
     
@@ -267,9 +263,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setSaltGenerator(saltGenerator);
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setSaltGenerator(saltGenerator);
     }
 
 
@@ -285,9 +281,9 @@ public final class HibernatePBEBigIntegerEncryptor {
                     "An encryptor has been already set: no " +
                     "further configuration possible on hibernate wrapper");
         }
-        final StandardPBEBigIntegerEncryptor standardPBEBigIntegerEncryptor =
-            (StandardPBEBigIntegerEncryptor) this.encryptor;
-        standardPBEBigIntegerEncryptor.setConfig(config);
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setConfig(config);
     }
 
 
@@ -297,7 +293,7 @@ public final class HibernatePBEBigIntegerEncryptor {
      * @param message the message to be encrypted.
      * @return the encryption result.
      */
-    public BigInteger encrypt(final BigInteger message) {
+    public byte[] encrypt(final byte[] message) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -312,7 +308,7 @@ public final class HibernatePBEBigIntegerEncryptor {
      * @param encryptedMessage the message to be decrypted.
      * @return the result of decryption.
      */
-    public BigInteger decrypt(final BigInteger encryptedMessage) {
+    public byte[] decrypt(final byte[] encryptedMessage) {
         if (this.encryptor == null) {
             throw new EncryptionInitializationException(
                     "Encryptor has not been set into Hibernate wrapper");
@@ -332,11 +328,11 @@ public final class HibernatePBEBigIntegerEncryptor {
         if (this.registeredName != null) {
             // It had another name before, we have to clean
             HibernatePBEEncryptorRegistry.getInstance().
-                    unregisterHibernatePBEBigIntegerEncryptor(this.registeredName);
+                    unregisterHibernatePBEByteEncryptor(this.registeredName);
         }
         this.registeredName = registeredName;
         HibernatePBEEncryptorRegistry.getInstance().
-                registerHibernatePBEBigIntegerEncryptor(this);
+                registerHibernatePBEByteEncryptor(this);
     }
 
     /**

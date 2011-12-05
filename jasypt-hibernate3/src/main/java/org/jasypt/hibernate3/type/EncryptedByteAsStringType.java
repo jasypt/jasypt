@@ -17,10 +17,10 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.type;
+package org.jasypt.hibernate3.type;
 
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
-import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEStringEncryptor;
 
 
 
@@ -93,12 +93,10 @@ import org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor;
  * </p>
  * 
  * 
- * @since 1.2
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.type since 1.2)
  * 
  * @author Daniel Fern&aacute;ndez
- * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class EncryptedByteAsStringType extends AbstractEncryptedAsStringType{
