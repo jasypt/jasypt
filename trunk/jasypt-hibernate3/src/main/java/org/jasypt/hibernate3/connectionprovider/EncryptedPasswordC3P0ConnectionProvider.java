@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.connectionprovider;
+package org.jasypt.hibernate3.connectionprovider;
 
 import java.util.Properties;
 
@@ -25,7 +25,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.connection.C3P0ConnectionProvider;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
 
 /**
@@ -80,12 +80,10 @@ import org.jasypt.properties.PropertyValueEncryptionUtils;
  * </pre>
  * </p>
  * 
- * @since 1.4
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.connectionprovider since 1.4)
  * 
  * @author Daniel Fern&aacute;ndez
- * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class EncryptedPasswordC3P0ConnectionProvider 

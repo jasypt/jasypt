@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.encryptor;
+package org.jasypt.hibernate3.encryptor;
 
 import java.util.HashMap;
 
@@ -77,13 +77,10 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * </p>
  *
  * 
- * @since 1.2 (class existed as 
- *            org.jasypt.hibernate.HibernatePBEEncryptorRegistry since 1.0)
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.encryptor since 1.2)
  * 
  * @author Daniel Fern&aacute;ndez
- * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class HibernatePBEEncryptorRegistry {

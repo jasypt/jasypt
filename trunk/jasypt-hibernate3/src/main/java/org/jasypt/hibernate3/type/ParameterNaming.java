@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate.type;
+package org.jasypt.hibernate3.type;
 
 /**
  * <p>
@@ -25,12 +25,10 @@ package org.jasypt.hibernate.type;
  * typedef declaration in a Hibernate mapping.
  * </p>
  * 
- * @since 1.4 (was <tt>org.jasypt.hibernate.ParameterNaming</tt> since 1.0)
+ * @since 1.9.0 (class existed in package
+ *            org.jasypt.hibernate.type since 1.4)
  * 
  * @author Daniel Fern&aacute;ndez
- * 
- * @deprecated Will be removed in 1.11. Package org.jasypt.hibernate.connectionprovider
- *             has been renamed as org.jasypt.hibernate3.connectionprovider.
  * 
  */
 public final class ParameterNaming {
@@ -38,7 +36,7 @@ public final class ParameterNaming {
     /**
      * <p>
      * The registered name of an encryptor previously registered at the 
-     * {@link org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry}.
+     * {@link org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry}.
      * </p>
      * <p>
      * Value = <tt>encryptorRegisteredName</tt>
