@@ -1,0 +1,34 @@
+
+ Building JASYPT-SPRING2
+ -----------------------
+ 
+ To build JASYPT-SPRING2 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-SPRING2
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-spring2-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-spring2/{version}/jasypt-spring2-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-SPRING2
+ -------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-SPRING2, execute this 
+ from the JASYPT-SPRING2 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 
