@@ -141,7 +141,6 @@
         <configuration>
           <show>protected</show>
           <noqualifier>java.lang</noqualifier>
-          <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
           <reportOutputDirectory>${project.reporting.outputDirectory}/api/${project.artifactId}/apidocs</reportOutputDirectory>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
         </configuration>
