@@ -141,7 +141,6 @@
         <configuration>
           <show>protected</show>
           <noqualifier>java.lang</noqualifier>
-          <javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
           <reportOutputDirectory>${project.reporting.outputDirectory}/api/${project.artifactId}/apidocs</reportOutputDirectory>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
         </configuration>
@@ -199,24 +198,6 @@
   </build>
 
 
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.2.1</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>license</report>
-              <report>scm</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
 
   <dependencies>
 
