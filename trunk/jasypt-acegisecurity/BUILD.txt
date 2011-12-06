@@ -1,0 +1,34 @@
+
+ Building JASYPT-ACEGISECURITY
+ -----------------------------
+ 
+ To build JASYPT-ACEGISECURITY you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-ACEGISECURITY
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-acegisecurity-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-acegisecurity/{version}/jasypt-acegisecurity-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-ACEGISECURITY
+ -------------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-ACEGISECURITY, execute this 
+ from the JASYPT-ACEGISECURITY root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 
