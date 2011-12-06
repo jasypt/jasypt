@@ -1,0 +1,172 @@
+  -------
+  Web PBE Configuration
+  -------
+
+
+Web PBE Configuration
+
+  When in a web application, Jasypt allows developers to avoid
+  storing encryption passwords for PBE encryptors in files inside the webapp,
+  specifying instead these passwords to the application through a web interface
+  each time it is deployed.
+  
+  This is achieved thanks to an infrastructure consisting of:
+  
+    * <<Special *Config classes>>: <<<org.jasypt.encryption.pbe.WebPBEConfig>>>
+    and <<<org.jasypt.encryption.pbe.WebStringPBEConfig>>>, which when assigned
+    to an encryptor, "mark" this encryptor as eligible for receiving its
+    password via web.
+    
+    []
+    
+    * A <<context listener>>, 
+      <<<org.jasypt.web.pbeconfig.WebPBEInitializationContextListener>>>
+      which will let us create our encryptors, set them their <<<WebPBEConfig>>>
+      configs and register them somewhere in our application. This context
+      listener will be unnecessary if we are using the Spring Framework.
+      
+    []
+    
+    * A <<filter>>, <<<org.jasypt.web.pbeconfig.WebPBEConfigFilter>>>, which
+      will avoid any user to access the web application until the 
+      encryption passwords have been set by the admin.
+      
+    []
+    
+    * A <<servlet>>, <<<org.jasypt.web.pbeconfig.WebPBEConfigServlet>>>, which
+      will show the authorised user a form with which he/she can set the
+      encryption passwods for all encryptors with a <<<WebPBEConfig>>>.
+      
+* WebPBEConfig
+
+  For an encryptor to be assigned a password from the web, it only has
+  to be assigned a WebPBEConfig object, which must be initialised with
+  <both> a unique name an a validation word. The name will identify
+  the config object (and thus the encryptor) and the validation word will
+  make sure that only an authorised person (for example, the application
+  deployer) sets the passwords.
+      
+* WebPBEInitializationContextListener
+      
+  This is a ContextListener which takes an 
+  <<<org.jasypt.web.pbeconfig.WebPBEInitializer>>> implementation
+  class name as a parameter (context-param) and calls its
+  <<<initializeWebPBEConfigs()>>> method to allow the webapp to
+  create its PBE encryptors and declare their associated <<<WebPBEConfig>>>
+  objects.
+
+  An example <<<WebPBEInitializer>>> implementation:
+
+-------
+  package myapp;
+  ... 
+  public class MyWebPBEInitializer implements WebPBEInitializer {
+  
+      public void initializeWebPBEConfigs() {
+      
+          StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+          encryptor.setAlgorithm("PBEWithMD5AndDES");
+          
+          WebPBEConfig webConfig = new WebPBEConfig();
+          webConfig.setValidationWord("jasypt");
+          webConfig.setName("Main Password");
+
+          encryptor.setConfig(webConfig);
+          
+          // Get some user-defined singleton or similar, and register
+          // the encryptor with it so that it can be accessed from the
+          // rest of the application.
+          
+      }
+      
+  }
+-------
+  
+  An example <<<web.xml>>> fragment, registering the context listener:
+
+-------
+    <context-param>
+      <param-name>webPBEInitializerClassName</param-name>
+      <param-value>myapp.MyWebPBEInitializer</param-value>
+    </context-param>
+
+    <listener>
+      <listener-class>
+        org.jasypt.web.pbeconfig.WebPBEInitializationContextListener
+      </listener-class>
+    </listener>
+-------
+
+  <<Important>>: If the web application uses <<Spring Framework>>, <<<WebPBEConfig>>> 
+  objects are declared as beans in the Spring context and this Spring context
+  is initialised at application deploy time 
+  (with Spring's <<<ContextLoaderListener>>>), the use 
+  of this context listener will become unnecessary.
+  
+      
+* WebPBEConfigFilter
+
+  This filter is intended to avoid access to the web application until
+  an admin has set the encryption passwords. It will query the web PBE config
+  system to know whether passwords have been set and, if not, it will show the
+  user a plain <Access Forbidden> page. 
+  
+  An example <<<web.xml>>> fragment (being applied on a Struts servlet):
+
+-------
+    <filter>
+        <filter-name>webPBEConfigFilter</filter-name>
+        <filter-class>org.jasypt.web.pbeconfig.WebPBEConfigFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>webPBEConfigFilter</filter-name>
+        <servlet-name>strutsActionServlet</servlet-name>
+    </filter-mapping>    
+-------
+
+
+      
+* WebPBEConfigServlet
+
+  This servlet's URL should be called by the webapp administrator at deploy
+  time, for setting the passwords of all the PBE encryptors which have
+  been previously assigned a <<<WebPBEConfig>>> configuration object.
+
+  If web PBE configuration has not been done yet, it will show the user a
+  form containing two inputs for each encryptor: the <validation word>
+  and the <password> (retyped).
+
+    * The <validation word> must be input to the value set on the 
+      <<<WebPBEConfig>>> object with its <<<setValidationWord(...)>>>
+      method. This will ensure that only an authorised person will set
+      the encryption passwords.
+      
+    * The <password> (retyped) must be input to the value which is
+      desired to be the encryption password for each specific encryptor.
+      
+    []
+
+[images/webConfig.png] Web PBE configuration form
+
+  An example <<<web.xml>>> fragment:
+
+-------
+  <servlet>
+    <servlet-name>webPBEConfigServlet</servlet-name>
+    <servlet-class>
+      org.jasypt.web.pbeconfig.WebPBEConfigServlet
+    </servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>webPBEConfigServlet</servlet-name>
+    <url-pattern>/webPBEConfig.do</url-pattern>
+  </servlet-mapping>
+-------
+
+ If this servlet's context is set a logger, it will output messages for
+ both successful and failed attempts to set passwords, including
+ date, time and originating IP address. 
+ 
