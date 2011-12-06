@@ -1,0 +1,74 @@
+  -------
+  Main
+  -------
+
+  <<Jasypt 1.8 RELEASED!>> (July 25th, 2011). [{{{download.html}DOWNLOAD}}] [{{{changelog.html}ChangeLog}}]
+    
+
+Java Simplified Encryption
+
+  Jasypt is a java library which allows 
+  the developer to add basic encryption capabilities to his/her 
+  projects with minimum effort, and without the need of having 
+  deep knowledge on how cryptography works.
+
+    * High-security, standards-based encryption techniques, both for unidirectional
+    and bidirectional encryption. Encrypt passwords, texts, numbers, binaries...
+    
+    * Transparent integration with <<Hibernate>>.
+    
+    * Suitable for integration into <<Spring>>-based applications and also
+      transparently integrable with <<Spring Security>>.
+      
+    * Integrated capabilities for encrypting the configuration of applications
+      (i.e. datasources).
+      
+    * Specific features for <<high-performance encryption>> in multi-processor/multi-core systems.
+
+    * Open API for use with any JCE provider.
+
+    * {{{features.html}...and much more}}
+
+  Have a look at the complete set of <<{{{features.html}Jasypt Features}}>>
+  or check the <<{{{faq.html}FAQ}}>>.
+
+  With Jasypt, encrypting and checking a password can be as simple as...
+  
+----------------
+BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
+...
+if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
+  // correct!
+} else {
+  // bad login!
+}
+----------------
+  
+  ...encrypting and decrypting a text...
+  
+----------------
+BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+textEncryptor.setPassword(myEncryptionPassword);
+String myEncryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+----------------
+
+  ...and what about encrypting some sensitive data directly from Hibernate?
+
+----------------
+<class name="Employee" table="EMPLOYEE">
+  ...
+  <property name="address" column="ADDRESS" type="encryptedString" />
+  <property name="salary" column="SALARY" type="encryptedDecimal" />
+  ...
+<class>
+----------------
+  
+  But of course, besides easy, <<jasypt is highly configurable>>. You will
+  be able to choose encryption algorithms, salt generation and many more
+  advanced features...
+  
+
+  
