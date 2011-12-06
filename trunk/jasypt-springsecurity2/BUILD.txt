@@ -1,0 +1,34 @@
+
+ Building JASYPT-SPRINGSECURITY2
+ -------------------------------
+ 
+ To build JASYPT-SPRINGSECURITY2 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-SPRINGSECURITY2
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-springsecurity2-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-springsecurity2/{version}/jasypt-springsecurity2-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-SPRINGSECURITY2
+ ---------------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-SPRINGSECURITY2, execute this 
+ from the JASYPT-SPRINGSECURITY2 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 
