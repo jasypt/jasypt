@@ -1,0 +1,240 @@
+  -------
+  What is new in Jasypt 1.7
+  -------
+
+
+  <<Please note that jasypt is already in version 1.8>>
+
+What is new in Jasypt 1.7 
+
+* Hibernate 3.6 compatibility
+
+  Hibernate 3.6.0.Final introduced some changes to its custom type API which made jasypt transparent
+  encryption types produce exceptions during initialization.
+  
+  This issue has been fixed while keeping backwards compatibility with older 3.x versions
+  of Hibernate.
+   
+
+* Removal of third-party dependencies
+    
+  Dependencies on both the Apache Commons-Lang and Apache Commons-Codec libraries have been
+  removed. All you need now to run jasypt is:
+  
+    * <<<jasypt-1.7.jar>>> if you are using Java version 6 or newer.
+    
+    * <<<jasypt-1.7.jar>>> and <<<icu4j-3.4.4.jar>>> if you are using Java version 5 or older.  
+
+
+* Improved performance in multi-processor/multi-core systems
+
+  Jasypt 1.7 includes pool-based versions of Standard(Byte|String)Digester and
+  StandardPBE(Byte|String|BigDecimal|BigInteger)Encryptor which can vastly improve performance 
+  in multi-processor/multi-core systems.
+  
+  These pooled digesters and encryptors have exactly the same API as their
+  non-pooled "Standard" relatives --so they can be used interchangeably-- but add a new configuration
+  parameter called "poolSize" which establishes the amount of Standard* digesters/encryptors they
+  will internally hold.
+
+---
+    PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+    encryptor.setPoolSize(4);
+    encryptor.setAlgorithm(algorithm);
+    encryptor.setPassword(encPassword);
+    ...
+    final String result = encryptor.encrypt(message);
+    ...
+---
+  
+  These pooled objects will use their internal Standard* digesters/encryptors to serve the
+  requests in round-robin, so the amount of thread blocking caused by the
+  synchronised code in the Standard* artifacts is reduced to a minimum.
+  
+  These implementations do not create new threads, so they can be safely used in container-controlled
+  environments which do not allow the creation of new threads. 
+  
+  The pool size recommended for a specific application and machine depends on many factors, but will
+  be approximately equal to the number of processors/cores in the machine.
+
+
+* Lightweight jar
+        
+  Jasypt 1.7 includes a <lite> version of the standard jasypt .jar file, in order to reduce the
+  total size in bytes needed in your application to use jasypt. This is especially helpful when
+  using jasypt in mobile platforms.
+  
+  Jasypt "lite" includes both Standard and Pooled, Byte and String digesters and encryptors. And
+  it specifically excludes:
+  
+    * BigDecimal and BigInteger encryption.
+    
+    * The "util" package containing utility classes like <<<BasicPasswordEncryptor>>> (a 
+    correctly configured StandardStringDigester will be used instead).
+    
+    * All Spring, Hibernate and Wicket integrations.
+    
+    * Web PBE Configuration artifacts.
+    
+    * CLI utils.
+    
+    * Property file encryptions.
+    
+    * "Zero" salt generator.
+  
+  If you are using Maven, you can easily include the "lite" jar in your application by specifying
+  a <classifier>:
+  
+---
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.7</version>
+      <classifier>lite</classifier>
+      <scope>compile</scope>
+    </dependency>
+---  
+  
+* Algorithm Registry
+      
+  Jasypt 1.7 adds a class called <<<org.jasypt.registry.AlgorithmRegistry>>> aimed at easily listing
+  the digest and PBE encryption algorithms currently present in your system (and usable by jasypt).
+  
+  It is very simple to use:
+  
+---
+    // digestAlgos is a Set<String> containing the names of the algorithms
+    Set digestAlgos = AlgorithmRegistry.getAllDigestAlgorithms();
+    ... 
+---
+
+  Also, a new command line utility script has been added to the <<</bin>>> folder of the jasypt 
+  distribution that will list your jasypt-ready algorithms from the command line:
+  
+---
+$ cd jasypt-1.7/bin
+$ ./listAlgorithms.sh
+
+DIGEST ALGORITHMS:   [MD2, MD5, SHA, SHA-256, SHA-384, SHA-512]
+
+PBE ALGORITHMS:      [PBEWITHMD5ANDDES, PBEWITHMD5ANDTRIPLEDES, PBEWITHSHA1ANDDESEDE, PBEWITHSHA1ANDRC2_40]
+
+---
+
+
+* Prefix and Suffix
+
+  New "<<<prefix>>>" and "<<<suffix>>>" configuration parameters have been added to String digesters that 
+  allow the specification of a prefix and/or a suffix that will be added to the digest results, and also 
+  expected when matching existing digests.
+
+      
+* Lenient salt size checking
+      
+  A new configuration parameter has been added to digesters in order to enable a lenient behaviour towards
+  salt size in digests when checking them.
+  
+  This allows a digester to check as valid a digest created with a different amount of salt bytes than the
+  value currently configured for it with <<<setSaltSizeBytes>>>.
+
+
+* Salt positioning
+
+  New configuration parameters have been added to digesters in order to invert the position of the salt
+  bytes in relation to the message being digested before and after the digest operation.
+  
+  The "<<<invertPositionOfSaltInMessageBeforeDigesting>>>" configuration parameter allows salt to be positioned
+  after the message being digested (instead of the default, which is before) before applying the digest
+  function to the whole.
+  
+  The "<<<invertPositionOfPlainSaltInEncryptionResults>>>" configuration parameter allows plain (non-digested) salt to
+  be positioned after the results of the digest operation (instead of the default, which is before) after
+  the digest function has been applied.
+  
+  Both these configuration parameters allow compatibility with some encryption schemes which require
+  the salt bytes to be positioned after the message, like for example most implementations of the SSHA 
+  password encyption scheme defined in RFC2307:
+
+---
+    final StandardStringDigester ssha = new StandardStringDigester();
+    ssha.setAlgorithm("SHA-1");
+    ssha.setIterations(1);
+    ssha.setSaltSizeBytes(8);
+    ssha.setPrefix("{SSHA}");
+    ssha.setInvertPositionOfSaltInMessageBeforeDigesting(true);
+    ssha.setInvertPositionOfPlainSaltInEncryptionResults(true);
+    ssha.setUseLenientSaltSizeCheck(true);
+    ...
+    // This result will change each time it is executed due to random salt:
+    // result == "{SSHA}agbpAYBa95UqQml810zUv0c8aNUUcWdtH5u8Yw=="
+    final String result = ssha.digest
+---
+
+
+* Compatibility with RFC2307 password encryption standards used in LDAP systems
+
+  Thanks to the new configuration parameters added to jasypt, a new "util" package has been created
+  in <<<org.jasypt.util.password.rfc2307>>> containing utility classes for password checking following
+  the schemes defined in RFC2307 (especially common in LDAP systems):
+  
+      * RFC2307SHAPasswordEncryptor: SHA-1 algorithm, no salt, no iterations.
+      
+      * RFC2307MD5PasswordEncryptor: MD5 algorithm, no salt, no iterations.
+      
+      * RFC2307SSHAPasswordEncryptor: SHA-1 algorithm, 8-byte salt (configurable), salt positioned 
+        after message, lenient salt size checking, no iterations.
+         
+      * RFC2307SMD5PasswordEncryptor: MD5 algorithm, 8-byte salt (configurable), salt positioned 
+        after message, lenient salt size checking, no iterations. 
+
+
+* Rebuilt command-line (CLI) scripts       
+
+  The command-line scripts included in the <<</bin>>> folder of the jasypt distribution package
+  have been rewritten in order to add the new configuration parameters and also fix problems that
+  didn't allow these scripts to be correctly executed from outside the folder that contained them. 
+
+
+* Rebuilt zip distribution package       
+
+  The jasypt zip distribution package has been reconfigured and rebuilt in order to remove
+  the now-unnecessary "cli-bundle" jar file and to add icu4j to the <<</lib>>> folder so that
+  users with Java version < 6 do not have to add it themselves to the <<<JASYPT_CLASSPATH>>>
+  environment variable to use the command line utils.
+
+
+* Encryptable ServletContextPropertyPlaceholderConfigurer implementation for Spring
+      
+  Jasypt 1.7 includes <<<org.jasypt.spring.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer>>>
+  which allows the transparent decryption of servlet context parameters in web applications (for example,
+  parameters in <<<WEB-INF/web.xml>>>).
+
+  These encrypted parameters can be specified in a way equivalent to that of encrypted parameters 
+  in <<<.properties>>> files:
+  
+---
+    ...
+    <context-param>
+        <param-name>someParameter</param-name>
+        <param-value>ENC(...)</param-value>
+    </context-param>
+    ...
+---  
+
+
+* Encryptable PreferencesPlaceholderConfigurer implementation for Spring
+      
+  Jasypt 1.7 includes <<<org.jasypt.spring.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer>>>
+  which allows the transparent decryption preferences set with JDK 1.4's Preferences API.
+
+
+* TokenBasedRememberMeServices implementation for Spring Security 3
+      
+  Jasypt 1.7 includes <<<org.jasypt.spring.security3.TokenBasedRememberMeServices>>>
+  for Spring Security 3, which works in the same way as
+  <<<org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices>>>
+  but creating a jasypt-digested data signature for inclusion in rememeber-me cookies.
+
+     

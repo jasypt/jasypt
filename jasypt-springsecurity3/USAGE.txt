@@ -1,0 +1,20 @@
+ 
+ Using JASYPT-SPRINGSECURITY3 from Maven 2
+ -----------------------------------------
+ 
+ 
+ In order to use it in your Maven 2 applications, you will need to add it as
+ a dependency with:
+
+     <dependency>
+       <groupId>org.jasypt</groupId>
+       <artifactId>jasypt-springsecurity3</artifactId>
+       <version>{version}</version>
+       <scope>compile</scope>
+     </dependency>
+     
+ In order for this to work correctly, you need to have previously installed
+ jasypt in your local repository (as explained in BUILD.txt) or have a
+ working internet connection to let maven automatically download jasypt 
+ binaries from Maven 2's central repositories.
+ 

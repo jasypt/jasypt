@@ -1,0 +1,34 @@
+
+ Building JASYPT-SPRINGSECURITY3
+ -------------------------------
+ 
+ To build JASYPT-SPRINGSECURITY3 you will need Maven 2. You can get it at:
+ 
+     http://maven.apache.org
+
+ Build and install the project executing, from the JASYPT-SPRINGSECURITY3
+ project root folder:
+ 
+     mvn clean:clean install
+     
+ And you will get a fresh target/jasypt-springsecurity3-{version}.jar file.
+ You will also get it installed in your local repository at:
+ 
+     $M2_REPO/org/jasypt/jasypt-springsecurity3/{version}/jasypt-springsecurity3-{version}.jar
+
+
+
+ Generating Javadoc for JASYPT-SPRINGSECURITY3
+ ---------------------------------------------
+ 
+ If you wish to generate the javadoc for JASYPT-SPRINGSECURITY3, execute this 
+ from the JASYPT-SPRINGSECURITY3 root folder:
+ 
+     mvn javadoc:javadoc
+     
+ This will generate the javadoc documentation in HTML format in:
+ 
+     target/site/apidocs
+ 
+
+ 

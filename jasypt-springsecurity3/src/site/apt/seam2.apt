@@ -1,0 +1,225 @@
+  -------
+  Integrating Jasypt with Seam 2
+  -------
+
+
+Integrating Jasypt with Seam 2 (Mini-Howto)
+
+  (Mini-Howto contributed by <Peter Viglucci>)
+
+* Step 1: Adding the dependencies 
+  
+  Make sure you include references to Jasypt and its dependencies in your
+  project. Check the {{{dependencies.html}dependencies page}} for details on
+  the specific jar files to be added.
+
+* Step 2: Adding the modules
+
+  Make Seam aware that you are using Jasypt by adding the following to
+  <<<application.xml>>>:
+
+----------
+    <!-- Jasypt and dependencies -->
+    <module>
+        <java>jasypt-1.5.jar</java>
+    </module>
+    <module>
+        <java>commons-lang-2.1.jar</java>
+    </module>
+    <module>
+        <java>commons-codec-1.1.jar</java>
+    </module>
+    <!-- ICU4J not needed if you are using Java 6 or higher -->
+    <module>
+        <java>icu4j-3.4.4.jar</java>
+    </module>
+----------
+
+  <<You will need to make these jars available to JBoss as well>>.  Either copy them
+  to the server's <<<lib>>> directory or make sure they are part of the <<<ear>>> file when
+  the app is deployed. If you used <<<seam-gen>>> to generate the skeleton for the
+  application then modify the ear target in the <<<build.xml>>> file to include the jars.  
+
+
+* Step 3: Use annotations to specify the encrypted fields in your class files  
+
+  The Jasypt {{{hibernate3.html}page on Hibernate 3 integration}} details the steps.  Here is a
+  simple example. Imagine you have a <<<Person>>> class with an <ssn> string field you
+  want to store encrypted. The class will look something like this:
+
+
+----------
+package entity.Person;
+
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Version;
+import org.jboss.seam.annotations.Name;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.Length;
+import org.jasypt.hibernate.type.EncryptedStringType;
+
+@TypeDef(
+    name="encryptedString", 
+    typeClass=EncryptedStringType.class, 
+    parameters={@Parameter(name="encryptorRegisteredName",
+                           value="myHibernateStringEncryptor")}
+)
+
+@Entity
+@Name("person")
+public class Person implements Serializable {
+
+	private static final long serialVersionUID = -2082341992912047209L;
+	
+	private Long id;
+	private Integer version;
+	private String firstName;
+	private String lastName;
+	private String ssn;
+	
+	@Id @GeneratedValue
+	public Long getId() {
+	     return id;
+	}
+
+	public void setId(Long id) {
+	     this.id = id;
+	}
+	
+	@Version
+	public Integer getVersion() {
+	     return version;
+	}
+
+	@SuppressWarnings("unused")
+	private void setVersion(Integer version) {
+	     this.version = version;
+	}   	
+	
+	@Length(max=20)
+	public String getFirstName() {
+	     return firstName;
+	}
+
+	public void setFirstName(String name) {
+	     this.firstName = name;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
+
+	@Type(type="encryptedString")	
+	public String getSsn() {
+		return ssn;
+	}   	
+}
+----------
+
+  Notice that we use simple annotations to define the Hibernate mapping.  Also
+  notice the imports you'll need to define in order for this to work.
+
+* Step 4: Provide the encryptor to Hibernate  
+
+  This was a problem in earlier version of Seam because
+  there was not an easy way to run code when the application was initialised. 
+  Seam 2 solves this problem by providing the
+  <<postInitialization>> event.  The <postInitialization> event fires right after
+  Seam has initialised and started up all components. This provides the
+  perfect place to stick the code that provides the encryptor to Hibernate.
+   
+  To make use of the event, we simply define a class with a method that acts
+  as an observer of the event.  Basically, the server is started, right after
+  Seam finishes initializing the event fires, our code gets run.  Here is a
+  simple class called <<<Initializer>>> that does the work:
+
+----------
+package session;
+
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
+import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Observer;
+import org.jboss.seam.annotations.Logger;
+import org.jboss.seam.log.Log;
+
+@Name("initializer")
+public class Initializer {
+
+	@Logger Log log;
+	
+	@Observer("org.jboss.seam.postInitialization")
+	public void initializeJasypt() {
+	
+		log.info("Initializing Jasypt String Encryptor");	
+		StandardPBEStringEncryptor strongEncryptor = 
+		    new StandardPBEStringEncryptor();
+		EnvironmentPBEConfig config = new EnvironmentPBEConfig();
+		config.setPasswordEnvName("jasypt_password");
+		strongEncryptor.setConfig(config);
+		HibernatePBEEncryptorRegistry registry = 
+		    HibernatePBEEncryptorRegistry.getInstance();
+		registry.registerPBEStringEncryptor("myHibernateStringEncryptor", strongEncryptor);
+		
+	}
+}
+----------
+
+  
+  There are a few things going on here:
+  
+  * First, the encryptor is registered
+  with the name "<myHibernateStringEncryptor>" <<which is the same as the name
+  used in the @TypeDef in the Person class>>. That is important for obvious
+  reasons. 
+  
+  []
+  
+  * Second, we are using the <<<EnvironmentPBEConfig>>> class to configure the
+  encryptor. This is done so that we can specify
+  the password as an environment variable that will be read when the code is
+  run.  This might be a better (although optional) solution than leaving the password in
+  a file or hard coded into the app itself because we can immediately unset
+  the variable after the code runs.  The <<<setPasswordEnvName>>> method is used to
+  specify the environment variable that will hold the password, in this case,
+  "<jasypt_password>". 
+
+* Step 5:  Start the server and test that all is working
+
+  First set the variable that EnvironmentPBEConfig is expecting:
+
+----------
+# export jasypt_password="mysecretpassword"
+----------
+
+  Start the server in the background so we can get back to the prompt:
+
+----------
+# run.sh &
+----------
+
+  Wait for the server to start up.  Look for the logging message indicating
+  that the code actually ran.  After the startup is complete, unset the
+  environment variable.
+
+----------
+# unset jasypt_password
+----------
+
+  If all went well then the ssn field will be stored encrypted in the DB! 
+
+  

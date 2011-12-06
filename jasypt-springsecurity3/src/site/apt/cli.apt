@@ -1,0 +1,320 @@
+  -------
+  Encrypting from the command line
+  -------
+
+
+Encrypting from the command line: Jasypt CLI Tools
+
+  Jasypt supplies a bunch of Command Line Interface (CLI) tools, useful for
+  performing encryption, decryption and digest operations from the command line.
+  
+  To use this tools, you should {{{download.html}download}} the <distribution>
+  zip file (named <<<jasypt-$VERSION-dist.zip>>>) and unzip it. Once done,
+  you will find a <<<jasypt-$VERSION/bin>>> directory containing:
+    
+    * A set of <<.bat>> files for Windows execution:
+    
+      * <<<encrypt.bat>>>: for PBE (Password Based Encryption) encryption operations.
+      
+      * <<<decrypt.bat>>>: for PBE (Password Based Encryption) decryption operations.
+      
+      * <<<digest.bat>>>: for message digest operations.
+      
+      * <<<listAlgorithms.bat>>>: for listing the digest and PBE encryption algorithms available in your JVM.
+    
+    []
+    
+    * A set of <<.sh>> files for Linux/UNIX execution:
+    
+      * <<<encrypt.sh>>>: for PBE (Password Based Encryption) encryption operations.
+      
+      * <<<decrypt.sh>>>: for PBE (Password Based Encryption) decryption operations.
+      
+      * <<<digest.sh>>>: for message digest operations.
+      
+      * <<<listAlgorithms.sh>>>: for listing the digest and PBE encryption algorithms available in your JVM.
+      
+      <(Please note that before using the .sh files, you might need to add execution 
+      permissions to them with something like "chmod u+x *.sh".)> 
+    
+    []
+    
+  Most of these commands are executed with the following syntax:
+  
+---
+[command] [argument1]=[value1] [argument2]=[value2] ...
+---
+
+  For example:
+  
+---
+./digest.sh input="U3ERPA33_W0RD" algorithm=SHA1
+---
+
+  <<Extended Classpath>>: All these commands honor the existence of a <<<JASYPT_CLASSPATH>>>
+  environment variable containing extended classpath definitions for the execution of
+  the encryption/decryption/digest commands. This feature can be useful if the user
+  wants to configurehis/her own security provider or salt generator
+  implementation, or if the user is using Java 1.5 or older and needs to add
+  icu4j's jars to the classpath (which are not included with jasypt's distribucion
+  any more).
+  
+  <<Verbosity>>: Most of these commands admit a <<<verbose>>> parameter
+  (which can be set to <true> (default) or <false>) which let the user switch
+  from an explanatory output to a very reduced one, showing only the result
+  of the operation (specially useful for scripting).
+
+
+* Encryption from the command line ("encrypt" command) 
+
+  Encryption is performed at the command line with the 
+  <<<encrypt.bat>>>/<<<encrypt.sh>>> command, and its usage and parametrization
+  corresponds exactly with that of a <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>>.
+  All the default values of this encryptor class are assumed when
+  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+
+  <<Usage>>:
+  
+---
+$ ./encrypt.sh
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
+
+USAGE: encrypt.sh [ARGUMENTS]
+
+  * Arguments must apply to format:
+
+      "arg1=value1 arg2=value2 arg3=value3 ..."
+
+  * Required arguments:
+
+      input
+      password
+
+  * Optional arguments:
+
+      verbose
+      algorithm
+      keyObtentionIterations
+      saltGeneratorClassName
+      providerName
+      providerClassName
+      stringOutputType
+---
+  
+  
+  <<Examples>>:
+
+---
+
+$ ./encrypt.sh input="This is my message to be encrypted" password=MYPAS_WORD
+
+ ----ENVIRONMENT-----------------
+
+Runtime: Sun Microsystems Inc. Java HotSpot(TM) Client VM 1.6.0_03-b05
+
+
+
+ ----ARGUMENTS-------------------
+
+input: This is my message to be encrypted
+password: MYPAS_WORD
+
+
+
+ ----OUTPUT----------------------
+
+k1AwOd5XuW4VfPQtEXEdVlMnaNn19hivMbn1G4JQgq/jArjtKqryXksYX4Hl6A0e
+
+---  
+  
+
+---
+
+$ ./encrypt.sh input="This is my message to be encrypted" password=MYPAS_WORD verbose=false
+uv9+BnQFuZbfTV5Kf45oBOr0eJzBW5AS+XaYY+Lu5XWYhGgl0Ee41P0QUGpIrfyD
+
+---
+
+
+
+
+
+* Decryption from the command line ("decrypt" command) 
+
+  Decryption is performed at the command line with the 
+  <<<decrypt.bat>>>/<<<decrypt.sh>>> command, and its usage and parametrization
+  corresponds exactly with that of a <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>>.
+  All the default values of this encryptor class are assumed when
+  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+
+  <<Usage>>:
+  
+---
+$ ./decrypt.sh
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
+
+USAGE: decrypt.sh [ARGUMENTS]
+
+  * Arguments must apply to format:
+
+      "arg1=value1 arg2=value2 arg3=value3 ..."
+
+  * Required arguments:
+
+      input
+      password
+
+  * Optional arguments:
+
+      verbose
+      algorithm
+      keyObtentionIterations
+      saltGeneratorClassName
+      providerName
+      providerClassName
+      stringOutputType
+---
+  
+  
+  <<Examples>>:
+
+---
+
+$ ./decrypt.sh input="k1AwOd5XuW4VfPQtEXEdVlMnaNn19hivMbn1G4JQgq/jArjtKqryXksYX4Hl6A0e" password=MYPAS_WORD
+
+ ----ENVIRONMENT-----------------
+
+Runtime: Sun Microsystems Inc. Java HotSpot(TM) Client VM 1.6.0_03-b05
+
+
+
+ ----ARGUMENTS-------------------
+
+input: k1AwOd5XuW4VfPQtEXEdVlMnaNn19hivMbn1G4JQgq/jArjtKqryXksYX4Hl6A0e
+password: MYPAS_WORD
+
+
+
+ ----OUTPUT----------------------
+
+This is my message to be encrypted
+
+---  
+  
+
+---
+
+$ ./decrypt.sh input="k1AwOd5XuW4VfPQtEXEdVlMnaNn19hivMbn1G4JQgq/jArjtKqryXksYX4Hl6A0e" password=MYPAS_WORD verbose=false
+This is my message to be encrypted
+
+---
+
+
+
+
+
+
+* Digest from the command line ("digest" command) 
+
+  Digest is performed at the command line with the 
+  <<<digest.bat>>>/<<<digest.sh>>> command, and its usage and parametrization
+  corresponds exactly with that of a <<<org.jasypt.digest.StandardStringDigester>>>.
+  All the default values of this digester class are assumed when
+  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+
+  <<Usage>>:
+  
+---
+$ ./digest.sh
+Using classpath: .:./lib/icu4j-3.4.4.jar:./lib/jasypt-1.8.jar
+
+USAGE: digest.sh [ARGUMENTS]
+
+  * Arguments must apply to format:
+
+      "arg1=value1 arg2=value2 arg3=value3 ..."
+
+  * Required arguments:
+
+      input
+
+  * Optional arguments:
+
+      verbose
+      algorithm
+      iterations
+      saltSizeBytes
+      saltGeneratorClassName
+      providerName
+      providerClassName
+      invertPositionOfSaltInMessageBeforeDigesting
+      invertPositionOfPlainSaltInEncryptionResults
+      useLenientSaltSizeCheck
+      unicodeNormalizationIgnored
+      stringOutputType
+      prefix
+      suffix
+---
+  
+  
+  <<Examples>>:
+
+---
+
+$ ./digest.sh input="userDaTaBaSe_pass_word"
+
+ ----ENVIRONMENT-----------------
+
+Runtime: Sun Microsystems Inc. Java HotSpot(TM) Client VM 1.6.0_03-b05
+
+
+
+ ----ARGUMENTS-------------------
+
+input: userDaTaBaSe_pass_word
+
+
+
+ ----OUTPUT----------------------
+
+RSeN4JXTJwVFK6YYnxr6kYzK5I7aDqnJ
+
+---  
+  
+
+---
+
+$ ./digest.sh input="userDaTaBaSe_pass_word" verbose=false
+3oZF4OzyW/0OZEDG/EU+22b+0ZJg9FSc
+---
+
+
+
+
+
+* Listing algorithms
+
+  The <<<listAlgorithms[.sh|.bat]>>> script will list the digest and PBE
+  (Password-Based-Encryption) algorithms available in your Java VM.
+  
+  It receives no arguments and its usage is extremely simple:
+  
+---
+$ ./listAlgorithms.sh
+
+DIGEST ALGORITHMS:   [MD2, MD5, SHA, SHA-256, SHA-384, SHA-512]
+
+PBE ALGORITHMS:      [PBEWITHMD5ANDDES, PBEWITHMD5ANDTRIPLEDES, PBEWITHSHA1ANDDESEDE, PBEWITHSHA1ANDRC2_40]
+
+---
+  
+  Please note that this command will not list any arguments from non-default JCE providers like
+  Bouncy Castle unless you have registered such providers at the JVM installation by copying 
+  the provider's jar files to the extensions directory of our JRE installation ($JRE_HOME/lib/ext) 
+  and then appending the name of the Provider class at the end of the provider list 
+  at the java.security file in $JRE_HOME/lib/security. 
+  See {{{non-default-providers.html}Using Non-Default Providers}} or 
+  {{{bouncy-castle.html}Jasypt + Bouncy Castle}} for more details.
+  
+
+  
