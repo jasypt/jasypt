@@ -217,7 +217,7 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
     
     /*
      * Creates a new instance of <tt>StandardPBEStringEncryptor</tt> using
-     * the specified byte digester (constructor used for cloning)
+     * the specified byte encryptor (constructor used for cloning)
      */
     private StandardPBEStringEncryptor(final StandardPBEByteEncryptor standardPBEByteEncryptor) {
         super();
