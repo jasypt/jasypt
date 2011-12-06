@@ -1,0 +1,107 @@
+  -------
+  Using Jasypt with non-default JCE providers
+  -------
+
+
+  If you are looking for advice on using Jasypt with the 
+  {{{http://www.bouncycastle.org}Bouncy Castle JCE Provider}}, although
+  this guide will also be relevant for you, you can also have a look at
+  the specific {{{bouncy-castle.html}Jasypt + Bouncy Castle integration guide}}.
+
+Using Jasypt with non-default JCE providers
+
+  Jasypt has an open JCE provider API which allows the developer to use any
+  existing JCE provider for message digesting or password encryption from
+  jasypt.
+  
+  What this means is that any existing algorithms for
+  both digests or PBE can be used in jasypt, as long as you have a JCE
+  provider which implements it.
+  
+  Note that your Java VM (let's say Sun's) already ships with a <default> 
+  JCE provider, which is the one which will be used by jasypt if you do 
+  not specify any.
+
+  
+* What is a JCE provider?
+
+  For you as a non-specialised developer, it will be good to know that a 
+  JCE provider is just a piece of software which implements encryption
+  algorithms, and which bundles at least one class that implements the 
+  <<java.security.Provider>> interface.
+  
+  This class will be the one that we will call "the provider", and one of its
+  methods, <<<getName()>>> will allow us to know the name with which this provider
+  will be registered at our security framework, if we do so (see below).
+  
+  If we want to use an algorithm shipped with a specific provider from
+  our code, we have three choices:
+  
+     * <<Register the provider at the JVM installation>>, copying the
+       provider's jar files to the <extensions directory> of our JRE 
+       installation (<<<$JRE_HOME/lib/ext>>>)
+       and then appending the name of the <<<Provider>>> class
+       at the end of the provider list at the <<<java.security>>> 
+       file in <<<$JRE_HOME/lib/security>>>.
+
+       []
+  
+     * <<Register the provider at run-time>>, by just calling the
+       <<<addProvider(java.security.Provider provider)>>> static method in
+       the <<<java.security.Security>>> class.
+
+       []
+  
+     * <<Don't register the provider>>. Some security entities like 
+       <<<Cipher>>>s or <<<MessageDigest>>>s allow you to pass
+       the provider object itself as a parameter when specifying an algorithm. 
+       This way the provider doesn't need to be registered previously to its use.
+       
+       
+  
+* How can you use your own providers in jasypt?
+
+  Using a non-default JCE provider in jasypt for both message digesting or
+  password-based encryption is really straightforward.
+  You have two options:
+  
+     * <<Specify the provider name>> when configuring your digesters or
+       encryptors, with their <<<setProviderName(String name)>>> method. Using this
+       method assumes you have already registered a provider with the specified
+       name.
+
+       []
+  
+     * <<Specify the provider object itself>> when configuring your digesters or
+       encryptors, with their <<<setProvider(java.security.Provider provider)>>> method. The provider
+       doesn't need to be previously registered.
+  
+  Some examples (using the Bouncy Castle provider):
+  
+
+----------------
+...
+Security.addProvider(new BouncyCastleProvider());
+...
+StandardPBEStringEncryptor mySecondEncryptor = new StandardPBEStringEncryptor();
+mySecondEncryptor.setProviderName("BC");
+mySecondEncryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
+mySecondEncryptor.setPassword(myPassword);
+
+String mySecondEncryptedText = mySecondEncryptor.encrypt(myText);
+...
+----------------
+  
+----------------
+...        
+StandardStringDigester digester = new StandardStringDigester();
+digester.setProvider(new BouncyCastleProvider());
+digester.setAlgorithm("WHIRLPOOL");
+
+String digest = digester.digest(message);
+...
+----------------
+  
+  
+  
+  

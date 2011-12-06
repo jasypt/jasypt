@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<assembly 
+  xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+
+  <id>dist</id>
+  
+  <formats>
+    <format>zip</format>
+  </formats>
+  
+  <fileSets>
+    <fileSet>
+      <directory>${basedir}/src/main/bin/</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <includes>
+        <include>*.sh</include>
+        <include>*.bat</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target/apidocs/</directory>
+      <outputDirectory>/apidocs</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/target/</directory>
+      <outputDirectory>/dist</outputDirectory>
+      <includes>
+        <include>${artifactId}-${version}.jar</include>
+        <include>${artifactId}-${version}-lite.jar</include>
+        <include>${artifactId}-${version}-javadoc.jar</include>
+        <include>${artifactId}-${version}-sources.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${basedir}/</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>LICENSE.txt</include>
+        <include>README.txt</include>
+        <include>NOTICE.txt</include>
+        <include>ChangeLog.txt</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${settings.localRepository}/com/ibm/icu/icu4j/3.4.4</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>icu4j-3.4.4.jar</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  
+    
+    
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>/lib</outputDirectory>
+      <unpack>false</unpack>
+      <scope>runtime</scope>
+    </dependencySet>
+  </dependencySets> 
+
+  
+</assembly>
