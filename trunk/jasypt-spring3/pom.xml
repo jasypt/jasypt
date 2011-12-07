@@ -95,9 +95,16 @@
   <build>
 
     <resources>
+
+      <resource>
+          <directory>src/main/java</directory>
+          <includes>
+              <include>**/*.xsd</include>
+          </includes>
+      </resource>
     
       <resource>
-        <directory>src/main/resources</directory>
+          <directory>src/main/resources</directory>
       </resource>
     
       <resource>
@@ -106,6 +113,15 @@
           <includes>
               <include>LICENSE.txt</include>
               <include>NOTICE.txt</include>
+          </includes>
+      </resource>
+      
+      <resource>
+          <directory>src/main/metainf</directory>
+          <targetPath>META-INF</targetPath>
+          <includes>
+              <include>spring.handlers</include>
+              <include>spring.schemas</include>
           </includes>
       </resource>
       

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--  ============================================================================= -->
+<!--                                                                                -->
+<!--    Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)            -->
+<!--                                                                                -->
+<!--    Licensed under the Apache License, Version 2.0 (the "License");             -->
+<!--    you may not use this file except in compliance with the License.            -->
+<!--    You may obtain a copy of the License at                                     -->
+<!--                                                                                -->
+<!--        http://www.apache.org/licenses/LICENSE-2.0                              -->
+<!--                                                                                -->
+<!--    Unless required by applicable law or agreed to in writing, software         -->
+<!--    distributed under the License is distributed on an "AS IS" BASIS,           -->
+<!--    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    -->
+<!--    See the License for the specific language governing permissions and         -->
+<!--    limitations under the License.                                              -->
+<!--                                                                                -->
+<!--  ============================================================================= -->
+<xsd:schema xmlns="http://www.jasypt.org/schema/encryption"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:tool="http://www.springframework.org/schema/tool"
+        targetNamespace="http://www.jasypt.org/schema/encryption"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool" schemaLocation="http://www.springframework.org/schema/tool/spring-tool-3.0.xsd"/>
+
+
+    <xsd:element name="encryptor-config">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
+                    <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+                    <xsd:attribute name="key-obtention-iterations-env-name" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="password-env-name" type="xsd:string"/>
+                    <xsd:attribute name="password-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="pool-size" type="xsd:integer"/>
+                    <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
+                    <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-class-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
+                    <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+                    <xsd:attribute name="string-output-type" type="xsd:string"/>
+                    <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
+                    <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="byte-encryptor">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="config-bean" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="pool-size" type="xsd:integer"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="string-encryptor">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="config-bean" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="pool-size" type="xsd:integer"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                    <xsd:attribute name="string-output-type" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="big-decimal-encryptor">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="config-bean" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="pool-size" type="xsd:integer"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="big-integer-encryptor">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="config-bean" type="xsd:string"/>
+                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="pool-size" type="xsd:integer"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+</xsd:schema>
