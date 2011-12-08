@@ -39,13 +39,13 @@ public final class EncryptionNamespaceHandler extends NamespaceHandlerSupport {
     public void init() {
         registerBeanDefinitionParser("encryptor-config", new ConfigBeanDefinitionParser());       
         registerBeanDefinitionParser("byte-encryptor", 
-                new EncryptorBeanDefinitionParser(EncryptorBeanDefinitionParser.ENCRYPTOR_TYPE_BYTE));       
+                new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BYTE));       
         registerBeanDefinitionParser("string-encryptor", 
-                new EncryptorBeanDefinitionParser(EncryptorBeanDefinitionParser.ENCRYPTOR_TYPE_STRING));       
+                new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_STRING));       
         registerBeanDefinitionParser("big-decimal-encryptor", 
-                new EncryptorBeanDefinitionParser(EncryptorBeanDefinitionParser.ENCRYPTOR_TYPE_BIG_DECIMAL));       
+                new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BIG_DECIMAL));       
         registerBeanDefinitionParser("big-integer-encryptor", 
-                new EncryptorBeanDefinitionParser(EncryptorBeanDefinitionParser.ENCRYPTOR_TYPE_BIG_INTEGER));       
+                new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BIG_INTEGER));       
     }
 
 
