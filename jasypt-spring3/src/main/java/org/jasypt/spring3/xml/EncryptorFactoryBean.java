@@ -263,6 +263,8 @@ public final class EncryptorFactoryBean implements FactoryBean {
                         st.execute();
                     }
                     
+                    this.initializedObject = encryptor;
+                    
                 }
             }
         }
