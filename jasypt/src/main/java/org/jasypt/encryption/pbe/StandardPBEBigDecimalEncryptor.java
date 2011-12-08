@@ -361,7 +361,9 @@ public final class StandardPBEBigDecimalEncryptor
         
         final StandardPBEBigDecimalEncryptor[] clones = new StandardPBEBigDecimalEncryptor[size];
         
-        for (int i = 0; i < size; i++) {
+        clones[0] = this;
+        
+        for (int i = 1; i < size; i++) {
             clones[i] = new StandardPBEBigDecimalEncryptor(byteEncryptorClones[i]);
         }
         

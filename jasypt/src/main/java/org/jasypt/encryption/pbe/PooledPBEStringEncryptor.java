@@ -450,7 +450,7 @@ public final class PooledPBEStringEncryptor implements PBEStringCleanablePasswor
             poolPosition = this.roundRobin;
             this.roundRobin = (this.roundRobin + 1) % this.poolSize;
         }
-        
+
         return this.pool[poolPosition].encrypt(message);
         
     }

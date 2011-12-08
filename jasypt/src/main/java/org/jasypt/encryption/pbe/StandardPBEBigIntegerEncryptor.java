@@ -360,7 +360,9 @@ public final class StandardPBEBigIntegerEncryptor
         
         final StandardPBEBigIntegerEncryptor[] clones = new StandardPBEBigIntegerEncryptor[size];
         
-        for (int i = 0; i < size; i++) {
+        clones[0] = this;
+        
+        for (int i = 1; i < size; i++) {
             clones[i] = new StandardPBEBigIntegerEncryptor(byteEncryptorClones[i]);
         }
         
