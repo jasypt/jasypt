@@ -1,8 +1,21 @@
 
-1.9
-===
+1.9.0
+=====
+- Divided old "jasypt" artifact into several modules:
+  * jasypt (core)
+  * jasypt-hibernate3
+  * jasypt-hibernate4
+  * jasypt-spring2
+  * jasypt-spring3
+  * jasypt-acegisecurity
+  * jasypt-springsecurity2
+  * jasypt-springsecurity3
+  * jasypt-wicket13
+  * jasypt-wicket15
 - Fixed error in CLI .bat files resulting in bad processing of CLI commands
   which involved passwords containing exclamation mark symbols.
+- Fixed bug in PooledPBEStringEncryptor which caused first encryptor in pool not
+  use hexadecimal output type.
   
 
 1.8

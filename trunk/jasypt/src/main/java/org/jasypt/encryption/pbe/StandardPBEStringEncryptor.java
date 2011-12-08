@@ -446,6 +446,7 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
         this.stringOutputType = 
             CommonUtils.
                 getStandardStringOutputType(stringOutputType);
+
         this.stringOutputTypeSet = true;
     }
 
@@ -468,14 +469,16 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
         final StandardPBEByteEncryptor[] byteEncryptorClones =
             this.byteEncryptor.cloneAndInitializeEncryptor(size);
         
+        initializeSpecifics();
+
         final StandardPBEStringEncryptor[] clones = new StandardPBEStringEncryptor[size];
         
-        for (int i = 0; i < size; i++) {
+        clones[0] = this;
+        
+        for (int i = 1; i < size; i++) {
             clones[i] = new StandardPBEStringEncryptor(byteEncryptorClones[i]);
-            if (i > 0) {
-                if (CommonUtils.isNotEmpty(this.stringOutputType)) {
-                    clones[i].setStringOutputType(this.stringOutputType);
-                }
+            if (CommonUtils.isNotEmpty(this.stringOutputType)) {
+                clones[i].setStringOutputType(this.stringOutputType);
             }
         }
         
@@ -546,30 +549,35 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
         
         // Double-check to avoid synchronization issues
         if (!this.isInitialized()) {
-
-            /*
-             * If a StringPBEConfig object has been set, we need to 
-             * consider the values it returns (if, for each value, the
-             * corresponding "setX" method has not been called).
-             */
-            if (this.stringPBEConfig != null) {
-                
-                final String configStringOutputType = 
-                    this.stringPBEConfig.getStringOutputType();
-
-                this.stringOutputType = 
-                    ((this.stringOutputTypeSet) || (configStringOutputType == null))?
-                            this.stringOutputType : configStringOutputType;
-                
-            }
-            
-            this.stringOutputTypeBase64 =
-                (CommonUtils.STRING_OUTPUT_TYPE_BASE64.
-                    equalsIgnoreCase(this.stringOutputType));
-            
+            initializeSpecifics();
             this.byteEncryptor.initialize();
-        
         }
+
+    }
+    
+    
+    
+    
+    private void initializeSpecifics() {
+        /*
+         * If a StringPBEConfig object has been set, we need to 
+         * consider the values it returns (if, for each value, the
+         * corresponding "setX" method has not been called).
+         */
+        if (this.stringPBEConfig != null) {
+            
+            final String configStringOutputType = 
+                this.stringPBEConfig.getStringOutputType();
+
+            this.stringOutputType = 
+                ((this.stringOutputTypeSet) || (configStringOutputType == null))?
+                        this.stringOutputType : configStringOutputType;
+            
+        }
+        
+        this.stringOutputTypeBase64 =
+            (CommonUtils.STRING_OUTPUT_TYPE_BASE64.
+                equalsIgnoreCase(this.stringOutputType));
 
     }
     
