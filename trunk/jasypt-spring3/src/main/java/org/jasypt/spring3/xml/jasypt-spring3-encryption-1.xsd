@@ -29,6 +29,14 @@
 
 
     <xsd:element name="encryptor-config">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a PBE configuration object (implementing org.jasypt.encryption.pbe.PBEConfig).
+                Depending on the specified attributes, the specific implementation of PBEConfig being
+                created will be automatically chosen among SimplePBEConfig, SimpleStringPBEConfig, 
+                EnvironmentPBEConfig and EnvironmentStringPBEConfig.
+            </xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
@@ -65,6 +73,13 @@
 
 
     <xsd:element name="byte-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a StandardPBEByteEncryptor object, or a PooledPBEByteEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            </xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
@@ -83,6 +98,13 @@
 
 
     <xsd:element name="string-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a StandardPBEStringEncryptor object, or a PooledPBEStringEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            </xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
@@ -102,6 +124,13 @@
 
 
     <xsd:element name="big-decimal-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a StandardPBEBigDecimalEncryptor object, or a PooledPBEBigDecimalEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            </xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
@@ -120,6 +149,13 @@
 
 
     <xsd:element name="big-integer-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Creates a StandardPBEBigIntegerEncryptor object, or a PooledPBEBigIntegerEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            </xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
                 <xsd:extension base="beans:identifiedType">
@@ -131,6 +167,42 @@
                     <xsd:attribute name="provider-bean" type="xsd:string"/>
                     <xsd:attribute name="provider-name" type="xsd:string"/>
                     <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="basic-text-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Declares an org.jasypt.util.BasicTextEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardPBEStringEncryptor with
+                algorithm "PBEWithMD5AndDES".
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="password" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="strong-text-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Declares an org.jasypt.util.StrongTextEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardPBEStringEncryptor with
+                algorithm "PBEWithMD5AndTripleDES".
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="password" type="xsd:string"/>
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>

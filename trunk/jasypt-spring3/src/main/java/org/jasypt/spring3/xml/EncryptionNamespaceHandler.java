@@ -46,6 +46,10 @@ public final class EncryptionNamespaceHandler extends NamespaceHandlerSupport {
                 new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BIG_DECIMAL));       
         registerBeanDefinitionParser("big-integer-encryptor", 
                 new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BIG_INTEGER));       
+        registerBeanDefinitionParser("basic-text-encryptor", 
+                new UtilEncryptorBeanDefinitionParser(UtilEncryptorBeanDefinitionParser.UTIL_TYPE_BASIC));       
+        registerBeanDefinitionParser("strong-text-encryptor", 
+                new UtilEncryptorBeanDefinitionParser(UtilEncryptorBeanDefinitionParser.UTIL_TYPE_STRONG));       
     }
 
 
