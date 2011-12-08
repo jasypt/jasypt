@@ -19,14 +19,6 @@
  */
 package org.jasypt.spring3.xml;
 
-import org.jasypt.encryption.pbe.PooledPBEBigDecimalEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEByteEncryptor;
-import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.w3c.dom.Element;
 
@@ -38,11 +30,6 @@ import org.w3c.dom.Element;
  * 
  */
 final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
-
-    static final int ENCRYPTOR_TYPE_BYTE = 0;
-    static final int ENCRYPTOR_TYPE_STRING = 1;
-    static final int ENCRYPTOR_TYPE_BIG_DECIMAL = 2;
-    static final int ENCRYPTOR_TYPE_BIG_INTEGER = 3;
 
     
     private static final String PARAM_ALGORITHM = "algorithm"; 
@@ -66,11 +53,13 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
 
     
     protected Class getBeanClass(final Element element) {
-        return computeConfigClass(element, this.encryptorType);
+        return EncryptorFactoryBean.class;
     }
 
 
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
+    
+        builder.addConstructorArgValue(new Integer(this.encryptorType));
         
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
         processBeanAttribute(element, builder, PARAM_CONFIG_BEAN, "config");
@@ -84,45 +73,6 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
         
     }
-    
-
-    private static Class computeConfigClass(final Element element, final int encryptorType) {
-        
-        boolean isPooled = false;
-        
-        if (element.hasAttribute(PARAM_POOL_SIZE)) {
-            isPooled = true;
-        } else if (element.hasAttribute(PARAM_CONFIG_BEAN)){
-           final String configBeanName = element.getAttribute(PARAM_CONFIG_BEAN);
-           // TODO Obtain config bean, check its "pool-size" property if possible
-        }
-        
-        if (encryptorType == ENCRYPTOR_TYPE_BYTE) {
-            if (isPooled) {
-                return PooledPBEByteEncryptor.class;
-            }
-            return StandardPBEByteEncryptor.class;
-        } else if (encryptorType == ENCRYPTOR_TYPE_STRING) {
-            if (isPooled) {
-                return PooledPBEStringEncryptor.class;
-            }
-            return StandardPBEStringEncryptor.class;
-        } else if (encryptorType == ENCRYPTOR_TYPE_BIG_DECIMAL) {
-            if (isPooled) {
-                return PooledPBEBigDecimalEncryptor.class;
-            }
-            return StandardPBEBigDecimalEncryptor.class;
-        } else if (encryptorType == ENCRYPTOR_TYPE_BIG_INTEGER) {
-            if (isPooled) {
-                return PooledPBEBigIntegerEncryptor.class;
-            }
-            return StandardPBEBigIntegerEncryptor.class;
-        } 
-        
-        throw new IllegalArgumentException("Unknown encryptor type: " + encryptorType);
-        
-    }
-    
     
     
 }
