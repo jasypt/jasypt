@@ -108,7 +108,7 @@ public final class EncryptorFactoryBean implements FactoryBean {
     }
 
 
-    public void setKeyObtentionIterations(Integer keyObtentionIterations) {
+    public void setKeyObtentionIterations(final Integer keyObtentionIterations) {
         this.keyObtentionIterations = keyObtentionIterations;
         this.keyObtentionIterationsSet =  true;
     }
