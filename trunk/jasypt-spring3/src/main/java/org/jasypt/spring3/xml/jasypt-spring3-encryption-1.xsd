@@ -180,7 +180,7 @@
     <xsd:element name="basic-text-encryptor">
         <xsd:annotation>
             <xsd:documentation>
-                Declares an org.jasypt.util.BasicTextEncryptor utility object. Which 
+                Declares an org.jasypt.util.text.BasicTextEncryptor utility object. Which 
                 is in fact a pre-configuration of a StandardPBEStringEncryptor with
                 algorithm "PBEWithMD5AndDES".
             </xsd:documentation>
@@ -198,7 +198,7 @@
     <xsd:element name="strong-text-encryptor">
         <xsd:annotation>
             <xsd:documentation>
-                Declares an org.jasypt.util.StrongTextEncryptor utility object. Which 
+                Declares an org.jasypt.util.text.StrongTextEncryptor utility object. Which 
                 is in fact a pre-configuration of a StandardPBEStringEncryptor with
                 algorithm "PBEWithMD5AndTripleDES".
             </xsd:documentation>
@@ -335,6 +335,66 @@
                     <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
                     <xsd:attribute name="prefix" type="xsd:string"/>
                     <xsd:attribute name="suffix" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="basic-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Declares an org.jasypt.util.password.BasicPasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "MD5", 8-byte random salt and 1000 iterations.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="configurable-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Declares an org.jasypt.util.password.ConfigurablePasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "SHA-256", 16-byte random salt and 100000 iterations.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="algorithm" type="xsd:string"/>
+                    <xsd:attribute name="config-bean" type="xsd:string"/>
+                    <xsd:attribute name="plain-digest" type="xsd:boolean"/>
+                    <xsd:attribute name="provider-bean" type="xsd:string"/>
+                    <xsd:attribute name="provider-name" type="xsd:string"/>
+                    <xsd:attribute name="string-output-type" type="xsd:string"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="strong-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation>
+                Declares an org.jasypt.util.password.StrongPasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "SHA-256", 16-byte random salt and 100000 iterations.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
                 </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>

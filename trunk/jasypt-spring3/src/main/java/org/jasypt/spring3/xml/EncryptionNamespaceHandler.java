@@ -57,6 +57,12 @@ public final class EncryptionNamespaceHandler extends NamespaceHandlerSupport {
                 new DigesterBeanDefinitionParser(DigesterFactoryBean.DIGESTER_TYPE_BYTE));       
         registerBeanDefinitionParser("string-digester", 
                 new DigesterBeanDefinitionParser(DigesterFactoryBean.DIGESTER_TYPE_STRING));       
+        registerBeanDefinitionParser("basic-password-encryptor", 
+                new UtilDigesterBeanDefinitionParser(UtilDigesterBeanDefinitionParser.UTIL_TYPE_BASIC));       
+        registerBeanDefinitionParser("strong-password-encryptor", 
+                new UtilDigesterBeanDefinitionParser(UtilDigesterBeanDefinitionParser.UTIL_TYPE_STRONG));       
+        registerBeanDefinitionParser("configurable-password-encryptor", 
+                new UtilDigesterBeanDefinitionParser(UtilDigesterBeanDefinitionParser.UTIL_TYPE_CONFIGURABLE));       
         
     }
 
