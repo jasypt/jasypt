@@ -74,7 +74,7 @@ public class TestHibernateTypes extends TestCase {
         finish();
     }
     
-    public static void initialize() {
+    private void initialize() {
 	    registerEncryptors();
 	    
 	    // Configure Hibernate and open session
@@ -97,7 +97,7 @@ public class TestHibernateTypes extends TestCase {
 		generateData();
 	}
 	
-	public static void registerEncryptors() {
+	private void registerEncryptors() {
 	    StandardPBEStringEncryptor stringEncryptor = new StandardPBEStringEncryptor();
         stringEncryptor.setAlgorithm("PBEWithMD5AndDES");
         stringEncryptor.setPassword("jasypt-hibernate3-test");
@@ -115,7 +115,7 @@ public class TestHibernateTypes extends TestCase {
 	/**
 	 * Create db structure
 	 */
-	public static void initDB() {		
+	private void initDB() {		
 		Transaction transaction = session.beginTransaction();
 		
 		try {
@@ -141,7 +141,7 @@ public class TestHibernateTypes extends TestCase {
 	/**
 	 * Generate data to test with
 	 */
-	public static void generateData() {
+	private void generateData() {
 	    userLogin = RandomStringUtils.randomAlphabetic(5);
 	    userName = RandomStringUtils.randomAlphabetic(10);
 	    userPassword = RandomStringUtils.randomAlphanumeric(15);
@@ -154,11 +154,11 @@ public class TestHibernateTypes extends TestCase {
         }
 	}
 	
-	public static void finish() {
+	private void finish() {
 		session.close();
 	}
 	
-	public void createUser() throws Exception {
+	private void createUser() throws Exception {
 	    
 	    User user = new User(userName, userLogin, userPassword,
 				userBirthdate, userDocument);
@@ -175,7 +175,7 @@ public class TestHibernateTypes extends TestCase {
 	
 	}
 	
-	public void readUser() throws Exception {
+	private void readUser() throws Exception {
 		
 		Transaction transaction = session.beginTransaction();
 		
