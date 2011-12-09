@@ -3,3 +3,4 @@
 =====
 
 - Created new jasypt-hibernate4 module for Hibernate 4 integration.
+- Created additional tests
