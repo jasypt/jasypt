@@ -17,11 +17,8 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring3.xml;
+package org.jasypt.spring3.xml.encryption;
 
-import org.jasypt.util.password.BasicPasswordEncryptor;
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.w3c.dom.Element;
 
@@ -32,47 +29,49 @@ import org.w3c.dom.Element;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
+final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
     
     private static final String PARAM_ALGORITHM = "algorithm"; 
     private static final String PARAM_CONFIG_BEAN = "config-bean"; 
+    private static final String PARAM_KEY_OBTENTION_ITERATIONS = "key-obtention-iterations"; 
+    private static final String PARAM_PASSWORD = "password"; 
+    private static final String PARAM_POOL_SIZE = "pool-size"; 
     private static final String PARAM_PROVIDER_BEAN = "provider-bean"; 
     private static final String PARAM_PROVIDER_NAME = "provider-name"; 
+    private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean"; 
     private static final String PARAM_STRING_OUTPUT_TYPE = "string-output-type"; 
     
-    static final int UTIL_TYPE_BASIC = 0;
-    static final int UTIL_TYPE_STRONG = 1;
-    static final int UTIL_TYPE_CONFIGURABLE = 2;
     
-    private final int utilType;
+    private final int encryptorType;
     
     
-    UtilDigesterBeanDefinitionParser(final int utilType) {
+    EncryptorBeanDefinitionParser(final int encryptorType) {
         super();
-        this.utilType = utilType;
+        this.encryptorType = encryptorType;
     }
 
     
     protected Class getBeanClass(final Element element) {
-        if (this.utilType == UTIL_TYPE_BASIC) {
-            return BasicPasswordEncryptor.class;
-        } else if (this.utilType == UTIL_TYPE_STRONG) {
-            return StrongPasswordEncryptor.class;
-        } else if (this.utilType == UTIL_TYPE_CONFIGURABLE) {
-            return ConfigurablePasswordEncryptor.class;
-        } else {
-            throw new IllegalArgumentException("Unknown util type: " + this.utilType);
-        }
+        return EncryptorFactoryBean.class;
     }
 
 
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
+    
+        builder.addConstructorArgValue(new Integer(this.encryptorType));
+        
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
         processBeanAttribute(element, builder, PARAM_CONFIG_BEAN, "config");
+        processIntegerAttribute(element, builder, PARAM_KEY_OBTENTION_ITERATIONS, "keyObtentionIterations");
+        processStringAttribute(element, builder, PARAM_PASSWORD, "password");
+        processIntegerAttribute(element, builder, PARAM_POOL_SIZE, "poolSize");
         processBeanAttribute(element, builder, PARAM_PROVIDER_BEAN, "provider");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
+        processBeanAttribute(element, builder, PARAM_SALT_GENERATOR_BEAN, "saltGenerator");
+        
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
+        
     }
     
     

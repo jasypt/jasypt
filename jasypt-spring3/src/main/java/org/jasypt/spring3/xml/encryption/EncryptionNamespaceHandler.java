@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring3.xml;
+package org.jasypt.spring3.xml.encryption;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 

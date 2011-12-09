@@ -1,1 +1,1 @@
-http\://www.jasypt.org/schema/encryption=org.jasypt.spring3.xml.EncryptionNamespaceHandler
+http\://www.jasypt.org/schema/encryption=org.jasypt.spring3.xml.encryption.EncryptionNamespaceHandler

@@ -1,1 +1,1 @@
-http\://www.jasypt.org/schema/encryption/jasypt-spring3-encryption-1.xsd=org/jasypt/spring3/xml/jasypt-spring3-encryption-1.xsd
+http\://www.jasypt.org/schema/encryption/jasypt-spring3-encryption-1.xsd=org/jasypt/spring3/xml/encryption/jasypt-spring3-encryption-1.xsd
