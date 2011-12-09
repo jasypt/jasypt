@@ -113,6 +113,15 @@
     
     <testResources>
       <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+            <include>**</include>
+        </includes>
+        <excludes>
+            <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+      <testResource>
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
@@ -236,6 +245,48 @@
     </dependency>
     
     
+    <dependency>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    	<version>1.1.1</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>dom4j</groupId>
+    	<artifactId>dom4j</artifactId>
+    	<version>1.6.1</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>commons-collections</groupId>
+    	<artifactId>commons-collections</artifactId>
+    	<version>3.1</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.sf.ehcache</groupId>
+    	<artifactId>ehcache</artifactId>
+    	<version>1.2</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>cglib</groupId>
+    	<artifactId>cglib</artifactId>
+    	<version>2.1_3</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax.transaction</groupId>
+    	<artifactId>jta</artifactId>
+    	<version>1.0.1B</version>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.hsqldb</groupId>
+    	<artifactId>hsqldb</artifactId>
+    	<version>2.2.6</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
 
   
