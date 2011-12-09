@@ -38,6 +38,7 @@ final class EncryptablePropertiesBeanDefinitionParser extends AbstractSimpleBean
 
 
     private static final String SCOPE_ATTRIBUTE = "scope";
+    private static final String ENCRYPTOR_ATTRIBUTE = "encryptor";
     
     
     EncryptablePropertiesBeanDefinitionParser() {
@@ -46,7 +47,9 @@ final class EncryptablePropertiesBeanDefinitionParser extends AbstractSimpleBean
 
 
     protected boolean isEligibleAttribute(final String attributeName) {
-        return super.isEligibleAttribute(attributeName) && !SCOPE_ATTRIBUTE.equals(attributeName);
+        return super.isEligibleAttribute(attributeName) && 
+                !SCOPE_ATTRIBUTE.equals(attributeName) &&
+                !ENCRYPTOR_ATTRIBUTE.equals(attributeName);
     }
 
     
@@ -62,6 +65,10 @@ final class EncryptablePropertiesBeanDefinitionParser extends AbstractSimpleBean
         String scope = element.getAttribute(SCOPE_ATTRIBUTE);
         if (StringUtils.hasLength(scope)) {
             builder.setScope(scope);
+        }
+        final String encryptorBeanName = element.getAttribute(ENCRYPTOR_ATTRIBUTE);
+        if (StringUtils.hasText(encryptorBeanName)) {
+            builder.addPropertyReference("encryptor", encryptorBeanName);
         }
     }
     
