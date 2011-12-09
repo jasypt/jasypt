@@ -17,10 +17,11 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring3.xml;
+package org.jasypt.spring3.xml.encryption;
 
-import org.jasypt.util.text.BasicTextEncryptor;
-import org.jasypt.util.text.StrongTextEncryptor;
+import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.w3c.dom.Element;
 
@@ -31,18 +32,23 @@ import org.w3c.dom.Element;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-final class UtilEncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
+final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
     
-    private static final String PARAM_PASSWORD = "password"; 
+    private static final String PARAM_ALGORITHM = "algorithm"; 
+    private static final String PARAM_CONFIG_BEAN = "config-bean"; 
+    private static final String PARAM_PROVIDER_BEAN = "provider-bean"; 
+    private static final String PARAM_PROVIDER_NAME = "provider-name"; 
+    private static final String PARAM_STRING_OUTPUT_TYPE = "string-output-type"; 
     
     static final int UTIL_TYPE_BASIC = 0;
     static final int UTIL_TYPE_STRONG = 1;
+    static final int UTIL_TYPE_CONFIGURABLE = 2;
     
     private final int utilType;
     
     
-    UtilEncryptorBeanDefinitionParser(final int utilType) {
+    UtilDigesterBeanDefinitionParser(final int utilType) {
         super();
         this.utilType = utilType;
     }
@@ -50,9 +56,11 @@ final class UtilEncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefi
     
     protected Class getBeanClass(final Element element) {
         if (this.utilType == UTIL_TYPE_BASIC) {
-            return BasicTextEncryptor.class;
+            return BasicPasswordEncryptor.class;
         } else if (this.utilType == UTIL_TYPE_STRONG) {
-            return StrongTextEncryptor.class;
+            return StrongPasswordEncryptor.class;
+        } else if (this.utilType == UTIL_TYPE_CONFIGURABLE) {
+            return ConfigurablePasswordEncryptor.class;
         } else {
             throw new IllegalArgumentException("Unknown util type: " + this.utilType);
         }
@@ -60,7 +68,11 @@ final class UtilEncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefi
 
 
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
-        processStringAttribute(element, builder, PARAM_PASSWORD, "password");
+        processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
+        processBeanAttribute(element, builder, PARAM_CONFIG_BEAN, "config");
+        processBeanAttribute(element, builder, PARAM_PROVIDER_BEAN, "provider");
+        processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
+        processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
     }
     
     

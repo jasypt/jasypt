@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring3.xml;
+package org.jasypt.spring3.xml.encryption;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.w3c.dom.Element;
