@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
-import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
-import org.jasypt.encryption.pbe.config.SimplePBEConfig;
-import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.jasypt.digest.config.EnvironmentDigesterConfig;
+import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
+import org.jasypt.digest.config.SimpleDigesterConfig;
+import org.jasypt.digest.config.SimpleStringDigesterConfig;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -252,15 +252,15 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
         }
         
         if (isStringEnvironmentConfig || (isEnvironmentConfig && isStringConfig)) {
-            return EnvironmentStringPBEConfig.class;
+            return EnvironmentStringDigesterConfig.class;
         }
         if (isEnvironmentConfig) {
-            return EnvironmentPBEConfig.class;
+            return EnvironmentDigesterConfig.class;
         }
         if (isStringConfig) {
-            return SimpleStringPBEConfig.class;
+            return SimpleStringDigesterConfig.class;
         }
-        return SimplePBEConfig.class;
+        return SimpleDigesterConfig.class;
         
     }
     
