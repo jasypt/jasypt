@@ -5,3 +5,5 @@
 - Extracted jasypt-hibernate3 package from previous monolithic jasypt module.
 - Renamed org.jasypt.hibernate package as org.jasypt.hibernate3, and deprecated
   the classes in the old package.
+- Created additional tests
+  
