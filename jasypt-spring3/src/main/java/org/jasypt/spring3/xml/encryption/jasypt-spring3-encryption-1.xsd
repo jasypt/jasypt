@@ -422,6 +422,7 @@
             <xsd:complexContent>
                 <xsd:extension base="beans:propsType">
                     <xsd:attribute name="id" type="xsd:ID"/>
+                    <xsd:attribute name="encryptor" type="xsd:string"/>
                     <xsd:attribute name="location" type="xsd:string">
                         <xsd:annotation>
                             <xsd:appinfo>
