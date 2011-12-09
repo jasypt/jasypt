@@ -37,7 +37,8 @@ public final class EncryptionNamespaceHandler extends NamespaceHandlerSupport {
     
 
     public void init() {
-        registerBeanDefinitionParser("encryptor-config", new ConfigBeanDefinitionParser());       
+        
+        registerBeanDefinitionParser("encryptor-config", new EncryptorConfigBeanDefinitionParser());       
         registerBeanDefinitionParser("byte-encryptor", 
                 new EncryptorBeanDefinitionParser(EncryptorFactoryBean.ENCRYPTOR_TYPE_BYTE));       
         registerBeanDefinitionParser("string-encryptor", 
@@ -49,7 +50,14 @@ public final class EncryptionNamespaceHandler extends NamespaceHandlerSupport {
         registerBeanDefinitionParser("basic-text-encryptor", 
                 new UtilEncryptorBeanDefinitionParser(UtilEncryptorBeanDefinitionParser.UTIL_TYPE_BASIC));       
         registerBeanDefinitionParser("strong-text-encryptor", 
-                new UtilEncryptorBeanDefinitionParser(UtilEncryptorBeanDefinitionParser.UTIL_TYPE_STRONG));       
+                new UtilEncryptorBeanDefinitionParser(UtilEncryptorBeanDefinitionParser.UTIL_TYPE_STRONG));
+        
+        registerBeanDefinitionParser("digester-config", new DigesterConfigBeanDefinitionParser());
+        registerBeanDefinitionParser("byte-digester", 
+                new DigesterBeanDefinitionParser(DigesterFactoryBean.DIGESTER_TYPE_BYTE));       
+        registerBeanDefinitionParser("string-digester", 
+                new DigesterBeanDefinitionParser(DigesterFactoryBean.DIGESTER_TYPE_STRING));       
+        
     }
 
 

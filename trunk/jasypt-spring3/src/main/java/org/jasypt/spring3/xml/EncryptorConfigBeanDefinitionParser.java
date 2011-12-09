@@ -39,17 +39,17 @@ import org.w3c.dom.Node;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-final class ConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
+final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
     // simple
     private static final String PARAM_ALGORITHM = "algorithm"; 
     private static final String PARAM_KEY_OBTENTION_ITERATIONS = "key-obtention-iterations"; 
     private static final String PARAM_PASSWORD = "password"; 
     private static final String PARAM_POOL_SIZE = "pool-size"; 
-    private static final String PARAM_PROVIDER = "provider"; 
+    private static final String PARAM_PROVIDER_BEAN = "provider-bean"; 
     private static final String PARAM_PROVIDER_CLASS_NAME = "provider-class-name"; 
     private static final String PARAM_PROVIDER_NAME = "provider-name"; 
-    private static final String PARAM_SALT_GENERATOR = "salt-generator"; 
+    private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean"; 
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME = "salt-generator-class-name";
     private static final Set PARAMS_SIMPLE =
             new HashSet(Arrays.asList(
@@ -58,10 +58,10 @@ final class ConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionP
                     PARAM_KEY_OBTENTION_ITERATIONS,
                     PARAM_PASSWORD,
                     PARAM_POOL_SIZE,
-                    PARAM_PROVIDER,
+                    PARAM_PROVIDER_BEAN,
                     PARAM_PROVIDER_CLASS_NAME,
                     PARAM_PROVIDER_NAME,
-                    PARAM_SALT_GENERATOR,
+                    PARAM_SALT_GENERATOR_BEAN,
                     PARAM_SALT_GENERATOR_CLASS_NAME
                 }));
 
@@ -122,7 +122,7 @@ final class ConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionP
     
     
     
-    ConfigBeanDefinitionParser() {
+    EncryptorConfigBeanDefinitionParser() {
         super();
     }
 
@@ -140,10 +140,10 @@ final class ConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionP
         processIntegerAttribute(element, builder, PARAM_KEY_OBTENTION_ITERATIONS, "keyObtentionIterations");
         processStringAttribute(element, builder, PARAM_PASSWORD, "password");
         processIntegerAttribute(element, builder, PARAM_POOL_SIZE, "poolSize");
-        processBeanAttribute(element, builder, PARAM_PROVIDER, "provider");
+        processBeanAttribute(element, builder, PARAM_PROVIDER_BEAN, "provider");
         processStringAttribute(element, builder, PARAM_PROVIDER_CLASS_NAME, "providerClassName");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
-        processBeanAttribute(element, builder, PARAM_SALT_GENERATOR, "saltGenerator");
+        processBeanAttribute(element, builder, PARAM_SALT_GENERATOR_BEAN, "saltGenerator");
         processStringAttribute(element, builder, PARAM_SALT_GENERATOR_CLASS_NAME, "saltGeneratorClassName");
         
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");

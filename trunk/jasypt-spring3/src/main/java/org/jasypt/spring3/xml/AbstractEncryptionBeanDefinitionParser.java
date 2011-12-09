@@ -65,6 +65,16 @@ abstract class AbstractEncryptionBeanDefinitionParser extends AbstractSingleBean
     }
     
     
+    protected final void processBooleanAttribute(final Element element, final BeanDefinitionBuilder builder, 
+            final String attributeName, final String propertyName) {
+        final String attributeValue = element.getAttribute(attributeName);
+        if (StringUtils.hasText(attributeValue)) {
+            final Boolean attributeBooleanValue =  Boolean.valueOf(attributeValue);
+            builder.addPropertyValue(propertyName, attributeBooleanValue);
+        }
+    }
+    
+    
     protected final void processBeanAttribute(final Element element, final BeanDefinitionBuilder builder, 
             final String attributeName, final String propertyName) {
         final String beanName = element.getAttribute(attributeName);
