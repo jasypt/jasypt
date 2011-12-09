@@ -22,7 +22,9 @@ package org.jasypt.spring3.xml.encryption;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.EncryptableProperties;
+import org.jasypt.util.text.TextEncryptor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.support.PropertiesLoaderSupport;
@@ -41,6 +43,7 @@ public final class EncryptablePropertiesFactoryBean
     private boolean singleton = true;
     private Properties singletonInstance;
     
+    private Object encryptor = null;
     
     
     public EncryptablePropertiesFactoryBean() {
@@ -57,8 +60,14 @@ public final class EncryptablePropertiesFactoryBean
     public final boolean isSingleton() {
         return this.singleton;
     }
-    
-    
+
+
+    public void setEncryptor(final Object encryptor) {
+        this.encryptor = encryptor;
+    }
+
+
+
     public final void afterPropertiesSet() throws IOException {
         if (this.singleton) {
             this.singletonInstance = processEncryptable(mergeProperties());
@@ -79,8 +88,21 @@ public final class EncryptablePropertiesFactoryBean
 
     
     
-    private static Properties processEncryptable(final Properties props) {
-        return props;
+    private EncryptableProperties processEncryptable(final Properties props) {
+        if (this.encryptor == null) {
+            throw new IllegalArgumentException(
+                    "\"encryptor\" property in EncryptableProperties definition cannot be null");
+        }
+        if (this.encryptor instanceof TextEncryptor) {
+            return new EncryptableProperties(props, (TextEncryptor)this.encryptor);
+        } else if (this.encryptor instanceof StringEncryptor) {
+            return new EncryptableProperties(props, (StringEncryptor)this.encryptor);
+        }
+        throw new IllegalArgumentException(
+                "\"encryptor\" property in EncryptableProperties definition must be either " +
+                "an org.jasypt.util.text.TextEncryptor or an org.jasypt.encryption.StringEncryptor " +
+                "object. An object of class " + this.encryptor.getClass().getName() + " has been " +
+                "specified instead.");
     }
     
 }
