@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <typedef name="encryptedString" class="org.jasypt.hibernate3.type.EncryptedStringType">
+      <param name="encryptorRegisteredName">hibernateStringEncryptor</param>
+    </typedef>
+    <typedef name="encryptedCalendarAsString" class="org.jasypt.hibernate3.type.EncryptedCalendarAsStringType">
+      <param name="encryptorRegisteredName">hibernateStringEncryptor</param>
+    </typedef>
+   <typedef name="encryptedBinary" class="org.jasypt.hibernate3.type.EncryptedBinaryType">
+      <param name="encryptorRegisteredName">hibernateByteEncryptor</param>
+    </typedef>
+    
+    <class name="org.jasypt.hibernate3.model.user.User" table="USER">
+        <id name="login" type="java.lang.String">
+            <column name="LOGIN" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="password" type="encryptedString">
+            <column name="PASSWORD" />
+        </property>
+        <property name="birthdate" type="encryptedCalendarAsString">
+            <column name="BIRTHDATE" />
+        </property>
+        <property name="document" type="encryptedBinary">
+            <column name="DOCUMENT" />
+        </property>
+    </class>
+</hibernate-mapping>
