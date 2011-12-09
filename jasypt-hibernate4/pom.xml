@@ -113,6 +113,15 @@
     
     <testResources>
       <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+            <include>**</include>
+        </includes>
+        <excludes>
+            <exclude>**/*.java</exclude>
+        </excludes>
+      </testResource>
+      <testResource>
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
@@ -243,6 +252,12 @@
       <scope>test</scope>
     </dependency>
     
+    <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>2.2.6</version>
+        <scope>test</scope>
+    </dependency>
     
   </dependencies>
 
