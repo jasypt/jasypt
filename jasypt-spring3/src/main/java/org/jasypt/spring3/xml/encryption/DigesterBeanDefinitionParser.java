@@ -20,6 +20,7 @@
 package org.jasypt.spring3.xml.encryption;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
@@ -31,6 +32,7 @@ import org.w3c.dom.Element;
  */
 final class DigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
+    private static final String SCOPE_ATTRIBUTE = "scope";
     
     private static final String PARAM_ALGORITHM = "algorithm"; 
     private static final String PARAM_CONFIG_BEAN = "config-bean"; 
@@ -84,6 +86,11 @@ final class DigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitio
         processBooleanAttribute(element, builder, PARAM_UNICODE_NORMALIZATION_IGNORED, "unicodeNormalizationIgnored");
         processStringAttribute(element, builder, PARAM_PREFIX, "prefix");
         processStringAttribute(element, builder, PARAM_SUFFIX, "suffix");
+        
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
         
     }
     

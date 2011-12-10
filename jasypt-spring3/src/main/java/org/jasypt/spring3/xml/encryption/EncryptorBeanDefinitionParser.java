@@ -20,6 +20,7 @@
 package org.jasypt.spring3.xml.encryption;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
@@ -31,6 +32,7 @@ import org.w3c.dom.Element;
  */
 final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
+    private static final String SCOPE_ATTRIBUTE = "scope";
     
     private static final String PARAM_ALGORITHM = "algorithm"; 
     private static final String PARAM_CONFIG_BEAN = "config-bean"; 
@@ -71,6 +73,11 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
         processBeanAttribute(element, builder, PARAM_SALT_GENERATOR_BEAN, "saltGenerator");
         
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
+    
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
         
     }
     
