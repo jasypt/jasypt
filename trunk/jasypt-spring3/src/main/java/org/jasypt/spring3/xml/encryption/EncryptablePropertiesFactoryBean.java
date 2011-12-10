@@ -94,9 +94,15 @@ public final class EncryptablePropertiesFactoryBean
                     "\"encryptor\" property in EncryptableProperties definition cannot be null");
         }
         if (this.encryptor instanceof TextEncryptor) {
-            return new EncryptableProperties(props, (TextEncryptor)this.encryptor);
+            final EncryptableProperties encryptableProperties = 
+                    new EncryptableProperties((TextEncryptor)this.encryptor);
+            encryptableProperties.putAll(props);
+            return encryptableProperties;
         } else if (this.encryptor instanceof StringEncryptor) {
-            return new EncryptableProperties(props, (StringEncryptor)this.encryptor);
+            final EncryptableProperties encryptableProperties = 
+                    new EncryptableProperties((StringEncryptor)this.encryptor);
+            encryptableProperties.putAll(props);
+            return encryptableProperties;
         }
         throw new IllegalArgumentException(
                 "\"encryptor\" property in EncryptableProperties definition must be either " +
