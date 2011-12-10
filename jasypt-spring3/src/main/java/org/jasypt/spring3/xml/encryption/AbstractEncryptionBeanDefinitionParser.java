@@ -41,6 +41,12 @@ abstract class AbstractEncryptionBeanDefinitionParser extends AbstractSingleBean
     
     
     
+    protected boolean shouldGenerateIdAsFallback() {
+        return true;
+    }
+
+
+
     protected final void processStringAttribute(final Element element, final BeanDefinitionBuilder builder, 
             final String attributeName, final String propertyName) {
         final String attributeValue = element.getAttribute(attributeName);
