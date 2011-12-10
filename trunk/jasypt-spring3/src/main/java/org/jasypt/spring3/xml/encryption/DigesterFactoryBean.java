@@ -31,6 +31,7 @@ import org.jasypt.digest.StringDigester;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.salt.SaltGenerator;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * 
@@ -39,14 +40,16 @@ import org.springframework.beans.factory.FactoryBean;
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class DigesterFactoryBean implements FactoryBean {
+public final class DigesterFactoryBean 
+        implements FactoryBean, InitializingBean {
 
     static final int DIGESTER_TYPE_BYTE = 0;
     static final int DIGESTER_TYPE_STRING = 1;
     
     private final int digesterType;
 
-    private Object initializedObject = null;
+    private boolean singleton = true;
+    private Object singletonInstance = null;
     
     
     private boolean algorithmSet = false;
@@ -104,7 +107,16 @@ public final class DigesterFactoryBean implements FactoryBean {
 
 
 
+    public final void setSingleton(boolean singleton) {
+        this.singleton = singleton;
+    }
+    
+    
+    public final boolean isSingleton() {
+        return this.singleton;
+    }
 
+    
 
     public void setAlgorithm(final String algorithm) {
         this.algorithm = algorithm;
@@ -199,170 +211,177 @@ public final class DigesterFactoryBean implements FactoryBean {
 
 
 
+    public final void afterPropertiesSet() throws Exception {
+        if (this.singleton) {
+            this.singletonInstance = computeObject();
+        }
+    }
 
 
     public Object getObject() throws Exception {
-        if (this.initializedObject == null) {
-            synchronized (this) {
-                if (this.initializedObject == null) {
-
-                    Object digester = null;
-                    
-                    if (isPooled()) {
-                        
-                        if (this.digesterType == DIGESTER_TYPE_BYTE) {
-                            digester = new PooledByteDigester();
-                        } else if (this.digesterType == DIGESTER_TYPE_STRING) {
-                            digester = new PooledStringDigester();
-                        } else  {
-                            throw new IllegalArgumentException("Unknown digester type: " + this.digesterType);
-                        }
-                        
-                        if (this.poolSizeSet && this.poolSize != null) {
-                            final Statement st = 
-                                    new Statement(
-                                            digester, 
-                                            "setPoolSize", 
-                                            new Object[] { this.poolSize });
-                            st.execute();
-                        }
-                        
-                    } else {
-                        
-                        if (this.digesterType == DIGESTER_TYPE_BYTE) {
-                            digester = new StandardByteDigester();
-                        } else if (this.digesterType == DIGESTER_TYPE_STRING) {
-                            digester = new StandardStringDigester();
-                        } else  {
-                            throw new IllegalArgumentException("Unknown digester type: " + this.digesterType);
-                        }
-                        
-                    }
-                    
-                    if (this.algorithmSet) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setAlgorithm", 
-                                        new Object[] { this.algorithm });
-                        st.execute();
-                    }
-                    if (this.configSet) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setConfig", 
-                                        new Object[] { this.config });
-                        st.execute();
-                    }
-                    if (this.iterationsSet && this.iterations != null) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setIterations", 
-                                        new Object[] { this.iterations });
-                        st.execute();
-                    }
-                    if (this.invertPositionOfSaltInMessageBeforeDigestingSet && this.invertPositionOfSaltInMessageBeforeDigesting != null) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setInvertPositionOfSaltInMessageBeforeDigesting", 
-                                        new Object[] { this.invertPositionOfSaltInMessageBeforeDigesting });
-                        st.execute();
-                    }
-                    if (this.invertPositionOfPlainSaltInEncryptionResultsSet && this.invertPositionOfPlainSaltInEncryptionResults != null) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setInvertPositionOfPlainSaltInEncryptionResults", 
-                                        new Object[] { this.invertPositionOfPlainSaltInEncryptionResults });
-                        st.execute();
-                    }
-                    if (this.providerSet) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setProvider", 
-                                        new Object[] { this.provider });
-                        st.execute();
-                    }
-                    if (this.providerNameSet) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setProviderName", 
-                                        new Object[] { this.providerName });
-                        st.execute();
-                    }
-                    if (this.saltGeneratorSet) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setSaltGenerator", 
-                                        new Object[] { this.saltGenerator });
-                        st.execute();
-                    }
-                    if (this.saltSizeBytesSet && this.saltSizeBytes != null) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setSaltSizeBytes", 
-                                        new Object[] { this.saltSizeBytes });
-                        st.execute();
-                    }
-                    if (this.useLenientSaltSizeCheckSet && this.useLenientSaltSizeCheck != null) {
-                        final Statement st = 
-                                new Statement(
-                                        digester, 
-                                        "setUseLenientSaltSizeCheck", 
-                                        new Object[] { this.useLenientSaltSizeCheck });
-                        st.execute();
-                    }
-                    
-                    if (digester instanceof StringDigester) {
-                        
-                        if (this.stringOutputTypeSet) {
-                            final Statement st = 
-                                    new Statement(
-                                            digester, 
-                                            "setStringOutputType", 
-                                            new Object[] { this.stringOutputType });
-                            st.execute();
-                        }
-                        if (this.unicodeNormalizationIgnoredSet) {
-                            final Statement st = 
-                                    new Statement(
-                                            digester, 
-                                            "setUnicodeNormalizationIgnored", 
-                                            new Object[] { this.unicodeNormalizationIgnored });
-                            st.execute();
-                        }
-                        if (this.prefixSet) {
-                            final Statement st = 
-                                    new Statement(
-                                            digester, 
-                                            "setPrefix", 
-                                            new Object[] { this.prefix });
-                            st.execute();
-                        }
-                        if (this.suffixSet) {
-                            final Statement st = 
-                                    new Statement(
-                                            digester, 
-                                            "setSuffix", 
-                                            new Object[] { this.suffix });
-                            st.execute();
-                        }
-                        
-                    }
-                    
-                    this.initializedObject = digester;
-                    
-                }
-            }
+        if (this.singleton) {
+            return this.singletonInstance;
         }
-        return this.initializedObject;
+        return computeObject();
+    }
+
+
+
+    private synchronized Object computeObject() throws Exception {
+
+        Object digester = null;
+        
+        if (isPooled()) {
+            
+            if (this.digesterType == DIGESTER_TYPE_BYTE) {
+                digester = new PooledByteDigester();
+            } else if (this.digesterType == DIGESTER_TYPE_STRING) {
+                digester = new PooledStringDigester();
+            } else  {
+                throw new IllegalArgumentException("Unknown digester type: " + this.digesterType);
+            }
+            
+            if (this.poolSizeSet && this.poolSize != null) {
+                final Statement st = 
+                        new Statement(
+                                digester, 
+                                "setPoolSize", 
+                                new Object[] { this.poolSize });
+                st.execute();
+            }
+            
+        } else {
+            
+            if (this.digesterType == DIGESTER_TYPE_BYTE) {
+                digester = new StandardByteDigester();
+            } else if (this.digesterType == DIGESTER_TYPE_STRING) {
+                digester = new StandardStringDigester();
+            } else  {
+                throw new IllegalArgumentException("Unknown digester type: " + this.digesterType);
+            }
+            
+        }
+        
+        if (this.algorithmSet) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setAlgorithm", 
+                            new Object[] { this.algorithm });
+            st.execute();
+        }
+        if (this.configSet) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setConfig", 
+                            new Object[] { this.config });
+            st.execute();
+        }
+        if (this.iterationsSet && this.iterations != null) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setIterations", 
+                            new Object[] { this.iterations });
+            st.execute();
+        }
+        if (this.invertPositionOfSaltInMessageBeforeDigestingSet && this.invertPositionOfSaltInMessageBeforeDigesting != null) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setInvertPositionOfSaltInMessageBeforeDigesting", 
+                            new Object[] { this.invertPositionOfSaltInMessageBeforeDigesting });
+            st.execute();
+        }
+        if (this.invertPositionOfPlainSaltInEncryptionResultsSet && this.invertPositionOfPlainSaltInEncryptionResults != null) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setInvertPositionOfPlainSaltInEncryptionResults", 
+                            new Object[] { this.invertPositionOfPlainSaltInEncryptionResults });
+            st.execute();
+        }
+        if (this.providerSet) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setProvider", 
+                            new Object[] { this.provider });
+            st.execute();
+        }
+        if (this.providerNameSet) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setProviderName", 
+                            new Object[] { this.providerName });
+            st.execute();
+        }
+        if (this.saltGeneratorSet) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setSaltGenerator", 
+                            new Object[] { this.saltGenerator });
+            st.execute();
+        }
+        if (this.saltSizeBytesSet && this.saltSizeBytes != null) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setSaltSizeBytes", 
+                            new Object[] { this.saltSizeBytes });
+            st.execute();
+        }
+        if (this.useLenientSaltSizeCheckSet && this.useLenientSaltSizeCheck != null) {
+            final Statement st = 
+                    new Statement(
+                            digester, 
+                            "setUseLenientSaltSizeCheck", 
+                            new Object[] { this.useLenientSaltSizeCheck });
+            st.execute();
+        }
+        
+        if (digester instanceof StringDigester) {
+            
+            if (this.stringOutputTypeSet) {
+                final Statement st = 
+                        new Statement(
+                                digester, 
+                                "setStringOutputType", 
+                                new Object[] { this.stringOutputType });
+                st.execute();
+            }
+            if (this.unicodeNormalizationIgnoredSet) {
+                final Statement st = 
+                        new Statement(
+                                digester, 
+                                "setUnicodeNormalizationIgnored", 
+                                new Object[] { this.unicodeNormalizationIgnored });
+                st.execute();
+            }
+            if (this.prefixSet) {
+                final Statement st = 
+                        new Statement(
+                                digester, 
+                                "setPrefix", 
+                                new Object[] { this.prefix });
+                st.execute();
+            }
+            if (this.suffixSet) {
+                final Statement st = 
+                        new Statement(
+                                digester, 
+                                "setSuffix", 
+                                new Object[] { this.suffix });
+                st.execute();
+            }
+            
+        }
+        
+        return digester;
+    
     }
 
     
@@ -377,12 +396,6 @@ public final class DigesterFactoryBean implements FactoryBean {
         }
     }
 
-    
-    
-    public boolean isSingleton() {
-        return true;
-    }
-    
     
     
     
