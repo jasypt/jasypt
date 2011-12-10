@@ -20,12 +20,14 @@
         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
         xmlns:beans="http://www.springframework.org/schema/beans"
         xmlns:tool="http://www.springframework.org/schema/tool"
+        xmlns:context="http://www.springframework.org/schema/context"
         targetNamespace="http://www.jasypt.org/schema/encryption"
         elementFormDefault="qualified"
         attributeFormDefault="unqualified">
 
     <xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"/>
     <xsd:import namespace="http://www.springframework.org/schema/tool" schemaLocation="http://www.springframework.org/schema/tool/spring-tool-3.0.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/context" schemaLocation="http://www.springframework.org/schema/context/spring-context-3.0.xsd"/>
 
 
     <xsd:element name="encryptor-config">
@@ -635,7 +637,7 @@
             <xsd:complexContent>
                 <xsd:extension base="beans:propsType">
                     <xsd:attribute name="id" type="xsd:ID"/>
-                    <xsd:attribute name="encryptor" type="xsd:string">
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
                         <xsd:annotation>
                             <xsd:documentation><![CDATA[
                                 Specifies the encryptor to be used to decrypt those properties
@@ -678,6 +680,93 @@
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
+
+
+
+
+
+
+
+
+
+    
+    <xsd:element name="encryptable-property-placeholder">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Activates replacement of ${...} placeholders decrypting those properties that require it, 
+                resolved against the specified properties file or Properties object (if any). Falls back 
+                to resolving placeholders against JVM system properties.
+                Alternatively, define a parameterized PropertyPlaceholderConfigurer bean in the context.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports 
+                        type="org.jasypt.spring3.propertoes.EncryptablePropertyPlaceholderConfigurer" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="context:propertyPlaceholder">
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="system-properties-mode" default="FALLBACK">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="NEVER"/>
+                                <xsd:enumeration value="FALLBACK"/>
+                                <xsd:enumeration value="OVERRIDE"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
+    
+    
+    <xsd:element name="encryptable-property-override">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Activates pushing of (possibly encrypted) override values into bean 
+                properties, based on configuration lines of the following format: 
+                beanName.property=value
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports
+                            type="org.jasypt.spring3.properties.EncryptablePropertyOverrideConfigurer" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="context:propertyPlaceholder">
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
+
 
 
 </xsd:schema>
