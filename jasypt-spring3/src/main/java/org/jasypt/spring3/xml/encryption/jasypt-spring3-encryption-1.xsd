@@ -36,6 +36,11 @@
                 created will be automatically chosen among SimplePBEConfig, SimpleStringPBEConfig, 
                 EnvironmentPBEConfig and EnvironmentStringPBEConfig.
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.pbe.config.PBEConfig"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -75,11 +80,16 @@
     <xsd:element name="byte-encryptor">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
-                Creates a PBEByteEncryptor object, which specific implementation can be a 
+                Creates an org.jasypt.encryption.ByteEncryptor object, which specific implementation can be a 
                 StandardPBEByteEncryptor or a PooledPBEByteEncryptor if the "pool-size" 
                 attribute has been specified (either directly or by setting a "config-bean" 
                 including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.ByteEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -101,11 +111,16 @@
     <xsd:element name="string-encryptor">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
-                Creates a PBEStringEncryptor object, which specific implementation can be a
+                Creates an org.jasypt.encryption.StringEncryptor object, which specific implementation can be a
                 StandardPBEStringEncryptor object, or a PooledPBEStringEncryptor if the
                 "pool-size" attribute has been specified (either directly or by setting a 
                 "config-bean" including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.StringEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -128,11 +143,16 @@
     <xsd:element name="big-decimal-encryptor">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
-                Creates a PBEBigDecimalEncryptor object, which specific implementation can be a
+                Creates an org.jasypt.encryption.BigDecimalEncryptor object, which specific implementation can be a
                 StandardPBEBigDecimalEncryptor object, or a PooledPBEBigDecimalEncryptor if the
                 "pool-size" attribute has been specified (either directly or by setting a 
                 "config-bean" including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.BigDecimalEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -154,11 +174,16 @@
     <xsd:element name="big-integer-encryptor">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
-                Creates a PBEBigIntegerEncryptor object, which specific implementation can be a
+                Creates an org.jasypt.encryption.BigIntegerEncryptor object, which specific implementation can be a
                 StandardPBEBigIntegerEncryptor object, or a PooledPBEBigIntegerEncryptor if the
                 "pool-size" attribute has been specified (either directly or by setting a 
                 "config-bean" including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.BigIntegerEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -184,6 +209,11 @@
                 is in fact a pre-configuration of a StandardPBEStringEncryptor with
                 algorithm "PBEWithMD5AndDES".
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.text.BasicTextEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -202,6 +232,11 @@
                 is in fact a pre-configuration of a StandardPBEStringEncryptor with
                 algorithm "PBEWithMD5AndTripleDES".
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.text.StrongTextEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -223,6 +258,11 @@
                 created will be automatically chosen among SimpleDigesterConfig, SimpleStringDigesterConfig, 
                 EnvironmentDigesterConfig and EnvironmentStringDigesterConfig.
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.config.DigesterConfig"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -286,6 +326,11 @@
                 attribute has been specified (either directly or by setting a "config-bean" 
                 including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.ByteDigester"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -316,6 +361,11 @@
                 attribute has been specified (either directly or by setting a "config-bean" 
                 including a value for this attribute). 
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.StringDigester"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -349,6 +399,11 @@
                 is in fact a pre-configuration of a StandardStringDigester with
                 algorithm "MD5", 8-byte random salt and 1000 iterations.
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.BasicPasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -367,6 +422,11 @@
                 is in fact a pre-configuration of a StandardStringDigester with
                 algorithm "SHA-256", 16-byte random salt and 100000 iterations.
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.ConfigurablePasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -391,6 +451,11 @@
                 is in fact a pre-configuration of a StandardStringDigester with
                 algorithm "SHA-256", 16-byte random salt and 100000 iterations.
             ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.StrongPasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
@@ -411,10 +476,15 @@
             <xsd:documentation><![CDATA[
                 Creates an org.jasypt.properties.EncryptableProperties object by reading
                 the specified resource and decrypting the encrypted keys that it might contain.
+                The behaviour of this element is exactly equivalent to that of
+                &lt;util:properties/&gt;, but adding the encrypting capabilities.
+                Note that objects of this class extend java.util.Properties, so that you can
+                autowire your Properties objects without letting your Java code know
+                they contain encrypted data. 
             ]]></xsd:documentation>
             <xsd:appinfo>
                 <tool:annotation>
-                    <tool:exports type="java.util.Properties"/>
+                    <tool:exports type="org.jasypt.properties.EncryptableProperties"/>
                 </tool:annotation>
             </xsd:appinfo>
         </xsd:annotation>
@@ -422,7 +492,16 @@
             <xsd:complexContent>
                 <xsd:extension base="beans:propsType">
                     <xsd:attribute name="id" type="xsd:ID"/>
-                    <xsd:attribute name="encryptor" type="xsd:string"/>
+                    <xsd:attribute name="encryptor" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
                     <xsd:attribute name="location" type="xsd:string">
                         <xsd:annotation>
                             <xsd:appinfo>
