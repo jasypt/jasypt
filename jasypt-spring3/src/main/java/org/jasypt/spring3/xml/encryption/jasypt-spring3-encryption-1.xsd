@@ -45,47 +45,44 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
-                    <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
-                    <xsd:attribute name="key-obtention-iterations-env-name" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="password-env-name" type="xsd:string"/>
-                    <xsd:attribute name="password-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
-                    <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
+            <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="key-obtention-iterations-env-name" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="password-env-name" type="xsd:string"/>
+            <xsd:attribute name="password-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -105,29 +102,26 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -147,30 +141,27 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -190,29 +181,26 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -232,29 +220,26 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -273,22 +258,19 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -307,22 +289,19 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="password" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -344,65 +323,62 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
-                    <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="iterations" type="xsd:integer"/>
-                    <xsd:attribute name="iterations-env-name" type="xsd:string"/>
-                    <xsd:attribute name="iterations-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
-                    <xsd:attribute name="salt-size-bytes-env-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-size-bytes-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
-                    <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
-                    <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-env-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
-                    <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-env-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
-                    <xsd:attribute name="use-lenient-salt-size-check-env-name" type="xsd:string"/>
-                    <xsd:attribute name="use-lenient-salt-size-check-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
-                    <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
-                    <xsd:attribute name="unicode-normalization-ignored-env-name" type="xsd:string"/>
-                    <xsd:attribute name="unicode-normalization-ignored-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="prefix" type="xsd:string"/>
-                    <xsd:attribute name="prefix-env-name" type="xsd:string"/>
-                    <xsd:attribute name="prefix-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="suffix" type="xsd:string"/>
-                    <xsd:attribute name="suffix-env-name" type="xsd:string"/>
-                    <xsd:attribute name="suffix-sys-property-name" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
+            <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="iterations-env-name" type="xsd:string"/>
+            <xsd:attribute name="iterations-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-size-bytes-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-env-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-env-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check-env-name" type="xsd:string"/>
+            <xsd:attribute name="use-lenient-salt-size-check-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
+            <xsd:attribute name="unicode-normalization-ignored-env-name" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="prefix" type="xsd:string"/>
+            <xsd:attribute name="prefix-env-name" type="xsd:string"/>
+            <xsd:attribute name="prefix-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="suffix" type="xsd:string"/>
+            <xsd:attribute name="suffix-env-name" type="xsd:string"/>
+            <xsd:attribute name="suffix-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -423,32 +399,29 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="iterations" type="xsd:integer"/>
-                    <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
-                    <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
-                    <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -469,36 +442,33 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="iterations" type="xsd:integer"/>
-                    <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
-                    <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
-                    <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
-                    <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
-                    <xsd:attribute name="pool-size" type="xsd:integer"/>
-                    <xsd:attribute name="string-output-type" type="xsd:string"/>
-                    <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
-                    <xsd:attribute name="prefix" type="xsd:string"/>
-                    <xsd:attribute name="suffix" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
+            <xsd:attribute name="prefix" type="xsd:string"/>
+            <xsd:attribute name="suffix" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -518,21 +488,18 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -552,27 +519,24 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="algorithm" type="xsd:string"/>
-                    <xsd:attribute name="config-bean" type="xsd:string"/>
-                    <xsd:attribute name="plain-digest" type="xsd:boolean"/>
-                    <xsd:attribute name="provider-bean" type="xsd:string"/>
-                    <xsd:attribute name="provider-name" type="xsd:string"/>
-                    <xsd:attribute name="string-output-type" type="xsd:string"/>
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="plain-digest" type="xsd:boolean"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
@@ -592,21 +556,18 @@
             </xsd:appinfo>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="beans:identifiedType">
-                    <xsd:attribute name="scope" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The scope of this bean: typically "singleton" (one shared instance,
-                                which will be returned by all calls to getBean with the given id), or
-                                "prototype" (independent instance resulting from each call to getBean).
-                                Default is "singleton". Further scopes, such as "request" or "session",
-                                might be supported by extended bean factories (e.g. in a web environment).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
         </xsd:complexType>
     </xsd:element>
 
