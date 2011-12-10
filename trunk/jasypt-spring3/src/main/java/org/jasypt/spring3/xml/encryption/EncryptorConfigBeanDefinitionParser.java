@@ -28,6 +28,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.jasypt.encryption.pbe.config.SimplePBEConfig;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -40,6 +41,8 @@ import org.w3c.dom.Node;
  * 
  */
 final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
+
+    private static final String SCOPE_ATTRIBUTE = "scope";
 
     // simple
     private static final String PARAM_ALGORITHM = "algorithm"; 
@@ -165,6 +168,11 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
 
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE_ENV_NAME, "stringOutputTypeEnvName");
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE_SYS_PROPERTY_NAME, "stringOutputTypeSysPropertyName");
+        
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
         
     }
     

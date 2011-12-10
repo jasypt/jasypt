@@ -28,6 +28,7 @@ import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.digest.config.SimpleDigesterConfig;
 import org.jasypt.digest.config.SimpleStringDigesterConfig;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -40,6 +41,8 @@ import org.w3c.dom.Node;
  * 
  */
 final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
+
+    private static final String SCOPE_ATTRIBUTE = "scope";
 
     // simple
     private static final String PARAM_ALGORITHM = "algorithm"; 
@@ -219,6 +222,11 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
         processStringAttribute(element, builder, PARAM_PREFIX_SYS_PROPERTY_NAME, "prefixSysPropertyName");
         processStringAttribute(element, builder, PARAM_SUFFIX_ENV_NAME, "suffixEnvName");
         processStringAttribute(element, builder, PARAM_SUFFIX_SYS_PROPERTY_NAME, "suffixSysPropertyName");
+        
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
         
     }
     

@@ -22,6 +22,7 @@ package org.jasypt.spring3.xml.encryption;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.jasypt.util.text.StrongTextEncryptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
@@ -33,6 +34,7 @@ import org.w3c.dom.Element;
  */
 final class UtilEncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
+    private static final String SCOPE_ATTRIBUTE = "scope";
     
     private static final String PARAM_PASSWORD = "password"; 
     
@@ -60,7 +62,14 @@ final class UtilEncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefi
 
 
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
+        
         processStringAttribute(element, builder, PARAM_PASSWORD, "password");
+        
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
+        
     }
     
     

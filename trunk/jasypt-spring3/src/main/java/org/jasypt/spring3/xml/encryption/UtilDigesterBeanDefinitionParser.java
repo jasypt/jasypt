@@ -23,6 +23,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
@@ -34,6 +35,7 @@ import org.w3c.dom.Element;
  */
 final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitionParser {
 
+    private static final String SCOPE_ATTRIBUTE = "scope";
     
     private static final String PARAM_ALGORITHM = "algorithm"; 
     private static final String PARAM_CONFIG_BEAN = "config-bean"; 
@@ -68,11 +70,18 @@ final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefin
 
 
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
+        
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
         processBeanAttribute(element, builder, PARAM_CONFIG_BEAN, "config");
         processBeanAttribute(element, builder, PARAM_PROVIDER_BEAN, "provider");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
+        
+        String scope = element.getAttribute(SCOPE_ATTRIBUTE);
+        if (StringUtils.hasLength(scope)) {
+            builder.setScope(scope);
+        }
+        
     }
     
     
