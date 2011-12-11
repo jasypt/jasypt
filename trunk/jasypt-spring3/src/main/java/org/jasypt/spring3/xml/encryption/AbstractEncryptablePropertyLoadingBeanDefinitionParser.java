@@ -42,12 +42,13 @@ abstract class AbstractEncryptablePropertyLoadingBeanDefinitionParser
     }
     
     
-
+    @Override
     protected boolean shouldGenerateId() {
         return true;
     }
 
 
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
         
         String location = element.getAttribute("location");

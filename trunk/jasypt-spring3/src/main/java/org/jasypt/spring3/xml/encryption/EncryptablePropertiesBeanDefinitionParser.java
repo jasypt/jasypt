@@ -46,6 +46,7 @@ final class EncryptablePropertiesBeanDefinitionParser extends AbstractSimpleBean
     }
 
 
+    @Override
     protected boolean isEligibleAttribute(final String attributeName) {
         return super.isEligibleAttribute(attributeName) && 
                 !SCOPE_ATTRIBUTE.equals(attributeName) &&
@@ -53,11 +54,13 @@ final class EncryptablePropertiesBeanDefinitionParser extends AbstractSimpleBean
     }
 
     
-    protected Class getBeanClass(final Element element) {
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return EncryptablePropertiesFactoryBean.class;
     }
 
 
+    @Override
     protected void doParse(final Element element, final ParserContext parserContext, final BeanDefinitionBuilder builder) {
         super.doParse(element, parserContext, builder);
         Properties parsedProps = parserContext.getDelegate().parsePropsElement(element);

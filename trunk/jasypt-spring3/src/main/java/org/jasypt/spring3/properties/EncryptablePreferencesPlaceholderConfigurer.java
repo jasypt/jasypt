@@ -96,6 +96,7 @@ public final class EncryptablePreferencesPlaceholderConfigurer
 	 * 
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
 	 */
+	@Override
 	protected String convertPropertyValue(final String originalValue) {
 		if (!PropertyValueEncryptionUtils.isEncryptedValue(originalValue)) {
 			return originalValue;

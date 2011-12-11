@@ -47,7 +47,7 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  */
 public final class EncryptorFactoryBean 
-        implements FactoryBean, InitializingBean {
+        implements FactoryBean<Object>, InitializingBean {
 
     static final int ENCRYPTOR_TYPE_BYTE = 0;
     static final int ENCRYPTOR_TYPE_STRING = 1;
@@ -292,7 +292,7 @@ public final class EncryptorFactoryBean
 
     
     
-    public Class getObjectType() {
+    public Class<?> getObjectType() {
         if (this.encryptorType == ENCRYPTOR_TYPE_BYTE) {
             return PBEByteEncryptor.class;
         } else if (this.encryptorType == ENCRYPTOR_TYPE_STRING) {

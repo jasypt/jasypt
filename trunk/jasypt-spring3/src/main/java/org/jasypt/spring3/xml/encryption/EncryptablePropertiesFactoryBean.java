@@ -38,7 +38,7 @@ import org.springframework.core.io.support.PropertiesLoaderSupport;
  */
 public final class EncryptablePropertiesFactoryBean 
         extends PropertiesLoaderSupport
-        implements FactoryBean, InitializingBean {
+        implements FactoryBean<Object>, InitializingBean {
 
     private boolean singleton = true;
     private Properties singletonInstance;
@@ -82,7 +82,8 @@ public final class EncryptablePropertiesFactoryBean
         return processEncryptable(mergeProperties());
     }
     
-    public Class getObjectType() {
+    
+    public Class<?> getObjectType() {
         return EncryptableProperties.class;
     }
 

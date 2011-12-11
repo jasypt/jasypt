@@ -61,11 +61,13 @@ final class DigesterBeanDefinitionParser extends AbstractEncryptionBeanDefinitio
     }
 
     
-    protected Class getBeanClass(final Element element) {
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return DigesterFactoryBean.class;
     }
 
 
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
     
         builder.addConstructorArgValue(new Integer(this.digesterType));

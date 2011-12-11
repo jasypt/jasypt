@@ -43,11 +43,13 @@ final class EncryptablePropertyOverrideBeanDefinitionParser
     }
 
     
-    protected Class getBeanClass(final Element element) {
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return EncryptablePropertyOverrideConfigurer.class;
     }
 
     
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
 
         super.doParse(element, builder);
