@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--  ============================================================================= -->
+<!--                                                                                -->
+<!--    Copyright (c) 2007-2010, The JASYPT team (http://www.jasypt.org)            -->
+<!--                                                                                -->
+<!--    Licensed under the Apache License, Version 2.0 (the "License");             -->
+<!--    you may not use this file except in compliance with the License.            -->
+<!--    You may obtain a copy of the License at                                     -->
+<!--                                                                                -->
+<!--        http://www.apache.org/licenses/LICENSE-2.0                              -->
+<!--                                                                                -->
+<!--    Unless required by applicable law or agreed to in writing, software         -->
+<!--    distributed under the License is distributed on an "AS IS" BASIS,           -->
+<!--    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    -->
+<!--    See the License for the specific language governing permissions and         -->
+<!--    limitations under the License.                                              -->
+<!--                                                                                -->
+<!--  ============================================================================= -->
+<xsd:schema xmlns="http://www.jasypt.org/schema/encryption"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:tool="http://www.springframework.org/schema/tool"
+        xmlns:context="http://www.springframework.org/schema/context"
+        targetNamespace="http://www.jasypt.org/schema/encryption"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans" schemaLocation="http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool" schemaLocation="http://www.springframework.org/schema/tool/spring-tool-3.1.xsd"/>
+    <xsd:import namespace="http://www.springframework.org/schema/context" schemaLocation="http://www.springframework.org/schema/context/spring-context-3.1.xsd"/>
+
+
+    <xsd:element name="encryptor-config">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a PBE configuration object (implementing org.jasypt.encryption.pbe.config.PBEConfig).
+                Depending on the specified attributes, the specific implementation of PBEConfig being
+                created will be automatically chosen among SimplePBEConfig, SimpleStringPBEConfig, 
+                EnvironmentPBEConfig and EnvironmentStringPBEConfig.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.pbe.config.PBEConfig"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
+            <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="key-obtention-iterations-env-name" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="password-env-name" type="xsd:string"/>
+            <xsd:attribute name="password-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="byte-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates an org.jasypt.encryption.ByteEncryptor object, which specific implementation can be a 
+                StandardPBEByteEncryptor or a PooledPBEByteEncryptor if the "pool-size" 
+                attribute has been specified (either directly or by setting a "config-bean" 
+                including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.ByteEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="string-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates an org.jasypt.encryption.StringEncryptor object, which specific implementation can be a
+                StandardPBEStringEncryptor object, or a PooledPBEStringEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.StringEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="big-decimal-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates an org.jasypt.encryption.BigDecimalEncryptor object, which specific implementation can be a
+                StandardPBEBigDecimalEncryptor object, or a PooledPBEBigDecimalEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.BigDecimalEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="big-integer-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates an org.jasypt.encryption.BigIntegerEncryptor object, which specific implementation can be a
+                StandardPBEBigIntegerEncryptor object, or a PooledPBEBigIntegerEncryptor if the
+                "pool-size" attribute has been specified (either directly or by setting a 
+                "config-bean" including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.encryption.BigIntegerEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="key-obtention-iterations" type="xsd:integer"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="basic-text-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Declares an org.jasypt.util.text.BasicTextEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardPBEStringEncryptor with
+                algorithm "PBEWithMD5AndDES".
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.text.BasicTextEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="strong-text-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Declares an org.jasypt.util.text.StrongTextEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardPBEStringEncryptor with
+                algorithm "PBEWithMD5AndTripleDES".
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.text.StrongTextEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="password" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+
+    <xsd:element name="digester-config">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a digester configuration object (implementing org.jasypt.digest.config.DigesterConfig).
+                Depending on the specified attributes, the specific implementation of DigesterConfig being
+                created will be automatically chosen among SimpleDigesterConfig, SimpleStringDigesterConfig, 
+                EnvironmentDigesterConfig and EnvironmentStringDigesterConfig.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.config.DigesterConfig"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="algorithm-env-name" type="xsd:string"/>
+            <xsd:attribute name="algorithm-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="iterations-env-name" type="xsd:string"/>
+            <xsd:attribute name="iterations-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-size-bytes-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="provider-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-env-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-env-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check-env-name" type="xsd:string"/>
+            <xsd:attribute name="use-lenient-salt-size-check-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="pool-size-env-name" type="xsd:string"/>
+            <xsd:attribute name="pool-size-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
+            <xsd:attribute name="unicode-normalization-ignored-env-name" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="prefix" type="xsd:string"/>
+            <xsd:attribute name="prefix-env-name" type="xsd:string"/>
+            <xsd:attribute name="prefix-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="suffix" type="xsd:string"/>
+            <xsd:attribute name="suffix-env-name" type="xsd:string"/>
+            <xsd:attribute name="suffix-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="byte-digester">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a ByteDigester object, which specific implementation can be a 
+                StandardByteDigester or a PooledByteDigester if the "pool-size" 
+                attribute has been specified (either directly or by setting a "config-bean" 
+                including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.ByteDigester"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="string-digester">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates a StringDigester object, which specific implementation can be a 
+                StandardStringDigester or a PooledStringDigester if the "pool-size" 
+                attribute has been specified (either directly or by setting a "config-bean" 
+                including a value for this attribute). 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.digest.StringDigester"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="iterations" type="xsd:integer"/>
+            <xsd:attribute name="salt-size-bytes" type="xsd:integer"/>
+            <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="invert-position-of-salt-in-message-before-digesting" type="xsd:boolean"/>
+            <xsd:attribute name="invert-position-of-plain-salt-in-encryption-results" type="xsd:boolean"/>
+            <xsd:attribute name="use-lenient-salt-size-check" type="xsd:boolean"/>
+            <xsd:attribute name="pool-size" type="xsd:integer"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="unicode-normalization-ignored" type="xsd:boolean"/>
+            <xsd:attribute name="prefix" type="xsd:string"/>
+            <xsd:attribute name="suffix" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="basic-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Declares an org.jasypt.util.password.BasicPasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "MD5", 8-byte random salt and 1000 iterations.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.BasicPasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="configurable-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Declares an org.jasypt.util.password.ConfigurablePasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "SHA-256", 16-byte random salt and 100000 iterations.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.ConfigurablePasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="algorithm" type="xsd:string"/>
+            <xsd:attribute name="config-bean" type="xsd:string"/>
+            <xsd:attribute name="plain-digest" type="xsd:boolean"/>
+            <xsd:attribute name="provider-bean" type="xsd:string"/>
+            <xsd:attribute name="provider-name" type="xsd:string"/>
+            <xsd:attribute name="string-output-type" type="xsd:string"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+    <xsd:element name="strong-password-encryptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Declares an org.jasypt.util.password.StrongPasswordEncryptor utility object. Which 
+                is in fact a pre-configuration of a StandardStringDigester with
+                algorithm "SHA-256", 16-byte random salt and 100000 iterations.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.util.password.StrongPasswordEncryptor"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:ID"/>
+            <xsd:attribute name="scope" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The scope of this bean: typically "singleton" (one shared instance,
+                        which will be returned by all calls to getBean with the given id), or
+                        "prototype" (independent instance resulting from each call to getBean).
+                        Default is "singleton". Further scopes, such as "request" or "session",
+                        might be supported by extended bean factories (e.g. in a web environment).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+
+
+
+
+    <xsd:element name="encryptable-properties">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Creates an org.jasypt.properties.EncryptableProperties object by reading
+                the specified resource and decrypting the encrypted keys that it might contain.
+                The behaviour of this element is exactly equivalent to that of
+                &lt;util:properties/&gt;, but adding the encrypting capabilities.
+                Note that objects of this class extend java.util.Properties, so that you can
+                autowire your Properties objects without letting your Java code know
+                they contain encrypted data. 
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports type="org.jasypt.properties.EncryptableProperties"/>
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:propsType">
+                    <xsd:attribute name="id" type="xsd:ID"/>
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="location" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:appinfo>
+                                <tool:annotation>
+                                    <tool:expected-type type="org.springframework.core.io.Resource"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="local-override" type="xsd:boolean">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies whether local properties override properties from files.
+                                Default is "false": properties from files override local defaults.
+                                If set to "true", local properties will override defaults from files.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="scope" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The scope of this collection bean: typically "singleton" (one shared instance,
+                                which will be returned by all calls to getBean with the given id), or
+                                "prototype" (independent instance resulting from each call to getBean).
+                                Default is "singleton". Further scopes, such as "request" or "session",
+                                might be supported by extended bean factories (e.g. in a web environment).
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+
+
+
+
+
+
+
+
+    
+    <xsd:element name="encryptable-property-placeholder">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Activates replacement of ${...} placeholders decrypting those properties that require it, 
+                resolved against the specified properties file or Properties object (if any). Falls back 
+                to resolving placeholders against JVM system properties.
+                Alternatively, define a parameterized PropertyPlaceholderConfigurer bean in the context.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports 
+                        type="org.jasypt.spring3.propertoes.EncryptablePropertyPlaceholderConfigurer" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="context:propertyPlaceholder">
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="system-properties-mode" default="FALLBACK">
+                        <xsd:simpleType>
+                            <xsd:restriction base="xsd:string">
+                                <xsd:enumeration value="NEVER"/>
+                                <xsd:enumeration value="FALLBACK"/>
+                                <xsd:enumeration value="OVERRIDE"/>
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
+    
+    
+    <xsd:element name="encryptable-property-override">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Activates pushing of (possibly encrypted) override values into bean 
+                properties, based on configuration lines of the following format: 
+                beanName.property=value
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports
+                            type="org.jasypt.spring3.properties.EncryptablePropertyOverrideConfigurer" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="context:propertyPlaceholder">
+                    <xsd:attribute name="encryptor" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Specifies the encryptor to be used to decrypt those properties
+                                that are encrypted. This encryptor has to be either an implementation
+                                of org.jasypt.encryption.StringEncryptor or of
+                                org.jasypt.util.text.TextEncryptor.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
+
+
+
+</xsd:schema>
