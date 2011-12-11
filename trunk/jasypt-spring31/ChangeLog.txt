@@ -1,0 +1,30 @@
+
+1.9.0
+=====
+
+- Extracted jasypt-spring3 package from previous monolithic jasypt module.
+- Renamed org.jasypt.spring package as org.jasypt.spring3, and deprecated
+  the classes in the old package.
+- Created the "encryption" XML namespace, containing tags for:
+    * Encryptors
+      * PBE encryptor config objects: <encryption:config/>
+      * PBE byte encryptor objects: <encryption:byte-encryptor/>
+      * PBE string encryptor objects: <encryption:string-encryptor/> 
+      * PBE big decimal encryptor objects: <encryption:big-decimal-encryptor/>       
+      * PBE big integer encryptor objects: <encryption:big-integer-encryptor/>       
+    * Digesters
+      * Digester config objects: <encryption:config/>
+      * Digester byte digester objects: <encryption:byte-digester/>
+      * Digester string digester objects: <encryption:string-digester/>
+    * Util encryptors/digesters
+      * Basic text encryptor objects: <encryption:basic-text-encryptor/>
+      * Strong text encryptor objects: <encryption:strong-text-encryptor/>      
+      * Basic password encryptor objects: <encryption:basic-password-encryptor/>      
+      * Strong password encryptor objects: <encryption:strong-password-encryptor/>      
+      * Configurable password encryptor objects: <encryption:configurable-password-encryptor/>
+    * Encryptable properties
+      * Encryptable properties objects (java.util.Properties): <encryption:encryptable-properties/>
+      * Encryptable property placeholder configurer: <encryption:encryptable-property-placeholder/>
+      * Encryptable property override configurer: <encryption:encryptable-property-override/>
+      
+      
