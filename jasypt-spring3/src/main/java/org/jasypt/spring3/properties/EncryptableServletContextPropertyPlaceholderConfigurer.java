@@ -98,6 +98,7 @@ public final class EncryptableServletContextPropertyPlaceholderConfigurer
 	 * 
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
 	 */
+	@Override
 	protected String convertPropertyValue(final String originalValue) {
 		if (!PropertyValueEncryptionUtils.isEncryptedValue(originalValue)) {
 			return originalValue;
@@ -120,6 +121,7 @@ public final class EncryptableServletContextPropertyPlaceholderConfigurer
      * 
      * This fix makes sure that variables are decrypted before being returned.
      */
+	@Override
     protected String resolvePlaceholder(final String placeholder, final Properties props) {
         return convertPropertyValue(super.resolvePlaceholder(placeholder, props));
     }

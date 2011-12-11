@@ -54,11 +54,13 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
     }
 
     
-    protected Class getBeanClass(final Element element) {
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return EncryptorFactoryBean.class;
     }
 
 
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
     
         builder.addConstructorArgValue(new Integer(this.encryptorType));

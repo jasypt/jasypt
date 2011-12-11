@@ -54,8 +54,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     private static final String PARAM_PROVIDER_NAME = "provider-name"; 
     private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean"; 
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME = "salt-generator-class-name";
-    private static final Set PARAMS_SIMPLE =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_SIMPLE =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_ALGORITHM,
                     PARAM_KEY_OBTENTION_ITERATIONS,
@@ -70,8 +70,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
 
     // string
     private static final String PARAM_STRING_OUTPUT_TYPE = "string-output-type"; 
-    private static final Set PARAMS_STRING =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_STRING =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_STRING_OUTPUT_TYPE
                 }));
@@ -91,8 +91,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     private static final String PARAM_PROVIDER_NAME_SYS_PROPERTY_NAME = "provider-name-sys-property-name";
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME_ENV_NAME = "salt-generator-class-name-env-name";
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME = "salt-generator-class-name-sys-property-name";
-    private static final Set PARAMS_ENVIRONMENT =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_ENVIRONMENT =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_ALGORITHM_ENV_NAME,
                     PARAM_ALGORITHM_SYS_PROPERTY_NAME,
@@ -113,8 +113,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     // string environment
     private static final String PARAM_STRING_OUTPUT_TYPE_ENV_NAME = "string-output-type-env-name";
     private static final String PARAM_STRING_OUTPUT_TYPE_SYS_PROPERTY_NAME = "string-output-type-sys-property-name";
-    private static final Set PARAMS_STRING_ENVIRONMENT =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_STRING_ENVIRONMENT =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_STRING_OUTPUT_TYPE_ENV_NAME,
                     PARAM_STRING_OUTPUT_TYPE_SYS_PROPERTY_NAME
@@ -129,14 +129,16 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
         super();
     }
 
-    
-    protected Class getBeanClass(final Element element) {
+
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return computeConfigClass(element);
     }
 
 
     
     
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
         
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
@@ -179,7 +181,7 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     
     
     
-    private static Class computeConfigClass(final Element element) {
+    private static Class<?> computeConfigClass(final Element element) {
         
         boolean isSimpleConfig = false;
         boolean isStringConfig = false;

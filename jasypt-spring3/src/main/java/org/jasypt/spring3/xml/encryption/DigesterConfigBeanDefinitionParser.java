@@ -57,8 +57,8 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
     private static final String PARAM_INVERT_POSITION_OF_PLAIN_SALT_IN_ENCRYPTION_RESULTS = "invert-position-of-plain-salt-in-encryption-results"; 
     private static final String PARAM_USE_LENIENT_SALT_SIZE_CHECK = "use-lenient-salt-size-check"; 
     private static final String PARAM_POOL_SIZE = "pool-size"; 
-    private static final Set PARAMS_SIMPLE =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_SIMPLE =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_ALGORITHM,
                     PARAM_ITERATIONS,
@@ -79,8 +79,8 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
     private static final String PARAM_UNICODE_NORMALIZATION_IGNORED = "unicode-normalization-ignored"; 
     private static final String PARAM_PREFIX = "prefix"; 
     private static final String PARAM_SUFFIX = "suffix"; 
-    private static final Set PARAMS_STRING =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_STRING =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_STRING_OUTPUT_TYPE,
                     PARAM_UNICODE_NORMALIZATION_IGNORED,
@@ -109,8 +109,8 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
     private static final String PARAM_USE_LENIENT_SALT_SIZE_CHECK_SYS_PROPERTY_NAME = "use-lenient-salt-size-check-sys-property-name"; 
     private static final String PARAM_POOL_SIZE_ENV_NAME = "pool-size-env-name"; 
     private static final String PARAM_POOL_SIZE_SYS_PROPERTY_NAME = "pool-size-sys-property-name"; 
-    private static final Set PARAMS_ENVIRONMENT =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_ENVIRONMENT =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_ALGORITHM_ENV_NAME,
                     PARAM_ALGORITHM_SYS_PROPERTY_NAME,
@@ -143,8 +143,8 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
     private static final String PARAM_PREFIX_SYS_PROPERTY_NAME = "prefix-sys-property-name"; 
     private static final String PARAM_SUFFIX_ENV_NAME = "suffix-env-name"; 
     private static final String PARAM_SUFFIX_SYS_PROPERTY_NAME = "suffix-sys-property-name"; 
-    private static final Set PARAMS_STRING_ENVIRONMENT =
-            new HashSet(Arrays.asList(
+    private static final Set<String> PARAMS_STRING_ENVIRONMENT =
+            new HashSet<String>(Arrays.asList(
                 new String[] {
                     PARAM_STRING_OUTPUT_TYPE_ENV_NAME,
                     PARAM_STRING_OUTPUT_TYPE_SYS_PROPERTY_NAME,
@@ -165,14 +165,15 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
         super();
     }
 
-    
-    protected Class getBeanClass(final Element element) {
+
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         return computeConfigClass(element);
     }
 
 
     
-    
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
         
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
@@ -233,7 +234,7 @@ final class DigesterConfigBeanDefinitionParser extends AbstractEncryptionBeanDef
     
     
     
-    private static Class computeConfigClass(final Element element) {
+    private static Class<?> computeConfigClass(final Element element) {
         
         boolean isSimpleConfig = false;
         boolean isStringConfig = false;

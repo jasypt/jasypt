@@ -100,6 +100,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 	 * 
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
 	 */
+	@Override
 	protected String convertPropertyValue(final String originalValue) {
 		if (!PropertyValueEncryptionUtils.isEncryptedValue(originalValue)) {
 			return originalValue;
@@ -118,6 +119,7 @@ public final class EncryptablePropertyPlaceholderConfigurer
 	 * @since 1.8
 	 * @see org.springframework.beans.factory.config.PropertyPlaceholderConfigurer#resolveSystemProperty(java.lang.String)
 	 */
+	@Override
     protected String resolveSystemProperty(final String key) {
         return convertPropertyValue(super.resolveSystemProperty(key));
     }

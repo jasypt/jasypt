@@ -41,7 +41,7 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  */
 public final class DigesterFactoryBean 
-        implements FactoryBean, InitializingBean {
+        implements FactoryBean<Object>, InitializingBean {
 
     static final int DIGESTER_TYPE_BYTE = 0;
     static final int DIGESTER_TYPE_STRING = 1;
@@ -386,7 +386,7 @@ public final class DigesterFactoryBean
 
     
     
-    public Class getObjectType() {
+    public Class<?> getObjectType() {
         if (this.digesterType == DIGESTER_TYPE_BYTE) {
             return ByteDigester.class;
         } else if (this.digesterType == DIGESTER_TYPE_STRING) {

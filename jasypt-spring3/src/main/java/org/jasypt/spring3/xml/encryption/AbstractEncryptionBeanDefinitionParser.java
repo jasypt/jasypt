@@ -41,6 +41,7 @@ abstract class AbstractEncryptionBeanDefinitionParser extends AbstractSingleBean
     
     
     
+    @Override
     protected boolean shouldGenerateIdAsFallback() {
         return true;
     }

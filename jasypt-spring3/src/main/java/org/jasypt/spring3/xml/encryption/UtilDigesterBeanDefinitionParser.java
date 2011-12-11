@@ -56,7 +56,8 @@ final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefin
     }
 
     
-    protected Class getBeanClass(final Element element) {
+    @Override
+    protected Class<?> getBeanClass(final Element element) {
         if (this.utilType == UTIL_TYPE_BASIC) {
             return BasicPasswordEncryptor.class;
         } else if (this.utilType == UTIL_TYPE_STRONG) {
@@ -69,6 +70,7 @@ final class UtilDigesterBeanDefinitionParser extends AbstractEncryptionBeanDefin
     }
 
 
+    @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
         
         processStringAttribute(element, builder, PARAM_ALGORITHM, "algorithm");
