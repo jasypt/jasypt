@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring.properties;
+package org.jasypt.spring2.properties;
 
 import junit.framework.TestCase;
 
