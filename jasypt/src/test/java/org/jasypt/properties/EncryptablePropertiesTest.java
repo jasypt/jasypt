@@ -32,9 +32,10 @@ public class EncryptablePropertiesTest extends TestCase {
     public void testEncryptableProperties() throws Exception {
 
         final BasicTextEncryptor encryptor = new BasicTextEncryptor();
+        encryptor.setPassword("jasypt");
         final Properties props = new EncryptableProperties(encryptor);
         
-        props.load(this.getClass().getResourceAsStream("props.properties"));
+        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("props.properties"));
         
         final String value = "Spain";
         
