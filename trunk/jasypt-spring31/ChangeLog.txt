@@ -26,5 +26,7 @@
       * Encryptable properties objects (java.util.Properties): <encryption:encryptable-properties/>
       * Encryptable property placeholder configurer: <encryption:encryptable-property-placeholder/>
       * Encryptable property override configurer: <encryption:encryptable-property-override/>
-      
+- Created an EncryptablePropertiesPropertySource class implementing the new PropertySource interface
+  for using encrypted properties files as a possible properties source in the new environment
+  configuration system.
       

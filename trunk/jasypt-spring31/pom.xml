@@ -88,6 +88,9 @@
       <id>org.springframework.maven.milestone</id>
       <name>Maven Central Compatible Spring Milestone Repository</name>
       <url>http://maven.springframework.org/milestone</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
     </repository>
   </repositories>
 
@@ -232,7 +235,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>3.1.0.RC2</version>
+      <version>3.1.0.RELEASE</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -240,7 +243,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>3.1.0.RC2</version>
+      <version>3.1.0.RELEASE</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -248,7 +251,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>3.1.0.RC2</version>
+      <version>3.1.0.RELEASE</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>

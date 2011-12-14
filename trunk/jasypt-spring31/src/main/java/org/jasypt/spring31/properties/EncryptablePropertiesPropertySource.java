@@ -19,8 +19,12 @@
  */
 package org.jasypt.spring31.properties;
 
+import java.util.Properties;
+
+import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.EncryptableProperties;
-import org.springframework.core.env.EnumerablePropertySource;
+import org.jasypt.util.text.TextEncryptor;
+import org.springframework.core.env.PropertiesPropertySource;
 
 /**
  * 
@@ -30,27 +34,49 @@ import org.springframework.core.env.EnumerablePropertySource;
  * 
  */
 public final class EncryptablePropertiesPropertySource 
-        extends EnumerablePropertySource<EncryptableProperties> {
+        extends PropertiesPropertySource {
 
 
-    // TODO Do we really need this? Wouldn't we do with a PopertiesPropertySource containing
-    // an EncryptableProperties?
-        
     public EncryptablePropertiesPropertySource(final String name, final EncryptableProperties props) {
         super(name, props);
     }
-    
-    
-    @Override
-    public String[] getPropertyNames() {
-        return getSource().keySet().toArray(new String[0]);
+
+    public EncryptablePropertiesPropertySource(final String name, final Properties props, final TextEncryptor encryptor) {
+        super(name, processProperties(props, encryptor));
     }
 
-    @Override
-    public Object getProperty(final String propertyName) {
-        return getSource().getProperty(propertyName);
+    public EncryptablePropertiesPropertySource(final String name, final Properties props, final StringEncryptor encryptor) {
+        super(name, processProperties(props, encryptor));
     }
-    
 
+    
+    private static Properties processProperties(final Properties props, final TextEncryptor encryptor) {
+        if (props == null) {
+            return null;
+        }
+        if (props instanceof EncryptableProperties) {
+            throw new IllegalArgumentException(
+                    "Properties object already is an " + EncryptableProperties.class.getName() + 
+                    " object. No encryptor should be specified.");
+        }
+        final EncryptableProperties encryptableProperties = new EncryptableProperties(encryptor);
+        encryptableProperties.putAll(props);
+        return encryptableProperties;
+    }
+
+    
+    private static Properties processProperties(final Properties props, final StringEncryptor encryptor) {
+        if (props == null) {
+            return null;
+        }
+        if (props instanceof EncryptableProperties) {
+            throw new IllegalArgumentException(
+                    "Properties object already is an " + EncryptableProperties.class.getName() + 
+                    " object. No encryptor should be specified.");
+        }
+        final EncryptableProperties encryptableProperties = new EncryptableProperties(encryptor);
+        encryptableProperties.putAll(props);
+        return encryptableProperties;
+    }
     
 }
