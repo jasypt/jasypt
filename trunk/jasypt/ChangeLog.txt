@@ -16,6 +16,8 @@
   which involved passwords containing exclamation mark symbols.
 - Fixed bug in PooledPBEStringEncryptor which caused first encryptor in pool not
   use hexadecimal output type.
+- Added implementation of Hashtable's "get(Object)" method to 
+  org.jasypt.properties.EncryptableProperties.
   
 
 1.8
