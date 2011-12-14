@@ -1,4 +1,4 @@
-package org.jasypt.spring.properties;
+package org.jasypt.spring31.properties;
 
 import junit.framework.TestCase;
 
