@@ -20,7 +20,9 @@
 package org.jasypt.properties;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import org.jasypt.commons.CommonUtils;
@@ -184,6 +186,24 @@ public final class EncryptableProperties extends Properties {
     public String getProperty(final String key, final String defaultValue) {
         return decode(super.getProperty(key, defaultValue));
     }
+
+
+    /**
+     * <p>
+     * Obtains the property value for the specified key (see 
+     * {@link Hashtable#get(Object)}), decrypting it if needed.
+     * </p>
+     * 
+     * @param key the property key
+     * @return the (decrypted) value
+     * @since 1.9.0
+     */
+    public synchronized Object get(final Object key) {
+        final Object value = super.get(key);
+        final String valueStr = 
+                (value instanceof String) ? (String)value : null;
+        return decode(valueStr);
+    }
     
     
     /*
@@ -246,5 +266,6 @@ public final class EncryptableProperties extends Properties {
             registry.removeEntries(this);
         }
     }
+
     
 }
