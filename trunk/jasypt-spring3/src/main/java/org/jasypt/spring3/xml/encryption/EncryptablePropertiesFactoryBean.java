@@ -30,6 +30,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.support.PropertiesLoaderSupport;
 
 /**
+ * <p>
+ *   Factory bean for creating encrptable properties objects from the <tt>encryption</tt> namespace
+ *   elements. <strong>Do not use directly</strong>.
+ * </p>
+ * 
  * 
  * @since 1.9.0
  * 

@@ -34,6 +34,10 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
+ * <p>
+ *   Factory bean for creating digester objects from the <tt>encryption</tt> namespace
+ *   elements. <strong>Do not use directly</strong>.
+ * </p>
  * 
  * @since 1.9.0
  * 
