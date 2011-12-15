@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:encryption="http://www.jasypt.org/schema/encryption"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                           http://www.jasypt.org/schema/encryption
+                           http://www.jasypt.org/schema/encryption/jasypt-spring31-encryption-1.xsd">
+  
+
+   <encryption:encryptor-config id="config1" password="jasypt" pool-size="2"/>
+  <encryption:byte-encryptor algorithm="PBEWithMD5AndDES" config-bean="config1"/>
+  
+  <encryption:encryptor-config id="config2" password="jasypt" pool-size="10" string-output-type="hexa" scope="prototype"/>
+  <encryption:string-encryptor id="myEnc2" algorithm="PBEWithMD5AndTripleDES" key-obtention-iterations="20" config-bean="config2"/>
+    
+  <encryption:big-decimal-encryptor algorithm="PBEWithMD5AndTripleDES" password="something!" pool-size="2"/>
+
+  <encryption:big-integer-encryptor algorithm="PBEWithMD5AndTripleDES" password="jasyptIsGreat" key-obtention-iterations="30" />
+  
+  <encryption:basic-text-encryptor password="jasypt"/>
+  
+  <encryption:strong-text-encryptor id="sTE" password="leiro" scope="prototype"/>
+  
+  <encryption:digester-config id="dConfig" string-output-type="hexa" pool-size="10"/>
+  
+  <encryption:string-digester id="sd1" algorithm="SHA-1" config-bean="dConfig" scope="prototype"/>
+  
+  <encryption:byte-digester algorithm="MD5" pool-size="2"/>
+
+  <encryption:configurable-password-encryptor algorithm="SHA-1" string-output-type="hexa"/>
+
+
+  <encryption:encryptable-properties id="eprop1" encryptor="myEnc2">
+    <prop key="prop1">something</prop>
+    <prop key="prop2">ENC(27A8F022334D446937D492862DC09B19216BDEA4D894DA0A)</prop>
+  </encryption:encryptable-properties>
+
+  <encryption:encryptable-properties id="eprop2" encryptor="myEnc2">
+    <prop key="prop1">something-two</prop>
+  </encryption:encryptable-properties>
+
+  <encryption:encryptable-property-placeholder encryptor="sTE" location="classpath:some.properties" />
+    
+  <!-- **************************************************************** -->
+  <!--  RESOURCE FOLDERS CONFIGURATION                                  -->
+  <!--  Dispatcher configuration for serving static resources           -->
+  <!-- **************************************************************** -->
+  <mvc:resources location="/images/" mapping="/images/**" />
+  <mvc:resources location="/css/" mapping="/css/**" />
+    
+
+  <!-- **************************************************************** -->
+  <!--  SPRING ANNOTATION PROCESSING                                    -->
+  <!-- **************************************************************** -->
+  <mvc:annotation-driven />
+  <context:component-scan base-package="org.jasypt.spring3testapp" />
+
+
+  <!-- **************************************************************** -->
+  <!--  MESSAGE EXTERNALIZATION/INTERNATIONALIZATION                    -->
+  <!--  Standard Spring MessageSource implementation                    -->
+  <!-- **************************************************************** -->
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename" value="Messages" />
+  </bean>
+
+   
+
+
+  <!-- **************************************************************** -->
+  <!--  JSP-SPECIFIC ARTIFACTS                                          -->
+  <!-- **************************************************************** -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+    <property name="prefix" value="/WEB-INF/templates/" />
+    <property name="suffix" value=".jsp" />
+    <property name="order" value="1" />
+  </bean>
+    
+    
+</beans>
+
+
