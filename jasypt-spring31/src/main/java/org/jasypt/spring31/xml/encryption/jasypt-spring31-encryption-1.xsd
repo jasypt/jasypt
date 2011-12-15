@@ -658,6 +658,11 @@
                 resolved against the specified properties file or Properties object (if any). Falls back 
                 to resolving placeholders against JVM system properties.
                 Alternatively, define a parameterized PropertyPlaceholderConfigurer bean in the context.
+                
+                Note that as of Spring 3.1 the system-properties-mode attribute has been deprecated in
+                favor of the more flexible PropertySources mechanism. However, Spring 3.1-based
+                applications may continue to use old EncryptablePropertyPlaceholderConfigurer mechanism
+                by setting a value other than the default "ENVIRONMENT" to the system-properties-mode.
             ]]></xsd:documentation>
             <xsd:appinfo>
                 <tool:annotation>
@@ -679,16 +684,38 @@
                             ]]></xsd:documentation>
                         </xsd:annotation>
                     </xsd:attribute>
-                    <xsd:attribute name="system-properties-mode" default="FALLBACK">
-                        <xsd:simpleType>
-                            <xsd:restriction base="xsd:string">
-                                <xsd:enumeration value="NEVER"/>
-                                <xsd:enumeration value="FALLBACK"/>
-                                <xsd:enumeration value="OVERRIDE"/>
-                            </xsd:restriction>
-                        </xsd:simpleType>
-                    </xsd:attribute>
-                </xsd:extension>
+					<xsd:attribute name="system-properties-mode" default="ENVIRONMENT">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                Controls how to resolve placeholders against system properties. As of Spring 3.1, this
+                                attribute value defaults to "ENVIRONMENT", indicating that resolution of placeholders
+                                against system properties is handled via PropertySourcesPlaceholderConfigurer and its
+                                delegation to the current Spring Environment object.
+                                
+                                For maximum backward compatibility, this attribute is preserved going forward with the
+                                3.1 version of the encryption schema, and any values other than the default "ENVIRONMENT"
+                                will cause a traditional EncryptablePropertyPlaceholderConfigurer to be registered instead of the
+                                newer EncryptablePropertySourcesPlaceholderConfigurer variant. In this case, the Spring Environment
+                                and its property sources are not interrogated when resolving placeholders. Users are
+                                encouraged to consider this attribute deprecated, and to take advantage of
+                                Environment/PropertySource mechanisms. See ConfigurableEnvironment Javadoc for examples.
+                                
+                                "ENVIRONMENT" indicates placeholders should be resolved against the current Environment and against any local properties;
+                                "NEVER" indicates placeholders should be resolved only against local properties and never against system properties;
+                                "FALLBACK" indicates placeholders should be resolved against any local properties and then against system properties;
+                                "OVERRIDE" indicates placeholders should be resolved first against system properties and then against any local properties;
+							]]></xsd:documentation>
+                           </xsd:annotation>
+                           <xsd:simpleType>
+                               <xsd:restriction base="xsd:string">
+                                   <xsd:enumeration value="ENVIRONMENT"/>
+                                   <xsd:enumeration value="NEVER"/>
+                                   <xsd:enumeration value="FALLBACK"/>
+                                   <xsd:enumeration value="OVERRIDE"/>
+                               </xsd:restriction>
+                           </xsd:simpleType>
+                       </xsd:attribute>
+                   </xsd:extension>
             </xsd:complexContent>
         </xsd:complexType>
     </xsd:element>
