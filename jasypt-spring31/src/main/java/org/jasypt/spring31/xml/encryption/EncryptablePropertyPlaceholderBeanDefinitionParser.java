@@ -19,6 +19,7 @@
  */
 package org.jasypt.spring31.xml.encryption;
 
+import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
 import org.jasypt.spring31.properties.EncryptablePropertySourcesPlaceholderConfigurer;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.util.StringUtils;
@@ -34,8 +35,10 @@ import org.w3c.dom.Element;
 final class EncryptablePropertyPlaceholderBeanDefinitionParser 
         extends AbstractEncryptablePropertyLoadingBeanDefinitionParser {
 
-
+    private static final String SYSTEM_PROPERTIES_MODE_ATTRIBUTE = "system-properties-mode";
     private static final String ENCRYPTOR_ATTRIBUTE = "encryptor";
+
+    private static final String SYSTEM_PROPERTIES_MODE_DEFAULT = "ENVIRONMENT";
     
     
     EncryptablePropertyPlaceholderBeanDefinitionParser() {
@@ -45,9 +48,20 @@ final class EncryptablePropertyPlaceholderBeanDefinitionParser
     
     @Override
     protected Class<?> getBeanClass(final Element element) {
-        return EncryptablePropertySourcesPlaceholderConfigurer.class;
+        // As of Spring 3.1, the default value of system-properties-mode has changed from
+        // 'FALLBACK' to 'ENVIRONMENT'. This latter value indicates that resolution of
+        // placeholders against system properties is a function of the Environment and
+        // its current set of PropertySources
+        if (element.getAttribute(SYSTEM_PROPERTIES_MODE_ATTRIBUTE).equals(SYSTEM_PROPERTIES_MODE_DEFAULT)) {
+            return EncryptablePropertySourcesPlaceholderConfigurer.class;
+        }
+
+        // the user has explicitly specified a value for system-properties-mode. Revert
+        // to PropertyPlaceholderConfigurer to ensure backward compatibility.
+        return EncryptablePropertyPlaceholderConfigurer.class;
     }
 
+    
     
     @Override
     protected void doParse(final Element element, final BeanDefinitionBuilder builder) {
@@ -58,7 +72,8 @@ final class EncryptablePropertyPlaceholderBeanDefinitionParser
                 Boolean.valueOf(element.getAttribute("ignore-unresolvable")));
 
         String systemPropertiesModeName = element.getAttribute("system-properties-mode");
-        if (StringUtils.hasLength(systemPropertiesModeName)) {
+        if (StringUtils.hasLength(systemPropertiesModeName) &&
+                !systemPropertiesModeName.equals(SYSTEM_PROPERTIES_MODE_DEFAULT)) {
             builder.addPropertyValue("systemPropertiesModeName", "SYSTEM_PROPERTIES_MODE_"+systemPropertiesModeName);
         }
 
