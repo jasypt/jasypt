@@ -39,6 +39,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 public final class EncryptablePropertySourcesPlaceholderConfigurer 
         extends PropertySourcesPlaceholderConfigurer {
+    
 	/*
 	 * Only one of these instances will be initialized, the other one will be
 	 * null.
@@ -46,6 +47,21 @@ public final class EncryptablePropertySourcesPlaceholderConfigurer
 	private final StringEncryptor stringEncryptor;
 	private final TextEncryptor textEncryptor;
 
+	
+	/*
+	 * This flag will keep track of whether the "convertProperties()" method
+	 * (which decrypts encrypted property entries) has already been called
+	 * or not. 
+	 * 
+	 * This is needed because of a bug in Spring 3.1.0.RELEASE:
+	 * https://jira.springsource.org/browse/SPR-8928
+	 * 
+	 * This flag will avoid calling "convertProperties()" twice once this
+	 * bug has been solved.
+	 */
+	private boolean alreadyConverted = false;
+	
+	
 	/**
 	 * <p>
 	 * Creates an <tt>EncryptablePropertyPlaceholderConfigurer</tt> instance
@@ -86,7 +102,10 @@ public final class EncryptablePropertySourcesPlaceholderConfigurer
 	
 	
 	
-	
+
+	/*
+	 * This is needed because of https://jira.springsource.org/browse/SPR-8928
+	 */
 	@Override
     protected Properties mergeProperties() throws IOException {
         final Properties mergedProperties = super.mergeProperties();
@@ -94,8 +113,22 @@ public final class EncryptablePropertySourcesPlaceholderConfigurer
         return mergedProperties;
     }
 
+
 	
 	
+    /*
+     * This is needed because of https://jira.springsource.org/browse/SPR-8928
+     */
+    @Override
+    protected void convertProperties(final Properties props) {
+        if (!this.alreadyConverted) {
+            super.convertProperties(props);
+            this.alreadyConverted = true;
+        }
+    }
+
+    
+    
     /*
 	 * (non-Javadoc)
 	 * 
