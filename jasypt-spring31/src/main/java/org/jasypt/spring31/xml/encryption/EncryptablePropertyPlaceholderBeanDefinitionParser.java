@@ -19,7 +19,7 @@
  */
 package org.jasypt.spring31.xml.encryption;
 
-import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
+import org.jasypt.spring31.properties.EncryptablePropertySourcesPlaceholderConfigurer;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
@@ -45,7 +45,7 @@ final class EncryptablePropertyPlaceholderBeanDefinitionParser
     
     @Override
     protected Class<?> getBeanClass(final Element element) {
-        return EncryptablePropertyPlaceholderConfigurer.class;
+        return EncryptablePropertySourcesPlaceholderConfigurer.class;
     }
 
     
