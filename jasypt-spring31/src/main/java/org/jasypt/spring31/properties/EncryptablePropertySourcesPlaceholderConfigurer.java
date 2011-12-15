@@ -19,12 +19,22 @@
  */
 package org.jasypt.spring31.properties;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
 import org.jasypt.util.text.TextEncryptor;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.PropertySourcesPropertyResolver;
 
 /**
  * <p>
@@ -80,7 +90,21 @@ public final class EncryptablePropertySourcesPlaceholderConfigurer
 		this.textEncryptor = textEncryptor;
 	}
 
-	/*
+	
+	
+	
+	
+	
+	@Override
+    protected Properties mergeProperties() throws IOException {
+        final Properties mergedProperties = super.mergeProperties();
+        convertProperties(mergedProperties);
+        return mergedProperties;
+    }
+
+	
+	
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
