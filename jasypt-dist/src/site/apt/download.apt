@@ -1,20 +1,39 @@
   -------
-  Download
+  Jasypt: Java simplified encryption - Download
   -------
 
 
 Download Jasypt
 
   
-  <<Current version>>: 1.8 [{{{changelog.html}ChangeLog}}]
+  <<Current version>>: 1.9.0 (December 18th, 2011) [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
   
-  If you want to keep informed about new releases, you can subscribe the
-  {{{https://lists.sourceforge.net/lists/listinfo/jasypt-announce}jasypt-announce mailing list}} (very low traffic).
+  Change logs:
+  
+    * jasypt (core): {{{./changelogs/jasypt/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-hibernate3: {{{./changelogs/jasypt-hibernate3/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-hibernate4: {{{./changelogs/jasypt-hibernate4/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-spring2: {{{./changelogs/jasypt-spring2/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-spring3: {{{./changelogs/jasypt-spring3/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-spring31: {{{./changelogs/jasypt-spring31/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-springsecurity2: {{{./changelogs/jasypt-springsecurity2/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-springsecurity3: {{{./changelogs/jasypt-springsecurity3/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-wicket13: {{{./changelogs/jasypt-wicket13/ChangeLog.txt}ChangeLog}}
+
+    * jasypt-wicket15: {{{./changelogs/jasypt-wicket15/ChangeLog.txt}ChangeLog}}
   
   <<{{{http://sourceforge.net/project/showfiles.php?group_id=183612}DOWNLOAD JASYPT (from SourceForge.net)}}>>
   
-  You can also browse the Source Repository {{{source-repository.html}here}}.
+  You can also browse the Source Repository {{{./source-repository.html}here}}.
 
   And if you are using Maven for building your project, have a look at
-  {{{maven.html}Jasypt + Maven}} for details on adding a dependency on Jasypt.
+  {{{./maven.html}Jasypt + Maven}} for details on adding a dependency on Jasypt.
   

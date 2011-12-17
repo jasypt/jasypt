@@ -1,8 +1,8 @@
   -------
-  Main
+  Jasypt: Java simplified encryption - Main
   -------
 
-  <<Jasypt 1.8 RELEASED!>> (July 25th, 2011). [{{{download.html}DOWNLOAD}}] [{{{changelog.html}ChangeLog}}]
+  <<Jasypt 1.9.0 RELEASED!>> (December 18th, 2011) [{{{./download.html}DOWNLOAD and ChangeLogs}}] [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
     
 
 Java Simplified Encryption
@@ -27,10 +27,10 @@ Java Simplified Encryption
 
     * Open API for use with any JCE provider.
 
-    * {{{features.html}...and much more}}
+    * {{{./features.html}...and much more}}
 
-  Have a look at the complete set of <<{{{features.html}Jasypt Features}}>>
-  or check the <<{{{faq.html}FAQ}}>>.
+  Have a look at the complete set of <<{{{./features.html}Jasypt Features}}>>
+  or check the <<{{{./faq.html}FAQ}}>>.
 
   With Jasypt, encrypting and checking a password can be as simple as...
   

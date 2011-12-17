@@ -1,11 +1,11 @@
   -------
-  Using Jasypt from Maven 2
+  Jasypt: Java simplified encryption - Using Jasypt from Apache Maven
   -------
 
 
-Using Jasypt from Maven 2
+Using Jasypt from Apache Maven
 
-  Adding jasypt to your Maven 2 project is very easy,
+  Adding jasypt to your Maven 2 or Maven 3 project is very easy,
   you just need to add the following dependency to your pom.xml:
       
 ---------

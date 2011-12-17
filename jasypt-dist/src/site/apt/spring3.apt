@@ -1,0 +1,43 @@
+  -------
+  Jasypt: Java simplified encryption - Integrating Jasypt with Spring 3.0
+  -------
+
+
+Integrating Jasypt with Spring 3.0
+
+  You have nothing special to do to integrate Jasypt with Spring, as all of the
+  encryption tools (digesters and encryptors) in jasypt have the adequate design
+  to be correctly instantiated and dependency-injected from a Spring
+  application context.
+
+  Example:
+
+------------
+  <bean id="strongEncryptor"
+    class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+    <property name="algorithm">
+        <value>PBEWithMD5AndTripleDES</value>
+    </property>
+    <property name="password">
+        <value>jasypt</value>
+    </property>
+  </bean>
+------------
+  
+  Besides, all digesters and encryptors in jasypt are <<thread-safe>>, which
+  means that they can be safely treated as singletons, the default behaviour
+  of Spring's bean container. This avoids concurrency problems in multi-threaded
+  environments like web applications.
+
+Integrating jasypt with Spring's application configuration infrastructure
+
+  Jasypt's capabilities for managing encrypted configuration files can also be integrated with 
+  Spring's application configuration infrastructure. Read mode on {{{encrypting-configuration.html}Encrypting
+  Application Configuration Files}}.
+  
+
+Integrating jasypt with Spring Security (Acegi Security)
+
+  For details on how to integrate jasypt with Acegi, the standard security framework
+  for Spring, please have a look at {{{springsecurity}this guide}}.
+  

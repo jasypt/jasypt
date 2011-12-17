@@ -1,5 +1,5 @@
   -------
-  Dependencies
+  Jasypt: Java simplified encryption - Dependencies
   -------
 
 
@@ -14,13 +14,14 @@ Java Virtual Machine
 
 Base dependencies for jasypt
 
-  Since version 1.7, jasypt does not depend on any external libraries when used with Java version >= 6.
+  Since version 1.7, jasypt does not depend on any external libraries when 
+  used with Java version 6 or newer.
 
-  If you are using Java SE version 5 or lower, you will need:
+  If you are using Java SE version 5 or older, you will need:
     
     * {{{http://www.icu-project.org/}International Components for Unicode (ICU)}} 3.4.4 or higher
     
-  Also note that from 1.8, ICU (icu4j) will be used for normalizing unicode if it is present in
+  Also note that from jasypt 1.8, ICU (icu4j) will be used for normalizing Unicode if it is present in
   classpath, even if Java >= 6 is used (nevertheless, icu4j and <<<java.text.Normalizer>>> implementations
   are completely compatible).
   

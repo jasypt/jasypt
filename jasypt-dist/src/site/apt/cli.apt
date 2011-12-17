@@ -1,5 +1,5 @@
   -------
-  Encrypting from the command line
+  Jasypt: Java simplified encryption - Encrypting from the command line
   -------
 
 
@@ -8,7 +8,7 @@ Encrypting from the command line: Jasypt CLI Tools
   Jasypt supplies a bunch of Command Line Interface (CLI) tools, useful for
   performing encryption, decryption and digest operations from the command line.
   
-  To use this tools, you should {{{download.html}download}} the <distribution>
+  In order to use this tools, you should {{{./download.html}download}} the <distribution>
   zip file (named <<<jasypt-$VERSION-dist.zip>>>) and unzip it. Once done,
   you will find a <<<jasypt-$VERSION/bin>>> directory containing:
     
@@ -71,7 +71,7 @@ Encrypting from the command line: Jasypt CLI Tools
   <<<encrypt.bat>>>/<<<encrypt.sh>>> command, and its usage and parametrization
   corresponds exactly with that of a <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>>.
   All the default values of this encryptor class are assumed when
-  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+  executing the CLI command. To know more, see {{{./javadoc.html}JavaDoc}}.
 
   <<Usage>>:
   
@@ -145,7 +145,7 @@ uv9+BnQFuZbfTV5Kf45oBOr0eJzBW5AS+XaYY+Lu5XWYhGgl0Ee41P0QUGpIrfyD
   <<<decrypt.bat>>>/<<<decrypt.sh>>> command, and its usage and parametrization
   corresponds exactly with that of a <<<org.jasypt.encryption.pbe.StandardPBEStringEncryptor>>>.
   All the default values of this encryptor class are assumed when
-  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+  executing the CLI command. To know more, see {{{./javadoc.html}JavaDoc}}.
 
   <<Usage>>:
   
@@ -220,7 +220,7 @@ This is my message to be encrypted
   <<<digest.bat>>>/<<<digest.sh>>> command, and its usage and parametrization
   corresponds exactly with that of a <<<org.jasypt.digest.StandardStringDigester>>>.
   All the default values of this digester class are assumed when
-  executing the CLI command. To know more, see {{{api/jasypt/apidocs}JavaDoc}}.
+  executing the CLI command. To know more, see {{{./javadoc.html}JavaDoc}}.
 
   <<Usage>>:
   
@@ -313,8 +313,8 @@ PBE ALGORITHMS:      [PBEWITHMD5ANDDES, PBEWITHMD5ANDTRIPLEDES, PBEWITHSHA1ANDDE
   the provider's jar files to the extensions directory of our JRE installation ($JRE_HOME/lib/ext) 
   and then appending the name of the Provider class at the end of the provider list 
   at the java.security file in $JRE_HOME/lib/security. 
-  See {{{non-default-providers.html}Using Non-Default Providers}} or 
-  {{{bouncy-castle.html}Jasypt + Bouncy Castle}} for more details.
+  See {{{./non-default-providers.html}Using Non-Default Providers}} or 
+  {{{./bouncy-castle.html}Jasypt + Bouncy Castle}} for more details.
   
 
   

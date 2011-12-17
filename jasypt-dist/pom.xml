@@ -213,6 +213,13 @@
   
     <dependency>
       <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-spring31</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.jasypt</groupId>
       <artifactId>jasypt-springsecurity2</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
