@@ -1,5 +1,5 @@
   -------
-  Using the lite artifact
+  Jasypt: Java simplified encryption - Using the lite artifact
   -------
 
 
@@ -17,13 +17,13 @@ Using the lite artifact
     * The "util" package containing utility classes like <<<BasicPasswordEncryptor>>> (a 
     correctly configured StandardStringDigester will be used instead).
     
-    * All Spring, Hibernate and Wicket integrations.
+    * All Spring/SpringSecurity, Hibernate and Wicket integrations.
     
     * Web PBE Configuration artifacts.
     
     * CLI utils.
     
-    * Property file encryptions.
+    * Property file encryption features.
     
     * "Zero" salt generator.
   

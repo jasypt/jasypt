@@ -8,11 +8,6 @@
     <href>http://www.jasypt.org/</href>
   </bannerLeft>
   
-  <bannerRight>
-    <name></name>
-    <src>images/jasypt_advantages3.png</src>
-  </bannerRight>
-  
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-default-skin</artifactId>
@@ -44,7 +39,7 @@
     </menu>
 
     <menu name="Reference">
-      <item name="· JavaDoc" href="api/jasypt/apidocs/index.html" />
+      <item name="· JavaDoc API" href="javadoc.html"/>
       <item name="· Dependencies" href="dependencies.html" />
       <item name="· FAQ" href="faq.html" />
     </menu>
@@ -55,27 +50,51 @@
     </menu>
 
     <menu name="Guides">
-      <item name="· Easy Usage: the utils" href="easy-usage.html" />
-      <item name="· General Usage" href="general-usage.html" />
-      <item name="· Advanced encryptor/digester configuration" href="advancedconfiguration.html" />
-      <item name="· Web PBE configuration" href="webconfiguration.html" />
-      <item name="· Encrypting passwords" href="encrypting-passwords.html" />
-      <item name="· Encrypting texts" href="encrypting-texts.html" />
-      <item name="· Encrypting numbers" href="encrypting-numbers.html" />
-      <item name="· Encrypting binaries" href="encrypting-binaries.html" />
-      <item name="· Encrypting application configuration files" href="encrypting-configuration.html" />
-      <item name="· Encrypting from the command line" href="cli.html" />
-      <item name="· Using non-default JCE providers" href="non-default-providers.html" />
-      <item name="· Using the lite artifact" href="lite.html" />
-      <item name="· Jasypt + Maven" href="maven.html"/>
-      <item name="· Jasypt + Hibernate 3" href="hibernate3.html"/>
-      <item name="· Jasypt + Spring" href="spring.html"/>
-      <item name="· Jasypt + Spring Security" href="springsecurity.html"/>
-      <item name="· Jasypt + Wicket" href="wicket.html"/>
-      <item name="· Jasypt + Bouncy Castle" href="bouncy-castle.html"/>
-      <item name="· Jasypt + Seam 2" href="seam2.html"/>
-      <item name="· Jasypt + Tapestry" href="tapestry.html"/>
-      <item name="· Jasypt + JAXB 2.0" href="jaxb.html"/>
+      <item name="· Using Jasypt" href="#">
+        <item name="· Easy Usage: the utils" href="easy-usage.html" />
+        <item name="· General Usage" href="general-usage.html" />
+        <item name="· Using the 'lite' artifact" href="lite.html" />
+        <item name="· Encrypting from the command line" href="cli.html" />
+      </item>
+      <item name="· Advanced Usage" href="#">
+        <item name="· Advanced encryptor/digester configuration" href="advancedconfiguration.html" />
+        <item name="· Web PBE configuration" href="webconfiguration.html" />
+        <item name="· Using non-default JCE providers" href="non-default-providers.html" />
+      </item>
+      <item name="· By Data Type" href="#">
+        <item name="· Encrypting passwords" href="encrypting-passwords.html" />
+        <item name="· Encrypting texts" href="encrypting-texts.html" />
+        <item name="· Encrypting numbers" href="encrypting-numbers.html" />
+        <item name="· Encrypting binaries" href="encrypting-binaries.html" />
+        <item name="· Encrypting application configuration files" href="encrypting-configuration.html" />
+      </item>
+      <item name="· Building" href="#">
+        <item name="· Jasypt + Apache Maven" href="maven.html"/>
+      </item>
+      <item name="· Jasypt + Hibernate" href="#">
+        <item name="· Jasypt + Hibernate 3" href="hibernate.html"/>
+        <item name="· Jasypt + Hibernate 4" href="hibernate.html"/>
+      </item>
+      <item name="· Jasypt + Spring" href="#">
+        <item name="· Jasypt + Spring 2.x" href="spring2.html"/>
+        <item name="· Jasypt + Spring 3.0" href="spring3.html"/>
+        <item name="· Jasypt + Spring 3.1" href="spring31.html"/>
+      </item>
+      <item name="· Jasypt + SpringSecurity" href="#">
+        <item name="· Jasypt + Acegi Security" href="springsecurity.html"/>
+        <item name="· Jasypt + SpringSecurity 2" href="springsecurity.html"/>
+        <item name="· Jasypt + SpringSecurity 3" href="springsecurity.html"/>
+      </item>
+      <item name="· Jasypt + Wicket" href="#">
+        <item name="· Jasypt + Wicket 1.3" href="wicket.html"/>
+        <item name="· Jasypt + Wicket 1.5" href="wicket.html"/>
+      </item>
+      <item name="· Other integrations" href="#">
+        <item name="· Jasypt + Bouncy Castle" href="bouncy-castle.html"/>
+        <item name="· Jasypt + Seam 2" href="seam2.html"/>
+        <item name="· Jasypt + Tapestry" href="tapestry.html"/>
+        <item name="· Jasypt + JAXB 2.0" href="jaxb.html"/>
+      </item>
     </menu>
 
     <menu name="Articles">
@@ -96,7 +115,6 @@
 
 
   <poweredBy>   
-       <logo name="Built with Maven 2" href="http://maven.apache.org" img="images/logos/maven-feather.png" />    
        <logo name="Hosted on SourceForge.net" href="http://sourceforge.net" img="http://sflogo.sourceforge.net/sflogo.php?group_id=183612&amp;type=1"/>
   </poweredBy>    
   

@@ -24,11 +24,11 @@
     </faq>
     
     <faq id="does-it-implement-or-include-cryptographic-algorithms">
-      <question>Does it implement or include cryptographic algorithms?</question>
+      <question>Does it implement or include any cryptographic algorithms?</question>
       <answer>
         <p>
           <b>No, it doesn't</b>, Jasypt by itself does not implement nor distribute in any of its forms any cryptographic
-          algorithms, but it can use them via the Java Cryptography Extension.
+          algorithms. It simply uses the algorithms already present in the users' Java installations via the Java Cryptography Extension.
         </p>
       </answer>
     </faq>
@@ -37,18 +37,22 @@
       <question>Is it stable? Can it be considered production-ready?</question>
       <answer>
         <p>
-          <b>Yes</b>, all of its releases can be considered stable and production-ready.
+          <b>Yes</b>, it can be considered stable and production-ready.
         </p>
       </answer>
     </faq>
     
     <faq id="does-jasypt-offer-commercial-support">
-      <question>Does Jasypt offer any type of commercial support?</question>
+      <question>Does Jasypt offer any type of commercial support or warranty?</question>
       <answer>
         <p>
           No, it does not. Commercial support is not offered at the moment, but
           there are <a href="http://forum.jasypt.org">User
           Forums</a> at your disposal.
+        </p>
+        <p>
+          Also, jasypt is offered without warranties of any kind, as expressed in the
+          <a href="license.html">Apache 2.0 License</a>.
         </p>
       </answer>
     </faq>
@@ -103,7 +107,7 @@
           Jasypt is useful for many encryption tasks associated with applications, for example:
         </p>
         <ul>
-          <li>Encrypting passwords.</li>
+          <li>Encrypting (digesting) passwords.</li>
           <li>Encrypting sensitive information.</li>
           <li>Encrypting data communications.</li>
           <li>Creating sums for integrity checking of data.</li>
@@ -129,7 +133,8 @@
           get the same encryption power as if you were using the JCE API directly, 
           or even more, as jasypt will enforce
           best practices and use standards that will ensure that you always
-          get the highest level of security from encryption.
+          get the highest level of security from the encryption features present
+          in your Java installation.
         </p>
       </answer>
     </faq>
@@ -140,8 +145,8 @@
         <p>
           No, not at all. Jasypt offers some special configuration facilities
           to web applications, but it is not necessary for an application
-          to be web for using jasypt. Jasypt will <b>not</b> add any dependency
-          on any web-related API to your application if you don't want to.
+          to be web-based in order to use jasypt. Jasypt will <b>not</b> add any dependency
+          on any web-related API to your application if you don't want it to.
         </p>
       </answer>
     </faq>
@@ -235,20 +240,6 @@
         </p>
       </answer>
     </faq>
-    
-    <faq id="where-are-jasypt-hibernate-and-jasypt-spring-security">
-      <question>Where have the jasypt-hibernate and jasypt-spring-security modules gone?</question>
-      <answer>
-        <p>
-          Jasypt source trunks were merged in version 1.2, so that everything
-          is now in a single module, <tt>jasypt</tt>. This has not affected
-          the package structure, and you will find the
-          jasypt-hibernate classes in package <tt>org.jasypt.hibernate</tt>
-          and the jasypt-spring-security ones at <tt>org.jasypt.spring.security</tt>,
-          as usual.
-        </p>
-      </answer>
-    </faq>
 
     <faq id="use-snapshot">
       <question>How can I use a SNAPSHOT release of Jasypt?</question>
@@ -280,15 +271,15 @@
           Also, you will have to modify your Jasypt dependency/ies to use a 
           <i>snapshot version</i>, which usually consists of the version number of the
           <b>next</b> release (not the current one), followed by <tt>-SNAPSHOT</tt>.
-          For example, while <tt>1.8</tt> is the latest published stable release,
-          snapshots will probably appear under the <tt>1.9-SNAPSHOT</tt> or
-          maybe <tt>2.0-SNAPSHOT</tt> version numbers:
+          For example, while <tt>1.9.0</tt> is the latest published stable release,
+          snapshots will probably appear under the <tt>1.9.1-SNAPSHOT</tt> or
+          maybe <tt>1.10.0-SNAPSHOT</tt> version numbers:
         </p>
         <code>
             &lt;dependency&gt;<br />
             ··&lt;groupId&gt;org.jasypt&lt;/groupId&gt;<br />
             ··&lt;artifactId&gt;jasypt&lt;/artifactId&gt;<br />
-            ··&lt;version&gt;<b>1.9-SNAPSHOT</b>&lt;/version&gt;<br />
+            ··&lt;version&gt;<b>1.9.1-SNAPSHOT</b>&lt;/version&gt;<br />
             ··&lt;scope&gt;compile&lt;/scope&gt;<br />
             &lt;/dependency&gt;
         </code>
@@ -340,7 +331,7 @@
         <p>
           Before all, understand that <b>jasypt is not a substitute
           for Spring Security / Acegi</b>, which is a powerful and very complete
-          security framework (and which use the Jasypt author truly recommends). 
+          security framework (and which use the Jasypt author recommends). 
           Jasypt will instead <b>integrate into Spring Security / Acegi</b>
           and improve its password encoding capabilities.
         </p>
@@ -376,12 +367,12 @@
       <question>I want to encrypt passwords and I know NOTHING about encryption. What do I have to do?</question>
       <answer>
         <p>
-          Simply use <a href="api/jasypt/apidocs/org/jasypt/util/password/BasicPasswordEncryptor.html">org.jasypt.util.password.BasicPasswordEncryptor</a>.
+          Simply use <tt>org.jasypt.util.password.BasicPasswordEncryptor</tt>.
           There is nothing more you need to know (if you don't want to :-)).
         </p>
         <p>
           If you want more power (such as deciding which algorithm to use),
-          then you can have a look at <a href="api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">org.jasypt.digest.StandardStringDigester</a>.
+          then you can have a look at <tt>org.jasypt.digest.StandardStringDigester</tt>.
         </p>
         <p>
           And if you want to know more, have a look at the article 
@@ -445,7 +436,7 @@
         <p>
           For learning more about how password/message digesting works in jasypt, see
           <a href="encrypting-passwords.html">Encrypting Passwords</a> or the
-          <a href="api/jasypt/apidocs/org/jasypt/digest/StandardStringDigester.html">javadoc for StandardStringDigester</a>.
+          javadoc for the <tt>StandardStringDigester</tt> class.
         </p>
         <p>
           For more info about the RSA standard, see <a href="http://www.rsasecurity.com/rsalabs/node.asp?id=2127">PKCS #5: Password-Based Cryptography Standard</a>.
@@ -467,7 +458,7 @@
           but if it is important for you that two digests of the same message
           be equal, you can set the salt size to 0 bytes or, if you
           prefer, use a different implementation of 
-          <a href="api/jasypt/apidocs/org/jasypt/salt/SaltGenerator.html">SaltGenerator</a>.
+          <tt>SaltGenerator</tt>.
         </p>
         <p>
           A salt is also used for the obtention
@@ -523,7 +514,7 @@
           Nevertheless, if you are looking for hibernate encryption support
           for Longs, Doubles, Integers... jasypt provides support for encrypting
           them stored into SQL VARCHAR fields (instead of NUMERIC ones).
-          Have a look at the <a href="hibernate3.html">Hibernate Integration
+          Have a look at the <a href="hibernate.html">Hibernate Integration
           Guide</a> for further details.
         </p>
       </answer>
@@ -538,7 +529,7 @@
           security-conscious scenarios.
         </p>
         <p>
-          Besides not storing passwords as Strings (which can pose a risk for being immutable
+          Besides not storing passwords as Strings (which can pose a risk because of being immutable
           objects), jasypt does its best for not creating temporary Strings storing the password at all
           during its operation --thus not having to rely on garbage collection for removing these
           from memory--, but because of the String-based java.text.Normalizer API for normalizing unicode, this 

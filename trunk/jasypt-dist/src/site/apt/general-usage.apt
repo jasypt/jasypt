@@ -1,9 +1,13 @@
   -------
-  General Usage
+  Jasypt: Java simplified encryption - General Usage
   -------
 
 
 General Usage
+
+  This section will teach you about the tools jasypt offers you when the <easy> utilities
+  found in the {{{./easy-usage.html}easy usage}} page are not enough for your needs.
+  
 
 * Digesters
 
@@ -46,7 +50,7 @@ General Usage
       requests in round-robin.
 
 
-  It's basic usage can be very simple:
+  Using them can be very simple:
   
 ------------------
 ...
@@ -103,7 +107,7 @@ String digest = digester.digest(myMessage);
 
   <<More info>> 
 
-  Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
+  Please refer to the {{{./javadoc.html}JavaDoc}}
   for more information about usage and functionality.
 
 
@@ -246,7 +250,7 @@ String encryptedText = encryptor.encrypt(myText);
 
   <<More info>> 
 
-  Please refer to the {{{api/jasypt/apidocs}JavaDoc}}
+  Please refer to the {{{./javadoc.html}JavaDoc}}
   for more information about usage and functionality.
 
 

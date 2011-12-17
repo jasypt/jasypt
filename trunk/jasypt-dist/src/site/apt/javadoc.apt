@@ -1,0 +1,37 @@
+  -------
+  Jasypt: Java simplified encryption - JavaDoc API
+  -------
+
+
+Jasypt JavaDoc API: Current version
+
+  These are the API docs for the latest version of jasypt (1.9.0):
+  
+    * jasypt (core) API {{{./api/jasypt/1.9.0/index.html}[Read online]}}          
+  
+    * jasypt-hibernate3 API {{{./api/jasypt-hibernate3/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-hibernate4 API {{{./api/jasypt-hibernate4/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-spring2 API {{{./api/jasypt-spring2/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-spring3 API {{{./api/jasypt-spring3/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-spring31 API {{{./api/jasypt-spring31/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-acegisecurity API {{{./api/jasypt-acegisecurity/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-springsecurity2 API {{{./api/jasypt-springsecurity2/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-springsecurity3 API {{{./api/jasypt-springsecurity3/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-wicket13 API {{{./api/jasypt-wicket13/1.9.0/index.html}[Read online]}}
+  
+    * jasypt-wicket15 API {{{./api/jasypt-wicket15/1.9.0/index.html}[Read online]}}
+    
+    
+Older versions
+
+  Jasypt 1.8
+  
+    * Jasypt API {{{./api/jasypt/1.8/index.html}[Read online]}}

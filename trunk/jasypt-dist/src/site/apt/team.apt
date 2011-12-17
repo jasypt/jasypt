@@ -1,5 +1,5 @@
   -------
-  Team
+  Jasypt: Java simplified encryption - Team
   -------
   
   
@@ -11,13 +11,18 @@ Development Team
   suggestions to the Members. The number of Contributors to the project
   is unbounded. Get involved today. All contributions to the project 
   are greatly appreciated.
+  
+  <<Do not directly contact the team members or contributors with questions
+  about jasypt usage>>. Such messages will not be answered. Use the 
+  {{{http://forum.jasypt.org}Users Forum}} instead.
+  
 
 * Members
 
 *-----------+--------------------------------+---------------------+--------------------------------------+----------------------------------+
 | <<ID>>    | <<Name>>                       | <<Location>>        | <<Email>>                            | <<Role>>                         |
 *-----------+--------------------------------+---------------------+--------------------------------------+----------------------------------+
-|dfernandez |Daniel Fern\341ndez             | Spain               | dfernandez AT users.sourceforge.net  | Lead Developer (Project founder) |
+|dfernandez |Daniel Fernández             | Spain               | dfernandez AT users.sourceforge.net  | Lead Developer (Project founder) |
 *-----------+--------------------------------+---------------------+--------------------------------------+----------------------------------+
 
 * Contributors
@@ -26,21 +31,21 @@ Development Team
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
 | <<ID>>    | <<Name>>                       | <<Location>>                        | <<Email>>                        |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|ivangsa    |Iv\341n Garc\355a S\341inz-Aja  | Spain                               | ivangsa AT users.sourceforge.net |
+|ivangsa    |Iván García Sáinz-Aja  | Spain                               | ivangsa AT users.sourceforge.net |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
 |stevencoco |Steven Coco                     | U.S.A.                              | hello AT stevencoco.com          |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|mmuino     |Marcos Mu\355\361o Garc\355a    | Spain                               | bardaos AT gmail.com             |
+|mmuino     |Marcos Muíño García    | Spain                               | bardaos AT gmail.com             |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|greg.jos   |Gr\351gory Joseph               | Switzerland                         | greg.jos AT gmail.com            |
+|greg.jos   |Grégory Joseph               | Switzerland                         | greg.jos AT gmail.com            |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
 |bayamos    |Frank Mena                      | U.S.A.                              | frankm.os AT gmail.com           |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|carlosft1  |Carlos Fern\341ndez             | U.S.A.                              | carlosft1 AT users.sourceforge.net|
+|carlosft1  |Carlos Fernández             | U.S.A.                              | carlosft1 AT users.sourceforge.net|
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|eamonnlinehan  |\311amonn Linehan           | Ireland                             | eamonnlinehan AT gmail.com       |
+|eamonnlinehan  |Éamonn Linehan           | Ireland                             | eamonnlinehan AT gmail.com       |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
 |patrickjmaloney |Patrick J. Maloney         | U.S.A.                              | patrickjmaloney AT users.sourceforge.net       |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+
-|sschz      |Soraya S\341nchez               | Spain                               | sschz AT users.sourceforge.net   |
+|sschz      |Soraya Sánchez               | Spain                               | sschz AT users.sourceforge.net   |
 *-----------+--------------------------------+-------------------------------------+----------------------------------+

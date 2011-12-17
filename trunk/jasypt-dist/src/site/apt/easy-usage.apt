@@ -1,5 +1,5 @@
   -------
-  Easy usage: the utils
+  Jasypt: Java simplified encryption - Easy usage: the utils
   -------
 
 
@@ -102,7 +102,7 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
       * <<org.jasypt.util.password.ConfigurablePasswordEncryptor>> which lets
       the developer decide the algorithm to be used and whether he/she wants the full
       secure password encryption mechanism to be applied (as explained 
-      {{{encrypting-passwords.html}here}}) or rather a simple digest to be generated
+      {{{./encrypting-passwords.html}here}}) or rather a simple digest to be generated
       for legacy integration reasons.
 
 ----------------

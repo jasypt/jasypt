@@ -1,12 +1,11 @@
   -------
-  Features
+  Jasypt: Java simplified encryption - Features
   -------
 
 
 Features
  
-     * Jasypt follows the <<RSA standards>> for password-based cryptography, and 
-     provides you with both unidirectional and bidirectional encryption
+     * Jasypt provides you with easy unidirectional (digest) and bidirectional encryption
      techniques. 
      
      []
@@ -14,12 +13,12 @@ Features
      * Open API for <<use with any JCE provider>>, and not only the default
      Java VM one. Jasypt can be easily used with well-known 
      providers like {{{http://www.bouncycastle.org}Bouncy Castle}}.
-     {{{non-default-providers.html}Learn more}}.
+     {{{./non-default-providers.html}Learn more}}.
      
      []
      
      * <<Higher security for your users' passwords>>.
-     {{{encrypting-passwords.html}Learn more}}.
+     {{{./encrypting-passwords.html}Learn more}}.
        
      []
      
@@ -32,7 +31,7 @@ Features
      * <<Number encryption support>>. Besides texts and binaries, it allows the
      digest and encryption of numeric values (BigInteger and BigDecimal,
      other numeric types are supported when encrypting for Hibernate 
-     persistence). {{{encrypting-numbers.html}Learn more}}.
+     persistence). {{{./encrypting-numbers.html}Learn more}}.
      
      []
      
@@ -56,22 +55,24 @@ Features
 
      []
        
-     * {{{http://www.hibernate.org}Hibernate 3}} optional integration 
+     * {{{http://www.hibernate.org}Hibernate 3 and 4}} optional integration 
      for persisting fields of your mapped entities in an encrypted manner.
      <<Encryption of fields is defined in the Hibernate mapping files>>, and
      it remains transparent for the rest of the application (useful for
      sensitive personal data, databases with many read-enabled users...). 
      Encrypt texts, binaries, numbers, booleans, dates...
-     {{{hibernate3.html}Learn more}}.
+     {{{./hibernate.html}Learn more}}.
 
      []
      
-     * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application. All the 
-       digesters and encryptors in jasypt are designed to be easily used 
-       (instantiated, dependency-injected...) from Spring. And, because of their
-       being thread-safe, they <<can be used without 
-       synchronization worries in a singleton-oriented environment like 
-       Spring>>. {{{spring.html}Learn more}}.
+     * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application,
+     with specific integration features for Spring 2, Spring 3.0 and Spring 3.1. All the 
+     digesters and encryptors in jasypt are designed to be easily used 
+     (instantiated, dependency-injected...) from Spring. And, because of their
+     being thread-safe, they <<can be used without 
+     synchronization worries in a singleton-oriented environment like 
+     Spring>>. Learn more: {{{./spring2.html}Spring 2}}, {{{./spring3.html}Spring 3.0}}, 
+     {{{./spring31.html}Spring 3.1}}.
 
      []
      
@@ -80,7 +81,7 @@ Features
      for performing password encryption and matching tasks for the security
      framework, improving the security of your users' passwords by using
      <<safer password encryption mechanisms>> and providing you with a
-     higher degree of <<configuration and control>>. {{{springsecurity.html}Learn more}}.
+     higher degree of <<configuration and control>>. {{{./springsecurity.html}Learn more}}.
 
      []
      
@@ -88,14 +89,14 @@ Features
      configuration files>>, including sensitive information like
      database passwords. Seamlessly integrate encrypted configuration into
      plain, Spring-based and/or Hibernate-enabled applications. 
-     {{{encrypting-configuration.html}Learn more}}.
+     {{{./encrypting-configuration.html}Learn more}}.
 
      []
      
      * Provides easy to use <<CLI (Command Line Interface) tools>>
      to allow developers initialise their encrypted data and include
      encryption/decryption/digest operations in maintenance tasks or scripts.
-     {{{cli.html}Learn more}}.
+     {{{./cli.html}Learn more}}.
 
      []
      
@@ -119,12 +120,12 @@ Features
      * Very high level of configuration capabilities: The developer can 
      implement tricks like instructing an "encryptor" to ask a, for example,
      remote HTTPS server for the password to be used for encryption. <<It lets
-     you meet your security needs>>. {{{advancedconfiguration.html}Learn more}}.
+     you meet your security needs>>. {{{./advancedconfiguration.html}Learn more}}.
 
 
 Want to know more?
 
-  To know more, check the {{{faq.html}Frequently Asked Questions}} page.
+  To know more, check the {{{./faq.html}Frequently Asked Questions}} page.
   
   Do you have any questions, comments or suggestions? Do you want to tell your experience
   using jasypt? Check the {{{http://forum.jasypt.org}Forums}}.
