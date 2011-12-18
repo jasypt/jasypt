@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-spring3</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.0-SNAPSHOT</version>
+  <version>1.9.0</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring3</url>
-    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring3</connection>
-    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring3</developerConnection>
+    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-spring3/jasypt-spring3-1.9.0</url>
+    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-spring3/jasypt-spring3-1.9.0</connection>
+    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-spring3/jasypt-spring3-1.9.0</developerConnection>
   </scm>
   
   <developers>
@@ -227,7 +227,7 @@
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
-      <version>1.9.0-SNAPSHOT</version>
+      <version>1.9.0</version>
       <scope>compile</scope>
     </dependency>
 
