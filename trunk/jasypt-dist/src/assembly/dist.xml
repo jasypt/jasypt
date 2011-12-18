@@ -188,7 +188,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-wicket15/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-wicket15-${project.version}.jar</include>
         <include>jasypt-wicket15-${project.version}-javadoc.jar</include>
