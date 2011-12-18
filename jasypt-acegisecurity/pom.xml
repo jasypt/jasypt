@@ -141,8 +141,10 @@
         <configuration>
           <show>protected</show>
           <noqualifier>java.lang</noqualifier>
-          <reportOutputDirectory>${project.reporting.outputDirectory}/api/${project.artifactId}/apidocs</reportOutputDirectory>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
+          <links>
+            <link>http://www.jasypt.org/api/jasypt/1.9.0/</link>
+          </links>
         </configuration>
         <executions>
           <execution>
