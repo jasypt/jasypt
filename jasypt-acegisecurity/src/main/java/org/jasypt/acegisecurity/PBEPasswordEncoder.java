@@ -17,12 +17,12 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring.security;
+package org.jasypt.acegisecurity;
 
-import org.jasypt.digest.StringDigester;
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.util.password.BasicPasswordEncryptor;
-import org.jasypt.util.password.PasswordEncryptor;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.jasypt.util.text.TextEncryptor;
 
 /**
  * <p>
@@ -32,43 +32,54 @@ import org.jasypt.util.password.PasswordEncryptor;
  * for password encryption.
  * </p>
  * <p>
+ * <b>Important</b>: This class allows bi-directional password-based encryption
+ * of user passwords
+ * in ACEGI using Jasypt. But please note that passwords <b>should not be
+ * encrypted in a bi-directional way</b>, but instead as uni-directional
+ * digests (hashes). Encrypting passwords in a way they can be decrypted
+ * can be a severe security issue, and should only be considered in legacy
+ * or complex inter-application integration scenarios. 
+ * </p>
+ * <p>
  * Objects of this class will internally hold either an object of type
- * <tt>org.jasypt.util.password.PasswordEncryptor</tt> or an object of type
- * <tt>org.jasypt.digest.StringDigester</tt> (only one of them),
+ * <tt>org.jasypt.util.text.TextEncryptor</tt> or an object of type
+ * <tt>org.jasypt.encryption.pbe.PBEStringEncryptor</tt> (only one of them),
  * which should be set by respectively calling 
- * {@link #setPasswordEncryptor(PasswordEncryptor)} or
- * {@link #setStringDigester(StringDigester)}
- * after creation. If neither a <tt>PasswordEncryptor</tt> nor
- * a <tt>StringDigester</tt> are set, a new 
- * <tt>org.jasypt.util.password.BasicPasswordEncryptor</tt> object is
+ * {@link #setTextEncryptor(TextEncryptor)} or
+ * {@link #setPbeStringEncryptor(PBEStringEncryptor)}
+ * after creation. If neither a <tt>TextEncryptor</tt> nor
+ * a <tt>PBEStringEncryptor</tt> are set, a new 
+ * <tt>org.jasypt.util.text.BasicTextEncryptor</tt> object is
  * created and internally used.
  * </p>
  * <p>
  * Important: <b>This implementation ignores any salt provided through
  * the interface methods</b>, as the internal Jasypt 
- * <tt>PasswordEncryptor</tt> or <tt>StringDigester</tt> objects normally use a 
+ * <tt>TextEncryptor</tt> or <tt>PBEStringEncryptor</tt> objects normally use a 
  * random one. This means that salt can be safely passed as 
  * <tt>null</tt>.
  * </p>
  * <p>
- * <b><u>Usage with a PasswordEncryptor</u></b>
+ * <b><u>Usage with a TextEncryptor</u></b>
  * </p>
  * <p>
  * This class can be used like this from your Spring XML resource files:
  * </p>
  * <pre>
  *  ...
- *  &lt;!-- Your application may use the PasswordEncryptor in several places, --> 
+ *  &lt;!-- Your application may use the TextEncryptor in several places,     --> 
  *  &lt;!-- like for example at new user sign-up.                             --> 
- *  &lt;bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
+ *  &lt;bean id="jasyptTextEncryptor" class="org.jasypt.util.text.StrongTextEncryptor" >
+ *    &lt;property name="password" value="myPassword" />
+ *  &lt;/bean>
  *  ...
  *  ...
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
- *  &lt;!-- wrap the PasswordEncryptor instance so that it can be used from   -->
+ *  &lt;!-- wrap the TextEncryptor instance so that it can be used from       -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PasswordEncoder">
- *    &lt;property name="passwordEncryptor">
- *      &lt;ref bean="jasyptPasswordEncryptor" />
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PBEPasswordEncoder">
+ *    &lt;property name="textEncryptor">
+ *      &lt;ref bean="jasyptTextEncryptor" />
  *    &lt;/property>
  *  &lt;/bean>
  *  ...
@@ -84,27 +95,27 @@ import org.jasypt.util.password.PasswordEncryptor;
  *  ...
  * </pre>
  * <p>
- * <b><u>Usage with a StringDigester</u></b>
+ * <b><u>Usage with a PBEStringEncryptor</u></b>
  * </p>
  * <p>
  * This class can be used like this from your Spring XML resource files:
  * </p>
  * <pre>
  *  ...
- *  &lt;!-- Your application may use the StringDigester in several places,    --> 
+ *  &lt;!-- Your application may use the PBEStringEncryptor in several places,--> 
  *  &lt;!-- like for example at new user sign-up.                             --> 
- *  &lt;bean id="jasyptStringDigester" class="org.jasypt.digest.StandardStringDigester" >
- *    &lt;property name="algorithm" value="SHA-1" />
- *    &lt;property name="iterations" value="100000" />
+ *  &lt;bean id="jasyptPBEStringEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor" >
+ *    &lt;property name="algorithm" value="PBEWithMD5AndTripleDES" />
+ *    &lt;property name="password" value="myPassword" />
  *  &lt;/bean>
  *  ...
  *  ...
  *  &lt;!-- This Spring Security-friendly PasswordEncoder implementation will -->
- *  &lt;!-- wrap the StringDigester instance so that it can be used from      -->
+ *  &lt;!-- wrap the PBEStringEncryptor instance so that it can be used from  -->
  *  &lt;!-- the security framework.                                           -->
- *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PasswordEncoder">
- *    &lt;property name="stringDigester">
- *      &lt;ref bean="jasyptStringDigester" />
+ *  &lt;bean id="passwordEncoder" class="org.jasypt.spring.security.PBEPasswordEncoder">
+ *    &lt;property name="pbeStringEncryptor">
+ *      &lt;ref bean="jasyptPBEStringEncryptor" />
  *    &lt;/property>
  *  &lt;/bean>
  *  ...
@@ -123,62 +134,58 @@ import org.jasypt.util.password.PasswordEncryptor;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @since 1.4 (existed since 1.2 as 
- *            <tt>org.jasypt.springsecurity.PasswordEncoder</tt>)
- * 
- * @deprecated Renamed as org.jasypt.acegisecurity.PasswordEncoder.
- *             Class will be removed from this package in 1.11.
+ * @since 1.9.0 (existed as org.jasypt.spring.security.PBEPasswordEncoder since 1.4)
  * 
  * @author Daniel Fern&aacute;ndez
  * 
  */
-public final class PasswordEncoder 
+public final class PBEPasswordEncoder 
         implements org.acegisecurity.providers.encoding.PasswordEncoder {
 
-    // The password encryptor or string digester to be internally used
-    private PasswordEncryptor passwordEncryptor = null;
-    private StringDigester stringDigester = null;
-    private Boolean useEncryptor = null;
+    // The text encryptor or PBE string encryptor to be internally used
+    private TextEncryptor textEncryptor = null;
+    private PBEStringEncryptor pbeStringEncryptor = null;
+    private Boolean useTextEncryptor = null;
     
     
     /**
-     * Creates a new instance of <tt>PasswordEncoder</tt>
+     * Creates a new instance of <tt>PBEPasswordEncoder</tt>
      */
-    public PasswordEncoder() {
+    public PBEPasswordEncoder() {
         super();
     }
     
 
     /**
-     * Sets a password encryptor to be used. Only one of 
-     * <tt>setPasswordEncryptor</tt> or <tt>setStringDigester</tt> should be
+     * Sets a text encryptor to be used. Only one of 
+     * <tt>setTextEncryptor</tt> or <tt>setPBEStringEncryptor</tt> should be
      * called. If both are, the last call will define which method will be
      * used.
      * 
-     * @param passwordEncryptor the password encryptor instance to be used.
+     * @param textEncryptor the text encryptor instance to be used.
      */
-    public void setPasswordEncryptor(final PasswordEncryptor passwordEncryptor) {
-        this.passwordEncryptor = passwordEncryptor;
-        this.useEncryptor = Boolean.TRUE;
+    public void setTextEncryptor(final TextEncryptor textEncryptor) {
+        this.textEncryptor = textEncryptor;
+        this.useTextEncryptor = Boolean.TRUE;
     }
 
     /**
      * Sets a string digester to be used. Only one of 
-     * <tt>setPasswordEncryptor</tt> or <tt>setStringDigester</tt> should be
+     * <tt>setTextEncryptor</tt> or <tt>setPBEStringEncryptor</tt> should be
      * called. If both are, the last call will define which method will be
      * used.
      * 
-     * @param stringDigester the string digester instance to be used.
+     * @param pbeStringEncryptor the PBE string encryptor instance to be used.
      */
-    public void setStringDigester(final StringDigester stringDigester) {
-        this.stringDigester = stringDigester;
-        this.useEncryptor = Boolean.FALSE;
+    public void setPbeStringEncryptor(final PBEStringEncryptor pbeStringEncryptor) {
+        this.pbeStringEncryptor = pbeStringEncryptor;
+        this.useTextEncryptor = Boolean.FALSE;
     }
 
     
     /**
      * Encodes a password. This implementation completely ignores salt, 
-     * as jasypt's <tt>PasswordEncryptor</tt> and <tt>StringDigester</tt> 
+     * as jasypt's <tt>TextEncryptor</tt> and <tt>PBEStringEncryptor</tt> 
      * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
      * @param rawPass The password to be encoded.
@@ -186,51 +193,57 @@ public final class PasswordEncoder
      */
     public String encodePassword(final String rawPass, final Object salt) {
         checkInitialization();
-        if (this.useEncryptor.booleanValue()) {
-            return this.passwordEncryptor.encryptPassword(rawPass);
+        if (this.useTextEncryptor.booleanValue()) {
+            return this.textEncryptor.encrypt(rawPass);
         }
-        return this.stringDigester.digest(rawPass);
+        return this.pbeStringEncryptor.encrypt(rawPass);
     }
 
 
     /**
      * Checks a password's validity. This implementation completely ignores
-     * salt, as jasypt's <tt>PasswordEncryptor</tt> and <tt>StringDigester</tt>
+     * salt, as jasypt's <tt>TextEncryptor</tt> and <tt>PBEStringEncryptor</tt>
      * normally use a random one. Thus, it can be safely passed as <tt>null</tt>.
      * 
-     * @param encPass The encrypted password (digest) against which to check.
+     * @param encPass The encrypted password against which to check.
      * @param rawPass The password to be checked.
      * @param salt The salt, which will be ignored. It can be null.
      */
     public boolean isPasswordValid(final String encPass, final String rawPass, final Object salt) {
         checkInitialization();
-        if (this.useEncryptor.booleanValue()) {
-            return this.passwordEncryptor.checkPassword(rawPass, encPass);
+        String decPassword = null;
+        if (this.useTextEncryptor.booleanValue()) {
+            decPassword = this.textEncryptor.decrypt(encPass);
+        } else {
+            decPassword = this.pbeStringEncryptor.decrypt(encPass);
         }
-        return this.stringDigester.matches(rawPass, encPass);
+        if ((decPassword == null) || (rawPass == null)) {
+            return (decPassword == rawPass);
+        }
+        return decPassword.equals(rawPass);
     }
 
 
     /*
      * Checks that the PasswordEncoder has been correctly initialized
-     * (either a password encryptor or a string digester has been set).
+     * (either a text encryptor or a PBE string encryptor has been set).
      */
     private synchronized void checkInitialization() {
-        if (this.useEncryptor == null) {
-            this.passwordEncryptor = new BasicPasswordEncryptor();
-            this.useEncryptor = Boolean.TRUE;
+        if (this.useTextEncryptor == null) {
+            this.textEncryptor = new BasicTextEncryptor();
+            this.useTextEncryptor = Boolean.TRUE;
         } else {
-            if (this.useEncryptor.booleanValue()) {
-                if (this.passwordEncryptor == null) {
+            if (this.useTextEncryptor.booleanValue()) {
+                if (this.textEncryptor == null) {
                     throw new EncryptionInitializationException(
-                            "Password encoder not initialized: password " +
+                            "PBE Password encoder not initialized: text " +
                             "encryptor is null");
                 }
             } else {
-                if (this.stringDigester == null) {
+                if (this.pbeStringEncryptor == null) {
                     throw new EncryptionInitializationException(
-                            "Password encoder not initialized: string " +
-                            "digester is null");
+                            "PBE Password encoder not initialized: PBE " +
+                            "string encryptor is null");
                 }
             }
         }
