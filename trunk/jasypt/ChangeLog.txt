@@ -17,7 +17,8 @@
 - Fixed bug in PooledPBEStringEncryptor which caused first encryptor in pool not
   use hexadecimal output type.
 - Added implementation of Hashtable's "get(Object)" method to 
-  org.jasypt.properties.EncryptableProperties.
+  org.jasypt.properties.EncryptableProperties, so that this method now performs
+  decryption instead of it only being performed at "getProperty(key)".
   
 
 1.8
