@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:encryption="http://www.jasypt.org/schema/encryption"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.jasypt.org/schema/encryption
+        http://www.jasypt.org/schema/encryption/jasypt-spring3-encryption-1.xsd">
+
+<context:component-scan base-package="org.jasypt.spring3"></context:component-scan>
+
+ <!-- Configuration for encryptor -->
+ <!-- The password should not be set here as it is not secure -->
+ <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.SimpleStringPBEConfig">
+  <property name="algorithm" value="PBEWithMD5AndDES" />
+  <property name="password" value="jasypt" />
+ </bean>
+  
+ <!--                                                                      -->
+ <!-- The will be the encryptor used for decrypting configuration values.  -->
+ <!--                                                                      -->
+ <bean id="configurationEncryptor"
+     class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+   <property name="config" ref="encryptorConfig" />
+ </bean>
+
+
+ <!--                                                                      -->
+ <!-- The EncryptablePropertyPlaceholderConfigurer will read the           -->
+ <!-- .properties files and make their values accessible as ${var}         -->
+ <!--                                                                      -->
+ <!-- Our "configurationEncryptor" bean (which implements                  --> 
+ <!-- org.jasypt.encryption.StringEncryptor) is set as a constructor arg.  -->
+ <!--                                                                      -->
+ <bean id="propertyConfigurer"
+     class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">
+   <constructor-arg ref="configurationEncryptor" />
+   <property name="location" value="props.properties" />   
+ </bean>
+ 
+ 
+ <bean name="configurationProperties" class="org.jasypt.spring3.configuration.ConfigurationProperties">
+    <property name="location" value="${location}"></property>
+    <property name="locationEncryptedValue" value="${location.encrypted.value}"></property>
+    <property name="locationPlainValue" value="${location.plain.value}"></property>
+ </bean>
+ 
+ 
+  <!-- Define some encryptors using jasypt schema -->
+ 
+  <encryption:encryptor-config  id="eConfig1" password="jasypt" algorithm="PBEWithMD5AndDES"/>
+  <encryption:byte-encryptor id="be" config-bean="eConfig1"/>
+  
+  <encryption:encryptor-config  id="eConfig2" password="jasypt" algorithm="PBEWithMD5AndDES"
+    string-output-type="hexadecimal"/>
+  <encryption:string-encryptor  id="se" config-bean="eConfig2"/>
+ 
+  <encryption:digester-config  id="dConfig1" string-output-type="hexa" pool-size="10"/>
+  <encryption:string-digester id="sd" algorithm="SHA-1" config-bean="dConfig1"/>
+
+ <!--  -->
+ 
+ 
+</beans>
