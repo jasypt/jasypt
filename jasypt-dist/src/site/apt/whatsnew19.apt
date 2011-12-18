@@ -3,7 +3,7 @@
   -------
 
 
-What is new in Jasypt 1.9
+What is new in Jasypt 1.9?
 
 * Hibernate 4 compatibility
 
@@ -14,5 +14,11 @@ What is new in Jasypt 1.9
   This issue has been fixed while keeping backwards compatibility with older 3.x versions
   of Hibernate.
 
+
+* Enhanced Spring 3.0 compatibility
+
+* Spring 3.1 compatibility
+
+* Apache Wicket 1.5 compatibility
 
   <<TBD>>     

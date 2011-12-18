@@ -1,14 +1,24 @@
   -------
-  Jasypt: Java simplified encryption - Integrating Jasypt with Spring 3.0
+  Jasypt: Java simplified encryption - Integrating Jasypt with Spring 3.1
   -------
 
 
-Integrating Jasypt with Spring 3.0
+Integrating Jasypt with Spring 3.1
 
 
-  Jasypt provides the <<<jasypt-spring3>>> artifact for integration with
-  Spring Framework 3.0. Since jasypt 1.9.0, this artifact must be added
+  Jasypt provides the <<<jasypt-spring31>>> artifact for integration with
+  Spring Framework 3.1. Since jasypt 1.9.0, this artifact must be added
   to your classpath separately.
+  
+  For those migrating from Spring 3.0, Jasypt's support for Spring 3.1 is basically
+  the same as that for Spring 3.0, adding an encryption-aware implementation for
+  the new <<<org.springframework.core.env.PropertySource>>> interface and removing 
+  support for the deprecated <<<ServletContextPropertyPlaceholderConfigurer>>>. 
+ 
+  Also, if you were using the <<<encryption>>> namespace with Spring 3.0 and migrate
+  your app to Spring 3.1, be sure to change the XSD definition in order to point to
+  the Spring 3.1-specific version (see below).
+
 
 * Using jasypt digesters and encryptors as Spring beans
 
@@ -36,31 +46,52 @@ Integrating Jasypt with Spring 3.0
   of Spring's bean container. This avoids concurrency problems in multi-threaded
   environments like web applications.
 
+      
+
+* Encryptable PropertySource implementation for Spring 3.1
+      
+  Jasypt includes <<<org.jasypt.spring31.properties.EncryptablePropertiesPropertySource>>>,
+  an implementation of <<<org.springframework.core.env.PropertySource>>>
+  which allows integrating jasypt encryption with Spring 3.1's <Environment> configuration
+  infrastructure.
+  
+  You can use it as you would with any other PropertySource:
+  
+---
+  EncryptablePropertiesPropertySource encPropSource =
+      new EncryptablePropertiesPropertySource("encProps", properties, encryptor);
+  ...
+  ApplicationContext ctx = ...
+  MutablePropertySources sources = ctx.getEnvironment().getPropertySources();
+  sources.addFirst(encPropSource);
+---
+
+  See the {{{./javadoc.html}JavaDoc API}} for <<<jasypt-spring31>>> for more detail. 
+  
+
+
+
 * Integrating jasypt with Spring's application configuration infrastructure (without using the
   <<<encryption>>> namespace)
 
-  Jasypt provides several Spring-specific configuration management classes:
+
+  Besides the <<<PropertySource>>> implementation already explained, Jasypt provides several 
+  Spring-specific configuration management classes:
   
-    * <<<org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer>>>,
-      as a totally compatible replacement for Spring's 
+    * <<<org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer>>>,
+      a totally compatible replacement for Spring's 
       <PropertyPlaceholderConfigurer>.
       
     []
   
-    * <<<org.jasypt.spring3.properties.EncryptablePropertyOverrideConfigurer>>>,
-      as a totally compatible replacement for Spring's 
+    * <<<org.jasypt.spring31.properties.EncryptablePropertyOverrideConfigurer>>>,
+      a totally compatible replacement for Spring's 
       <PropertyOverrideConfigurer>.
   
     []
    
-    * <<<org.jasypt.spring3.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>:
-      as a totally compatible replacement for Spring's 
-      <ServletContextPropertyPlaceholderConfigurer>.
-  
-    []
-   
-    * <<<org.jasypt.spring3.properties.EncryptablePreferencesPlaceholderConfigurer>>>:
-      as a totally compatible replacement for Spring's 
+    * <<<org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer>>>:
+      a totally compatible replacement for Spring's 
       <PreferencesPlaceholderConfigurer>.
     
     
@@ -109,13 +140,13 @@ Integrating Jasypt with Spring 3.0
 
  <!--                                                                      -->
  <!-- The EncryptablePropertyPlaceholderConfigurer will read the           -->
- <!-- .properties files and make their values accessible as ${var}         -->
+ <!-- .properties files and make their values accessible as ${var}.        -->
  <!--                                                                      -->
  <!-- Our "configurationEncryptor" bean (which implements                  --> 
  <!-- org.jasypt.encryption.StringEncryptor) is set as a constructor arg.  -->
  <!--                                                                      -->
  <bean id="propertyConfigurer"
-     class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">
+     class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
    <constructor-arg ref="configurationEncryptor" />
    <property name="locations">
      <list>
@@ -159,33 +190,13 @@ Integrating Jasypt with Spring 3.0
   
 
 
-** Encryptable ServletContextPropertyPlaceholderConfigurer implementation for Spring
-      
-  Jasypt includes <<<org.jasypt.spring3.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>,
-  a subclass of <<<org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer>>>
-  which allows the transparent decryption of servlet context parameters in web applications (for example,
-  parameters in <<<WEB-INF/web.xml>>>).
-
-  These encrypted parameters can be specified in a way equivalent to that of encrypted parameters 
-  in <<<.properties>>> files:
-  
----
-    ...
-    <context-param>
-        <param-name>someParameter</param-name>
-        <param-value>ENC(...)</param-value>
-    </context-param>
-    ...
----  
-
-
-
 ** Encryptable PreferencesPlaceholderConfigurer implementation for Spring
       
-  Jasypt includes <<<org.jasypt.spring3.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
+  Jasypt includes <<<org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
   a subclass of <<<org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer>>>
   which allows the transparent decryption preferences set with JDK 1.4's Preferences API.
   
+
   
 
 
@@ -204,10 +215,10 @@ Integrating Jasypt with Spring 3.0
        xmlns:encryption="http://www.jasypt.org/schema/encryption"
        ...
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                            ...
                            http://www.jasypt.org/schema/encryption
-                           http://www.jasypt.org/schema/encryption/jasypt-spring3-encryption-1.xsd
+                           http://www.jasypt.org/schema/encryption/jasypt-spring31-encryption-1.xsd
                            ...">
 ---
 
