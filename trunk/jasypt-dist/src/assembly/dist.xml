@@ -61,6 +61,13 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-spring31/target/checkout/target/apidocs/</directory>
+      <outputDirectory>/apidocs/jasypt-spring31/</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${basedir}/../jasypt-springsecurity2/target/checkout/target/apidocs/</directory>
       <outputDirectory>/apidocs/jasypt-springsecurity2/</outputDirectory>
       <includes>
@@ -90,7 +97,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-${project.version}.jar</include>
         <include>jasypt-${project.version}-lite.jar</include>
@@ -100,7 +107,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-acegisecurity/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-acegisecurity-${project.version}.jar</include>
         <include>jasypt-acegisecurity-${project.version}-javadoc.jar</include>
@@ -109,7 +116,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-hibernate3/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-hibernate3-${project.version}.jar</include>
         <include>jasypt-hibernate3-${project.version}-javadoc.jar</include>
@@ -118,7 +125,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-hibernate4/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-hibernate4-${project.version}.jar</include>
         <include>jasypt-hibernate4-${project.version}-javadoc.jar</include>
@@ -127,7 +134,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-spring2/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-spring2-${project.version}.jar</include>
         <include>jasypt-spring2-${project.version}-javadoc.jar</include>
@@ -136,7 +143,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-spring3/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-spring3-${project.version}.jar</include>
         <include>jasypt-spring3-${project.version}-javadoc.jar</include>
@@ -145,7 +152,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-spring31/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-spring31-${project.version}.jar</include>
         <include>jasypt-spring31-${project.version}-javadoc.jar</include>
@@ -154,7 +161,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-springsecurity2/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-springsecurity2-${project.version}.jar</include>
         <include>jasypt-springsecurity2-${project.version}-javadoc.jar</include>
@@ -163,7 +170,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-springsecurity3/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-springsecurity3-${project.version}.jar</include>
         <include>jasypt-springsecurity3-${project.version}-javadoc.jar</include>
@@ -172,7 +179,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/../jasypt-wicket13/target/checkout/target/</directory>
-      <outputDirectory>/dist</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
       <includes>
         <include>jasypt-wicket13-${project.version}.jar</include>
         <include>jasypt-wicket13-${project.version}-javadoc.jar</include>
