@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-wicket15</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.0-SNAPSHOT</version>
+  <version>1.9.0</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-wicket15</url>
-    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-wicket15</connection>
-    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-wicket15</developerConnection>
+    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-wicket15/jasypt-wicket15-1.9.0</url>
+    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-wicket15/jasypt-wicket15-1.9.0</connection>
+    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-wicket15/jasypt-wicket15-1.9.0</developerConnection>
   </scm>
   
   <developers>
@@ -205,7 +205,7 @@
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
-      <version>${project.version}</version>
+      <version>1.9.0</version>
       <scope>compile</scope>
     </dependency>
 
