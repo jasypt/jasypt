@@ -144,6 +144,15 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-spring31/target/checkout/target/</directory>
+      <outputDirectory>/dist</outputDirectory>
+      <includes>
+        <include>jasypt-spring31-${project.version}.jar</include>
+        <include>jasypt-spring31-${project.version}-javadoc.jar</include>
+        <include>jasypt-spring31-${project.version}-sources.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${basedir}/../jasypt-springsecurity2/target/checkout/target/</directory>
       <outputDirectory>/dist</outputDirectory>
       <includes>
@@ -222,6 +231,7 @@
         <exclude>org.jasypt:jasypt-hibernate4</exclude>
         <exclude>org.jasypt:jasypt-spring2</exclude>
         <exclude>org.jasypt:jasypt-spring3</exclude>
+        <exclude>org.jasypt:jasypt-spring31</exclude>
         <exclude>org.jasypt:jasypt-springsecurity2</exclude>
         <exclude>org.jasypt:jasypt-springsecurity3</exclude>
         <exclude>org.jasypt:jasypt-wicket13</exclude>
