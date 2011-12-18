@@ -5,6 +5,11 @@
 
 Integrating Jasypt with Apache Wicket
 
+  Jasypt provides the <<<jasypt-wicket13>>> (for Wicket 1.3 and 1.4) 
+  and <<<jasypt-wicket15>>> (for Wicket 1.5) artifacts for integration with
+  Apache Wicket. Since jasypt 1.9.0, these artifacts must be added
+  to your classpath separately.
+
   Although the most usual way of using jasypt
   in wicket applications is password encryption,
   transparent data persistance, etc. as usual, and for these operations no especial
@@ -25,24 +30,21 @@ Integrating Jasypt with Apache Wicket
   
   Jasypt provides:
   
-    * <<org.jasypt.wicket.JasyptCryptFactory>>, an implementation of wicket's
+    * <<org.jasypt.wicket13|wicket15.JasyptCryptFactory>>, an implementation of wicket's
       <<<ICryptFactory>>> interface which receives an 
       <<<org.jasypt.encryption.pbe.PBEByteEncryption>>> object (configured
       at the user's wish: environment variables, web PBE config...) and 
       provides encryptors of class
-      <<<org.jasypt.wicket.JasyptCrypt>>> (implementing <<<ICrypt>>> interface).
+      <<<org.jasypt.wicket13|wicket15.JasyptCrypt>>> (implementing <<<ICrypt>>> interface).
   
     []
     
-    * <<org.jasypt.wicket.JasyptCrypt>>, implementation of wicket's
+    * <<org.jasypt.wicket13|wicket15.JasyptCrypt>>, implementation of wicket's
     <<<ICrypt>>> returned by <<<JasyptCryptFactory>>>.
     
     
   Note that <<<JasyptCrypt>>> objects adhere to wicket specifications of
   returning String output in the form of <URL and filename safe Base64>.
-  
-  <<Important>>: jasypt's integration features for wicket require at least
-  <Apache Wicket 1.3.0-rc1>.
 
 * Configuring the factory
 

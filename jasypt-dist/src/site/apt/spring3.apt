@@ -5,7 +5,14 @@
 
 Integrating Jasypt with Spring 3.0
 
-  You have nothing special to do to integrate Jasypt with Spring, as all of the
+
+  Jasypt provides the <<<jasypt-spring3>>> artifact for integration with
+  Spring Framework 3.0. Since jasypt 1.9.0, this artifact must be added
+  to your classpath separately.
+
+* Using jasypt digesters and encryptors as Spring beans
+
+  You have nothing special to do register jasypt <beans> in Spring, as all of the
   encryption tools (digesters and encryptors) in jasypt have the adequate design
   to be correctly instantiated and dependency-injected from a Spring
   application context.
@@ -29,15 +36,333 @@ Integrating Jasypt with Spring 3.0
   of Spring's bean container. This avoids concurrency problems in multi-threaded
   environments like web applications.
 
-Integrating jasypt with Spring's application configuration infrastructure
+* Integrating jasypt with Spring's application configuration infrastructure (without using the
+  <<<encryption>>> namespace)
 
-  Jasypt's capabilities for managing encrypted configuration files can also be integrated with 
-  Spring's application configuration infrastructure. Read mode on {{{encrypting-configuration.html}Encrypting
-  Application Configuration Files}}.
+  Jasypt provides several Spring-specific configuration management classes:
+  
+    * <<<org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer>>>,
+      as a totally compatible replacement for Spring's 
+      <PropertyPlaceholderConfigurer>.
+      
+    []
+  
+    * <<<org.jasypt.spring3.properties.EncryptablePropertyOverrideConfigurer>>>,
+      as a totally compatible replacement for Spring's 
+      <PropertyOverrideConfigurer>.
+  
+    []
+   
+    * <<<org.jasypt.spring3.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>:
+      as a totally compatible replacement for Spring's 
+      <ServletContextPropertyPlaceholderConfigurer>.
+  
+    []
+   
+    * <<<org.jasypt.spring3.properties.EncryptablePreferencesPlaceholderConfigurer>>>:
+      as a totally compatible replacement for Spring's 
+      <PreferencesPlaceholderConfigurer>.
+    
+    
+  Their use is analogue to the Spring equivalents, but we can use
+  them to read encrypted property values from our configuration files and
+  apply them to our beans.
+  
+  Note that we can also make use of these integrations using a specific <namespace>
+  in the Spring XML files called <<<encryption>>>, which is explained in detail below.
+  
+  If we have the properties file seen before (<<<application.properties>>>):
+
+---
+ datasource.driver=com.mysql.jdbc.Driver
+ datasource.url=jdbc:mysql://localhost/reportsdb
+ datasource.username=reportsUser
+ datasource.password=ENC(G6N718UuyPE5bHyWKyuLQSm02auQPUtm)
+---
+
+  We can define in our Spring context configuration:
+  
+---
+  
+ <!--                                                                      -->
+ <!-- Configuration for encryptor, based on environment variables.         -->
+ <!--                                                                      -->
+ <!-- In this example, the encryption password will be read from an        -->
+ <!-- environment variable called "APP_ENCRYPTION_PASSWORD" which, once    --> 
+ <!-- the application has been started, could be safely unset.             -->
+ <!--                                                                      -->
+ <bean id="environmentVariablesConfiguration"
+     class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+   <property name="algorithm" value="PBEWithMD5AndDES" />
+   <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />
+ </bean>
+  
+  
+ <!--                                                                      -->
+ <!-- The will be the encryptor used for decrypting configuration values.  -->
+ <!--                                                                      -->
+ <bean id="configurationEncryptor"
+     class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+   <property name="config" ref="environmentVariablesConfiguration" />
+ </bean>
+
+
+ <!--                                                                      -->
+ <!-- The EncryptablePropertyPlaceholderConfigurer will read the           -->
+ <!-- .properties files and make their values accessible as ${var}         -->
+ <!--                                                                      -->
+ <!-- Our "configurationEncryptor" bean (which implements                  --> 
+ <!-- org.jasypt.encryption.StringEncryptor) is set as a constructor arg.  -->
+ <!--                                                                      -->
+ <bean id="propertyConfigurer"
+     class="org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer">
+   <constructor-arg ref="configurationEncryptor" />
+   <property name="locations">
+     <list>
+       <value>/WEB-INF/classes/application.properties</value>
+     </list>
+   </property>
+   
+ </bean>
+
+
+ <!--                                                                      -->
+ <!-- Our datasource is configured here, in the usual way. Jasypt's        -->
+ <!-- EncryptedPropertyPlaceholderConfigurer will make sure that the       -->
+ <!-- ${datasource.password} file gets decrypted and the DBCP DataSource   -->
+ <!-- will be correctly initialised.                                       -->
+ <!--                                                                      -->
+ <bean id="dataSource"
+     class="org.apache.commons.dbcp.BasicDataSource"
+     destroy-method="close">
+   <property name="driverClassName">
+     <value>${datasource.driver}</value>
+   </property>
+   <property name="url">
+     <value>${datasource.url}</value>
+   </property>
+   <property name="username">
+     <value>${datasource.username}</value>
+   </property>
+   <property name="password">
+     <value>${datasource.password}</value>
+   </property>
+ </bean>
+	
+---  
+
+  <<<EncryptablePropertyPlaceholderConfigurer>>> and 
+  <<<EncryptablePropertyOverrideConfigurer>>> objects can receive as a 
+  constructor argument both an <<<org.jasypt.encryption.StringEncryptor>>> 
+  implementation or an <<<org.jasypt.util.TextEncryptor>>> object.
+
   
 
-Integrating jasypt with Spring Security (Acegi Security)
 
-  For details on how to integrate jasypt with Acegi, the standard security framework
-  for Spring, please have a look at {{{springsecurity}this guide}}.
+** Encryptable ServletContextPropertyPlaceholderConfigurer implementation for Spring
+      
+  Jasypt includes <<<org.jasypt.spring3.properties.EncryptableServletContextPropertyPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer>>>
+  which allows the transparent decryption of servlet context parameters in web applications (for example,
+  parameters in <<<WEB-INF/web.xml>>>).
+
+  These encrypted parameters can be specified in a way equivalent to that of encrypted parameters 
+  in <<<.properties>>> files:
+  
+---
+    ...
+    <context-param>
+        <param-name>someParameter</param-name>
+        <param-value>ENC(...)</param-value>
+    </context-param>
+    ...
+---  
+
+
+
+** Encryptable PreferencesPlaceholderConfigurer implementation for Spring
+      
+  Jasypt includes <<<org.jasypt.spring3.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
+  a subclass of <<<org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer>>>
+  which allows the transparent decryption preferences set with JDK 1.4's Preferences API.
+  
+  
+
+
+* The <<<encryption>>> namespace
+
+
+  The <<<jasypt-spring3>>> library includes a namespace you can use in your Spring XML files
+  in order to make the declaration of your jasypt entities much easier.
+  
+  This namespace can be included in your XML like this:
+
+
+---
+<beans xmlns="http://www.springframework.org/schema/beans"
+       ...
+       xmlns:encryption="http://www.jasypt.org/schema/encryption"
+       ...
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           ...
+                           http://www.jasypt.org/schema/encryption
+                           http://www.jasypt.org/schema/encryption/jasypt-spring3-encryption-1.xsd
+                           ...">
+---
+
+  Once declared, you will be able to use <<<\<encryption:*\>>>> tags for:
+
+    * Creating encryptors and digesters.
+    
+    * Creating configuration beans, both for encryptors and for digesters.
+    
+    * Creating instances of <<<EncryptableProperties>>> (extending <<<java.util.Properties>>>) 
+      that automatically decrypt entries in <<<.properties>>> files.
+    
+    * Registering an <<<EncryptablePropertyPlaceHolderConfigurer>>>.
+
+
+** Creating encryptors and digesters
+
+  Creating encryptor and digester artifacts with the <<<encryption>>> namespace is
+  easy. There's a tag for each type of encryptor/digester (including some <util> classes),
+  and each tags is able to specify all of the artifact's properties as tag attributes.
+  
+  Let's see some encryptor declaration examples:
+  
+---
+  <!-- Registers an org.jasypt.encryption.ByteEncryptor-->
+  <encryption:byte-encryptor id="myEncryptor" algorithm="PBEWithMD5AndTripleDES" password="jasypt"/>
+  
+  <!-- Registers an org.jasypt.encryption.StringEncryptor-->
+  <encryption:string-encryptor id="myEncryptor" password="jasypt" pool-size="5"/>
+  
+  <!-- Registers an org.jasypt.encryption.BigDecimalEncryptor-->
+  <encryption:big-decimal-encryptor password="jasypt" key-obtention-iterations="15000"/>
+  
+  <!-- Registers an org.jasypt.encryption.BigIntegerEncryptor-->
+  <encryption:big-integer-encryptor id="myEncryptor" password="jasypt" provider-name="BC"/>
+---
+
+  Note how the <<<pool-size>>> parameter will affect the specific implementation of encryptor being created:
+  a <<<PooledPBE*Encryptor>>> if this parameter is specified, and a <<<StandardPBE*Encryptor>>>
+  if not.
+  
+  Now for some digesters:
+  
+---
+  <!-- Registers an org.jasypt.digest.ByteDigester-->
+  <encryption:byte-digester algorithm="SHA-1" salt-size-bytes="16" iterations="50000"/>
+  
+  <!-- Registers an org.jasypt.digest.StringDigester-->
+  <encryption:string-digester pool-size="10"/>
+---
+
+  Again, the <<<pool-size>>> attribute will determine whether the digesters will be <Standard>
+  or <Pooled>.
+
+  Some <util> artifacts can also be instantiated this way:
+  
+---
+  <!-- Password encryptors -->
+  <encryption:basic-password-encryptor/>
+  <encryption:strong-password-encryptor/>
+  <encryption:configurable-password-encryptor/>
+  
+  <!-- Text encryptors -->
+  <encryption:basic-text-encryptor password="jasypt"/>
+  <encryption:strong-text-encryptor password="jasypt"/>
+--- 
+
+
+** Creating configuration beans for encryptors and digesters
+
+  Configuration beans implement the <<<DigesterConfig>>> interface for digesters and
+  <<<PBEConfig>>> for encryptors, and Jasypt offers several implementations of these
+  interfaces out-of-the-box depending on whether the digester to be created is meant
+  for bytes or Strings, and also whether some configuration parameters can come from
+  environment variables and/or system properties.
+  
+  The <<<encryption>>> namespace will automatically choose the correct config bean implementation
+  to be instantiated depending on the specified configuration attributes, so that you
+  do not have to worry about the specific implementation class you need.
+  
+  Let's see some examples:
+  
+---
+  <encryption:digester-config id="dConf1" iterations="1400" salt-size-bytes="32"/>
+  <encryption:digester-config id="dConf2" iterations="10000" string-output-type="hexa"/>
+  <encryption:digester-config id="dConf3" string-output-type="hexa" algorithm-env-name="VAR_ALGORITHM"/> 
+   
+  <encryption:encryptor-config id="eConf1" key-obtention-iterations="500" password-env-name="VAR_PASSWD"/> 
+  <encryption:encryptor-config id="eConf2" password-env-name="VAR_PASSWD" algorithm="PBEWithMD5AndTripleDES"/> 
+  <encryption:encryptor-config id="eConf3" password="jasypt" algorithm-sys-property-name="jasypt.enc.algorithm"/> 
+---
+
+  Using these beans in our encryptors/digesters is easy:
+  
+---
+  <encryption:digester-config id="dConf" string-output-type="hexa" algorithm-env-name="VAR_ALGORITHM"/>
+  <encryption:string-digester config-bean="dConf"/>
+   
+  <encryption:encryptor-config id="eConf" password-env-name="VAR_PASSWD" algorithm="PBEWithMD5AndTripleDES"/>
+  <encryption:string-encryptor id="stringEnc" config-bean="eConf"/> 
+--- 
+
+
+
+** Creating EncryptableProperties instances
+
+  Usually, in Spring you can create a <<<java.util.Properties>>> bean in your XML
+  using the <<<util>>> namespace, like this:
+
+
+---
+  <util:properties location="classpath:application.properties"/>
+---
+
+  Jasypt allows you to register an <<<org.jasypt.properties.EncryptableProperties>>>
+  object in an equivalent manner, simply by adding an <encryptor> bean reference: 
+
+---
+  <encryption:encryptable-properties encryptor="stringEnc" location="classpath:application.properties"/>
+---
+
+  This <<<\<encryption:encryptable-properties\>>>> tag works in exactly the same way and
+  with exactly the same features as <<<\<util:properties\>>>>, and as the object it registers
+  is a subclass of <<<java.util.Properties>>>, you can autowire it inside your application
+  with your code not even noticing these properties are originally encrypted.
+
+
+
+
+** Registering an EncryptablePropertyPlaceholder/Override
+
+  Spring allows you to easily register a <<<PropertyPlaceholderConfigurer>>>
+  that takes care of the resolution of your <<<$\{...\}>>> property expressions:
+
+---
+  <context:property-placeholder location="classpath:application.properties"/>
+--- 
+
+  But if you want to register an <<<EncryptablePropertyPlaceholder>>> instead
+  because your property files might be encrypted, you can do: 
+  
+---
+  <encryption:encryptable-property-placeholder encryptor="stringEnc" location="classpath:application.properties"/>
+--- 
+  
+  And that's it! A property override implementation is also provided:
+  
+---
+  <encryption:encryptable-property-override encryptor="stringEnc" location="classpath:application.properties"/>
+--- 
+
+
+* Integrating jasypt with Spring Security 3.x
+
+  For details on how to integrate jasypt with Spring Security 3.x, 
+  please have a look at {{{./springsecurity.html}this guide}}.
+
   

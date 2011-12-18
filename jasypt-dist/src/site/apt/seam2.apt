@@ -1,5 +1,5 @@
   -------
-  Jasypt: Java simplified encryption - Integrating Jasypt with Seam 2
+  Integrating Jasypt with Seam 2
   -------
 
 
@@ -10,7 +10,7 @@ Integrating Jasypt with Seam 2 (Mini-Howto)
 * Step 1: Adding the dependencies 
   
   Make sure you include references to Jasypt and its dependencies in your
-  project. Check the {{{dependencies.html}dependencies page}} for details on
+  project. Check the {{{./dependencies.html}dependencies page}} for details on
   the specific jar files to be added.
 
 * Step 2: Adding the modules
@@ -21,13 +21,7 @@ Integrating Jasypt with Seam 2 (Mini-Howto)
 ----------
     <!-- Jasypt and dependencies -->
     <module>
-        <java>jasypt-1.5.jar</java>
-    </module>
-    <module>
-        <java>commons-lang-2.1.jar</java>
-    </module>
-    <module>
-        <java>commons-codec-1.1.jar</java>
+        <java>jasypt-1.9.0.jar</java>
     </module>
     <!-- ICU4J not needed if you are using Java 6 or higher -->
     <module>
@@ -43,7 +37,7 @@ Integrating Jasypt with Seam 2 (Mini-Howto)
 
 * Step 3: Use annotations to specify the encrypted fields in your class files  
 
-  The Jasypt {{{hibernate3.html}page on Hibernate 3 integration}} details the steps.  Here is a
+  The Jasypt {{{./hibernate.html}page on Hibernate 3 integration}} details the steps.  Here is a
   simple example. Imagine you have a <<<Person>>> class with an <ssn> string field you
   want to store encrypted. The class will look something like this:
 
@@ -61,7 +55,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.Length;
-import org.jasypt.hibernate.type.EncryptedStringType;
+import org.jasypt.hibernate3.type.EncryptedStringType;
 
 @TypeDef(
     name="encryptedString", 
@@ -151,7 +145,7 @@ package session;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
-import org.jasypt.hibernate.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Logger;

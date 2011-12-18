@@ -85,7 +85,7 @@ String encryptedPassword = passwordEncryptor.encryptPassword(password);
 -------------------             
   <hibernate-mapping package="myapp">
     ...
-    <typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedStringType">
+    <typedef name="encryptedString" class="org.jasypt.hibernate4.type.EncryptedStringType">
       <param name="algorithm">PBEWITHSHA256AND128BITAES-CBC-BC</param>
       <param name="providerName">BC</param>
       <param name="password">jasypt</param>

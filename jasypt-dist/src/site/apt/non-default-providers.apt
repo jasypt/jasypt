@@ -6,7 +6,7 @@
   If you are looking for advice on using Jasypt with the 
   {{{http://www.bouncycastle.org}Bouncy Castle JCE Provider}}, although
   this guide will also be relevant for you, you can also have a look at
-  the specific {{{bouncy-castle.html}Jasypt + Bouncy Castle integration guide}}.
+  the specific {{{./bouncy-castle.html}Jasypt + Bouncy Castle integration guide}}.
 
 Using Jasypt with non-default JCE providers
 

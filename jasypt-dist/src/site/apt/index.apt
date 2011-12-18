@@ -3,7 +3,9 @@
   -------
 
   <<Jasypt 1.9.0 RELEASED!>> (December 18th, 2011) [{{{./download.html}DOWNLOAD and ChangeLogs}}] [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
-    
+  
+  <Did you know? Jasypt's configuration encryption features have been featured 
+  in> <<{{{http://www.manning.com}Spring in Action, 3rd Edition}}>>  
 
 Java Simplified Encryption
 

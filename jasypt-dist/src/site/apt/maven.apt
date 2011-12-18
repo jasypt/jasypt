@@ -3,10 +3,10 @@
   -------
 
 
-Using Jasypt from Apache Maven
+Using Jasypt from Apache Maven 2.x or 3.x
 
   Adding jasypt to your Maven 2 or Maven 3 project is very easy,
-  you just need to add the following dependency to your pom.xml:
+  you just need to add the corresponding dependency to your pom.xml:
       
 ---------
     <dependency>
@@ -18,7 +18,7 @@ Using Jasypt from Apache Maven
 ---------
 
   Alternatively, by specifying a classifier you can use the <lite> artifact, which contains only
-  the essentials in a much smaller .jar file. [{{{lite.html}More Info}}].
+  the essentials in a much smaller .jar file. [{{{./lite.html}More Info}}].
 
 ---------
     <dependency>
@@ -30,32 +30,29 @@ Using Jasypt from Apache Maven
     </dependency>
 ---------
 
+  If you are goint to use any integration modules, just add them in the same way:
 
-Using jasypt from Maven 1.x
+---------
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-spring31</artifactId>
+      <version>{version}</version>
+      <scope>compile</scope>
+    </dependency>
+---------
 
-  Adding jasypt to your Maven 1.x project is almost as easy
-  as it is for Maven 2, except for the lack of support for transitive dependencies.
-  So, you will need to add the following dependencies to your project.xml:
+
+Using Jasypt from Apache Maven 1.x
+
+  Adding jasypt to your Maven 1.x project is as easy
+  as it is for Maven 2. Maven 1.x does not support transitive dependencies, but
+  anyway jasypt has none (except icu4j if you're using Java 5 or older):
       
 ---------
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
       <version>{version}</version>
-    </dependency>
-    <!-- 
-       If you already have dependencies on commons-lang, commons-codec or icu,
-       you should skip the following ones.
-    -->
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.1</version>
     </dependency>
     <!-- 
        ICU4J is not needed if you are using Java 6 or higher, but it will be

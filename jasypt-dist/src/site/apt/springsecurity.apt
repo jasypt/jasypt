@@ -4,16 +4,20 @@
 
 
   If you want to know what jasypt can do to improve the security of your users'
-  passwords in an acegi-enabled application, check the {{{faq.html}FAQ}} and
-  also the article '{{{howtoencryptuserpasswords.html}How to encrypt user 
+  passwords in an acegi-enabled application, check the {{{./faq.html}FAQ}} and
+  also the article '{{{./howtoencryptuserpasswords.html}How to encrypt user 
   passwords}}' guide.
 
 Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
 
-  Jasypt provides two integration packages, <<<org.jasypt.spring.security>>>,
-  <<<org.jasypt.spring.security2>>> and <<<org.jasypt.spring.security3>>>, which
+  Jasypt provides the <<<jasypt-acegisecurity>>>,  <<<jasypt-springsecurity2>>> 
+  and <<<jasypt-springsecurity3>>> artifacts for integration with
+  Spring Security 1.x, 2.x and 3.x. Since jasypt 1.9.0, these artifacts must be added
+  to your classpath separately.
+
+  These integration libraries
   allow the integration of jasypt's powerful password encryption capabilities into 
-  ACEGI-enabled and Spring Security-enabled applications, respectively. 
+  Spring Security-enabled applications. 
   Once integrated, jasypt will
   be responsible for managing the check of users' passwords at sign in in
   a transparent way for the rest of the security framework.
@@ -28,18 +32,18 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   Jasypt provides two implementations of this <<<PasswordEncoder>>> interface
   for each of ACEGI 1.x and Spring Security 2.x and 3.x:
   
-      * <<org.jasypt.spring.security.PasswordEncoder>> / 
-        <<org.jasypt.spring.security2.PasswordEncoder>> / 
-        <<org.jasypt.spring.security3.PasswordEncoder>>, which
+      * <<org.jasypt.acegisecurity.PasswordEncoder>> / 
+        <<org.jasypt.springsecurity2.PasswordEncoder>> / 
+        <<org.jasypt.springsecurity3.PasswordEncoder>>, which
         is used for uni-directional password encryption (recommended),
         and which can wrap either an <<org.jasypt.util.password.PasswordEncryptor>> or
         an <<org.jasypt.digest.StringDigester>> object.
       
       []
       
-      * <<org.jasypt.spring.security.PBEPasswordEncoder>> /
-        <<org.jasypt.spring.security2.PBEPasswordEncoder>> /
-        <<org.jasypt.spring.security3.PBEPasswordEncoder>>, which
+      * <<org.jasypt.acegisecurity.PBEPasswordEncoder>> /
+        <<org.jasypt.springsecurity2.PBEPasswordEncoder>> /
+        <<org.jasypt.springsecurity3.PBEPasswordEncoder>>, which
         is used for bi-directional password encryption (not recommended),
         and which can wrap either an <<org.jasypt.util.text.TextEncryptor>> or
         an <<org.jasypt.encryption.pbe.StringEncryptor>> object.
@@ -50,13 +54,13 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   integration scenarios.
 
 
-  Also, jasypt includes org.jasypt.spring.security3.TokenBasedRememberMeServices for 
+  Also, jasypt includes org.jasypt.springsecurity3.TokenBasedRememberMeServices for 
   Spring Security 3, which works in the same way as 
   org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices 
   but creating a jasypt-digested data signature for inclusion in rememeber-me cookies.
 
 
-* org.jasypt.spring.security|security2|security3.PasswordEncoder
+* org.jasypt.acegisecurity|springsecurity2|springsecurity3.PasswordEncoder
 
   These <<<PasswordEncoder>>> 
   implementations can wrap either an <<org.jasypt.util.password.PasswordEncryptor>>
@@ -79,7 +83,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity3.PasswordEncoder">
     <property name="passwordEncryptor">
       <ref bean="jasyptPasswordEncryptor" />
     </property>
@@ -112,7 +116,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the StringDigester instance so that it can be used from      -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity3.PasswordEncoder">
     <property name="stringDigester">
       <ref bean="jasyptStringDigester" />
     </property>
@@ -131,7 +135,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
 ------------  
   
 
-* org.jasypt.spring.security|security2|security3.PBEPasswordEncoder
+* org.jasypt.acegisecurity|springsecurity2|springsecurity3.PBEPasswordEncoder
 
   These <<<PasswordEncoder>>> 
   implementations can wrap either an <<org.jasypt.util.text.TextEncryptor>>
@@ -156,7 +160,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the TextEncryptor instance so that it can be used from       -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PBEPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity3.PBEPasswordEncoder">
     <property name="textEncryptor">
       <ref bean="jasyptTextEncryptor" />
     </property>
@@ -189,7 +193,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PBEStringEncryptor instance so that it can be used from  -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PBEPasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity3.PBEPasswordEncoder">
     <property name="pbeStringEncryptor">
       <ref bean="jasyptPBEStringEncryptor" />
     </property>
@@ -238,7 +242,7 @@ Integrating Jasypt with Spring Security 2.x or 3.x (or Acegi 1.x)
   <!-- This Spring Security-friendly PasswordEncoder implementation will -->
   <!-- wrap the PasswordEncryptor instance so that it can be used from   -->
   <!-- the security framework.                                           -->
-  <bean id="passwordEncoder" class="org.jasypt.spring.security3.PasswordEncoder">
+  <bean id="passwordEncoder" class="org.jasypt.springsecurity3.PasswordEncoder">
     <property name="passwordEncryptor">
       <ref bean="jasyptPasswordEncryptor" />
     </property>

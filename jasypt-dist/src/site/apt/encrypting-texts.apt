@@ -3,7 +3,7 @@
   -------
 
   <This guide contains low-level technical information. Maybe you should start first with
-  the {{{easy-usage.html}Easy Usage}} or {{{general-usage.html}General Usage}} guides?>
+  the {{{./easy-usage.html}Easy Usage}} or {{{./general-usage.html}General Usage}} guides?>
 
 
 Encrypting texts
@@ -37,7 +37,7 @@ Encrypting texts
      * Using its default values (except for password).
      
      * Setting an <<<org.jasypt.encryption.pbe.config.PBEConfig>>> 
-       object which provides new configuration values. {{{advancedconfiguration.html}Learn More}}.
+       object which provides new configuration values. {{{./advancedconfiguration.html}Learn More}}.
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
        <<<setProvider(...)>>>, <<<setProviderName(...)>>>,
