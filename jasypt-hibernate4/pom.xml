@@ -157,7 +157,7 @@
           <noqualifier>java.lang</noqualifier>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
           <links>
-            <link>http://www.jasypt.org/api/jasypt/1.9.0/</link>
+            <link>http://www.jasypt.org/api/jasypt/${project.version}/</link>
           </links>
         </configuration>
         <executions>
