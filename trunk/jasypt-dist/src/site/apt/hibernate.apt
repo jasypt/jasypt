@@ -3,17 +3,28 @@
   -------
 
 
-Integrating Jasypt with Hibernate 3 and 4
+Integrating Jasypt with Hibernate 3.x or 4.x
 
-  Jasypt provides an integration package (<<<org.jasypt.hibernate.type>>>) which 
-  provides several Hibernate <<UserType>> implementations to allow one or 
-  several of the properties in a mapped
+  Jasypt provides the <<<jasypt-hibernate3>>> and <<<jasypt-hibernate4>>> artifacts
+  for Hibernate integration. Since jasypt 1.9.0, these artifacts must be added
+  to your classpath separately.
+
+  These integration libraries include several Hibernate <<UserType>> implementations 
+  that allow one or several of the properties in a mapped
   Hibernate entity to be declared as being of an <encrypted type>. Types
-  allowed to be stored encrypted include strings, binaries (byte arrays), 
+  allowed to be stored as encrypted include strings, binaries (byte arrays), 
   numeric types, booleans and dates.
+
+  Jasypt also provides two <Connection Provider>
+  (<<<org.hibernate.connection.ConnectionProvider>>>) implementations
+  which let the user declare the datasource parameters in an encrypted manner.
  
-  Persistence of those properties will be done in an encrypted manner,
-  but <<in a completely transparent way>> for the application.
+  
+* Transparent data encryption with Jasypt and Hibernate
+
+  Thanks to the use of custom <<UserType>> implementations, jasypt allows your applications
+  to store encrypted data for their hibernate mapped entities, but 
+  <<in a completely transparent way>> for the application's logic.
 
   This can be useful for encrypting personal data, private messages, etc, so that
   it is avoided that anyone with read access to the "critical" tables can
@@ -32,11 +43,11 @@ Integrating Jasypt with Hibernate 3 and 4
   your search queries for the entity they belong to.
 
 
-* Encryption types
+** Encryption types
 
 *------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
 ||<<Java type>>    ||<<SQL type>>                    ||<<Jasypt Hibernate type>>             || <<Specific features>>                                            |
-||                 ||                                ||(<<<org.jasypt.hibernate.type>>>)     ||                                                                  |
+||                 ||                                ||(<<<org.jasypt.hibernate*.type>>>)     ||                                                                  |
 *------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
 |<<<String>>>      |VARCHAR, CLOB, TEXT              |<<<EncryptedStringType>>>              |                                                                   |
 *------------------+---------------------------------+---------------------------------------+-------------------------------------------------------------------+
@@ -79,7 +90,7 @@ Integrating Jasypt with Hibernate 3 and 4
   store an encrypted normal-size BigInteger).
 
 
-* Configuration
+** Configuration
 
   Setting jasypt to encrypt data with hibernate requires two separate actions:
 
@@ -88,7 +99,7 @@ Integrating Jasypt with Hibernate 3 and 4
      [[2]] <<Providing the encryptor to Hibernate>>.
      
 
-** Configuring the Hibernate mapping
+*** Configuring the Hibernate mapping
 
   The Hibernate mapping file can be configured in two different ways:
   
@@ -102,7 +113,7 @@ Integrating Jasypt with Hibernate 3 and 4
 -------------------             
   <hibernate-mapping package="myapp">
     ...
-    <typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedStringType">
+    <typedef name="encryptedString" class="org.jasypt.hibernate4.type.EncryptedStringType">
       <param name="algorithm">PBEWithMD5AndTripleDES</param>
       <param name="password">jasypt</param>
       <param name="keyObtentionIterations">1000</param>
@@ -129,7 +140,7 @@ Integrating Jasypt with Hibernate 3 and 4
 -------------------             
   <hibernate-mapping package="myapp">
     ...
-    <typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedStringType">
+    <typedef name="encrypted" class="org.jasypt.hibernate4.type.EncryptedStringType">
       <param name="encryptorRegisteredName">strongHibernateStringEncryptor</param>
     </typedef>
     ...
@@ -144,7 +155,7 @@ Integrating Jasypt with Hibernate 3 and 4
 
 
 
-** Providing the encryptor to Hibernate
+*** Providing the encryptor to Hibernate
 
   If we have chosen to use the <encryptorRegisteredName> parameter in our Hibernate 
   mapping file, we will need to bind somehow an encryptor object to that name. This 
@@ -174,7 +185,7 @@ Integrating Jasypt with Hibernate 3 and 4
   </bean>
   
   <bean id="hibernateStringEncryptor"
-    class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
+    class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor">
     <property name="registeredName">
         <value>strongHibernateStringEncryptor</value>
     </property>
@@ -191,7 +202,7 @@ Integrating Jasypt with Hibernate 3 and 4
   
 -------------------             
   <bean id="hibernateStringEncryptor"
-    class="org.jasypt.hibernate.encryptor.HibernatePBEStringEncryptor">
+    class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor">
     <property name="registeredName">
         <value>strongHibernateStringEncryptor</value>
     </property>
@@ -221,7 +232,7 @@ Integrating Jasypt with Hibernate 3 and 4
 
 
 
-** Using annotations
+*** Using annotations
 
   Alternatively, we may have chosen to use annotations for mapping our entities
   instead of separate XML mapping files. If it has been so, we can still 
@@ -249,4 +260,74 @@ Integrating Jasypt with Hibernate 3 and 4
         return address;
     }
 -------------------             
+
+
+
+
+* Encrypting the database password in hibernate.cfg.xml
+
+  For those applications that define datasources in Hibernate's
+  <<<hibernate.cfg.xml>>> file, Jasypt provides two <Connection Provider>
+  (<<<org.hibernate.connection.ConnectionProvider>>>) implementations
+  which let the user declare the datasource parameters
+  (driver, url, username and password) in an encrypted manner:
+  
+    * <<<org.jasypt.hibernate3|hibernate4.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider>>>,
+    which extends Hibernate's <Driver Manager> connection provider (a very
+    simplistic pool implementation).
+
+    []
+  
+    * <<<org.jasypt.hibernate3|hibernate4.connectionprovider.EncryptedPasswordC3P0ConnectionProvider>>>,
+    which extends Hibernate's <C3P0-based> connection provider.
+         
+    []
+    
+  They are used like this in <<<hibernate.cfg.xml>>>:
+  
+---
+
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE hibernate-configuration PUBLIC 
+   "-//Hibernate/Hibernate Configuration DTD//EN" 
+   "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+    
+<hibernate-configuration>
+  <session-factory>
+    
+    <property name="connection.provider_class">
+      org.jasypt.hibernate4.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
+    </property>
+    <property name="connection.encryptor_registered_name">
+      configurationHibernateEncryptor
+    </property>
+    
+    <property name="connection.url">jdbc:mysql://localhost/reportsdb</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.username">reportsUser</property>
+    <property name="connection.password">ENC(G6N718UuyPE5bHyWKyuLQSm02auQPUtm)</property>
+    <property name="connection.pool_size">12</property>
+
+    <property name="show_sql">true</property>
+    <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+    
+    <!-- Mappings etc... -->
+        
+   </session-factory>
+</hibernate-configuration>
+
+---  
+
+  In this configuration, Hibernate is told to use Jasypt's DriverManager-based
+  connection provider and is passed a set of configuration parameters which
+  contain an encrypted value, the <<<connection.password>>> property. 
+  Then, Hibernate is also told about 
+  which is the encryptor object to be used for decrypting the encrypted parameters
+  (<<<connection.encryptor_registered_name>>>).
+  
+  This encryptor object should have been registered beforehand as a
+  <<Hibernate Encryptor>>, as explained in the <'Transparent data encryption'>
+  section.
+   
+
   

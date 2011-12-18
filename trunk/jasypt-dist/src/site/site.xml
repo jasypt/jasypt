@@ -4,7 +4,7 @@
 
   <bannerLeft>
     <name>Jasypt: Java simplified encryption</name>
-    <src>images/jasypt.png</src>
+    <src>images/jasypt-small.png</src>
     <href>http://www.jasypt.org/</href>
   </bannerLeft>
   
@@ -72,8 +72,8 @@
         <item name="· Jasypt + Apache Maven" href="maven.html"/>
       </item>
       <item name="· Jasypt + Hibernate" href="#">
-        <item name="· Jasypt + Hibernate 3" href="hibernate.html"/>
-        <item name="· Jasypt + Hibernate 4" href="hibernate.html"/>
+        <item name="· Jasypt + Hibernate 3.x" href="hibernate.html"/>
+        <item name="· Jasypt + Hibernate 4.x" href="hibernate.html"/>
       </item>
       <item name="· Jasypt + Spring" href="#">
         <item name="· Jasypt + Spring 2.x" href="spring2.html"/>
@@ -86,7 +86,7 @@
         <item name="· Jasypt + SpringSecurity 3" href="springsecurity.html"/>
       </item>
       <item name="· Jasypt + Wicket" href="#">
-        <item name="· Jasypt + Wicket 1.3" href="wicket.html"/>
+        <item name="· Jasypt + Wicket 1.3/1.4" href="wicket.html"/>
         <item name="· Jasypt + Wicket 1.5" href="wicket.html"/>
       </item>
       <item name="· Other integrations" href="#">

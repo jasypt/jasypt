@@ -3,7 +3,7 @@
   -------
 
 
-Advanced configuration for encyptors and digesters
+Advanced configuration for encryptors and digesters
 
   Jasypt allows its provided encryptors and digesters to be configured in
   any specific ways the user may need.
@@ -61,7 +61,7 @@ Advanced configuration for encyptors and digesters
       passwords in web applications from the web itself, once the webapp
       has been deployed (and thus allowing developers not to store the
       encryption passwords in any file, simply providing it to the app each
-      time it is deployed). {{{webconfiguration.html}Learn more}}.
+      time it is deployed). {{{./webconfiguration.html}Learn more}}.
       
         
   <<Important>>: If a *Config object returns <<<null>>> for a configuration
