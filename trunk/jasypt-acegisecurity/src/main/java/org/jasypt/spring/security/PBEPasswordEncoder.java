@@ -137,6 +137,9 @@ import org.jasypt.util.text.TextEncryptor;
  * @since 1.4 (existed since 1.2 as 
  *            <tt>org.jasypt.springsecurity.PasswordEncoder</tt>)
  * 
+ * @deprecated Renamed as org.jasypt.acegisecurity.PBEPasswordEncoder.
+ *             Class will be removed from this package in 1.11.
+ * 
  * @author Daniel Fern&aacute;ndez
  * 
  */

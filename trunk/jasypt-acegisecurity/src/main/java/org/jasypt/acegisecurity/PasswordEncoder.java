@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.spring.security;
+package org.jasypt.acegisecurity;
 
 import org.jasypt.digest.StringDigester;
 import org.jasypt.exceptions.EncryptionInitializationException;
@@ -123,11 +123,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  * This class is <i>thread-safe</i>
  * </p>
  * 
- * @since 1.4 (existed since 1.2 as 
- *            <tt>org.jasypt.springsecurity.PasswordEncoder</tt>)
- * 
- * @deprecated Renamed as org.jasypt.acegisecurity.PasswordEncoder.
- *             Class will be removed from this package in 1.11.
+ * @since 1.9.0 (existed as org.jasypt.spring.security.PasswordEncoder since 1.4)
  * 
  * @author Daniel Fern&aacute;ndez
  * 
