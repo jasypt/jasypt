@@ -155,6 +155,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.4</version>
+        <configuration>
+          <webAccessUrl>http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</webAccessUrl>
+          <anonymousConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</anonymousConnection>
+          <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</developerConnection>
+          <checkoutDirectoryName>jasypt-trunk</checkoutDirectoryName>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
