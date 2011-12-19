@@ -127,6 +127,8 @@ What is new in Jasypt 1.9?
 
   jasypt 1.9 adds specific support for Apache Wicket 1.5, due to some changes in its encryption 
   APIs since 1.4.
+
+  Learn more at the {{{./wicket.html}Jasypt + Apache Wicket Guide}}.  
   
 
 * {Minor bugs and testing enhancements}
