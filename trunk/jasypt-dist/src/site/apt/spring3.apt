@@ -9,8 +9,18 @@ Integrating Jasypt with Spring 3.0
   Jasypt provides the <<<jasypt-spring3>>> artifact for integration with
   Spring Framework 3.0. Since jasypt 1.9.0, this artifact must be added
   to your classpath separately.
+  
 
-* Using jasypt digesters and encryptors as Spring beans
+  * {{{Using_jasypt_digesters_and_encryptors_as_Spring_beans}Using jasypt digesters and encryptors as Spring beans}}
+  
+  * {{{Integrating_jasypt_with_Springs_application_configuration_infrastructure}Integrating jasypt with Spring's application configuration infrastructure}}
+  
+  * {{{The_encryption_namespace}The <<<encryption>>> namespace}}
+  
+  * {{{Integrating_jasypt_with_Spring_Security_3.x}Integrating jasypt with Spring Security 3.x}}
+
+
+* {Using jasypt digesters and encryptors as Spring beans}
 
   You have nothing special to do register jasypt <beans> in Spring, as all of the
   encryption tools (digesters and encryptors) in jasypt have the adequate design
@@ -36,7 +46,7 @@ Integrating Jasypt with Spring 3.0
   of Spring's bean container. This avoids concurrency problems in multi-threaded
   environments like web applications.
 
-* Integrating jasypt with Spring's application configuration infrastructure (without using the
+* {Integrating jasypt with Spring's application configuration infrastructure} (without using the
   <<<encryption>>> namespace)
 
   Jasypt provides several Spring-specific configuration management classes:
@@ -189,7 +199,7 @@ Integrating Jasypt with Spring 3.0
   
 
 
-* The <<<encryption>>> namespace
+* {The <<<encryption>>> namespace}
 
 
   The <<<jasypt-spring3>>> library includes a namespace you can use in your Spring XML files
@@ -360,7 +370,7 @@ Integrating Jasypt with Spring 3.0
 --- 
 
 
-* Integrating jasypt with Spring Security 3.x
+* {Integrating jasypt with Spring Security 3.x}
 
   For details on how to integrate jasypt with Spring Security 3.x, 
   please have a look at {{{./springsecurity.html}this guide}}.

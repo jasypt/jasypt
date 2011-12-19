@@ -7,33 +7,42 @@ Download Jasypt
 
   
   <<Current version>>: 1.9.0 (December 18th, 2011) [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
-  
-  Change logs:
-  
-    * jasypt (core): {{{./changelogs/jasypt/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-hibernate3: {{{./changelogs/jasypt-hibernate3/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-hibernate4: {{{./changelogs/jasypt-hibernate4/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-spring2: {{{./changelogs/jasypt-spring2/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-spring3: {{{./changelogs/jasypt-spring3/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-spring31: {{{./changelogs/jasypt-spring31/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-springsecurity2: {{{./changelogs/jasypt-springsecurity2/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-springsecurity3: {{{./changelogs/jasypt-springsecurity3/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-wicket13: {{{./changelogs/jasypt-wicket13/ChangeLog.txt}ChangeLog}}
-
-    * jasypt-wicket15: {{{./changelogs/jasypt-wicket15/ChangeLog.txt}ChangeLog}}
+      
   
   <<{{{http://sourceforge.net/project/showfiles.php?group_id=183612}DOWNLOAD JASYPT (from SourceForge.net)}}>>
+
+  If you are using Maven for building your project, have a look at
+  {{{./maven.html}Jasypt + Maven}} for details on adding a dependency on Jasypt.
+
+  Jasypt consists of the following artifacts:
+  
+    * <<<jasypt>>> (core) [{{{./changelogs/jasypt/ChangeLog.txt}ChangeLog}}]
+      
+    * Spring integration
+      
+      * <<<jasypt-spring2>>> for Spring Framework 2.0 and 2.5 [{{{./changelogs/jasypt-spring2/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-spring3>>> for Spring Framework 3.0 [{{{./changelogs/jasypt-spring3/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-spring31>>> for Spring Framework 3.1 and newer [{{{./changelogs/jasypt-spring31/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-acegisecurity>>> for Acegi Security 1.0 [{{{./changelogs/jasypt-acegisecurity/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-springsecurity2>>> for Spring Security 2.x [{{{./changelogs/jasypt-springsecurity2/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-springsecurity3>>> for Spring Security 3.x and newer [{{{./changelogs/jasypt-springsecurity3/ChangeLog.txt}ChangeLog}}]
+    
+    * Hibernate integration
+    
+      * <<<jasypt-hibernate3>>> for Hibernate 3.0, 3.1, 3.2, 3.3, 3.5 and 3.6 [{{{./changelogs/jasypt-hibernate3/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-hibernate4>>> for Hibernate 4.x and newer [{{{./changelogs/jasypt-hibernate4/ChangeLog.txt}ChangeLog}}]
+      
+    * Apache Wicket integration
+    
+      * <<<jasypt-wicket13>>> for Apache Wicket 1.3 and 1.4 [{{{./changelogs/jasypt-wicket13/ChangeLog.txt}ChangeLog}}]
+      
+      * <<<jasypt-wicket15>>> for Apache Wicket 1.5 [{{{./changelogs/jasypt-wicket15/ChangeLog.txt}ChangeLog}}]
   
   You can also browse the Source Repository {{{./source-repository.html}here}}.
-
-  And if you are using Maven for building your project, have a look at
-  {{{./maven.html}Jasypt + Maven}} for details on adding a dependency on Jasypt.
   

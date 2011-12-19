@@ -18,9 +18,20 @@ Integrating Jasypt with Spring 3.1
   Also, if you were using the <<<encryption>>> namespace with Spring 3.0 and migrate
   your app to Spring 3.1, be sure to change the XSD definition in order to point to
   the Spring 3.1-specific version (see below).
+  
+
+  * {{{Using_jasypt_digesters_and_encryptors_as_Spring_beans}Using jasypt digesters and encryptors as Spring beans}}
+
+  * {{{Encryptable_PropertySource_implementation_for_Spring_3.1}Encryptable PropertySource implementation for Spring 3.1}}
+  
+  * {{{Integrating_jasypt_with_Springs_application_configuration_infrastructure}Integrating jasypt with Spring's application configuration infrastructure}}
+  
+  * {{{The_encryption_namespace}The <<<encryption>>> namespace}}
+  
+  * {{{Integrating_jasypt_with_Spring_Security_3.x}Integrating jasypt with Spring Security 3.x}}
 
 
-* Using jasypt digesters and encryptors as Spring beans
+* {Using jasypt digesters and encryptors as Spring beans}
 
   You have nothing special to do register jasypt <beans> in Spring, as all of the
   encryption tools (digesters and encryptors) in jasypt have the adequate design
@@ -48,7 +59,7 @@ Integrating Jasypt with Spring 3.1
 
       
 
-* Encryptable PropertySource implementation for Spring 3.1
+* {Encryptable PropertySource implementation for Spring 3.1}
       
   Jasypt includes <<<org.jasypt.spring31.properties.EncryptablePropertiesPropertySource>>>,
   an implementation of <<<org.springframework.core.env.PropertySource>>>
@@ -71,7 +82,7 @@ Integrating Jasypt with Spring 3.1
 
 
 
-* Integrating jasypt with Spring's application configuration infrastructure (without using the
+* {Integrating jasypt with Spring's application configuration infrastructure} (without using the
   <<<encryption>>> namespace)
 
 
@@ -200,7 +211,7 @@ Integrating Jasypt with Spring 3.1
   
 
 
-* The <<<encryption>>> namespace
+* {The <<<encryption>>> namespace}
 
 
   The <<<jasypt-spring3>>> library includes a namespace you can use in your Spring XML files
@@ -371,7 +382,7 @@ Integrating Jasypt with Spring 3.1
 --- 
 
 
-* Integrating jasypt with Spring Security 3.x
+* {Integrating jasypt with Spring Security 3.x}
 
   For details on how to integrate jasypt with Spring Security 3.x, 
   please have a look at {{{./springsecurity.html}this guide}}.
