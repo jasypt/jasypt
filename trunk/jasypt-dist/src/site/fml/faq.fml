@@ -46,9 +46,7 @@
       <question>Does Jasypt offer any type of commercial support or warranty?</question>
       <answer>
         <p>
-          No, it does not. Commercial support is not offered at the moment, but
-          there are <a href="http://forum.jasypt.org">User
-          Forums</a> at your disposal.
+          No, it does not. Commercial support is not offered at the moment.
         </p>
         <p>
           Also, jasypt is offered without warranties of any kind, as expressed in the
@@ -64,8 +62,7 @@
           In many ways:
         </p>
         <ul>
-          <li>You can write in the <a href="http://forum.jasypt.org">User 
-              Forums</a> (or directly to the <a href="team.html">Team</a>) with your
+          <li>You can write to the <a href="team.html">Team</a> with your
               ideas for improving Jasypt.</li>
           <li>You can contribute some code, write a patch for a new feature
               or behaviour (please, tell the project admins first about your idea so 
