@@ -25,7 +25,6 @@
       <item name="Main" href="index.html" />
       <item name="Download" href="download.html" />
       <item name="Features" href="features.html" />
-      <item name="Users Forum" href="http://forum.jasypt.org"/>
       <item name="Sourceforge.net Project Page" href="http://www.sourceforge.net/projects/jasypt" />
     </links>
 
@@ -34,6 +33,7 @@
       <item name="· Features" href="features.html" />
       <item name="· Download" href="download.html"/>
       <item name="· Source Repository" href="source-repository.html" />
+      <item name="· Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
       <item name="· License" href="license.html"/>
       <item name="· Team" href="team.html"/>
     </menu>
@@ -42,11 +42,6 @@
       <item name="· JavaDoc API" href="javadoc.html"/>
       <item name="· Dependencies" href="dependencies.html" />
       <item name="· FAQ" href="faq.html" />
-    </menu>
-
-    <menu name="Community">
-      <item name="· Users Forum" href="http://forum.jasypt.org"/>
-      <item name="· Issue Tracking" href="http://sourceforge.net/tracker/?group_id=183612"/>
     </menu>
 
     <menu name="Guides">
