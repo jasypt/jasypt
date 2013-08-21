@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.1-SNAPSHOT</version>
+  <version>1.9.1</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/trunk/jasypt</url>
-    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt</connection>
-    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt</developerConnection>
+    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt/jasypt-1.9.1</url>
+    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt/jasypt-1.9.1</connection>
+    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt/jasypt-1.9.1</developerConnection>
   </scm>
   
   <developers>
