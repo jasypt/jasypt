@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-hibernate4</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.1-SNAPSHOT</version>
+  <version>1.9.1</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/trunk/jasypt-hibernate4</url>
-    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-hibernate4</connection>
-    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-hibernate4</developerConnection>
+    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/tags/jasypt-hibernate4/jasypt-hibernate4-1.9.1</url>
+    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/tags/jasypt-hibernate4/jasypt-hibernate4-1.9.1</connection>
+    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/tags/jasypt-hibernate4/jasypt-hibernate4-1.9.1</developerConnection>
   </scm>
   
   <developers>
@@ -220,7 +220,7 @@
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
-      <version>${project.version}</version>
+      <version>1.9.1</version>
       <scope>compile</scope>
     </dependency>
     
