@@ -74,7 +74,6 @@ public class RandomSaltGenerator implements SaltGenerator {
         super();
         try {
             this.random = SecureRandom.getInstance(secureRandomAlgorithm);
-            this.random.setSeed(System.currentTimeMillis());
         } catch (NoSuchAlgorithmException e) {
             throw new EncryptionInitializationException(e);
         }
