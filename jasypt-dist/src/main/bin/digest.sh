@@ -17,15 +17,16 @@ do
   EXEC_CLASSPATH=$EXEC_CLASSPATH:$a
 done
 
-if [ "$OSTYPE" = "cygwin" ]
-then
-  EXEC_CLASSPATH=`echo $EXEC_CLASSPATH | sed 's/:/;/g' | sed 's/\/cygdrive\/\([a-z]\)/\1:/g'`
-fi
-
 JAVA_EXECUTABLE=java
 if [ -n "$JAVA_HOME" ]
 then
   JAVA_EXECUTABLE=$JAVA_HOME/bin/java
 fi
 
-$JAVA_EXECUTABLE -classpath $EXEC_CLASSPATH $EXECUTABLE_CLASS $SCRIPT_NAME "$@"
+if [ "$OSTYPE" = "cygwin" ]
+then
+  EXEC_CLASSPATH=`echo $EXEC_CLASSPATH | sed 's/:/;/g' | sed 's/\/cygdrive\/\([a-z]\)/\1:/g'`
+  JAVA_EXECUTABLE=`cygpath --unix "$JAVA_EXECUTABLE"`
+fi
+
+"$JAVA_EXECUTABLE" -classpath $EXEC_CLASSPATH $EXECUTABLE_CLASS $SCRIPT_NAME "$@"
