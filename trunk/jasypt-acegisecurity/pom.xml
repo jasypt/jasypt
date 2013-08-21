@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-acegisecurity</url>
-    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-acegisecurity</connection>
-    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-acegisecurity</developerConnection>
+    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/trunk/jasypt-acegisecurity</url>
+    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-acegisecurity</connection>
+    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-acegisecurity</developerConnection>
   </scm>
   
   <developers>

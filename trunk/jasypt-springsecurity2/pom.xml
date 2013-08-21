@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-springsecurity2</url>
-    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-springsecurity2</connection>
-    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-springsecurity2</developerConnection>
+    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/trunk/jasypt-springsecurity2</url>
+    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-springsecurity2</connection>
+    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-springsecurity2</developerConnection>
   </scm>
   
   <developers>
