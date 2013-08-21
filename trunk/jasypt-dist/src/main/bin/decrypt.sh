@@ -17,6 +17,11 @@ do
   EXEC_CLASSPATH=$EXEC_CLASSPATH:$a
 done
 
+if [ "$OSTYPE" = "cygwin" ]
+then
+  EXEC_CLASSPATH=`echo $EXEC_CLASSPATH | sed 's/:/;/g' | sed 's/\/cygdrive\/\([a-z]\)/\1:/g'`
+fi
+
 JAVA_EXECUTABLE=java
 if [ -n "$JAVA_HOME" ]
 then
