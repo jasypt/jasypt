@@ -190,7 +190,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.1</version>
         <configuration>
-          <tagBase>https://jasypt.svn.sourceforge.net/svnroot/jasypt/tags/jasypt-wicket15</tagBase>
+          <tagBase>https://svn.code.sf.net/p/jasypt/code/tags/jasypt-wicket15</tagBase>
         </configuration>
       </plugin>
 
