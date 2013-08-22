@@ -268,8 +268,8 @@
           Also, you will have to modify your Jasypt dependency/ies to use a 
           <i>snapshot version</i>, which usually consists of the version number of the
           <b>next</b> release (not the current one), followed by <tt>-SNAPSHOT</tt>.
-          For example, while <tt>1.9.0</tt> is the latest published stable release,
-          snapshots will probably appear under the <tt>1.9.1-SNAPSHOT</tt> or
+          For example, while <tt>1.9.1</tt> is the latest published stable release,
+          snapshots will probably appear under the <tt>1.9.2-SNAPSHOT</tt> or
           maybe <tt>1.10.0-SNAPSHOT</tt> version numbers:
         </p>
         <code>
