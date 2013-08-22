@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-dist</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.0</version>
+  <version>1.9.1</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -156,9 +156,9 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.4</version>
         <configuration>
-          <webAccessUrl>http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</webAccessUrl>
-          <anonymousConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</anonymousConnection>
-          <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk</developerConnection>
+          <webAccessUrl>http://svn.code.sf.net/p/jasypt/code/trunk</webAccessUrl>
+          <anonymousConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk</anonymousConnection>
+          <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk</developerConnection>
           <checkoutDirectoryName>jasypt-trunk</checkoutDirectoryName>
         </configuration>
         <reportSets>
