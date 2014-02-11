@@ -250,7 +250,7 @@ BigDecimal plainNumber = decimalEncryptor.decrypt(myEncryptedNumber);
       interface, so that they can be used interchangeabily if needed.
 
 
-      * <<org.jasypt.util.binary.BasicBinarytEncryptor>> which allows the user to
+      * <<org.jasypt.util.binary.BasicBinaryEncryptor>> which allows the user to
         encrypt and decrypt byte[] objects using a normal-strength algorithm. In
         order to be able to encrypt and decrypt, this encryptor has to be
         set a password first.
@@ -279,7 +279,7 @@ String plainBinary = binaryEncryptor.decrypt(myEncryptedBinary);
 StrongBinaryEncryptor binaryEncryptor = new StrongBinaryEncryptor();
 binaryEncryptor.setPassword(myEncryptionPassword);
 ...
-String myEncryptedBinary = binaryEncryptor.encrypt(myBinary);
+byte[] myEncryptedBinary = binaryEncryptor.encrypt(myBinary);
 ...
 String plainBinary = binaryEncryptor.decrypt(myEncryptedBinary);
 ...
