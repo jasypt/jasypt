@@ -23,7 +23,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Provider;
-import java.util.Arrays;
 
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.config.DigesterConfig;
@@ -1099,7 +1098,7 @@ public final class StandardByteDigester implements ByteDigester {
             final byte[] encryptedMessage = digest(message, salt);
             
             // If, using the same salt, digests match, then messages too. 
-            return (Arrays.equals(encryptedMessage, digest));
+            return (digestsAreEqual(encryptedMessage, digest));
         
         } catch (Exception e) {
             // If digest fails, it is more secure not to return any information
@@ -1109,6 +1108,27 @@ public final class StandardByteDigester implements ByteDigester {
         
     }
 
+    
+    // Time-constant comparison of byte arrays
+    private static boolean digestsAreEqual(byte[] a, byte[] b) {
+
+        if (a == null || b == null) {
+            return false;
+        }
+
+        final int aLen = a.length;
+        if (b.length != aLen) {
+            return false;
+        }
+
+        int match = 0;
+        for (int i = 0; i < aLen; i++) {
+            match |= a[i] ^ b[i];
+        }
+        
+        return (match == 0);
+        
+    }
     
     
     
