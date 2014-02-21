@@ -37,7 +37,7 @@ Java Simplified Encryption
   With Jasypt, encrypting and checking a password can be as simple as...
   
 ----------------
-BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 String encryptedPassword = passwordEncryptor.encryptPassword(userPassword);
 ...
 if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
@@ -50,7 +50,7 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
   ...encrypting and decrypting a text...
   
 ----------------
-BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
 textEncryptor.setPassword(myEncryptionPassword);
 String myEncryptedText = textEncryptor.encrypt(myText);
 ...
