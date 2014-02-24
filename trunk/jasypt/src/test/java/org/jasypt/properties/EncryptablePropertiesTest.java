@@ -21,10 +21,11 @@ package org.jasypt.properties;
 
 import java.util.Properties;
 
-import org.jasypt.util.text.BasicTextEncryptor;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
+import org.apache.commons.lang.SerializationUtils;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 public class EncryptablePropertiesTest extends TestCase {
 
@@ -63,6 +64,35 @@ public class EncryptablePropertiesTest extends TestCase {
         
     }
     
+    
+    public void testEncryptablePropertiesSerialization() throws Exception {
+        
+        final BasicTextEncryptor enc01 = new BasicTextEncryptor();
+        enc01.setPassword("jasypt");
+
+        final String msg01 = "Message one";
+        final String msgEnc01 = "ENC(eZpONwIfFb5muu5Dc8ABsTPu/0OP95p4)";
+
+        final String msg02 = "Message two";
+        final String msgEnc02 = "ENC(LKyQ65EYz3+ekDPpnLjLGyPK07Gt+UZH)";
+        
+        final EncryptableProperties prop01 = new EncryptableProperties(enc01);
+        prop01.setProperty("p1", msgEnc01);
+        prop01.setProperty("p2", msgEnc02);
+
+        Assert.assertEquals(prop01.getProperty("p1"), msg01);
+        Assert.assertEquals(prop01.getProperty("p2"), msg02);
+        
+        final byte[] ser01 = SerializationUtils.serialize(prop01);
+        
+        final EncryptableProperties prop02 = (EncryptableProperties) SerializationUtils.deserialize(ser01);
+
+        Assert.assertEquals(prop02.getProperty("p1"), msg01);
+        Assert.assertEquals(prop02.getProperty("p2"), msg02);
+    
+        Assert.assertNotSame(prop01, prop02);
+        
+    }
     
     
 }

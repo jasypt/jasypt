@@ -20,9 +20,8 @@
 package org.jasypt.properties;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Hashtable;
 import java.util.Properties;
 
 import org.jasypt.commons.CommonUtils;
@@ -80,12 +79,19 @@ public final class EncryptableProperties extends Properties {
      * Used as an identifier for the encryptor registry
      */
     private final Integer ident = new Integer(CommonUtils.nextRandomInt());
+
+    /*
+     * The string encryptor to be used for properties. Either this or the
+     * 'textEncryptor' property have to be non-null. 
+     */
+    private transient StringEncryptor stringEncryptor = null;
     
     /*
-     * Used as a marker to know if the object has ever been serialized
+     * The text encryptor to be used for properties. Either this or the
+     * 'stringEncryptor' property have to be non-null. 
      */
-    private boolean beenSerialized = false;
-
+    private transient TextEncryptor textEncryptor = null;
+    
     
     /**
      * <p>
@@ -129,9 +135,8 @@ public final class EncryptableProperties extends Properties {
     public EncryptableProperties(final Properties defaults, final StringEncryptor stringEncryptor) {
         super(defaults);
         CommonUtils.validateNotNull(stringEncryptor, "Encryptor cannot be null");
-        final EncryptablePropertiesEncryptorRegistry registry =
-            EncryptablePropertiesEncryptorRegistry.getInstance();
-        registry.setStringEncryptor(this, stringEncryptor);
+        this.stringEncryptor = stringEncryptor;
+        this.textEncryptor = null;
     }
 
 
@@ -149,9 +154,8 @@ public final class EncryptableProperties extends Properties {
     public EncryptableProperties(final Properties defaults, final TextEncryptor textEncryptor) {
         super(defaults);
         CommonUtils.validateNotNull(textEncryptor, "Encryptor cannot be null");
-        final EncryptablePropertiesEncryptorRegistry registry =
-            EncryptablePropertiesEncryptorRegistry.getInstance();
-        registry.setTextEncryptor(this, textEncryptor);
+        this.stringEncryptor = null;
+        this.textEncryptor = textEncryptor;
     }
 
 
@@ -222,16 +226,12 @@ public final class EncryptableProperties extends Properties {
         if (!PropertyValueEncryptionUtils.isEncryptedValue(encodedValue)) {
             return encodedValue;
         }
-        final EncryptablePropertiesEncryptorRegistry registry =
-            EncryptablePropertiesEncryptorRegistry.getInstance();
-        final StringEncryptor stringEncryptor = registry.getStringEncryptor(this);
-        if (stringEncryptor != null) {
-            return PropertyValueEncryptionUtils.decrypt(encodedValue, stringEncryptor);
+        if (this.stringEncryptor != null) {
+            return PropertyValueEncryptionUtils.decrypt(encodedValue, this.stringEncryptor);
             
         }
-        final TextEncryptor textEncryptor = registry.getTextEncryptor(this);
-        if (textEncryptor != null) {
-            return PropertyValueEncryptionUtils.decrypt(encodedValue, textEncryptor);
+        if (this.textEncryptor != null) {
+            return PropertyValueEncryptionUtils.decrypt(encodedValue, this.textEncryptor);
         }
         
         /*
@@ -249,23 +249,46 @@ public final class EncryptableProperties extends Properties {
                 "serialized themselves)");
         
     }
+
     
+
+    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+        
+        in.defaultReadObject();
+        
+        final EncryptablePropertiesEncryptorRegistry registry =
+                EncryptablePropertiesEncryptorRegistry.getInstance();
+        
+        final StringEncryptor registeredStringEncryptor = registry.getStringEncryptor(this);
+        if (registeredStringEncryptor != null) {
+            this.stringEncryptor = registeredStringEncryptor;
+            return;
+        }
+        
+        final TextEncryptor registeredTextEncryptor = registry.getTextEncryptor(this);
+        if (registeredTextEncryptor != null) {
+            this.textEncryptor = registeredTextEncryptor;
+        }
+        
+    }
+
 
     
     private void writeObject(final ObjectOutputStream outputStream) throws IOException {
-        this.beenSerialized = true;
-        outputStream.defaultWriteObject();
-    }
-    
-    
-    
-    protected void finalize() throws Throwable {
-        if (!this.beenSerialized) {
-            final EncryptablePropertiesEncryptorRegistry registry =
+        
+        final EncryptablePropertiesEncryptorRegistry registry =
                 EncryptablePropertiesEncryptorRegistry.getInstance();
-            registry.removeEntries(this);
+        if (this.textEncryptor != null) {
+            registry.setTextEncryptor(this, this.textEncryptor);
+        } else if (this.stringEncryptor != null) {
+            registry.setStringEncryptor(this, this.stringEncryptor);
         }
+        
+        outputStream.defaultWriteObject();
+        
     }
+    
+    
 
     
 }
