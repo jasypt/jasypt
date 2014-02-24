@@ -1,4 +1,17 @@
 
+1.9.2
+=====
+- Replaced Arrays.equals() call in StandardByteDigester with a time-constant function in order
+  to enhance protection against timing attacks in unintended scenarios where parts of jasypt are
+  used for matching message-authentication hashes. Note: password-matching and general hash-matching
+  scenarios using jasypt were NOT affected by vulnerabilities to timing attacks. 
+- Modified how the EncryptableProperties objects deal with serialization, so that now they only make
+  use of the singleton encryptor registry when they are actually serialized (if they are). This
+  allows the removal of the "finalize()" method in this objects, which was causing trouble in some
+  specific Java VM setups.
+- Updated testing-scope dependencies. 
+
+
 1.9.1
 =====
 - Fixed insufficient entropy in RandomSaltGenerator due to seeding mechanism.
