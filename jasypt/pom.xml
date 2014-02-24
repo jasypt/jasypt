@@ -243,9 +243,9 @@
     </dependency>
     
     <dependency>
-      <groupId>org.bouncycastle</groupId>
+      <groupId>bouncycastle</groupId>
       <artifactId>bcprov-jdk12</artifactId>
-      <version>130</version>
+      <version>140</version>
       <scope>test</scope>
     </dependency>
     
