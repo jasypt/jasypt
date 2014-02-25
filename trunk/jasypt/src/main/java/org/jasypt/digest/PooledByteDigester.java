@@ -24,8 +24,6 @@ import java.security.Provider;
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
-import org.jasypt.exceptions.EncryptionInitializationException;
-import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.SaltGenerator;
 
 
