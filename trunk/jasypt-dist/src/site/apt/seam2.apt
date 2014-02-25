@@ -21,7 +21,7 @@ Integrating Jasypt with Seam 2 (Mini-Howto)
 ----------
     <!-- Jasypt and dependencies -->
     <module>
-        <java>jasypt-1.9.1.jar</java>
+        <java>jasypt-1.9.2.jar</java>
     </module>
     <!-- ICU4J not needed if you are using Java 6 or higher -->
     <module>
