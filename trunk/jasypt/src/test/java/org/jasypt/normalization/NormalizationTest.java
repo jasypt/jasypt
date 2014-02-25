@@ -19,32 +19,46 @@
  */
 package org.jasypt.normalization;
 
-import java.text.Normalizer.Form;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
-import com.ibm.icu.text.Normalizer;
 
 public class NormalizationTest extends TestCase {
 
     
     public void testNormalizationEquivalence() throws Exception {
         
-        String msg = "ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÑÇÆÅßÐáéíóúàèìòùäëïöüâêîôûnçæåÞØÕÃāăþőŏœűŁňć";
+        org.jasypt.normalization.Normalizer.initializeIcu4j();
+        
+        boolean executeJavaTextNorm = true;
+        try {
+            // Tests might not be executed in Java >= 6
+            org.jasypt.normalization.Normalizer.initializeJavaTextNormalizer();
+        } catch (final Exception e) {
+            executeJavaTextNorm = false;
+        }
+        
+        
+        final String msg = "ÁÉÍÓÚÀÈÌÒÙÄËÏÖÜÂÊÎÔÛÑÇÆÅßÐáéíóúàèìòùäëïöüâêîôûnçæåÞØÕÃāăþőŏœűŁňć";
+        final char[] msgCharArray = msg.toCharArray();
 
-        String norm1 = Normalizer.normalize(msg, Normalizer.NFC);
-        String norm2 = java.text.Normalizer.normalize(msg, Form.NFC);
+        String norm1 = com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFC);
+        String norm2 = java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFC);
+        String norm3 = new String(org.jasypt.normalization.Normalizer.normalizeWithIcu4j(msgCharArray));
+        String norm4 = (executeJavaTextNorm? new String(org.jasypt.normalization.Normalizer.normalizeWithJavaNormalizer(msgCharArray)) : null);
 
         Assert.assertEquals(norm1, norm2);
+        Assert.assertEquals(norm2, norm3);
+        if (executeJavaTextNorm) {
+            Assert.assertEquals(norm3, norm4);
+        }
 
-        String denorm1 = Normalizer.normalize(msg, Normalizer.NFD);
-        String denorm2 = java.text.Normalizer.normalize(msg, Form.NFD);
+        String denorm1 = com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFD);
+        String denorm2 = java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFD);
 
         Assert.assertEquals(denorm1, denorm2);
         
-        String inter1 = java.text.Normalizer.normalize(Normalizer.normalize(msg, Normalizer.NFD), Form.NFC);
-        String inter2 = Normalizer.normalize(java.text.Normalizer.normalize(msg, Form.NFD),Normalizer.NFC);
+        String inter1 = java.text.Normalizer.normalize(com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFD), java.text.Normalizer.Form.NFC);
+        String inter2 = com.ibm.icu.text.Normalizer.normalize(java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFD),com.ibm.icu.text.Normalizer.NFC);
         
         Assert.assertEquals(inter1, inter2);
         Assert.assertEquals(inter1, msg);

@@ -14,7 +14,8 @@
   deprecating old equivalents "FixedStringSaltGenerator" and "FixedByteArraySaltGenerator". This 
   new interface allows applying important performance optimizations to encryption operations when
   using fixed salt. 
-- Updated testing-scope dependencies. 
+- Modified UTF-8 normalization infrastructure in order to make code compile in Java 1.4.
+- Updated testing-scope dependencies.
 
 
 1.9.1
