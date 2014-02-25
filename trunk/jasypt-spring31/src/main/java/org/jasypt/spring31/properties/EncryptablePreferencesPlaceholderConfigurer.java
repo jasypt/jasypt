@@ -19,6 +19,9 @@
  */
 package org.jasypt.spring31.properties;
 
+import java.util.Properties;
+import java.util.prefs.Preferences;
+
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.properties.PropertyValueEncryptionUtils;
@@ -108,4 +111,35 @@ public final class EncryptablePreferencesPlaceholderConfigurer
 		}
 		return PropertyValueEncryptionUtils.decrypt(originalValue, this.textEncryptor);
 	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer#resolvePlaceholder(java.lang.String, java.util.Properties)
+	 */
+    @Override
+    protected String resolvePlaceholder(final String placeholder, final Properties props) {
+        final String result = super.resolvePlaceholder(placeholder, props);
+        return convertPropertyValue(result);
+    }
+
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer#resolvePlaceholder(java.lang.String, java.lang.String, java.util.prefs.Preferences)
+     */
+    @Override
+    protected String resolvePlaceholder(
+            final String path, final String key, final Preferences preferences) {
+        final String result = super.resolvePlaceholder(path, key, preferences);
+        return convertPropertyValue(result);
+    }
+	
+	
+	
+	
+	
+	
 }
