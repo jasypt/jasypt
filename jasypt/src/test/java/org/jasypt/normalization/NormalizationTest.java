@@ -42,27 +42,13 @@ public class NormalizationTest extends TestCase {
         final char[] msgCharArray = msg.toCharArray();
 
         String norm1 = com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFC);
-        String norm2 = java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFC);
-        String norm3 = new String(org.jasypt.normalization.Normalizer.normalizeWithIcu4j(msgCharArray));
-        String norm4 = (executeJavaTextNorm? new String(org.jasypt.normalization.Normalizer.normalizeWithJavaNormalizer(msgCharArray)) : null);
+        String norm2 = new String(org.jasypt.normalization.Normalizer.normalizeWithIcu4j(msgCharArray));
+        String norm3 = (executeJavaTextNorm? new String(org.jasypt.normalization.Normalizer.normalizeWithJavaNormalizer(msgCharArray)) : null);
 
         Assert.assertEquals(norm1, norm2);
-        Assert.assertEquals(norm2, norm3);
         if (executeJavaTextNorm) {
-            Assert.assertEquals(norm3, norm4);
+            Assert.assertEquals(norm2, norm3);
         }
-
-        String denorm1 = com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFD);
-        String denorm2 = java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFD);
-
-        Assert.assertEquals(denorm1, denorm2);
-        
-        String inter1 = java.text.Normalizer.normalize(com.ibm.icu.text.Normalizer.normalize(msg, com.ibm.icu.text.Normalizer.NFD), java.text.Normalizer.Form.NFC);
-        String inter2 = com.ibm.icu.text.Normalizer.normalize(java.text.Normalizer.normalize(msg, java.text.Normalizer.Form.NFD),com.ibm.icu.text.Normalizer.NFC);
-        
-        Assert.assertEquals(inter1, inter2);
-        Assert.assertEquals(inter1, msg);
-        Assert.assertEquals(inter2, msg);
         
     }
     
