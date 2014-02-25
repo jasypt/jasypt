@@ -1,7 +1,7 @@
 
 1.9.2
 =====
-(no changes)
+- Fixed EncryptablePreferencesPlaceholderConfigurer not applying value decryption when needed.
 
 
 1.9.1
