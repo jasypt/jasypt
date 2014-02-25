@@ -1,22 +1,33 @@
 package org.jasypt.encryption.pbe;
 
+import java.io.UnsupportedEncodingException;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.jasypt.salt.FixedStringSaltGenerator;
+import org.jasypt.salt.ByteArrayFixedSaltGenerator;
 
 
-public class StandardPBEStringEncryptorFixedSaltBackwardsCompatibilityTest extends TestCase {
+public class StandardPBEStringEncryptorFixedSalt3BackwardsCompatibilityTest extends TestCase {
 
     
     
     public static final String encPass = "aB24L.Hy083";
-    public static final String fixedSalt = "lk::as'9124 sa";
+    public static final byte[] fixedSalt;
     
     public static final String[] MSGS = new String[1000];
     public static final String[] ENCMSGS = new String[1000];
     
     
+    
+    static {
+        try {
+            fixedSalt = "lk::as'9124 sa".getBytes("ASCII");
+        } catch (final UnsupportedEncodingException e) {
+            // Will never happen
+            throw new RuntimeException(e);
+        }
+    }
     
 
 
@@ -237,8 +248,7 @@ public class StandardPBEStringEncryptorFixedSaltBackwardsCompatibilityTest exten
         ENCMSGS[99] = "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";
         
         
-//        final FixedStringSaltGenerator saltGenerator = new FixedStringSaltGenerator();
-//        saltGenerator.setSalt(fixedSalt);
+//        final ByteArrayFixedSaltGenerator saltGenerator = new ByteArrayFixedSaltGenerator(fixedSalt);
 //        
 //        final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 //        encryptor.setPassword(encPass);
@@ -261,8 +271,7 @@ public class StandardPBEStringEncryptorFixedSaltBackwardsCompatibilityTest exten
         initMSGS();
         initENCMSGS();
 
-        final FixedStringSaltGenerator saltGenerator = new FixedStringSaltGenerator();
-        saltGenerator.setSalt(fixedSalt);
+        final ByteArrayFixedSaltGenerator saltGenerator = new ByteArrayFixedSaltGenerator(fixedSalt);
       
         final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setPassword(encPass);

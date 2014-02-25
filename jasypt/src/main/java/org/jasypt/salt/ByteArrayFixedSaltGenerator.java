@@ -19,16 +19,13 @@
  */
 package org.jasypt.salt;
 
-import java.io.UnsupportedEncodingException;
-
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 /**
  * <p>
- * This implementation of {@link SaltGenerator} always returns a fixed salt
- * set by the user as a String, which is returned as salt bytes using the 
- * specified charset for conversion (UTF-8 by default).
+ * Byte-array based implementation of {@link FixedSaltGenerator}, that will
+ * always return the same salt.
  * </p>
  * <p>
  * If the requested salt has a size in bytes smaller than the specified salt, 
@@ -38,53 +35,24 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * This class is <i>thread-safe</i>.
  * </p>
  * 
- * @since 1.2
+ * @since 1.9.2
  * 
  * @author Daniel Fern&aacute;ndez
  * 
- * @deprecated Deprecated in 1.9.2 in favour of {@link StringFixedSaltGenerator}, which
- *             implements the new {@link FixedSaltGenerator} interface and therefore is able to benefit
- *             from the performance improvements associated with it. This class will be removed
- *             in 1.10.0 (or 2.0.0).
- * 
  */
-public class FixedStringSaltGenerator implements SaltGenerator {
+public class ByteArrayFixedSaltGenerator implements FixedSaltGenerator {
 
-    private static final String DEFAULT_CHARSET = "UTF-8";
-    
-    private String salt = null;
-    private String charset = DEFAULT_CHARSET;
-    
-    private byte[] saltBytes = null;
+    private final byte[] salt;
     
     /**
-     * Creates a new instance of <tt>FixedStringSaltGenerator</tt>
+     * Creates a new instance of <tt>FixedByteArraySaltGenerator</tt>
      *
-     */
-    public FixedStringSaltGenerator() {
-        super();
-    }
-
-    
-    /**
-     * Sets the salt to be returned.
-     * 
      * @param salt the specified salt.
      */
-    public synchronized void setSalt(final String salt) {
+    public ByteArrayFixedSaltGenerator(final byte[] salt) {
+        super();
         CommonUtils.validateNotNull(salt, "Salt cannot be set null");
-        this.salt = salt;
-    }
-
-    
-    /**
-     * Sets the charset to be applied to the salt for conversion into bytes.
-     * 
-     * @param charset the specified charset
-     */
-    public synchronized void setCharset(final String charset) {
-        CommonUtils.validateNotNull(charset, "Charset cannot be set null");
-        this.charset = charset;
+        this.salt = (byte[]) salt.clone();
     }
 
     
@@ -95,24 +63,12 @@ public class FixedStringSaltGenerator implements SaltGenerator {
      * @return the generated salt. 
      */
     public byte[] generateSalt(final int lengthBytes) {
-        if (this.salt == null) {
-            throw new EncryptionInitializationException(
-                    "Salt has not been set");
-        }
-        if (this.saltBytes == null) {
-            try {
-                this.saltBytes = this.salt.getBytes(this.charset);
-            } catch (UnsupportedEncodingException e) {
-                throw new EncryptionInitializationException(
-                    "Invalid charset specified: " + this.charset);
-            }
-        }
-        if (this.saltBytes.length < lengthBytes) {
+        if (this.salt.length < lengthBytes) {
             throw new EncryptionInitializationException(
                     "Requested salt larger than set");
         }
         final byte[] generatedSalt = new byte[lengthBytes];
-        System.arraycopy(this.saltBytes, 0, generatedSalt, 0, lengthBytes);
+        System.arraycopy(this.salt, 0, generatedSalt, 0, lengthBytes);
         return generatedSalt;
     }
 

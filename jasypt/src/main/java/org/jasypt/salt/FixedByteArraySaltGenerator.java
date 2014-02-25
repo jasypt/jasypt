@@ -39,6 +39,11 @@ import org.jasypt.exceptions.EncryptionInitializationException;
  * 
  * @author Daniel Fern&aacute;ndez
  * 
+ * @deprecated Deprecated in 1.9.2 in favour of {@link ByteArrayFixedSaltGenerator}, which
+ *             implements the new {@link FixedSaltGenerator} interface and therefore is able to benefit
+ *             from the performance improvements associated with it. This class will be removed
+ *             in 1.10.0 (or 2.0.0).
+ * 
  */
 public class FixedByteArraySaltGenerator implements SaltGenerator {
 
