@@ -19,6 +19,9 @@
  */
 package org.jasypt.normalization;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import org.jasypt.exceptions.EncryptionInitializationException;
 
 
@@ -42,8 +45,12 @@ public final class Normalizer {
 
     private static final String ICU_NORMALIZER_CLASS_NAME = "com.ibm.icu.text.Normalizer";
     private static final String JDK_NORMALIZER_CLASS_NAME = "java.text.Normalizer";
+    private static final String JDK_NORMALIZER_FORM_CLASS_NAME = "java.text.Normalizer$Form";
     
-    private static Boolean useIcuNormalizer = null; 
+    private static Boolean useIcuNormalizer = null;
+    
+    private static Method javaTextNormalizerMethod = null;
+    private static Object javaTextNormalizerFormNFCConstant = null;
 
     
     /**
@@ -85,19 +92,36 @@ public final class Normalizer {
             // Still not initialized, will try to load the icu4j Normalizer. If 
             // icu4j is in the classpath, it will be used even if java version is >= 6.
             try {
-                Thread.currentThread().getContextClassLoader().loadClass(ICU_NORMALIZER_CLASS_NAME);
-                useIcuNormalizer = Boolean.TRUE;
-            } catch (ClassNotFoundException e) {
+                
+                initializeIcu4j();
+                
+            } catch (final ClassNotFoundException e) {
+                
                 try {
-                    Thread.currentThread().getContextClassLoader().loadClass(JDK_NORMALIZER_CLASS_NAME);
-                } catch (ClassNotFoundException e2) {
+                    
+                    initializeJavaTextNormalizer();
+                    
+                } catch (final ClassNotFoundException e2) {
                     throw new EncryptionInitializationException(
                             "Cannot find a valid UNICODE normalizer: neither " + JDK_NORMALIZER_CLASS_NAME + " nor " +
                             ICU_NORMALIZER_CLASS_NAME + " have been found at the classpath. If you are using " +
                             "a version of the JDK older than JavaSE 6, you should include the icu4j library in " + 
                             "your classpath.");
+                } catch (final NoSuchMethodException e2) {
+                    throw new EncryptionInitializationException(
+                            "Cannot find a valid UNICODE normalizer: " + JDK_NORMALIZER_CLASS_NAME + " has " +
+                            "been found at the classpath, but has an incompatible signature for its 'normalize' " +
+                            "method.");
+                } catch (final NoSuchFieldException e2) {
+                    throw new EncryptionInitializationException(
+                            "Cannot find a valid UNICODE normalizer: " + JDK_NORMALIZER_FORM_CLASS_NAME + " has " +
+                            "been found at the classpath, but seems to have no 'NFC' value.");
+                } catch (final IllegalAccessException e2) {
+                    throw new EncryptionInitializationException(
+                            "Cannot find a valid UNICODE normalizer: " + JDK_NORMALIZER_FORM_CLASS_NAME + " has " +
+                            "been found at the classpath, but seems to have no 'NFC' value.");
                 }
-                useIcuNormalizer = Boolean.FALSE;
+                
             }
         }
         
@@ -109,21 +133,64 @@ public final class Normalizer {
         
     }
 
+
+    
+    static void initializeIcu4j() throws ClassNotFoundException {
+        Thread.currentThread().getContextClassLoader().loadClass(ICU_NORMALIZER_CLASS_NAME);
+        useIcuNormalizer = Boolean.TRUE;
+    }
+
+
+    
+    static void initializeJavaTextNormalizer() 
+            throws ClassNotFoundException, NoSuchMethodException, NoSuchFieldException, IllegalAccessException {
+    
+        final Class javaTextNormalizerClass = 
+                Thread.currentThread().getContextClassLoader().loadClass(JDK_NORMALIZER_CLASS_NAME);
+        final Class javaTextNormalizerFormClass = 
+                Thread.currentThread().getContextClassLoader().loadClass(JDK_NORMALIZER_FORM_CLASS_NAME);
+        javaTextNormalizerMethod =
+                javaTextNormalizerClass.getMethod(
+                        "normalize", new Class[]{ CharSequence.class, javaTextNormalizerFormClass });
+        final Field javaTextNormalizerFormNFCConstantField = javaTextNormalizerFormClass.getField("NFC");
+        javaTextNormalizerFormNFCConstant = javaTextNormalizerFormNFCConstantField.get(null);
+        
+        useIcuNormalizer = Boolean.FALSE;
+        
+    }
     
     
     
-    private static char[] normalizeWithJavaNormalizer(final char[] message) {
+    
+    static char[] normalizeWithJavaNormalizer(final char[] message) {
+        
+        if (javaTextNormalizerMethod == null || javaTextNormalizerFormNFCConstant == null) {
+            throw new EncryptionInitializationException(
+                "Cannot use: " + JDK_NORMALIZER_FORM_CLASS_NAME + ", as JDK-based normalization has " +
+                "not been initialized! (check previous execution errors)");
+        }
+            
         // Using java JDK's Normalizer, we cannot avoid creating Strings
         // (it is the only possible interface to the Normalizer class).
+        //
+        // Note java.text.Normalizer is accessed via reflection in order to allow this
+        // class to be JDK 1.4-compilable (though ICU4j will be needed at runtime
+        // if Java 1.4 is used).
         final String messageStr = new String(message);
-        final String result = 
-            java.text.Normalizer.normalize(messageStr, java.text.Normalizer.Form.NFC);
+        final String result;
+        try {
+            result = (String) javaTextNormalizerMethod.invoke(
+                    null, new Object[] { messageStr, javaTextNormalizerFormNFCConstant });
+        } catch (final Exception e) {
+            throw new EncryptionInitializationException(
+                    "Could not perform a valid UNICODE normalization", e);
+        }
         return result.toCharArray();
     }
     
     
     
-    private static char[] normalizeWithIcu4j(final char[] message) {
+    static char[] normalizeWithIcu4j(final char[] message) {
         // initialize the result to twice the size of the message
         // this should be more than enough in most cases
         char[] normalizationResult = new char[message.length * 2];
