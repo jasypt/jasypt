@@ -71,8 +71,8 @@ public class MyApplication extends WebApplication {
         StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         encryptor.setPassword("jasypt");
-        FixedStringSaltGenerator generator = new FixedStringSaltGenerator();
-        generator.setSalt("wicketwicketwicketwicketwicket");
+        StringFixedSaltGenerator generator = 
+            new StringFixedSaltGenerator("wicketwicketwicketwicketwicket");
         encryptor.setSaltGenerator(generator);
         
         /*
