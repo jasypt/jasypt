@@ -35,6 +35,7 @@ import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.normalization.Normalizer;
+import org.jasypt.salt.FixedSaltGenerator;
 import org.jasypt.salt.RandomSaltGenerator;
 import org.jasypt.salt.SaltGenerator;
 
@@ -202,8 +203,15 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
     private Cipher encryptCipher = null;
     private Cipher decryptCipher = null;
     
-    
 
+    // Flag which indicates whether the salt generator being used is a
+    // FixedSaltGenerator implementation (in which case some optimizations can
+    // be applied).
+    private boolean usingFixedSalt = false;
+    private byte[] fixedSaltInUse = null;
+
+    
+    
     
     /**
      * Creates a new instance of <tt>StandardPBEByteEncryptor</tt>.
@@ -589,13 +597,13 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
 
                 resolveConfigurationPassword();
                 
-                String configAlgorithm = this.config.getAlgorithm();
+                final String configAlgorithm = this.config.getAlgorithm();
                 if (configAlgorithm != null) {
                     CommonUtils.validateNotEmpty(configAlgorithm, 
                             "Algorithm cannot be set empty");
                 }
                 
-                Integer configKeyObtentionIterations = 
+                final Integer configKeyObtentionIterations = 
                     this.config.getKeyObtentionIterations();
                 if (configKeyObtentionIterations != null) {
                     CommonUtils.validateIsTrue(configKeyObtentionIterations.intValue() > 0, 
@@ -603,15 +611,15 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                             "greater than zero");
                 }
                 
-                SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
+                final SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
                 
-                String configProviderName = this.config.getProviderName();
+                final String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
                     CommonUtils.validateNotEmpty(configProviderName,
                             "Provider name cannot be empty");
                 }
                 
-                Provider configProvider = this.config.getProvider();
+                final Provider configProvider = this.config.getProvider();
                 
                 this.algorithm = 
                     ((this.algorithmSet) || (configAlgorithm == null))?
@@ -655,7 +663,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 /*
                  * Encryption and decryption Ciphers are created the usual way.
                  */
-                PBEKeySpec pbeKeySpec = new PBEKeySpec(normalizedPassword);
+                final PBEKeySpec pbeKeySpec = new PBEKeySpec(normalizedPassword);
                 
                 // We don't need the char[] passwords anymore -> clean!
                 cleanPassword(this.password);
@@ -664,7 +672,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 
                 if (this.provider != null) {
                     
-                    SecretKeyFactory factory =
+                    final SecretKeyFactory factory =
                         SecretKeyFactory.getInstance(
                                 this.algorithm, 
                                 this.provider);
@@ -678,7 +686,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                     
                 } else if (this.providerName != null) {
                     
-                    SecretKeyFactory factory =
+                    final SecretKeyFactory factory =
                         SecretKeyFactory.getInstance(
                                 this.algorithm, 
                                 this.providerName);
@@ -692,7 +700,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                     
                 } else {
                     
-                    SecretKeyFactory factory =
+                    final SecretKeyFactory factory =
                         SecretKeyFactory.getInstance(this.algorithm);
                     
                     this.key = factory.generateSecret(pbeKeySpec);
@@ -711,13 +719,48 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
 
             // The salt size for the chosen algorithm is set to be equal 
             // to the algorithm's block size (if it is a block algorithm).
-            int algorithmBlockSize = this.encryptCipher.getBlockSize();
+            final int algorithmBlockSize = this.encryptCipher.getBlockSize();
             if (algorithmBlockSize > 0) {
                 this.saltSizeBytes = algorithmBlockSize;
             }
             
             
+            this.usingFixedSalt = (this.saltGenerator instanceof FixedSaltGenerator);
+            
+            if (this.usingFixedSalt) {
+                
+                // Create salt
+                this.fixedSaltInUse = 
+                    this.saltGenerator.generateSalt(this.saltSizeBytes);
+
+                /*
+                 * Initialize the Cipher objects themselves. Due to the fact that
+                 * we will be using a fixed salt, this can be done just once, which
+                 * means a better performance at the encrypt/decrypt methods. 
+                 */
+                
+                final PBEParameterSpec parameterSpec = 
+                    new PBEParameterSpec(this.fixedSaltInUse, this.keyObtentionIterations);
+
+                try {
+                    
+                    this.encryptCipher.init(
+                            Cipher.ENCRYPT_MODE, this.key, parameterSpec);
+                    this.decryptCipher.init(
+                            Cipher.DECRYPT_MODE, this.key, parameterSpec);
+                    
+                } catch (final Exception e) {
+                    // If encryption fails, it is more secure not to return any 
+                    // information about the cause in nested exceptions. Simply fail.
+                    throw new EncryptionOperationNotPossibleException();
+                }
+                
+                
+            }
+            
+            
             this.initialized = true;
+            
         }
         
     }
@@ -831,24 +874,37 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
         }
         
         try {
+
+            final byte[] salt;
+            final byte[] encryptedMessage;
+            if (this.usingFixedSalt) {
+
+                salt = this.fixedSaltInUse;
+                
+                synchronized (this.encryptCipher) {
+                    encryptedMessage = this.encryptCipher.doFinal(message);
+                }
+                
+            } else {
             
-            // Create salt
-            final byte[] salt = 
-                this.saltGenerator.generateSalt(this.saltSizeBytes);
-
-            /*
-             * Perform encryption using the Cipher
-             */
-            final PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, this.keyObtentionIterations);
-
-            byte[] encryptedMessage = null;
-            synchronized (this.encryptCipher) {
-                this.encryptCipher.init(
-                        Cipher.ENCRYPT_MODE, this.key, parameterSpec);
-                encryptedMessage = this.encryptCipher.doFinal(message);
+                // Create salt
+                salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
+    
+                /*
+                 * Perform encryption using the Cipher
+                 */
+                final PBEParameterSpec parameterSpec = 
+                    new PBEParameterSpec(salt, this.keyObtentionIterations);
+    
+                synchronized (this.encryptCipher) {
+                    this.encryptCipher.init(
+                            Cipher.ENCRYPT_MODE, this.key, parameterSpec);
+                    encryptedMessage = this.encryptCipher.doFinal(message);
+                }
+                
             }
 
+            
             // Finally we build an array containing both the unencrypted salt
             // and the result of the encryption. This is done only
             // if the salt generator we are using specifies to do so.
@@ -862,12 +918,12 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
             
             return encryptedMessage;
             
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             // The problem could be not having the unlimited strength policies
             // installed, so better give a usefull error message.
             handleInvalidKeyException(e);
             throw new EncryptionOperationNotPossibleException();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // If encryption fails, it is more secure not to return any 
             // information about the cause in nested exceptions. Simply fail.
             throw new EncryptionOperationNotPossibleException();
@@ -943,39 +999,57 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
                 System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
                 
-            } else {
+            } else if (!this.usingFixedSalt){
                 
                 salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
                 encryptedMessageKernel = encryptedMessage;
                 
+            } else {
+                // this.usingFixedSalt == true
+                
+                salt = this.fixedSaltInUse;
+                encryptedMessageKernel = encryptedMessage;
+                
             }
             
-            
-            /*
-             * Perform decryption using the Cipher
-             */
-            final PBEParameterSpec parameterSpec = 
-                new PBEParameterSpec(salt, this.keyObtentionIterations);
 
-            byte[] decryptedMessage = null;
-                 
-            synchronized (this.decryptCipher) {
-                this.decryptCipher.init(
-                        Cipher.DECRYPT_MODE, this.key, parameterSpec);
-                decryptedMessage = 
-                    this.decryptCipher.doFinal(encryptedMessageKernel);
+            final byte[] decryptedMessage;
+            if (this.usingFixedSalt) {
+                
+                /*
+                 * Fixed salt is being used, therefore no initialization supposedly needed
+                 */
+                synchronized (this.decryptCipher) {
+                    decryptedMessage = 
+                        this.decryptCipher.doFinal(encryptedMessageKernel);
+                }
+
+            } else {
+                
+                /*
+                 * Perform decryption using the Cipher
+                 */
+                final PBEParameterSpec parameterSpec = 
+                    new PBEParameterSpec(salt, this.keyObtentionIterations);
+                     
+                synchronized (this.decryptCipher) {
+                    this.decryptCipher.init(
+                            Cipher.DECRYPT_MODE, this.key, parameterSpec);
+                    decryptedMessage = 
+                        this.decryptCipher.doFinal(encryptedMessageKernel);
+                }
+
             }
-
+            
             // Return the results
             return decryptedMessage;
             
-            
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             // The problem could be not having the unlimited strength policies
             // installed, so better give a usefull error message.
             handleInvalidKeyException(e);
             throw new EncryptionOperationNotPossibleException();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // If decryption fails, it is more secure not to return any 
             // information about the cause in nested exceptions. Simply fail.
             throw new EncryptionOperationNotPossibleException();
@@ -991,7 +1065,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      * message for this is simply "invalid key size", which does not provide
      * enough clues for the user to know what is really going on).
      */
-    private void handleInvalidKeyException(InvalidKeyException e) {
+    private void handleInvalidKeyException(final InvalidKeyException e) {
 
         if ((e.getMessage() != null) && 
                 ((e.getMessage().toUpperCase().indexOf("KEY SIZE") != -1))) {

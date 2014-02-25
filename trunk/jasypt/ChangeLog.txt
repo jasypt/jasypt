@@ -3,12 +3,17 @@
 =====
 - Replaced Arrays.equals() call in StandardByteDigester with a time-constant function in order
   to enhance protection against timing attacks in unintended scenarios where parts of jasypt are
-  used for matching message-authentication hashes. Note: password-matching and general hash-matching
-  scenarios using jasypt were NOT affected by vulnerabilities to timing attacks. 
-- Modified how the EncryptableProperties objects deal with serialization, so that now they only make
-  use of the singleton encryptor registry when they are actually serialized (if they are). This
-  allows the removal of the "finalize()" method in this objects, which was causing trouble in some
-  specific Java VM setups.
+  used for matching message-authentication hashes. Note: password-matching and general 
+  hash-matching scenarios using jasypt were NOT affected by vulnerabilities to timing attacks. 
+- Modified how the EncryptableProperties objects deal with serialization, so that now they only 
+  make use of the singleton encryptor registry when they are actually serialized (if they are). 
+  This allows the removal of the "finalize()" method in this objects, which was causing trouble in
+  some specific Java VM setups.
+- Created new interface org.jasypt.salt.FixedSaltGenerator and two new implementations for it,
+  org.jasypt.salt.StringFixedSaltGenerator and org.jasypt.salt.ByteArrayFixedSaltGenerator,
+  deprecating old equivalents "FixedStringSaltGenerator" and "FixedByteArraySaltGenerator". This 
+  new interface allows applying important performance optimizations to encryption operations when
+  using fixed salt. 
 - Updated testing-scope dependencies. 
 
 
