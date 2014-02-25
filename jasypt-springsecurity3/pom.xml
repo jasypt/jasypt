@@ -211,7 +211,7 @@
 
 
     <dependency>
-      <groupId>org.springframework.security3</groupId>
+      <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
       <version>3.0.0.RELEASE</version>
       <scope>provided</scope>
@@ -220,7 +220,7 @@
 
 
     <dependency>
-      <groupId>org.springframework.security3</groupId>
+      <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
       <version>3.0.0.RELEASE</version>
       <scope>provided</scope>
