@@ -48,6 +48,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  * 
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
  * @author Carlos Fern&aacute;ndez
+ * @deprecated Deprecated in 1.9.3. This class will be removed in 2.0.0.
  * 
  */
 public final class EncryptablePropertyPlaceholderConfigurer 

@@ -46,6 +46,7 @@ import org.springframework.web.context.support.ServletContextPropertyPlaceholder
  * @since 1.9.0 (existed in package org.jasypt.spring.properties since 1.7)
  * 
  * @author Daniel Fern&aacute;ndez
+ * @deprecated Deprecated in 1.9.3. This class will be removed in 2.0.0.
  * 
  */
 public final class EncryptableServletContextPropertyPlaceholderConfigurer 

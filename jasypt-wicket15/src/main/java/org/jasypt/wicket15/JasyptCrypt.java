@@ -36,6 +36,7 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
  * 
  * @since 1.9.0
  * @author Daniel Fern&aacute;ndez
+ * @deprecated Deprecated in 1.9.3. This class will be removed in 2.0.0.
  *
  */
 public final class JasyptCrypt implements ICrypt {
