@@ -126,6 +126,7 @@ import org.jasypt.util.password.PasswordEncryptor;
  * @since 1.9.0 (existed as org.jasypt.spring.security2.PasswordEncoder since 1.5)
  * 
  * @author Daniel Fern&aacute;ndez
+ * @deprecated Deprecated in 1.9.3. This class will be removed in 2.0.0.
  * 
  */
 public final class PasswordEncoder 

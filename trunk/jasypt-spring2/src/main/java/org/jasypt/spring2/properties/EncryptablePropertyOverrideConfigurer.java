@@ -47,6 +47,7 @@ import org.springframework.beans.factory.config.PropertyOverrideConfigurer;
  * @since 1.9.0 (existed in package org.jasypt.spring.properties since 1.4)
  * 
  * @author Marcos Mu&iacute;&ntilde;o Garc&iacute;a
+ * @deprecated Deprecated in 1.9.3. This class will be removed in 2.0.0.
  * 
  */
 public final class EncryptablePropertyOverrideConfigurer 

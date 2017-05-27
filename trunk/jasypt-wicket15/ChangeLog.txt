@@ -1,3 +1,7 @@
+1.9.3
+=====
+- Deprecated in 1.9.3. This module will be removed in 2.0.0.
+
 
 1.9.2
 =====
