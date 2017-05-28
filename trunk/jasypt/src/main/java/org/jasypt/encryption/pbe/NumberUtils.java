@@ -114,7 +114,7 @@ final class NumberUtils {
     
 
     
-    private static int maxSafeSizeInBytes() {
+    private static long maxSafeSizeInBytes() {
         // In order to avoid Java heap size exceptions due to
         // malformations or manipulation of encrypted data, we will
         // only consider "safe" the allocation of numbers with a size
@@ -127,7 +127,7 @@ final class NumberUtils {
         final long max = Runtime.getRuntime().maxMemory();
         final long free = Runtime.getRuntime().freeMemory();
         final long total = Runtime.getRuntime().totalMemory();
-        return (int)((free + (max - total)) / 2);
+        return ((free + (max - total)) / 2);
     }
     
     
