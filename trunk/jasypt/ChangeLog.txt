@@ -1,3 +1,7 @@
+1.9.3
+=====
+- Fixed #44 Using Standard PBE Encryptors for BigDecimal or BigInteger causes unnecessary exception 
+  on VMs with large amounts of freespace
 
 1.9.2
 =====
