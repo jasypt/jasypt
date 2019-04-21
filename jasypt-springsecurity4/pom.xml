@@ -147,6 +147,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.10.4</version>
         <configuration>
+          <doclint>none</doclint>
           <show>protected</show>
           <noqualifier>java.lang</noqualifier>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>

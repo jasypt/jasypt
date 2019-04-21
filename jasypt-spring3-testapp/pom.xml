@@ -143,13 +143,13 @@
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt</artifactId>
-      <version>1.9.0-SNAPSHOT</version>
+      <version>1.9.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt-spring3</artifactId>
-      <version>1.9.0-SNAPSHOT</version>
+      <version>1.9.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     

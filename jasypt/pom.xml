@@ -143,8 +143,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.0.1</version>
         <configuration>
+          <doclint>none</doclint>
           <show>protected</show>
           <noqualifier>java.lang</noqualifier>
           <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>

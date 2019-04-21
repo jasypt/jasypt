@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-dist</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.2</version>
+  <version>1.9.3-SNAPSHOT</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -205,6 +205,13 @@
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-hibernate5</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
   
     <dependency>
       <groupId>org.jasypt</groupId>
@@ -226,6 +233,13 @@
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-spring4</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
   
     <dependency>
       <groupId>org.jasypt</groupId>
@@ -240,7 +254,14 @@
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
-  
+
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt-springsecurity4</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.jasypt</groupId>
       <artifactId>jasypt-wicket13</artifactId>
