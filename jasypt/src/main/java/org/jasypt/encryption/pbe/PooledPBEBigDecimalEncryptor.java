@@ -25,6 +25,7 @@ import java.security.Provider;
 import org.jasypt.commons.CommonUtils;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -216,6 +217,18 @@ public final class PooledPBEBigDecimalEncryptor implements PBEBigDecimalCleanabl
      */
     public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.firstEncryptor.setSaltGenerator(saltGenerator);
+    }
+
+    /**
+     * <p>
+     * Sets the IV generator to be used. If no IV generator is specified,
+     * an instance of {@link org.jasypt.iv.NoIvGenerator} will be used.
+     * </p>
+     *
+     * @param ivGenerator the IV generator to be used.
+     */
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        this.firstEncryptor.setIvGenerator(ivGenerator);
     }
     
     

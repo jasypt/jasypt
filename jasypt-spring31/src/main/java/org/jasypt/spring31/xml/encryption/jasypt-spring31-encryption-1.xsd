@@ -69,6 +69,10 @@
             <xsd:attribute name="salt-generator-class-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-class-name-env-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-class-name-sys-property-name" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-class-name" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-class-name-env-name" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-class-name-sys-property-name" type="xsd:string"/>
             <xsd:attribute name="string-output-type" type="xsd:string"/>
             <xsd:attribute name="string-output-type-env-name" type="xsd:string"/>
             <xsd:attribute name="string-output-type-sys-property-name" type="xsd:string"/>
@@ -111,6 +115,7 @@
             <xsd:attribute name="provider-bean" type="xsd:string"/>
             <xsd:attribute name="provider-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-bean" type="xsd:string"/>
             <xsd:attribute name="scope" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
@@ -150,6 +155,7 @@
             <xsd:attribute name="provider-bean" type="xsd:string"/>
             <xsd:attribute name="provider-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-bean" type="xsd:string"/>
             <xsd:attribute name="string-output-type" type="xsd:string"/>
             <xsd:attribute name="scope" type="xsd:string">
                 <xsd:annotation>
@@ -190,6 +196,7 @@
             <xsd:attribute name="provider-bean" type="xsd:string"/>
             <xsd:attribute name="provider-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-bean" type="xsd:string"/>
             <xsd:attribute name="scope" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
@@ -229,6 +236,7 @@
             <xsd:attribute name="provider-bean" type="xsd:string"/>
             <xsd:attribute name="provider-name" type="xsd:string"/>
             <xsd:attribute name="salt-generator-bean" type="xsd:string"/>
+            <xsd:attribute name="iv-generator-bean" type="xsd:string"/>
             <xsd:attribute name="scope" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[

@@ -21,6 +21,7 @@ package org.jasypt.encryption.pbe.config;
 
 import java.security.Provider;
 
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -54,6 +55,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     private String keyObtentionIterationsEnvName = null;
     private String passwordEnvName = null;
     private String saltGeneratorClassNameEnvName = null;
+    private String ivGeneratorClassNameEnvName = null;
     private String providerNameEnvName = null;
     private String providerClassNameEnvName = null;
     private String poolSizeEnvName = null;
@@ -62,6 +64,7 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
     private String keyObtentionIterationsSysPropertyName = null;
     private String passwordSysPropertyName = null;
     private String saltGeneratorClassNameSysPropertyName = null;
+    private String ivGeneratorClassNameSysPropertyName = null;
     private String providerNameSysPropertyName = null;
     private String providerClassNameSysPropertyName = null;
     private String poolSizeSysPropertyName = null;
@@ -325,6 +328,82 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         }
     }
 
+    /**
+     * Retrieve the name of the environment variable which value has been
+     * loaded as the IV generator class name.
+     *
+     * @since 1.9.3
+     *
+     * @return the name of the variable
+     */
+    public String getIvGeneratorClassNameEnvName() {
+        return this.ivGeneratorClassNameEnvName;
+    }
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified environment variable to
+     * load the value for the IV generator class name.
+     * </p>
+     * <p>
+     * The IV generator class name which is set here must have a no-argument
+     * constructor, so that it can be instantiated and passed to the encryptor.
+     * </p>
+     *
+     * @since 1.9.3
+     *
+     * @param ivGeneratorClassNameEnvName the name of the environment variable
+     */
+    public void setIvGeneratorClassNameEnvName(final String ivGeneratorClassNameEnvName) {
+        this.ivGeneratorClassNameEnvName = ivGeneratorClassNameEnvName;
+        if (ivGeneratorClassNameEnvName == null) {
+            super.setIvGenerator(null);
+        } else {
+            this.ivGeneratorClassNameSysPropertyName = null;
+            final String ivGeneratorClassName = System.getenv(ivGeneratorClassNameEnvName);
+            super.setIvGeneratorClassName(ivGeneratorClassName);
+        }
+    }
+
+
+    /**
+     * Retrieve the name of the JVM system property which value has been
+     * loaded as the IV generator class name.
+     *
+     * @since 1.9.3
+     *
+     * @return the name of the property
+     */
+    public String getIvGeneratorClassNameSysPropertyName() {
+        return this.ivGeneratorClassNameSysPropertyName;
+    }
+
+
+    /**
+     * <p>
+     * Set the config object to use the specified JVM system property to
+     * load the value for the IV generator class name.
+     * </p>
+     * <p>
+     * The IV generator class name which is set here must have a no-argument
+     * constructor, so that it can be instantiated and passed to the encryptor.
+     * </p>
+     *
+     * @since 1.9.3
+     *
+     * @param ivGeneratorClassNameSysPropertyName the name of the property
+     */
+    public void setIvGeneratorClassNameSysPropertyName(final String ivGeneratorClassNameSysPropertyName) {
+        this.ivGeneratorClassNameSysPropertyName = ivGeneratorClassNameSysPropertyName;
+        if (ivGeneratorClassNameSysPropertyName == null) {
+            super.setIvGenerator(null);
+        } else {
+            this.ivGeneratorClassNameEnvName = null;
+            final String ivGeneratorClassName = System.getProperty(ivGeneratorClassNameSysPropertyName);
+            super.setIvGeneratorClassName(ivGeneratorClassName);
+        }
+    }
 
     /**
      * Retrieve the name of the environment variable which value has been
@@ -610,6 +689,19 @@ public class EnvironmentPBEConfig extends SimplePBEConfig {
         this.saltGeneratorClassNameEnvName = null;
         this.saltGeneratorClassNameSysPropertyName = null;
         super.setSaltGeneratorClassName(saltGeneratorClassName);
+    }
+
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        this.ivGeneratorClassNameEnvName = null;
+        this.ivGeneratorClassNameSysPropertyName = null;
+        super.setIvGenerator(ivGenerator);
+    }
+
+
+    public void setIvGeneratorClassName(final String ivGeneratorClassName) {
+        this.ivGeneratorClassNameEnvName = null;
+        this.ivGeneratorClassNameSysPropertyName = null;
+        super.setIvGeneratorClassName(ivGeneratorClassName);
     }
 
 

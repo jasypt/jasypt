@@ -23,6 +23,7 @@ import org.jasypt.encryption.pbe.PBEByteEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -43,7 +44,7 @@ import org.jasypt.salt.SaltGenerator;
  * and it will be configurable with the 
  * {@link #setPassword(String)}/{@link #setPasswordCharArray(char[])},
  * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
- * {@link #setSaltGenerator(SaltGenerator)}
+ * {@link #setSaltGenerator(SaltGenerator)}, {@link #setIvGenerator(IvGenerator)}
  * and  {@link #setConfig(PBEConfig)} methods.
  * </p>
  * <p>
@@ -56,7 +57,7 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Set its <tt>registeredName</tt> and, either its 
  *       wrapped <tt>encryptor</tt> or its <tt>password</tt>, 
  *       <tt>algorithm</tt>, <tt>keyObtentionIterations</tt>,
- *       <tt>saltGenerator</tt> and <tt>config</tt> properties.</li>
+ *       <tt>saltGenerator</tt>, <tt>ivGenerator</tt> and <tt>config</tt> properties.</li>
  *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
  *       <tt>encryptorRegisteredName</tt> parameter the same value specified
  *       to this object in <tt>registeredName</tt>.</li>
@@ -267,6 +268,23 @@ public final class HibernatePBEByteEncryptor {
         standardPBEByteEncryptor.setSaltGenerator(saltGenerator);
     }
 
+    /**
+     * Sets the IV generator to be used by the internal encryptor,
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     *
+     * @param ivGenerator the IV generator to be set for the internal
+     *                      encryptor.
+     */
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        final StandardPBEByteEncryptor standardPBEByteEncryptor =
+            (StandardPBEByteEncryptor) this.encryptor;
+        standardPBEByteEncryptor.setIvGenerator(ivGenerator);
+    }
 
     /**
      * Sets the PBEConfig to be used by the internal encryptor, 

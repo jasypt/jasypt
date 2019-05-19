@@ -1,5 +1,5 @@
 1.9.3
 =====
 
-- Created new jasypt-hibernate4 module for Hibernate 5 integration.
+- Created new jasypt-hibernate5 module for Hibernate 5 integration.
 - Created additional tests

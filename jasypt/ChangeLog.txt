@@ -1,7 +1,10 @@
 1.9.3
 =====
-- Fixed #44 Using Standard PBE Encryptors for BigDecimal or BigInteger causes unnecessary exception 
+- Fixed #44: Using Standard PBE Encryptors for BigDecimal or BigInteger causes unnecessary exception
   on VMs with large amounts of freespace
+
+- Fixed #32: encryption works but decryption does not, Java 8 (JCE jars installed).
+  Added support for initialization vectors needed for AES encryption and decryption since Java 8.
 
 1.9.2
 =====

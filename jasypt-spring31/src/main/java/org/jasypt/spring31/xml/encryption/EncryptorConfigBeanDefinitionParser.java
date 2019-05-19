@@ -54,6 +54,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     private static final String PARAM_PROVIDER_NAME = "provider-name"; 
     private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean"; 
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME = "salt-generator-class-name";
+    private static final String PARAM_IV_GENERATOR_BEAN = "iv-generator-bean";
+    private static final String PARAM_IV_GENERATOR_CLASS_NAME = "iv-generator-class-name";
     private static final Set<String> PARAMS_SIMPLE =
             new HashSet<String>(Arrays.asList(
                 new String[] {
@@ -65,7 +67,9 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
                     PARAM_PROVIDER_CLASS_NAME,
                     PARAM_PROVIDER_NAME,
                     PARAM_SALT_GENERATOR_BEAN,
-                    PARAM_SALT_GENERATOR_CLASS_NAME
+                    PARAM_SALT_GENERATOR_CLASS_NAME,
+                    PARAM_IV_GENERATOR_BEAN,
+                    PARAM_IV_GENERATOR_CLASS_NAME
                 }));
 
     // string
@@ -91,6 +95,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
     private static final String PARAM_PROVIDER_NAME_SYS_PROPERTY_NAME = "provider-name-sys-property-name";
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME_ENV_NAME = "salt-generator-class-name-env-name";
     private static final String PARAM_SALT_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME = "salt-generator-class-name-sys-property-name";
+    private static final String PARAM_IV_GENERATOR_CLASS_NAME_ENV_NAME = "iv-generator-class-name-env-name";
+    private static final String PARAM_IV_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME = "iv-generator-class-name-sys-property-name";
     private static final Set<String> PARAMS_ENVIRONMENT =
             new HashSet<String>(Arrays.asList(
                 new String[] {
@@ -107,7 +113,9 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
                     PARAM_PROVIDER_NAME_ENV_NAME,
                     PARAM_PROVIDER_NAME_SYS_PROPERTY_NAME,
                     PARAM_SALT_GENERATOR_CLASS_NAME_ENV_NAME,
-                    PARAM_SALT_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME
+                    PARAM_SALT_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME,
+                    PARAM_IV_GENERATOR_CLASS_NAME_ENV_NAME,
+                    PARAM_IV_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME
                 }));
 
     // string environment
@@ -150,6 +158,8 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
         processBeanAttribute(element, builder, PARAM_SALT_GENERATOR_BEAN, "saltGenerator");
         processStringAttribute(element, builder, PARAM_SALT_GENERATOR_CLASS_NAME, "saltGeneratorClassName");
+        processBeanAttribute(element, builder, PARAM_IV_GENERATOR_BEAN, "ivGenerator");
+        processStringAttribute(element, builder, PARAM_IV_GENERATOR_CLASS_NAME, "ivGeneratorClassName");
         
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
 
@@ -160,6 +170,7 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
         processStringAttribute(element, builder, PARAM_PROVIDER_CLASS_NAME_ENV_NAME, "providerClassNameEnvName");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME_ENV_NAME, "providerNameEnvName");
         processStringAttribute(element, builder, PARAM_SALT_GENERATOR_CLASS_NAME_ENV_NAME, "saltGeneratorClassNameEnvName");
+        processStringAttribute(element, builder, PARAM_IV_GENERATOR_CLASS_NAME_ENV_NAME, "ivGeneratorClassNameEnvName");
         processStringAttribute(element, builder, PARAM_ALGORITHM_SYS_PROPERTY_NAME, "algorithmSysPropertyName");
         processStringAttribute(element, builder, PARAM_KEY_OBTENTION_ITERATIONS_SYS_PROPERTY_NAME, "keyObtentionIterationsSysPropertyName");
         processStringAttribute(element, builder, PARAM_PASSWORD_SYS_PROPERTY_NAME, "passwordSysPropertyName");
@@ -167,6 +178,7 @@ final class EncryptorConfigBeanDefinitionParser extends AbstractEncryptionBeanDe
         processStringAttribute(element, builder, PARAM_PROVIDER_CLASS_NAME_SYS_PROPERTY_NAME, "providerClassNameSysPropertyName");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME_SYS_PROPERTY_NAME, "providerNameSysPropertyName");
         processStringAttribute(element, builder, PARAM_SALT_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME, "saltGeneratorClassNameSysPropertyName");
+        processStringAttribute(element, builder, PARAM_IV_GENERATOR_CLASS_NAME_SYS_PROPERTY_NAME, "ivGeneratorClassNameSysPropertyName");
 
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE_ENV_NAME, "stringOutputTypeEnvName");
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE_SYS_PROPERTY_NAME, "stringOutputTypeSysPropertyName");

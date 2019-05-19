@@ -25,6 +25,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 /**
@@ -45,7 +46,8 @@ import org.jasypt.salt.SaltGenerator;
  * and it will be configurable with the 
  * {@link #setPassword(String)}/{@link #setPasswordCharArray(char[])},
  * {@link #setAlgorithm(String)}, {@link #setKeyObtentionIterations(int)},
- * {@link #setSaltGenerator(SaltGenerator)}, {@link #setProviderName(String)},
+ * {@link #setSaltGenerator(SaltGenerator)}, {@link #setIvGenerator(IvGenerator)},
+ * {@link #setProviderName(String)},
  * {@link #setProvider(Provider)}, {@link #setStringOutputType(String)}
  * and  {@link #setConfig(PBEConfig)} methods.
  * </p>
@@ -59,7 +61,7 @@ import org.jasypt.salt.SaltGenerator;
  *   <li>Set its <tt>registeredName</tt> and, either its 
  *       wrapped <tt>encryptor</tt> or its <tt>password</tt>, 
  *       <tt>algorithm</tt>, <tt>keyObtentionIterations</tt>,
- *       <tt>saltGenerator</tt> and <tt>config</tt> properties.</li>
+ *       <tt>saltGenerator</tt>, <tt>ivGenerator</tt> and <tt>config</tt> properties.</li>
  *   <li>Declare a <i>typedef</i> in a Hibernate mapping giving its
  *       <tt>encryptorRegisteredName</tt> parameter the same value specified
  *       to this object in <tt>registeredName</tt>.</li>
@@ -270,6 +272,23 @@ public final class HibernatePBEStringEncryptor {
         standardPBEStringEncryptor.setSaltGenerator(saltGenerator);
     }
 
+    /**
+     * Sets the IV generator to be used by the internal encryptor,
+     * if a specific encryptor has not been set with <tt>setEncryptor(...)</tt>.
+     *
+     * @param ivGenerator the IV generator to be set for the internal
+     *                      encryptor.
+     */
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        if (this.encryptorSet) {
+            throw new EncryptionInitializationException(
+                "An encryptor has been already set: no " +
+                    "further configuration possible on hibernate wrapper");
+        }
+        final StandardPBEStringEncryptor standardPBEStringEncryptor =
+            (StandardPBEStringEncryptor) this.encryptor;
+        standardPBEStringEncryptor.setIvGenerator(ivGenerator);
+    }
     
     /**
      * Sets the name of the JCE provider to be used by the internal encryptor, 

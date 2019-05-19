@@ -31,7 +31,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
  * <p>
  * This class acts as a stateless service for encryption, decryption and
  * digest operations, letting its clients configure all the jasypt environment
- * (algorithms, passwords, providers...) from Strings in a single call, be it
+ * (algorithms, passwords, providers, initialization vectors...) from Strings in a single call, be it
  * using direct values, environment variables or java vm properties.
  * </p>
  * <p>
@@ -334,6 +334,9 @@ public final class JasyptStatelessService {
      * @param stringOutputType
      * @param stringOutputTypeEnvName
      * @param stringOutputTypeSysPropertyName
+     * @param ivGeneratorClassName
+     * @param ivGeneratorClassNameEnvName
+     * @param ivGeneratorClassNameSysPropertyName
      * @return the result of the encryption operation
      * @throws EncryptionOperationNotPossibleException if the operation could
      *         not be performed (either because of wrong input or wrong
@@ -361,7 +364,10 @@ public final class JasyptStatelessService {
             final String providerClassNameSysPropertyName,
             final String stringOutputType,
             final String stringOutputTypeEnvName,
-            final String stringOutputTypeSysPropertyName) {
+            final String stringOutputTypeSysPropertyName,
+            final String ivGeneratorClassName,
+            final String ivGeneratorClassNameEnvName,
+            final String ivGeneratorClassNameSysPropertyName) {
 
         
         final EnvironmentStringPBEConfig config = 
@@ -441,6 +447,18 @@ public final class JasyptStatelessService {
         }
         if (stringOutputType != null) {
             config.setStringOutputType(stringOutputType);
+        }
+
+        if (ivGeneratorClassNameEnvName != null) {
+            config.setIvGeneratorClassNameEnvName(
+                    ivGeneratorClassNameEnvName);
+        }
+        if (ivGeneratorClassNameSysPropertyName != null) {
+            config.setIvGeneratorClassNameSysPropertyName(
+                    ivGeneratorClassNameSysPropertyName);
+        }
+        if (ivGeneratorClassName != null) {
+            config.setIvGeneratorClassName(ivGeneratorClassName);
         }
         
         
@@ -479,6 +497,9 @@ public final class JasyptStatelessService {
      * @param stringOutputType
      * @param stringOutputTypeEnvName
      * @param stringOutputTypeSysPropertyName
+     * @param ivGeneratorClassName
+     * @param ivGeneratorClassNameEnvName
+     * @param ivGeneratorClassNameSysPropertyName
      * @return the result of the decryption operation
      * @throws EncryptionOperationNotPossibleException if the operation could
      *         not be performed (either because of wrong input or wrong
@@ -506,7 +527,10 @@ public final class JasyptStatelessService {
             final String providerClassNameSysPropertyName,
             final String stringOutputType,
             final String stringOutputTypeEnvName,
-            final String stringOutputTypeSysPropertyName) {
+            final String stringOutputTypeSysPropertyName,
+            final String ivGeneratorClassName,
+            final String ivGeneratorClassNameEnvName,
+            final String ivGeneratorClassNameSysPropertyName) {
 
         
         final EnvironmentStringPBEConfig config = 
@@ -586,6 +610,18 @@ public final class JasyptStatelessService {
         }
         if (stringOutputType != null) {
             config.setStringOutputType(stringOutputType);
+        }
+
+        if (ivGeneratorClassNameEnvName != null) {
+            config.setIvGeneratorClassNameEnvName(
+                    ivGeneratorClassNameEnvName);
+        }
+        if (ivGeneratorClassNameSysPropertyName != null) {
+            config.setIvGeneratorClassNameSysPropertyName(
+                    ivGeneratorClassNameSysPropertyName);
+        }
+        if (ivGeneratorClassName != null) {
+            config.setIvGeneratorClassName(ivGeneratorClassName);
         }
         
         

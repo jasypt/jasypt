@@ -19,12 +19,15 @@
  */
 package org.jasypt.encryption.pbe;
 
+import java.lang.reflect.Constructor;
 import java.security.InvalidKeyException;
 import java.security.Provider;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
@@ -34,6 +37,8 @@ import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.iv.IvGenerator;
+import org.jasypt.iv.NoIvGenerator;
 import org.jasypt.normalization.Normalizer;
 import org.jasypt.salt.FixedSaltGenerator;
 import org.jasypt.salt.RandomSaltGenerator;
@@ -42,11 +47,11 @@ import org.jasypt.salt.SaltGenerator;
 /**
  * <p>
  * Standard implementation of the {@link PBEByteEncryptor} interface.
- * This class lets the user specify the algorithm (and provider) to be used for 
+ * This class lets the user specify the algorithm, provider and
+ * the initialization vector (IV) generator to be used for
  * encryption, the password to use,
  * the number of hashing iterations and the salt generator
- * that will be applied for obtaining
- * the encryption key.
+ * that will be applied for obtaining the encryption key.
  * </p>
  * <p>
  * This class is <i>thread-safe</i>.
@@ -55,8 +60,8 @@ import org.jasypt.salt.SaltGenerator;
  * <br/><b><u>Configuration</u></b>
  * </p>
  * <p>
- * The algorithm, provider, password, key-obtention iterations and salt generator can take 
- * values in any of these ways:
+ * The algorithm, provider, IV generator, password, key-obtention iterations
+ * and salt generator can take values in any of these ways:
  * <ul>
  *   <li>Using its default values (except for password).</li>
  *   <li>Setting a <tt>{@link org.jasypt.encryption.pbe.config.PBEConfig}</tt> 
@@ -64,6 +69,7 @@ import org.jasypt.salt.SaltGenerator;
  *       configuration values.</li>
  *   <li>Calling the corresponding <tt>setAlgorithm(...)</tt>, 
  *       <tt>setProvider(...)</tt>, <tt>setProviderName(...)</tt>,
+ *       <tt>setIvGenerator(...)</tt>,
  *       <tt>setPassword(...)</tt>, <tt>setKeyObtentionIterations(...)</tt> or
  *       <tt>setSaltGenerator(...)</tt> methods.</li>
  * </ul>
@@ -112,6 +118,7 @@ import org.jasypt.salt.SaltGenerator;
  * security by difficulting brute force attacks on sets of data at a time
  * and forcing attackers to perform a brute force attack on each separate
  * piece of encrypted data.
+ * The same applies when a random IV generator is used.
  * </p>
  * <p>     
  * To learn more about the mechanisms involved in encryption, read
@@ -144,6 +151,12 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      */
     public static final int DEFAULT_SALT_SIZE_BYTES = 8;
 
+    /**
+     * The default IV size, only used if the chosen encryption algorithm
+     * is not a block algorithm and thus block size cannot be used as IV size.
+     */
+    public static final int DEFAULT_IV_SIZE_BYTES = 16;
+
 
     // Algorithm (and provider-related info) for Password Based Encoding.
     private String algorithm = DEFAULT_ALGORITHM;
@@ -169,8 +182,19 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
     // chosen algorithm (if the algorithm is not a block algorithm, the 
     // default value will be used).
     private int saltSizeBytes = DEFAULT_SALT_SIZE_BYTES;
-    
-    
+
+    // IvGenerator to be used. Initialization of a IV generator is costly,
+    // and so default value will be applied only in initialize(), if it finally
+    // becomes necessary.
+    private IvGenerator ivGenerator = null;
+
+    // Size in bytes of the IV. This size will depend on the PBE algorithm
+    // being used, and it will be set to the size of the block for the specific
+    // chosen algorithm (if the algorithm is not a block algorithm, the
+    // default value will be used).
+    private int ivSizeBytes = DEFAULT_IV_SIZE_BYTES;
+
+
     // Config object set (optionally).
     private PBEConfig config = null;
 
@@ -183,6 +207,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
     private boolean passwordSet = false;
     private boolean iterationsSet = false;
     private boolean saltGeneratorSet = false;
+    private boolean ivGeneratorSet = false;
     private boolean providerNameSet = false;
     private boolean providerSet = false;
     
@@ -207,7 +232,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
     // Flag which indicates whether the salt generator being used is a
     // FixedSaltGenerator implementation (in which case some optimizations can
     // be applied).
-    private boolean usingFixedSalt = false;
+    private boolean optimizingDueFixedSalt = false;
     private byte[] fixedSaltInUse = null;
 
     
@@ -234,6 +259,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      *   <li>Password</li>
      *   <li>Hashing iterations for obtaining the encryption key</li>
      *   <li>Salt generator</li>
+     *   <li>IV generator</li>
      * </ul>
      * 
      * <p>
@@ -392,6 +418,22 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
         this.saltGenerator = saltGenerator;
         this.saltGeneratorSet = true;
     }
+
+    /**
+     * <p>
+     * Sets the IV generator to be used. If no IV generator is specified,
+     * an instance of {@link org.jasypt.iv.NoIvGenerator} will be used.
+     * </p>
+     *
+     * @param ivGenerator the IV generator to be used.
+     */
+    public synchronized void setIvGenerator(IvGenerator ivGenerator) { ;
+        if (isInitialized()) {
+            throw new AlreadyInitializedException();
+        }
+        this.ivGenerator = ivGenerator;
+        this.ivGeneratorSet = true;
+    }
     
     
     /**
@@ -513,6 +555,9 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
             if (this.saltGenerator != null) {
                 clone.setSaltGenerator(this.saltGenerator);
             }
+            if (this.ivGenerator != null) {
+                clone.setIvGenerator(this.ivGenerator);
+            }
             
             clones[i] = clone;
             
@@ -612,6 +657,8 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 }
                 
                 final SaltGenerator configSaltGenerator = this.config.getSaltGenerator();
+
+                final IvGenerator configIvGenerator = this.config.getIvGenerator();
                 
                 final String configProviderName = this.config.getProviderName();
                 if (configProviderName != null) {
@@ -632,6 +679,9 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 this.saltGenerator = 
                     ((this.saltGeneratorSet) || (configSaltGenerator == null))?
                             this.saltGenerator : configSaltGenerator;
+                this.ivGenerator =
+                        ((this.ivGeneratorSet) || (configIvGenerator == null))?
+                                this.ivGenerator : configIvGenerator;
                 this.providerName = 
                     ((this.providerNameSet) || (configProviderName == null))?
                             this.providerName : configProviderName;
@@ -647,6 +697,13 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
              */
             if (this.saltGenerator == null) {
                 this.saltGenerator = new RandomSaltGenerator();
+            }
+
+            /*
+             * Default value is a no-op IV generator to maintain backwards compatibility
+             */
+            if (this.ivGenerator == null) {
+                this.ivGenerator = new NoIvGenerator();
             }
             
             try {
@@ -717,17 +774,19 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
             }
             
 
-            // The salt size for the chosen algorithm is set to be equal 
+            // The salt size and the IV size for the chosen algorithm are set to be equal
             // to the algorithm's block size (if it is a block algorithm).
             final int algorithmBlockSize = this.encryptCipher.getBlockSize();
             if (algorithmBlockSize > 0) {
                 this.saltSizeBytes = algorithmBlockSize;
+                this.ivSizeBytes = algorithmBlockSize;
             }
             
             
-            this.usingFixedSalt = (this.saltGenerator instanceof FixedSaltGenerator);
+            this.optimizingDueFixedSalt = (this.saltGenerator instanceof FixedSaltGenerator)
+                                            && (this.ivGenerator instanceof NoIvGenerator);
             
-            if (this.usingFixedSalt) {
+            if (this.optimizingDueFixedSalt) {
                 
                 // Create salt
                 this.fixedSaltInUse = 
@@ -837,11 +896,10 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      * target="_blank">PKCS &#035;5: Password-Based Cryptography Standard</a>.
      * </p>
      * <p>
-     * This encryptor uses a salt for each encryption
-     * operation. The size of the salt depends on the algorithm
-     * being used. This salt is used
-     * for creating the encryption key and, if generated by a random generator,
-     * it is also appended unencrypted at the beginning
+     * This encryptor uses a salt and IV for each encryption
+     * operation. Sizes of the salt and IV depends on the algorithm
+     * being used. The salt and the IV, if generated by a random generator,
+     * they are also appended unencrypted at the beginning
      * of the results so that a decryption operation can be performed.
      * </p>
      * <p>
@@ -851,6 +909,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      * security by difficulting brute force attacks on sets of data at a time
      * and forcing attackers to perform a brute force attack on each separate
      * piece of encrypted data.
+     * The same is applied if a random IV generator is used.
      * </p>
      * 
      * @param message the byte array message to be encrypted
@@ -876,8 +935,9 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
         try {
 
             final byte[] salt;
-            final byte[] encryptedMessage;
-            if (this.usingFixedSalt) {
+            byte[] iv = null;
+            byte[] encryptedMessage;
+            if (this.optimizingDueFixedSalt) {
 
                 salt = this.fixedSaltInUse;
                 
@@ -889,12 +949,15 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
             
                 // Create salt
                 salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
-    
+
+                // Create IV
+                iv = this.ivGenerator.generateIv(this.ivSizeBytes);
+
+
                 /*
                  * Perform encryption using the Cipher
                  */
-                final PBEParameterSpec parameterSpec = 
-                    new PBEParameterSpec(salt, this.keyObtentionIterations);
+                final PBEParameterSpec parameterSpec = buildPBEParameterSpec(salt, iv);
     
                 synchronized (this.encryptCipher) {
                     this.encryptCipher.init(
@@ -904,6 +967,15 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 
             }
 
+            // We build an array containing both the unencrypted IV
+            // and the result of the encryption. This is done only
+            // if the IV generator we are using specifies to do so.
+            if (this.ivGenerator.includePlainIvInEncryptionResults()) {
+
+                // Insert plain IV before the encryption result
+                encryptedMessage = CommonUtils.appendArrays(iv, encryptedMessage);
+
+            }
             
             // Finally we build an array containing both the unencrypted salt
             // and the result of the encryption. This is done only
@@ -911,7 +983,7 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
             if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
                 
                 // Insert unhashed salt before the encryption result
-                return CommonUtils.appendArrays(salt, encryptedMessage);
+                encryptedMessage = CommonUtils.appendArrays(salt, encryptedMessage);
                 
             }
 
@@ -947,7 +1019,13 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
      * beginning of the encrypted input, so that the decryption operation can be
      * correctly performed (there is no other way of knowing it).
      * </p>
-     * 
+     * <p>
+     * If a random IV generator is used, this decryption operation will
+     * expect to find an unencrypted IV at the
+     * beginning of the encrypted input, so that the decryption operation can be
+     * correctly performed (there is no other way of knowing it).
+     * </p>
+     *
      * @param encryptedMessage the byte array message to be decrypted
      * @return the result of decryption 
      * @throws EncryptionOperationNotPossibleException if the decryption 
@@ -967,14 +1045,27 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
         if (!isInitialized()) {
             initialize();
         }
-        
-        if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
+
+
+        if (this.saltGenerator.includePlainSaltInEncryptionResults()
+                && this.ivGenerator.includePlainIvInEncryptionResults()) {
+            // Check that the received message is bigger than the salt + IV
+            if (encryptedMessage.length <= this.saltSizeBytes + this.ivSizeBytes) {
+                throw new EncryptionOperationNotPossibleException();
+            }
+        } else if (this.saltGenerator.includePlainSaltInEncryptionResults()) {
             // Check that the received message is bigger than the salt
             if (encryptedMessage.length <= this.saltSizeBytes) {
                 throw new EncryptionOperationNotPossibleException();
             }
+        } else if (this.ivGenerator.includePlainIvInEncryptionResults()) {
+            // Check that the received message is bigger than the IV
+            if (encryptedMessage.length <= this.ivSizeBytes) {
+                throw new EncryptionOperationNotPossibleException();
+            }
         }
-    
+
+
         try {
 
             // If we are using a salt generator which specifies the salt
@@ -999,29 +1090,53 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 System.arraycopy(encryptedMessage, saltStart, salt, 0, saltSize);
                 System.arraycopy(encryptedMessage, encMesKernelStart, encryptedMessageKernel, 0, encMesKernelSize);
                 
-            } else if (!this.usingFixedSalt){
+            } else if (!this.optimizingDueFixedSalt){
                 
                 salt = this.saltGenerator.generateSalt(this.saltSizeBytes);
                 encryptedMessageKernel = encryptedMessage;
                 
             } else {
-                // this.usingFixedSalt == true
+                // this.optimizingDueFixedSalt == true
                 
                 salt = this.fixedSaltInUse;
                 encryptedMessageKernel = encryptedMessage;
                 
             }
+
+            byte[] iv = null;
+            byte[] finalEncryptedMessageKernel = null;
+            if (this.ivGenerator.includePlainIvInEncryptionResults()) {
+
+                final int ivStart = 0;
+                final int ivSize =
+                        (this.ivSizeBytes < encryptedMessageKernel.length? this.ivSizeBytes : encryptedMessageKernel.length);
+                final int encMesKernelStart =
+                        (this.ivSizeBytes < encryptedMessageKernel.length? this.ivSizeBytes : encryptedMessageKernel.length);
+                final int encMesKernelSize =
+                        (this.ivSizeBytes < encryptedMessageKernel.length? (encryptedMessageKernel.length - this.ivSizeBytes) : 0);
+
+                iv = new byte[ivSize];
+                finalEncryptedMessageKernel = new byte[encMesKernelSize];
+
+                System.arraycopy(encryptedMessageKernel, ivStart, iv, 0, ivSize);
+                System.arraycopy(encryptedMessageKernel, encMesKernelStart, finalEncryptedMessageKernel, 0, encMesKernelSize);
+
+            } else {
+                iv = ivGenerator.generateIv(ivSizeBytes);
+                finalEncryptedMessageKernel = encryptedMessageKernel;
+
+            }
             
 
             final byte[] decryptedMessage;
-            if (this.usingFixedSalt) {
+            if (this.optimizingDueFixedSalt) {
                 
                 /*
                  * Fixed salt is being used, therefore no initialization supposedly needed
                  */
                 synchronized (this.decryptCipher) {
                     decryptedMessage = 
-                        this.decryptCipher.doFinal(encryptedMessageKernel);
+                        this.decryptCipher.doFinal(finalEncryptedMessageKernel);
                 }
 
             } else {
@@ -1029,14 +1144,13 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
                 /*
                  * Perform decryption using the Cipher
                  */
-                final PBEParameterSpec parameterSpec = 
-                    new PBEParameterSpec(salt, this.keyObtentionIterations);
+                final PBEParameterSpec parameterSpec = buildPBEParameterSpec(salt, iv);
                      
                 synchronized (this.decryptCipher) {
                     this.decryptCipher.init(
                             Cipher.DECRYPT_MODE, this.key, parameterSpec);
                     decryptedMessage = 
-                        this.decryptCipher.doFinal(encryptedMessageKernel);
+                        this.decryptCipher.doFinal(finalEncryptedMessageKernel);
                 }
 
             }
@@ -1057,6 +1171,26 @@ public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordE
         
     }    
 
+
+    private PBEParameterSpec buildPBEParameterSpec(final byte[] salt, final byte[] iv) {
+
+        PBEParameterSpec parameterSpec;
+
+        try {
+            Class[] parameters = {byte[].class, int.class, AlgorithmParameterSpec.class};
+            Constructor<PBEParameterSpec> java8Constructor = PBEParameterSpec.class.getConstructor(parameters);
+
+            Object[] parameterValues = {salt, this.keyObtentionIterations, new IvParameterSpec(iv)};
+
+            parameterSpec = java8Constructor.newInstance(parameterValues);
+
+        } catch (Exception e) {
+            parameterSpec = new PBEParameterSpec(salt, this.keyObtentionIterations);
+        }
+
+        return parameterSpec;
+
+    }
 
     /*
      * Method used to provide an useful error message in the case that the

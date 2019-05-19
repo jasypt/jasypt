@@ -35,6 +35,7 @@ import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -88,6 +89,9 @@ public final class EncryptorFactoryBean
     
     private boolean saltGeneratorSet = false;
     private SaltGenerator saltGenerator = null;
+
+    private boolean ivGeneratorSet = false;
+    private IvGenerator ivGenerator = null;
     
     private boolean stringOutputTypeSet = false;
     private String stringOutputType = null;
@@ -158,6 +162,11 @@ public final class EncryptorFactoryBean
     public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.saltGenerator = saltGenerator;
         this.saltGeneratorSet = true;
+    }
+
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        this.ivGenerator = ivGenerator;
+        this.ivGeneratorSet = true;
     }
 
 
@@ -280,6 +289,14 @@ public final class EncryptorFactoryBean
                             encryptor, 
                             "setSaltGenerator", 
                             new Object[] { this.saltGenerator });
+            st.execute();
+        }
+        if (this.ivGeneratorSet) {
+            final Statement st =
+                new Statement(
+                    encryptor,
+                    "setIvGenerator",
+                    new Object[] { this.ivGenerator });
             st.execute();
         }
         if (this.stringOutputTypeSet && encryptor instanceof PBEStringEncryptor) {

@@ -41,7 +41,8 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
     private static final String PARAM_POOL_SIZE = "pool-size"; 
     private static final String PARAM_PROVIDER_BEAN = "provider-bean"; 
     private static final String PARAM_PROVIDER_NAME = "provider-name"; 
-    private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean"; 
+    private static final String PARAM_SALT_GENERATOR_BEAN = "salt-generator-bean";
+    private static final String PARAM_IV_GENERATOR_BEAN = "iv-generator-bean";
     private static final String PARAM_STRING_OUTPUT_TYPE = "string-output-type"; 
     
     
@@ -73,6 +74,7 @@ final class EncryptorBeanDefinitionParser extends AbstractEncryptionBeanDefiniti
         processBeanAttribute(element, builder, PARAM_PROVIDER_BEAN, "provider");
         processStringAttribute(element, builder, PARAM_PROVIDER_NAME, "providerName");
         processBeanAttribute(element, builder, PARAM_SALT_GENERATOR_BEAN, "saltGenerator");
+        processBeanAttribute(element, builder, PARAM_IV_GENERATOR_BEAN, "ivGenerator");
         
         processStringAttribute(element, builder, PARAM_STRING_OUTPUT_TYPE, "stringOutputType");
     

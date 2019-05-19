@@ -79,6 +79,9 @@ public final class JasyptPBEStringDecryptionCLI {
             },
             new String [] {
                 ArgumentNaming.ARG_STRING_OUTPUT_TYPE
+            },
+            new String[] {
+                ArgumentNaming.ARG_IV_GENERATOR_CLASS_NAME
             }
         };
     
@@ -142,6 +145,9 @@ public final class JasyptPBEStringDecryptionCLI {
                         null,
                         null,
                         argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE),
+                        null,
+                        null,
+                        argumentValues.getProperty(ArgumentNaming.ARG_IV_GENERATOR_CLASS_NAME),
                         null,
                         null);
             

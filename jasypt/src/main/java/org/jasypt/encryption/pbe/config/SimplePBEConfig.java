@@ -23,6 +23,7 @@ import java.security.Provider;
 
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.PasswordAlreadyCleanedException;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -70,6 +71,7 @@ public class SimplePBEConfig implements PBEConfig, PBECleanablePasswordConfig {
     private char[] password = null;
     private Integer keyObtentionIterations = null;
     private SaltGenerator saltGenerator = null;
+    private IvGenerator ivGenerator = null;
     private String providerName = null;
     private Provider provider = null;
     private Integer poolSize = null;
@@ -252,7 +254,58 @@ public class SimplePBEConfig implements PBEConfig, PBECleanablePasswordConfig {
         }
     }
 
-    
+
+    /**
+     * <p>
+     * Sets the IV generator.
+     * </p>
+     * <p>
+     * If not set, null will returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getIvGenerator()}
+     * </p>
+     *
+     * @since 1.9.3
+     *
+     * @param ivGenerator the IV generator.
+     */
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        this.ivGenerator = ivGenerator;
+    }
+
+
+    /**
+     * <p>
+     * Sets the IV generator.
+     * </p>
+     * <p>
+     * If not set, null will returned.
+     * </p>
+     * <p>
+     * Determines the result of: {@link #getIvGenerator()}
+     * </p>
+     *
+     * @since 1.9.3
+     *
+     * @param ivGeneratorClassName the name of the IV generator class.
+     */
+    public void setIvGeneratorClassName(final String ivGeneratorClassName) {
+        if (ivGeneratorClassName != null) {
+            try {
+                final Class ivGeneratorClass =
+                        Thread.currentThread().getContextClassLoader().loadClass(ivGeneratorClassName);
+                this.ivGenerator =
+                        (IvGenerator) ivGeneratorClass.newInstance();
+            } catch (Exception e) {
+                throw new EncryptionInitializationException(e);
+            }
+        } else {
+            this.ivGenerator = null;
+        }
+    }
+
+
     /**
      * <p>
      * Sets the name of the security provider to be asked for the encryption
@@ -444,6 +497,10 @@ public class SimplePBEConfig implements PBEConfig, PBECleanablePasswordConfig {
     
     public SaltGenerator getSaltGenerator() {
         return this.saltGenerator;
+    }
+
+    public IvGenerator getIvGenerator() {
+        return this.ivGenerator;
     }
     
     public String getProviderName() {

@@ -28,6 +28,7 @@ import org.jasypt.encryption.pbe.config.StringPBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -360,6 +361,18 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
      */
     public void setSaltGenerator(final SaltGenerator saltGenerator) {
         this.byteEncryptor.setSaltGenerator(saltGenerator);
+    }
+
+    /**
+     * <p>
+     * Sets the IV generator to be used. If no IV generator is specified,
+     * an instance of {@link org.jasypt.iv.NoIvGenerator} will be used.
+     * </p>
+     *
+     * @param ivGenerator the IV generator to be used.
+     */
+    public void setIvGenerator(final IvGenerator ivGenerator) {
+        this.byteEncryptor.setIvGenerator(ivGenerator);
     }
     
     

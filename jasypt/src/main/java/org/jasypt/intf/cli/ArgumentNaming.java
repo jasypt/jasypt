@@ -44,6 +44,9 @@ final class ArgumentNaming {
     
     static final String ARG_SALT_GENERATOR_CLASS_NAME = 
         "saltGeneratorClassName";
+
+    static final String ARG_IV_GENERATOR_CLASS_NAME =
+            "ivGeneratorClassName";
     
     static final String ARG_PROVIDER_CLASS_NAME = "providerClassName";
     

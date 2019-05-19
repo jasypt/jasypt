@@ -24,6 +24,7 @@
         <include>org/jasypt/exceptions/**/*</include>
         <include>org/jasypt/normalization/**/*</include>
         <include>org/jasypt/salt/**/*</include>
+        <include>org/jasypt/iv/**/*</include>
       </includes>
       <excludes>
         <exclude>org/jasypt/encryption/pbe/config/WebPBEConfig.class</exclude>

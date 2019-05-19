@@ -21,6 +21,7 @@ package org.jasypt.encryption.pbe.config;
 
 import java.security.Provider;
 
+import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
 
@@ -120,6 +121,22 @@ public interface PBEConfig {
      *         a specific SaltGenerator implementation.
      */
     public SaltGenerator getSaltGenerator();
+
+
+    /**
+     * <p>
+     * Returns a {@link IvGenerator} implementation to be used by the
+     * encryptor.
+     * </p>
+     * <p>
+     * If this method returns null, the encryptor will ignore the config object
+     * when deciding the IV generator to be used.
+     * </p>
+     *
+     * @return the IV generator, or null if this object will not want to set
+     *         a specific IvGenerator implementation.
+     */
+    public IvGenerator getIvGenerator();
     
     
     /**
