@@ -44,11 +44,12 @@
     <name>The JASYPT team</name>
     <url>http://www.jasypt.org</url>
   </organization>
-  
+
   <scm>
-    <url>https://github.com/jasypt/jasypt/</url>
-    <connection>scm:git:https://github.com/jasypt/jasypt.git</connection>
-    <developerConnection>scm:git:https://github.com/jasypt/jasypt.git</developerConnection>
+    <url>scm:git:git@github.com:jasypt/jasypt.git</url>
+    <connection>scm:git:git@github.com:jasypt/jasypt.git</connection>
+    <developerConnection>scm:git:git@github.com:jasypt/jasypt.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
   
   <developers>
@@ -117,7 +118,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.0</version>
+        <version>2.1</version>
       </plugin>
 
 
@@ -157,8 +158,8 @@
         <version>2.4</version>
         <configuration>
           <webAccessUrl>https://github.com/jasypt/jasypt/</webAccessUrl>
-          <anonymousConnection>scm:git:https://github.com/jasypt/jasypt.git</anonymousConnection>
-          <developerConnection>scm:git:https://github.com/jasypt/jasypt.git</developerConnection>
+          <anonymousConnection>scm:git:git@github.com:jasypt/jasypt.git</anonymousConnection>
+          <developerConnection>scm:git:git@github.com:jasypt/jasypt.git</developerConnection>
           <checkoutDirectoryName>jasypt</checkoutDirectoryName>
         </configuration>
         <reportSets>

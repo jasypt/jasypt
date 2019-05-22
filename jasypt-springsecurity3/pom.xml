@@ -46,9 +46,10 @@
   </organization>
 
   <scm>
-    <url>https://github.com/jasypt/jasypt/</url>
-    <connection>scm:git:https://github.com/jasypt/jasypt.git</connection>
-    <developerConnection>scm:git:https://github.com/jasypt/jasypt.git</developerConnection>
+    <url>scm:git:git@github.com:jasypt/jasypt.git</url>
+    <connection>scm:git:git@github.com:jasypt/jasypt.git</connection>
+    <developerConnection>scm:git:git@github.com:jasypt/jasypt.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
   
   <developers>
@@ -191,8 +192,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
         <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <releaseProfiles>releases</releaseProfiles>
+          <localCheckout>true</localCheckout>
         </configuration>
       </plugin>
 

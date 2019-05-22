@@ -43,11 +43,12 @@
     <name>The JASYPT team</name>
     <url>http://www.jasypt.org</url>
   </organization>
-  
+
   <scm>
-    <url>scm:svn:http://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring31-testapp</url>
-    <connection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring31-testapp</connection>
-    <developerConnection>scm:svn:https://jasypt.svn.sourceforge.net/svnroot/jasypt/trunk/jasypt-spring31-testapp</developerConnection>
+    <url>scm:git:git@github.com:jasypt/jasypt.git</url>
+    <connection>scm:git:git@github.com:jasypt/jasypt.git</connection>
+    <developerConnection>scm:git:git@github.com:jasypt/jasypt.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
   
   <developers>
