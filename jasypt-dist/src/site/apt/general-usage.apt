@@ -195,8 +195,9 @@ String digest = digester.digest(myMessage);
 ------------------
 ...
 StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-encryptor.setPassword("jasypt");                     // we HAVE TO set a password
-encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+encryptor.setPassword("jasypt");                         // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithHMACSHA512AndAES_256");   // optionally set the algorithm
+encryptor.setIvGenerator(new RandomIvGenerator());       // for PBE-AES-based algorithms, the IV generator is MANDATORY
 ...
 String encryptedText = encryptor.encrypt(myText);
 ...
@@ -208,7 +209,7 @@ String plainText = encryptor.decrypt(encryptedText);  // myText.equals(plainText
   As with digesters, Standard*Encryptors implement a coherent and secure set 
   of default configuration values (except for the password), but they can also be additionally configured in two ways:
   
-      * By calling to its <<<setX(...)>>> methods (algorithm, provider, password, etc...)
+      * By calling to its <<<setX(...)>>> methods (algorithm, provider, password, salt, IV, etc...)
       
       * By setting a <<PBEConfig>> object which configures the
         digester. A default <bean> implementation of this interface is supplied

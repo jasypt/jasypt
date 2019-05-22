@@ -41,8 +41,8 @@ Encrypting texts
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
        <<<setProvider(...)>>>, <<<setProviderName(...)>>>,
-       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
-       or <<<setSaltGenerator(...)>>> methods.
+       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>>, 
+       <<<setSaltGenerator(...)>>> or <<<setIvGenerator(...)>>> methods.
 
  And the actual values to be used for initialization will be established
  by applying the following priorities:
@@ -87,6 +87,10 @@ Encrypting texts
  attacks on sets of data at a time and forcing attackers to perform a brute 
  force attack on each separate piece of encrypted data.
 
+ The same applies when a random IV generator is used: the IV should be random
+ and only used one time, so org.jasypt.RandomIvGenerator is the recommended
+ one.
+
 ** Learn more
 
  To learn more about the mechanisms involved in encryption, read
@@ -124,6 +128,20 @@ String myEncryptedText = textEncryptor.encrypt(myText);
 String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
 ----------------
+
+  More security: the <<<AES256TextEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+textEncryptor.setPassword(myEncryptionPassword);
+...
+String myEncryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
   
   All these <util> classes are in fact pre-configured, easy-to-use versions of <<<StandardPBEStringEncryptor>>>,
   so let's use the original class for total control:
@@ -131,8 +149,9 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ------------------
 ...
 StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
-encryptor.setPassword("jasypt");                     // we HAVE TO set a password
-encryptor.setAlgorithm("PBEWithMD5AndTripleDES");    // optionally set the algorithm
+encryptor.setPassword("jasypt");                        // we HAVE TO set a password
+encryptor.setAlgorithm("PBEWithHMACSHA512AndAES_256");  // optionally set the algorithm
+encryptor.setIvGenerator(new RandomIvGenerator());      // for PBE-AES-based algorithms, the IV generator is MANDATORY
 ...
 String encryptedText = encryptor.encrypt(myText);
 ...

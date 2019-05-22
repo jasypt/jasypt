@@ -6,10 +6,10 @@
 Download Jasypt
 
   
-  <<Current version>>: 1.9.2 (February 25th, 2014) [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
+  <<Current version>>: 1.9.3 (May 25th, 2019) [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
       
   
-  <<{{{http://sourceforge.net/project/showfiles.php?group_id=183612}DOWNLOAD JASYPT (from SourceForge.net)}}>>
+  <<{{{https://github.com/jasypt/jasypt}DOWNLOAD JASYPT (from GitHub)}}>>
 
   If you are using Maven for building your project, have a look at
   {{{./maven.html}Jasypt + Maven}} for details on adding a dependency on Jasypt.
@@ -24,19 +24,25 @@ Download Jasypt
       
       * <<<jasypt-spring3>>> for Spring Framework 3.0 [{{{./changelogs/jasypt-spring3/ChangeLog.txt}ChangeLog}}]
       
-      * <<<jasypt-spring31>>> for Spring Framework 3.1 and newer [{{{./changelogs/jasypt-spring31/ChangeLog.txt}ChangeLog}}]
+      * <<<jasypt-spring31>>> for Spring Framework 3.1 [{{{./changelogs/jasypt-spring31/ChangeLog.txt}ChangeLog}}]
+
+      * <<<jasypt-spring4>>> for Spring Framework 4.0 and newer [{{{./changelogs/jasypt-spring4/ChangeLog.txt}ChangeLog}}]
       
       * <<<jasypt-acegisecurity>>> for Acegi Security 1.0 [{{{./changelogs/jasypt-acegisecurity/ChangeLog.txt}ChangeLog}}]
       
       * <<<jasypt-springsecurity2>>> for Spring Security 2.x [{{{./changelogs/jasypt-springsecurity2/ChangeLog.txt}ChangeLog}}]
       
       * <<<jasypt-springsecurity3>>> for Spring Security 3.x and newer [{{{./changelogs/jasypt-springsecurity3/ChangeLog.txt}ChangeLog}}]
+
+      * <<<jasypt-springsecurity4>>> for Spring Security 4.x and newer [{{{./changelogs/jasypt-springsecurity4/ChangeLog.txt}ChangeLog}}]      
     
     * Hibernate integration
     
       * <<<jasypt-hibernate3>>> for Hibernate 3.0, 3.1, 3.2, 3.3, 3.5 and 3.6 [{{{./changelogs/jasypt-hibernate3/ChangeLog.txt}ChangeLog}}]
       
-      * <<<jasypt-hibernate4>>> for Hibernate 4.x and newer [{{{./changelogs/jasypt-hibernate4/ChangeLog.txt}ChangeLog}}]
+      * <<<jasypt-hibernate4>>> for Hibernate 4.x [{{{./changelogs/jasypt-hibernate4/ChangeLog.txt}ChangeLog}}]
+
+      * <<<jasypt-hibernate5>>> for Hibernate 5.x [{{{./changelogs/jasypt-hibernate5/ChangeLog.txt}ChangeLog}}]
       
     * Apache Wicket integration
     

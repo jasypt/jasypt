@@ -7,11 +7,13 @@ What is new in Jasypt 1.9?
 
   * {{{Modularization}Modularization}}
   
-  * {{{Hibernate_4_support}Hibernate 4 support}}
+  * {{{Hibernate_4_support}Hibernate 4.0 and Hibernate 5.0 support}}
   
   * {{{Enhanced_Spring_3.0_support}Enhanced Spring 3.0 support}}
   
-  * {{{Spring_3.1_support}Spring 3.1 support}}
+  * {{{Spring_3.1_support}Spring 3.1 and Spring 4.0 support}}
+
+  * {{{Spring_Security_4.0_support}Spring Security 4.0 support}}
   
   * {{{Apache_Wicket_1.5_support}Apache Wicket 1.5 support}}
   
@@ -34,19 +36,25 @@ What is new in Jasypt 1.9?
       
       * <<<jasypt-spring3>>> for Spring Framework 3.0
       
-      * <<<jasypt-spring31>>> for Spring Framework 3.1 and newer
+      * <<<jasypt-spring31>>> for Spring Framework 3.1
+
+      * <<<jasypt-spring4>>> for Spring Framework 4.0 and newer      
       
       * <<<jasypt-acegisecurity>>> for Acegi Security 1.0
       
       * <<<jasypt-springsecurity2>>> for Spring Security 2.x
       
-      * <<<jasypt-springsecurity3>>> for Spring Security 3.x and newer
+      * <<<jasypt-springsecurity3>>> for Spring Security 3.x
+
+      * <<<jasypt-springsecurity4>>> for Spring Security 4.x and newer      
     
     * Hibernate integration
     
       * <<<jasypt-hibernate3>>> for Hibernate 3.0, 3.1, 3.2, 3.3, 3.5 and 3.6
       
-      * <<<jasypt-hibernate4>>> for Hibernate 4.x and newer
+      * <<<jasypt-hibernate4>>> for Hibernate 4.x
+
+      * <<<jasypt-hibernate5>>> for Hibernate 5.x and newer      
       
     * Apache Wicket integration
     
@@ -55,10 +63,10 @@ What is new in Jasypt 1.9?
       * <<<jasypt-wicket15>>> for Apache Wicket 1.5
       
 
-* {Hibernate 4 support}
+* {Hibernate 4.0 and Hibernate 5.0 support}
 
-  Jasypt 1.9 adds support for Hibernate 4 by creating a new, specific <<<jasypt-hibernate4>>>
-  module.
+  Jasypt 1.9 adds support for Hibernate 4 and Hibernate 5 by creating specific <<<jasypt-hibernate4>>>
+  and  <<<jasypt-hibernate5>>> modules.
   
   Features offered are the same as for Hibernate 3, but adapted to the new specific APIs of
   this new Hibernate major version.
@@ -108,20 +116,29 @@ What is new in Jasypt 1.9?
   Learn more at the {{{./spring3.html}Jasypt + Spring 3.0 Guide}}.  
   
 
-* {Spring 3.1 support}
+* {Spring 3.1 and Spring 4.0 support}
 
-  Jasypt 1.9 features for Spring 3.1 are equivalent to those for Spring 3.0
+  Jasypt 1.9 features for Spring 3.1 and Spring 4.0 are equivalent to those for Spring 3.0
   --excluding those that were deprecated--. The new <<<encryption>>> namespace is also offered
-  in Spring 3.1.
+  in Spring 3.1 and Spring 4.0.
   
   Besides, jasypt provides an <<<EncryptablePropertySource>>> implementation of the new
   <<<org.springframework.core.env.PropertySource>>> interface for <Environment-based configuration>,
   and adapts the behaviour of its <<<\<encryption:property-placeholder/\>>>> to that of
-  Spring 3.1, which bases <<<$\{...\}>>> property resolution on querying the registered
+  Spring 3.1 and Spring 4.0, which bases <<<$\{...\}>>> property resolution on querying the registered
   <property sources>.
 
-  Learn more at the {{{./spring31.html}Jasypt + Spring 3.1 Guide}}.  
+  Learn more at the {{{./spring31.html}Jasypt + Spring 3.1 and Spring 4.0 Guide}}.  
 
+* {Spring Security 4.0 support}
+
+  Jasypt 1.9 adds support for Spring Security 4.0 by creating a new specific 
+  <<<jasypt-springsecurity4>>> module.
+  
+  Features offered are the same as for Spring Security 3, but adapted to the new specific APIs of
+  this new Hibernate major version.
+  
+  Learn more at the {{{./springsecurity.html}Jasypt + Spring Security Guide}}.  
 
 * {Apache Wicket 1.5 support}
 

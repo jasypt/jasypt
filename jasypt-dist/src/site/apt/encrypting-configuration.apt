@@ -23,7 +23,8 @@ Encrypting application configuration files
       Jasypt can integrate into the configuration system of the Spring Framework
       (2.x and 3.x) and transparently decrypt <<<.properties>>> files used
       by Spring applications. Learn more: {{{./spring2.html}Spring 2.x}},
-      {{{./spring3.html}Spring 3.0}}, {{{./spring31.html}Spring 3.1}}.
+      {{{./spring3.html}Spring 3.0}}, {{{./spring31.html}Spring 3.1}},
+       {{{./spring31.html}Spring 4.0}}.
       
     []
     
@@ -77,6 +78,8 @@ Encrypting application configuration files
   */
  StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
  encryptor.setPassword("jasypt"); // could be got from web, env variable...
+ encryptor.setAlgorithm("PBEWithHMACSHA512AndAES_256");
+ encryptor.setIvGenerator(new RandomIvGenerator());
  
  /*
   * Create our EncryptableProperties object and load it the usual way.

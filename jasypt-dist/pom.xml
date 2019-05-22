@@ -24,7 +24,7 @@
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-dist</artifactId>
   <packaging>jar</packaging>
-  <version>1.9.3-SNAPSHOT</version>
+  <version>1.9.3</version>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
 
@@ -46,9 +46,9 @@
   </organization>
   
   <scm>
-    <url>scm:svn:http://svn.code.sf.net/p/jasypt/code/trunk/jasypt-dist</url>
-    <connection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-dist</connection>
-    <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk/jasypt-dist</developerConnection>
+    <url>https://github.com/jasypt/jasypt/</url>
+    <connection>scm:git:https://github.com/jasypt/jasypt.git</connection>
+    <developerConnection>scm:git:https://github.com/jasypt/jasypt.git</developerConnection>
   </scm>
   
   <developers>
@@ -156,10 +156,10 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>2.4</version>
         <configuration>
-          <webAccessUrl>http://svn.code.sf.net/p/jasypt/code/trunk</webAccessUrl>
-          <anonymousConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk</anonymousConnection>
-          <developerConnection>scm:svn:https://svn.code.sf.net/p/jasypt/code/trunk</developerConnection>
-          <checkoutDirectoryName>jasypt-trunk</checkoutDirectoryName>
+          <webAccessUrl>https://github.com/jasypt/jasypt/</webAccessUrl>
+          <anonymousConnection>scm:git:https://github.com/jasypt/jasypt.git</anonymousConnection>
+          <developerConnection>scm:git:https://github.com/jasypt/jasypt.git</developerConnection>
+          <checkoutDirectoryName>jasypt</checkoutDirectoryName>
         </configuration>
         <reportSets>
           <reportSet>

@@ -55,7 +55,7 @@ Features
 
      []
        
-     * {{{http://www.hibernate.org}Hibernate 3 and 4}} optional integration 
+     * {{{http://www.hibernate.org}Hibernate 3, 4 and 5}} optional integration 
      for persisting fields of your mapped entities in an encrypted manner.
      <<Encryption of fields is defined in the Hibernate mapping files>>, and
      it remains transparent for the rest of the application (useful for
@@ -66,13 +66,13 @@ Features
      []
      
      * Seamlessly integrable into a {{{http://www.springframework.org}Spring}} application,
-     with specific integration features for Spring 2, Spring 3.0 and Spring 3.1. All the 
+     with specific integration features for Spring 2, Spring 3.0, Spring 3.1 and Spring 4.0. All the 
      digesters and encryptors in jasypt are designed to be easily used 
      (instantiated, dependency-injected...) from Spring. And, because of their
      being thread-safe, they <<can be used without 
      synchronization worries in a singleton-oriented environment like 
      Spring>>. Learn more: {{{./spring2.html}Spring 2}}, {{{./spring3.html}Spring 3.0}}, 
-     {{{./spring31.html}Spring 3.1}}.
+     {{{./spring31.html}Spring 3.1}}, {{{./spring31.html}Spring 4.0}}.
 
      []
      

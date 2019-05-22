@@ -47,6 +47,13 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-hibernate5/target/checkout/target/apidocs/</directory>
+      <outputDirectory>/apidocs/jasypt-hibernate5/</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>    
+    <fileSet>
       <directory>${basedir}/../jasypt-spring2/target/checkout/target/apidocs/</directory>
       <outputDirectory>/apidocs/jasypt-spring2/</outputDirectory>
       <includes>
@@ -68,6 +75,13 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-spring4/target/checkout/target/apidocs/</directory>
+      <outputDirectory>/apidocs/jasypt-spring4/</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>    
+    <fileSet>
       <directory>${basedir}/../jasypt-springsecurity2/target/checkout/target/apidocs/</directory>
       <outputDirectory>/apidocs/jasypt-springsecurity2/</outputDirectory>
       <includes>
@@ -81,6 +95,13 @@
         <include>**/*</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${basedir}/../jasypt-springsecurity4/target/checkout/target/apidocs/</directory>
+      <outputDirectory>/apidocs/jasypt-springsecurity4/</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>    
     <fileSet>
       <directory>${basedir}/../jasypt-wicket13/target/checkout/target/apidocs/</directory>
       <outputDirectory>/apidocs/jasypt-wicket13/</outputDirectory>
@@ -133,6 +154,15 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-hibernate5/target/checkout/target/</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>jasypt-hibernate5-${project.version}.jar</include>
+        <include>jasypt-hibernate5-${project.version}-javadoc.jar</include>
+        <include>jasypt-hibernate5-${project.version}-sources.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
       <directory>${basedir}/../jasypt-spring2/target/checkout/target/</directory>
       <outputDirectory>/lib</outputDirectory>
       <includes>
@@ -160,6 +190,15 @@
       </includes>
     </fileSet>
     <fileSet>
+      <directory>${basedir}/../jasypt-spring4/target/checkout/target/</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>jasypt-spring4-${project.version}.jar</include>
+        <include>jasypt-spring4-${project.version}-javadoc.jar</include>
+        <include>jasypt-spring4-${project.version}-sources.jar</include>
+      </includes>
+    </fileSet>    
+    <fileSet>
       <directory>${basedir}/../jasypt-springsecurity2/target/checkout/target/</directory>
       <outputDirectory>/lib</outputDirectory>
       <includes>
@@ -177,6 +216,15 @@
         <include>jasypt-springsecurity3-${project.version}-sources.jar</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${basedir}/../jasypt-springsecurity4/target/checkout/target/</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>jasypt-springsecurity4-${project.version}.jar</include>
+        <include>jasypt-springsecurity4-${project.version}-javadoc.jar</include>
+        <include>jasypt-springsecurity4-${project.version}-sources.jar</include>
+      </includes>
+    </fileSet>    
     <fileSet>
       <directory>${basedir}/../jasypt-wicket13/target/checkout/target/</directory>
       <outputDirectory>/lib</outputDirectory>
@@ -236,11 +284,14 @@
         <exclude>org.jasypt:jasypt-acegisecurity</exclude>
         <exclude>org.jasypt:jasypt-hibernate3</exclude>
         <exclude>org.jasypt:jasypt-hibernate4</exclude>
+        <exclude>org.jasypt:jasypt-hibernate5</exclude>
         <exclude>org.jasypt:jasypt-spring2</exclude>
         <exclude>org.jasypt:jasypt-spring3</exclude>
         <exclude>org.jasypt:jasypt-spring31</exclude>
+        <exclude>org.jasypt:jasypt-spring4</exclude>        
         <exclude>org.jasypt:jasypt-springsecurity2</exclude>
         <exclude>org.jasypt:jasypt-springsecurity3</exclude>
+        <exclude>org.jasypt:jasypt-springsecurity4</exclude>
         <exclude>org.jasypt:jasypt-wicket13</exclude>
         <exclude>org.jasypt:jasypt-wicket15</exclude>
       </excludes>

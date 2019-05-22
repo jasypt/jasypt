@@ -32,8 +32,8 @@ Encrypting binaries
        
      * Calling the corresponding <<<setAlgorithm(...)>>>, 
        <<<setProvider(...)>>>, <<<setProviderName(...)>>>,
-       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>> 
-       or <<<setSaltGenerator(...)>>> methods.
+       <<<setPassword(...)>>>, <<<setKeyObtentionIterations(...)>>>, 
+       <<<setSaltGenerator(...)>>> or <<<setIvGenerator(...)>>> methods.
 
  And the actual values to be used for initialization will be established
  by applying the following priorities:
@@ -78,6 +78,10 @@ Encrypting binaries
  attacks on sets of data at a time and forcing attackers to perform a brute 
  force attack on each separate piece of encrypted data.
 
+ The same applies when a random IV generator is used: the IV should be random
+ and only used one time, so org.jasypt.RandomIvGenerator is the recommended
+ one.
+
 ** Learn more
 
  To learn more about the mechanisms involved in encryption, read
@@ -109,6 +113,20 @@ byte[] plainBytes = binaryEncryptor.decrypt(myEncryptedBytes);
 ----------------
 ...
 StrongBinaryEncryptor binaryEncryptor = new StrongBinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+byte[] myEncryptedBytes = binaryEncryptor.encrypt(myBytes);
+...
+byte[] plainBytes = binaryEncryptor.decrypt(myEncryptedBytes);
+...
+----------------
+
+  More security: the <<<AES256BinaryEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+AES256BinaryEncryptor binaryEncryptor = new AES256BinaryEncryptor();
 binaryEncryptor.setPassword(myEncryptionPassword);
 ...
 byte[] myEncryptedBytes = binaryEncryptor.encrypt(myBytes);

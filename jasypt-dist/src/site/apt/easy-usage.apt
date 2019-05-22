@@ -162,6 +162,19 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ...
 ----------------
 
+  More security: the <<<AES256TextEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
+textEncryptor.setPassword(myEncryptionPassword);
+...
+String myEncryptedText = textEncryptor.encrypt(myText);
+...
+String plainText = textEncryptor.decrypt(myEncryptedText);
+...
+----------------
 
 * Number encryption
 
@@ -206,6 +219,21 @@ BigInteger plainNumber = integerEncryptor.decrypt(myEncryptedNumber);
 ...
 ----------------
 
+  More security: the <<<AES256DecimalNumberEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+BigInteger myNumber = ...;
+...
+AES256IntegerNumberEncryptor numberEncryptor = new AES256IntegerNumberEncryptor();
+numberEncryptor.setPassword(myEncryptionPassword);
+...
+BigInteger myEncryptedNumber = numberEncryptor.encrypt(myNumber);
+...
+BigInteger plainNumber = numberEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
 
       * <<org.jasypt.util.numeric.BasicDecimalNumberEncryptor>> which allows the user to
         encrypt and decrypt BigDecimal objects using a normal-strength algorithm. In
@@ -214,7 +242,7 @@ BigInteger plainNumber = integerEncryptor.decrypt(myEncryptedNumber);
         
 ----------------
 ...
-BasicIntegerNumberEncryptor decimalEncryptor = new BasicIntegerNumberEncryptor();
+BasicDecimalNumberEncryptor decimalEncryptor = new BasicDecimalNumberEncryptor();
 decimalEncryptor.setPassword(myEncryptionPassword);
 ...
 BigDecimal myEncryptedNumber = decimalEncryptor.encrypt(myNumber);
@@ -242,6 +270,21 @@ BigDecimal plainNumber = decimalEncryptor.decrypt(myEncryptedNumber);
 ...
 ----------------
 
+  More security: the <<<AES256DecimalNumberEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+BigDecimal myNumber = ...;
+...
+AES256DecimalNumberEncryptor numberEncryptor = new AES256DecimalNumberEncryptor();
+numberEncryptor.setPassword(myEncryptionPassword);
+...
+BigDecimal myEncryptedNumber = numberEncryptor.encrypt(myNumber);
+...
+BigDecimal plainNumber = numberEncryptor.decrypt(myEncryptedNumber);
+...
+----------------
 
 
 * Binary encryption
@@ -282,5 +325,19 @@ binaryEncryptor.setPassword(myEncryptionPassword);
 byte[] myEncryptedBinary = binaryEncryptor.encrypt(myBinary);
 ...
 String plainBinary = binaryEncryptor.decrypt(myEncryptedBinary);
+...
+----------------
+
+  More security: the <<<AES256BinaryEncryptor>>> util class with a much more secure
+  algorithm: PBEWithHMACSHA512AndAES_256, (you need Java 8 at least to use it):
+
+----------------
+...
+AES256BinaryEncryptor binaryEncryptor = new AES256BinaryEncryptor();
+binaryEncryptor.setPassword(myEncryptionPassword);
+...
+byte[] myEncryptedBytes = binaryEncryptor.encrypt(myBytes);
+...
+byte[] plainBytes = binaryEncryptor.decrypt(myEncryptedBytes);
 ...
 ----------------

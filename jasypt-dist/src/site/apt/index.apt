@@ -2,7 +2,7 @@
   Jasypt: Java simplified encryption - Main
   -------
 
-  <<Jasypt 1.9.2 RELEASED!>> (February 25th, 2014) [{{{./download.html}DOWNLOAD and ChangeLogs}}] [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
+  <<Jasypt 1.9.3 RELEASED!>> (May 25th, 2019) [{{{./download.html}DOWNLOAD and ChangeLogs}}] [{{{./whatsnew19.html}WHAT'S NEW IN JASYPT 1.9}}]
 
 Java Simplified Encryption
 
@@ -47,7 +47,7 @@ if (passwordEncryptor.checkPassword(inputPassword, encryptedPassword)) {
   ...encrypting and decrypting a text...
   
 ----------------
-StrongTextEncryptor textEncryptor = new StrongTextEncryptor();
+AES256TextEncryptor textEncryptor = new AES256TextEncryptor();
 textEncryptor.setPassword(myEncryptionPassword);
 String myEncryptedText = textEncryptor.encrypt(myText);
 ...
@@ -66,8 +66,8 @@ String plainText = textEncryptor.decrypt(myEncryptedText);
 ----------------
   
   But of course, besides easy, <<jasypt is highly configurable>>. You will
-  be able to choose encryption algorithms, salt generation and many more
-  advanced features...
+  be able to choose encryption algorithms, salt generation, initialization
+  vector generation and many more advanced features...
   
 
   

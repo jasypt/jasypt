@@ -1,13 +1,14 @@
   -------
-  Jasypt: Java simplified encryption - Integrating Jasypt with Spring 3.1
+  Jasypt: Java simplified encryption - Integrating Jasypt with Spring 3.1 and Spring 4.0
   -------
 
 
-Integrating Jasypt with Spring 3.1
+Integrating Jasypt with Spring 3.1 and Spring 4.0
 
 
-  Jasypt provides the <<<jasypt-spring31>>> artifact for integration with
-  Spring Framework 3.1. Since jasypt 1.9.0, this artifact must be added
+  Jasypt provides the <<<jasypt-spring31>>> and <<<jasypt-spring4>>>
+  artifacts for integration with Spring Framework 3.1 and Spring Framework 4.0.
+  Since jasypt 1.9.0, this artifact must be added
   to your classpath separately.
   
   For those migrating from Spring 3.0, Jasypt's support for Spring 3.1 is basically
@@ -22,13 +23,13 @@ Integrating Jasypt with Spring 3.1
 
   * {{{Using_jasypt_digesters_and_encryptors_as_Spring_beans}Using jasypt digesters and encryptors as Spring beans}}
 
-  * {{{Encryptable_PropertySource_implementation_for_Spring_3.1}Encryptable PropertySource implementation for Spring 3.1}}
+  * {{{Encryptable_PropertySource_implementation_for_Spring_3.1}Encryptable PropertySource implementation for Spring 3.1 and Spring 4.0}}
   
   * {{{Integrating_jasypt_with_Springs_application_configuration_infrastructure}Integrating jasypt with Spring's application configuration infrastructure}}
   
   * {{{The_encryption_namespace}The <<<encryption>>> namespace}}
   
-  * {{{Integrating_jasypt_with_Spring_Security_3.x}Integrating jasypt with Spring Security 3.x}}
+  * {{{Integrating_jasypt_with_Spring_Security_3.x}Integrating jasypt with Spring Security 3.x and Spring Security 4.x}}
 
 
 * {Using jasypt digesters and encryptors as Spring beans}
@@ -59,11 +60,11 @@ Integrating Jasypt with Spring 3.1
 
       
 
-* {Encryptable PropertySource implementation for Spring 3.1}
+* {Encryptable PropertySource implementation for Spring 3.1 and Spring 4.0}
       
-  Jasypt includes <<<org.jasypt.spring31.properties.EncryptablePropertiesPropertySource>>>,
+  Jasypt includes <<<org.jasypt.spring31|spring4|.properties.EncryptablePropertiesPropertySource>>>,
   an implementation of <<<org.springframework.core.env.PropertySource>>>
-  which allows integrating jasypt encryption with Spring 3.1's <Environment> configuration
+  which allows integrating jasypt encryption with Spring 3.1 and Spring 4.0's <Environment> configuration
   infrastructure.
   
   You can use it as you would with any other PropertySource:
@@ -89,19 +90,19 @@ Integrating Jasypt with Spring 3.1
   Besides the <<<PropertySource>>> implementation already explained, Jasypt provides several 
   Spring-specific configuration management classes:
   
-    * <<<org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer>>>,
+    * <<<org.jasypt.spring31|spring4|.properties.EncryptablePropertyPlaceholderConfigurer>>>,
       a totally compatible replacement for Spring's 
       <PropertyPlaceholderConfigurer>.
       
     []
   
-    * <<<org.jasypt.spring31.properties.EncryptablePropertyOverrideConfigurer>>>,
+    * <<<org.jasypt.spring31|spring4|.properties.EncryptablePropertyOverrideConfigurer>>>,
       a totally compatible replacement for Spring's 
       <PropertyOverrideConfigurer>.
   
     []
    
-    * <<<org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer>>>:
+    * <<<org.jasypt.spring31|spring4|.properties.EncryptablePreferencesPlaceholderConfigurer>>>:
       a totally compatible replacement for Spring's 
       <PreferencesPlaceholderConfigurer>.
     
@@ -203,7 +204,7 @@ Integrating Jasypt with Spring 3.1
 
 ** Encryptable PreferencesPlaceholderConfigurer implementation for Spring
       
-  Jasypt includes <<<org.jasypt.spring31.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
+  Jasypt includes <<<org.jasypt.spring31|spring4|.properties.EncryptablePreferencesPlaceholderConfigurer>>>,
   a subclass of <<<org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer>>>
   which allows the transparent decryption preferences set with JDK 1.4's Preferences API.
   
@@ -214,7 +215,7 @@ Integrating Jasypt with Spring 3.1
 * {The <<<encryption>>> namespace}
 
 
-  The <<<jasypt-spring3>>> library includes a namespace you can use in your Spring XML files
+  The <<<jasypt-spring3>>> and <<<jasypt-spring4>>> libraries includes a namespace you can use in your Spring XML files
   in order to make the declaration of your jasypt entities much easier.
   
   This namespace can be included in your XML like this:
@@ -382,9 +383,9 @@ Integrating Jasypt with Spring 3.1
 --- 
 
 
-* {Integrating jasypt with Spring Security 3.x}
+* {Integrating jasypt with Spring Security 3.x and Spring Security 4.x}
 
-  For details on how to integrate jasypt with Spring Security 3.x, 
+  For details on how to integrate jasypt with Spring Security 3.x, and Spring Security 4.x 
   please have a look at {{{./springsecurity.html}this guide}}.
 
   

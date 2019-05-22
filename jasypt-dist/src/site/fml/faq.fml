@@ -209,7 +209,11 @@
           it lets you use any JCE provider of your choice. 
         </p>
         <p>
-          <b>Both AES (encryption) and WHIRLPOOL (digests) are algorithms supported 
+          AES (encryption) is supported by the Sun JCE provider since Java 8, and it can be
+          used by Jasypt since version 1.9.3.
+        </p>
+        <p>
+          <b>Also, both AES (encryption) and WHIRLPOOL (digests) are algorithms supported 
           by the Bouncy Castle JCE provider</b>, and thus you can use them from 
           jasypt as long as you set Bouncy Castle as your JCE provider for your
           jasypt encryptors or digesters.
@@ -633,6 +637,22 @@
           transmission of BASE64-encoded data as URL parameters (BASE64 uses characters
           which are forbidden in URL parameters, like "="). For these uses, try
           using hexadecimal output.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="i-receive-null-when-encrypting-decrypting">
+      <question>I receive a null output when trying to encrypt/decrypt my data using
+       AES-based encryption.</question>
+      <answer>
+        <p>
+          Since Jasypt v1.9.3 PBEWith<digest>AndAES algorithms (from the JCE Provider of JAVA 8)
+          are supported. They require an initialization vector (IV) parameter. By default
+          Jasypt PBExxEncryptors use a NoIvGenerator for maintaining backwards compatibility
+          and decrypt values encrypted with previous Jasypt versions. 
+          Establishing a IvGenerator (setIvGenerator method) will solve the issue.
+          The IV should be random and only used one time, so org.jasypt.RandomIvGenerator is the recommended
+          one.
         </p>
       </answer>
     </faq>

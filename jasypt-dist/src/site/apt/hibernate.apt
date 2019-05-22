@@ -1,12 +1,13 @@
   -------
-  Jasypt: Java simplified encryption - Integrating Jasypt with Hibernate 3 and 4
+  Jasypt: Java simplified encryption - Integrating Jasypt with Hibernate 3, 4 and 5
   -------
 
 
-Integrating Jasypt with Hibernate 3.x or 4.x
+Integrating Jasypt with Hibernate 3.x, 4.x or 5.x
 
-  Jasypt provides the <<<jasypt-hibernate3>>> and <<<jasypt-hibernate4>>> artifacts
-  for Hibernate integration. Since jasypt 1.9.0, these artifacts must be added
+  Jasypt provides the <<<jasypt-hibernate3>>>, <<<jasypt-hibernate4>>> and
+  <<<jasypt-hibernate5>>> artifacts for Hibernate integration.
+  Since jasypt 1.9.0, these artifacts must be added
   to your classpath separately.
 
   These integration libraries include several Hibernate <<UserType>> implementations 
@@ -272,13 +273,13 @@ Integrating Jasypt with Hibernate 3.x or 4.x
   which let the user declare the datasource parameters
   (driver, url, username and password) in an encrypted manner:
   
-    * <<<org.jasypt.hibernate3|hibernate4.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider>>>,
+    * <<<org.jasypt.hibernate3|hibernate4|hibernate5.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider>>>,
     which extends Hibernate's <Driver Manager> connection provider (a very
     simplistic pool implementation).
 
     []
   
-    * <<<org.jasypt.hibernate3|hibernate4.connectionprovider.EncryptedPasswordC3P0ConnectionProvider>>>,
+    * <<<org.jasypt.hibernate3|hibernate4|hibernate5.connectionprovider.EncryptedPasswordC3P0ConnectionProvider>>>,
     which extends Hibernate's <C3P0-based> connection provider.
          
     []

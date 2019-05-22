@@ -48,13 +48,13 @@ public class Index {
     private PBEByteEncryptor enc1;
 
     @Autowired
-    private PBEStringEncryptor enc2;
-
-    @Autowired
     private PBEBigDecimalEncryptor enc3;
 
     @Autowired
     private PBEBigIntegerEncryptor enc4;
+
+    @Autowired
+    private PBEStringEncryptor encAES;
 
     @Autowired
     private BasicTextEncryptor bte;
@@ -102,23 +102,26 @@ public class Index {
         final byte[] mba = "Hello!".getBytes();
         final byte[] encMba = this.enc1.encrypt(mba);
         model.addAttribute("encMba", new String(encMba) + " | " + this.enc1.getClass().getName());
-
-        final String ms = this.enc2.encrypt("Hello World!");
-        model.addAttribute("encMs", ms + " | " + this.enc2.getClass().getName());
         
         final StandardPBEStringEncryptor enctest = new StandardPBEStringEncryptor();
         enctest.setPassword("jasypt");
         enctest.setAlgorithm("PBEWithMD5AndTripleDES");
         enctest.setStringOutputType("hexa");
         enctest.setKeyObtentionIterations(20);
-        
-        System.out.println(enctest.decrypt(ms));
+
+        System.out.println("BigDecimal: " + enc3.getClass().getName());
+        System.out.println("BigInteger: " + enc4.getClass().getName());
 
         System.out.println(this.enc3.getClass().getName());
         System.out.println(this.enc4.getClass().getName());
 
-        System.out.println(this.bte.getClass().getName() + this.bte.encrypt("hello!"));
-        System.out.println(this.ste.getClass().getName() + this.ste.encrypt("hello!"));
+        String bteE = bte.encrypt("hello!");
+        System.out.println("Basic encryptor: " + bte.getClass().getName() + bteE + " -> " + bte.decrypt(bteE));
+        String steE = ste.encrypt("hello!");
+        System.out.println("Strong encryptor: " + ste.getClass().getName() + steE + " -> " + ste.decrypt(steE));
+        String encAESe = encAES.encrypt("hello!");
+        System.out.println("AES: " + encAES.getClass().getName() + encAESe + " -> " + encAES.decrypt(encAESe));
+        model.addAttribute("encAES", new String(encAESe) + " | " + encAES.getClass().getName());
         
         System.out.println(this.sd.digest("myPassword") + " | " + this.sd.getClass().getName());
         
