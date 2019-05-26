@@ -646,7 +646,7 @@
        AES-based encryption.</question>
       <answer>
         <p>
-          Since Jasypt v1.9.3 PBEWith<digest>AndAES algorithms (from the JCE Provider of JAVA 8)
+          Since Jasypt v1.9.3 PBEWithDigestAndAES algorithms (from the JCE Provider of JAVA 8)
           are supported. They require an initialization vector (IV) parameter. By default
           Jasypt PBExxEncryptors use a NoIvGenerator for maintaining backwards compatibility
           and decrypt values encrypted with previous Jasypt versions. 
