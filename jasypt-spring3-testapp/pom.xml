@@ -166,7 +166,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>3.0.5.RELEASE</version>
+      <version>4.3.19.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
