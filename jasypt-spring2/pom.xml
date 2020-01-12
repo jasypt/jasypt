@@ -215,7 +215,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>2.5</version>
+      <version>4.3.19.RELEASE</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
