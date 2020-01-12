@@ -1,0 +1,4 @@
+1.9.3
+=====
+
+- Created new jasypt-springsecurity4 module for Spring Security 4 integration.

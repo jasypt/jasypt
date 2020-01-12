@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt-spring4</artifactId>
-  <version>1.9.3-SNAPSHOT</version>
+  <version>1.9.3</version>
   <packaging>jar</packaging>
   <name>JASYPT: Java Simplified Encryption</name>
   <url>http://www.jasypt.org</url>
