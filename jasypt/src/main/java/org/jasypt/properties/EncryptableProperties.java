@@ -48,18 +48,16 @@ import org.jasypt.util.text.TextEncryptor;
  *   </center>
  * </p>
  * <p>
- * Decryption is performed on-the-fly when the {@link #getProperty(String)} or 
- * {@link #getProperty(String, String)} methods are called, and only these two
- * methods perform decryption (note that neither {@link #get(Object)} nor
- * {@link #toString()} do). Load and store operations are not affected 
- * by decryption in any manner.
+ * Decryption is performed on-the-fly when the {@link #getProperty(String)},
+ * {@link #getProperty(String, String)} or {@link #get(Object)} methods are called.
+ * Load and store operations are not affected by decryption in any manner.
  * </p>
  * <p>
  * Encrypted and unencrypted objects can be combined in the same 
  * properties file.
  * </p>
  * <p>
- * Please note that, altough objects of this class are Serializable, they
+ * Please note that, although objects of this class are Serializable, they
  * cannot be serialized and then de-serialized in different classloaders or
  * virtual machines. This is so because encryptors are not serializable themselves
  * (they cannot, as they contain sensitive information) and so they remain
