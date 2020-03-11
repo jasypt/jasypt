@@ -19,8 +19,7 @@
  */
 package org.jasypt.hibernate5.connectionprovider;
 
-import java.util.Properties;
-
+import java.util.Map;
 import org.hibernate.c3p0.internal.C3P0ConnectionProvider;
 import org.hibernate.cfg.AvailableSettings;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
@@ -95,11 +94,11 @@ public final class EncryptedPasswordC3P0ConnectionProvider
         super();
     }
     
-    
-    public void configure(final Properties props) {
+    @Override
+    public void configure(final Map props) {
        
        final String encryptorRegisteredName = 
-           props.getProperty(ParameterNaming.ENCRYPTOR_REGISTERED_NAME);
+           (String) props.get(ParameterNaming.ENCRYPTOR_REGISTERED_NAME);
        
        final HibernatePBEEncryptorRegistry encryptorRegistry =
            HibernatePBEEncryptorRegistry.getInstance();
@@ -113,29 +112,29 @@ public final class EncryptedPasswordC3P0ConnectionProvider
        }
 
        // Get the original values, which may be encrypted
-       final String driver = props.getProperty(AvailableSettings.DRIVER);
-       final String url = props.getProperty(AvailableSettings.URL);
-       final String user = props.getProperty(AvailableSettings.USER);
-       final String password = props.getProperty(AvailableSettings.PASS);
+       final String driver = (String) props.get(AvailableSettings.DRIVER);
+       final String url = (String) props.get(AvailableSettings.URL);
+       final String user = (String) props.get(AvailableSettings.USER);
+       final String password = (String) props.get(AvailableSettings.PASS);
 
        // Perform decryption operations as needed and store the new values
        if (PropertyValueEncryptionUtils.isEncryptedValue(driver)) {
-           props.setProperty(
+           props.put(
                    AvailableSettings.DRIVER, 
                    PropertyValueEncryptionUtils.decrypt(driver, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(url)) {
-           props.setProperty(
+           props.put(
                    AvailableSettings.URL, 
                    PropertyValueEncryptionUtils.decrypt(url, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(user)) {
-           props.setProperty(
+           props.put(
                    AvailableSettings.USER, 
                    PropertyValueEncryptionUtils.decrypt(user, encryptor));
        }
        if (PropertyValueEncryptionUtils.isEncryptedValue(password)) {
-           props.setProperty(
+           props.put(
                    AvailableSettings.PASS, 
                    PropertyValueEncryptionUtils.decrypt(password, encryptor));
        }
