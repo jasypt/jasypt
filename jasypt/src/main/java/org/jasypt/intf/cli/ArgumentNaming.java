@@ -31,6 +31,10 @@ final class ArgumentNaming {
     
     static final String ARG_INPUT = "input";
     
+    static final String ARG_INPUT_FILE = "inputFile";
+    
+    static final String ARG_OUTPUT_FILE = "outputFile";
+    
     static final String ARG_PASSWORD = "password";
     
     static final String ARG_ALGORITHM = "algorithm";
@@ -70,6 +74,14 @@ final class ArgumentNaming {
     static final String ARG_PREFIX = "prefix";
     
     static final String ARG_SUFFIX = "suffix";
+    
+    static final String ARG_ENCRYPTED_PREFIX = "encryptedPrefix";
+    
+    static final String ARG_ENCRYPTED_SUFFIX = "encryptedSuffix";
+    
+    static final String ARG_DECRYPTED_PREFIX = "decryptedPrefix";
+    
+    static final String ARG_DECRYPTED_SUFFIX = "decryptedSuffix";
 
     
     
