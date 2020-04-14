@@ -151,6 +151,8 @@ public class FileEncryptorService {
             result.append(replacement);
         }
         
+        matcher.appendTail(result);
+        
         final String outputFileName = argumentValues.getProperty(ArgumentNaming.ARG_OUTPUT_FILE);
         String outputFilePath = null;
         
@@ -252,6 +254,8 @@ public class FileEncryptorService {
             matcher.appendReplacement(result, "");
             result.append(replacement);
         }
+        
+        matcher.appendTail(result);
         
         final String outputFileName = argumentValues.getProperty(ArgumentNaming.ARG_OUTPUT_FILE);
         String outputFilePath = null;
