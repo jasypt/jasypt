@@ -1,0 +1,11 @@
+Key1: Value1
+Key2: DEC[sensitiveValue2]
+List1:
+  - DEC[sensitiveElement1]
+  - Element2
+Map1:
+  MapKey1: DEC[sensitiveValue1]
+  MapKey2:
+    List:
+      Key1: Value1
+      Key2: DEC[sensitiveValue2]
