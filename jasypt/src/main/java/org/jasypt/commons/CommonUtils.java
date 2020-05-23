@@ -21,6 +21,7 @@ package org.jasypt.commons;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -337,6 +338,15 @@ public final class CommonUtils {
             if(bufferedWriter != null) bufferedWriter.close();
             if(fileWriter != null) fileWriter.close();
         }
+    }
+    
+    public static void deleteFile(final String filePath) {
+        if(filePath==null) {
+            System.err.println("Null filepath passed! Nothing to delete.");
+            return;
+        }
+        File file = new File(filePath);
+        file.delete();
     }
     
     /**
