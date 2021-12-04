@@ -19,7 +19,12 @@
  */
 package org.jasypt.intf.cli;
 
+import java.io.IOException;
 import java.util.Properties;
+
+import org.jasypt.commons.CommonUtils;
+import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.jasypt.intf.service.FileEncryptorService;
 
 
 /**
@@ -134,17 +139,78 @@ public final class JasyptPBEFileDecryptionCLI {
             
             CLIUtils.showArgumentDescription(argumentValues, verbose);
             
-            final FileEncryptorService fileEncryptorService = new FileEncryptorService();
-            
-            final String outputFilePath = fileEncryptorService.decryptFile(location, argumentValues, verbose);
+            final String outputFilePath = decryptFile(location, argumentValues, verbose);
             
             final String result = "Decryption complete and is written at: " + outputFilePath;
             
             CLIUtils.showOutput(result, verbose);
+            
         } catch (Throwable t) {
             CLIUtils.showError(t, verbose);
         }
         
+    }
+    
+    /**
+     * <p>
+     * Performs decryption operation on a file by identifying parameters from CLI Arguments
+     * </p>
+     * 
+     * @param location The base location to perform I/O operations
+     * @param argumentValues
+     * @param verbose
+     * @return The output file path where decrypted file is saved
+     * @throws IOException if there's some exception while reading/writing the files.
+     * @throws EncryptionOperationNotPossibleException if the decryption operation could
+     *         not be performed on any of the values (either because of wrong input or wrong
+     *         parameterization).
+     */
+    private static String decryptFile(
+            final String location,
+            final Properties argumentValues,
+            final boolean verbose) throws IOException {
+        
+        String encryptedPrefix = argumentValues.getProperty(ArgumentNaming.ARG_ENCRYPTED_PREFIX);
+        String encryptedSuffix = argumentValues.getProperty(ArgumentNaming.ARG_ENCRYPTED_SUFFIX);
+        String decryptedPrefix = argumentValues.getProperty(ArgumentNaming.ARG_DECRYPTED_PREFIX);
+        String decryptedSuffix = argumentValues.getProperty(ArgumentNaming.ARG_DECRYPTED_SUFFIX);
+        
+        final String inputFileName = argumentValues.getProperty(ArgumentNaming.ARG_INPUT_FILE);
+        final String password = argumentValues.getProperty(ArgumentNaming.ARG_PASSWORD);
+        CommonUtils.validateNotEmpty(inputFileName, "Input file name cannot be null/empty");
+        CommonUtils.validateNotEmpty(password, "Password cannot be null/empty");
+        
+        final String inputFilePath = location + inputFileName;
+        final String inputFileAsString = CommonUtils.getFileAsString(inputFilePath);
+        
+        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+        config.setPassword(password);
+        config.setAlgorithm(argumentValues.getProperty(ArgumentNaming.ARG_ALGORITHM));
+        config.setKeyObtentionIterations(argumentValues.getProperty(ArgumentNaming.ARG_KEY_OBTENTION_ITERATIONS));
+        config.setSaltGeneratorClassName(argumentValues.getProperty(ArgumentNaming.ARG_SALT_GENERATOR_CLASS_NAME));
+        config.setProviderName(argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_NAME));
+        config.setProviderClassName(argumentValues.getProperty(ArgumentNaming.ARG_PROVIDER_CLASS_NAME));
+        config.setStringOutputType(argumentValues.getProperty(ArgumentNaming.ARG_STRING_OUTPUT_TYPE));
+        config.setIvGeneratorClassName(argumentValues.getProperty(ArgumentNaming.ARG_IV_GENERATOR_CLASS_NAME));
+        
+        final FileEncryptorService fileEncryptorService = new FileEncryptorService();
+        
+        String outputFileAsString = fileEncryptorService.decrypt(
+        		inputFileAsString, config, encryptedPrefix, encryptedSuffix, decryptedPrefix, decryptedSuffix, verbose
+        		);
+        
+        final String outputFileName = argumentValues.getProperty(ArgumentNaming.ARG_OUTPUT_FILE);
+        String outputFilePath = null;
+        
+        if(CommonUtils.isEmpty(outputFileName)) {
+            outputFilePath = inputFilePath;
+        } else {
+            outputFilePath = location + outputFileName;
+        }
+        
+        CommonUtils.writeStringToFile(outputFilePath, outputFileAsString);
+        
+        return outputFilePath;
     }
     
     
