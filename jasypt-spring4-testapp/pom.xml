@@ -204,7 +204,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
-      <version>4.0.0.RELEASE</version>
+      <version>5.2.21.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
