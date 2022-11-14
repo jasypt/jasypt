@@ -202,7 +202,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>3.1.0.RELEASE</version>
+      <version>3.2.18.RELEASE</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
