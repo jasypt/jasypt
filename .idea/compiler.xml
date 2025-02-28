@@ -6,7 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="jasypt-springsecurity4" />
+        <module name="jasypt-springsecurity3" />
+        <module name="jasypt-springsecurity2" />
+        <module name="jasypt-spring2" />
+        <module name="jasypt-spring3" />
+        <module name="jasypt-spring4" />
+        <module name="jasypt-wicket13" />
+        <module name="jasypt-spring31-testapp" />
+        <module name="jasypt-wicket15" />
         <module name="jasypt" />
+        <module name="jasypt-spring31" />
+        <module name="jasypt-spring3-testapp" />
+        <module name="jasypt-hibernate3" />
+        <module name="jasypt-dist" />
+        <module name="jasypt-hibernate5" />
+        <module name="jasypt-hibernate4" />
+        <module name="jasypt-acegisecurity" />
       </profile>
     </annotationProcessing>
   </component>

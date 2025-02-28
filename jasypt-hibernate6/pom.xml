@@ -23,7 +23,7 @@
   
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jasypt</groupId>
-  <artifactId>jasypt-hibernate5</artifactId>
+  <artifactId>jasypt-hibernate6</artifactId>
   <packaging>jar</packaging>
   <version>1.9.4-SNAPSHOT</version>
   <name>JASYPT: Java Simplified Encryption</name>
@@ -64,6 +64,14 @@
       <id>hokitorres</id>
       <name>Hoki Torres</name>
       <email>hokitorres AT users.sourceforge.net</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>ritcat14</id>
+      <name>Kris Rice</name>
+      <email>krisjjrice@gmail.com</email>
       <roles>
         <role>Developer</role>
       </roles>
@@ -192,21 +200,6 @@
           </execution>
         </executions>
       </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -236,7 +229,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.2.5.Final</version>
+      <version>6.6.3.Final</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -244,7 +237,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-c3p0</artifactId>
-      <version>5.2.5.Final</version>
+      <version>6.6.9.Final</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
@@ -252,7 +245,7 @@
      <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-testing</artifactId>
-      <version>5.2.5.Final</version>
+      <version>6.6.9.Final</version>
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
@@ -274,7 +267,7 @@
     <dependency>
         <groupId>org.hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
-        <version>2.2.6</version>
+        <version>2.7.1</version>
         <scope>test</scope>
     </dependency>
     
