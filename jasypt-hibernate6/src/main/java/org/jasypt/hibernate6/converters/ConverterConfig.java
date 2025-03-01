@@ -11,14 +11,14 @@ public class ConverterConfig {
     private static final Map<String, Class<?>> PROPERTIES_MAPPING = new HashMap<>();
 
     static {
-        PROPERTIES_MAPPING.put(ParameterNaming.ENCRYPTOR_NAME, String.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.ALGORITHM, String.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.PROVIDER_NAME, String.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.PASSWORD, String.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.KEY_OBTENTION_ITERATIONS, Integer.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.STRING_OUTPUT_TYPE, String.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.DECIMAL_SCALE, Integer.class);
-        PROPERTIES_MAPPING.put(ParameterNaming.STORE_TIME_ZONE, Boolean.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.ENCRYPTOR_NAME, String.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.ALGORITHM, String.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.PROVIDER_NAME, String.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.PASSWORD, String.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.KEY_OBTENTION_ITERATIONS, Integer.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.STRING_OUTPUT_TYPE, String.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.DECIMAL_SCALE, Integer.class);
+        PROPERTIES_MAPPING.put(EncryptionParameters.STORE_TIME_ZONE, Boolean.class);
     }
 
     private final Map<String, Object> mappedProperties = new HashMap<>();
@@ -64,28 +64,28 @@ public class ConverterConfig {
         }
 
         useEncryptorName = false;
-        if (mappedProperties.get(ParameterNaming.ENCRYPTOR_NAME) != null) {
-            if ((mappedProperties.get(ParameterNaming.ALGORITHM) != null) ||
-                    (mappedProperties.get(ParameterNaming.PASSWORD) != null) ||
-                    (mappedProperties.get(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null)) {
+        if (mappedProperties.get(EncryptionParameters.ENCRYPTOR_NAME) != null) {
+            if ((mappedProperties.get(EncryptionParameters.ALGORITHM) != null) ||
+                    (mappedProperties.get(EncryptionParameters.PASSWORD) != null) ||
+                    (mappedProperties.get(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null)) {
 
                 throw new EncryptionInitializationException(
-                        "If \"" + ParameterNaming.ENCRYPTOR_NAME +
+                        "If \"" + EncryptionParameters.ENCRYPTOR_NAME +
                                 "\" is specified, none of \"" +
-                                ParameterNaming.ALGORITHM + "\", \"" +
-                                ParameterNaming.PASSWORD + "\" or \"" +
-                                ParameterNaming.KEY_OBTENTION_ITERATIONS + "\" " +
+                                EncryptionParameters.ALGORITHM + "\", \"" +
+                                EncryptionParameters.PASSWORD + "\" or \"" +
+                                EncryptionParameters.KEY_OBTENTION_ITERATIONS + "\" " +
                                 "can be specified");
             }
             this.useEncryptorName = true;
-        } else if (mappedProperties.get(ParameterNaming.PASSWORD) == null) {
+        } else if (mappedProperties.get(EncryptionParameters.PASSWORD) == null) {
 
             throw new EncryptionInitializationException(
-                    "If \"" + ParameterNaming.ENCRYPTOR_NAME +
+                    "If \"" + EncryptionParameters.ENCRYPTOR_NAME +
                             "\" is not specified, then \"" +
-                            ParameterNaming.PASSWORD + "\" (and optionally \"" +
-                            ParameterNaming.ALGORITHM + "\" and \"" +
-                            ParameterNaming.KEY_OBTENTION_ITERATIONS + "\") " +
+                            EncryptionParameters.PASSWORD + "\" (and optionally \"" +
+                            EncryptionParameters.ALGORITHM + "\" and \"" +
+                            EncryptionParameters.KEY_OBTENTION_ITERATIONS + "\") " +
                             "must be specified");
         }
     }

@@ -32,7 +32,7 @@ import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
  * @author Chus Picos
  * 
  */
-public final class ParameterNaming {
+public final class ConfigurationParameters {
 
     
     /**
@@ -45,7 +45,7 @@ public final class ParameterNaming {
         "hibernate.connection.encryptor_registered_name";
 
     
-    private ParameterNaming() {
+    private ConfigurationParameters() {
         super();
     }
     

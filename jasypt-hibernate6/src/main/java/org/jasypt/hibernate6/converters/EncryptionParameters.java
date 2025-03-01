@@ -30,7 +30,7 @@ package org.jasypt.hibernate6.converters;
  * @author Chus Picos
  * 
  */
-public final class ParameterNaming {
+public final class EncryptionParameters {
 
     /**
      * <p>
@@ -122,7 +122,7 @@ public final class ParameterNaming {
     
     
     
-    private ParameterNaming() {
+    private EncryptionParameters() {
         super();
     }
     

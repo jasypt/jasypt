@@ -28,11 +28,11 @@ public class EncryptedBigInteger extends JasyptConverter<BigInteger, BigInteger>
                         HibernatePBEEncryptorRegistry.getInstance();
                 final PBEBigIntegerEncryptor pbeEncryptor =
                         registry.getPBEBigIntegerEncryptor(
-                                EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME));
+                                EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big integer encryptor registered for hibernate " +
-                                    "with name \"" + EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME) + "\"");
+                                    "with name \"" + EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
                 }
                 this.encryptor = pbeEncryptor;
 
@@ -41,15 +41,15 @@ public class EncryptedBigInteger extends JasyptConverter<BigInteger, BigInteger>
                 final StandardPBEBigIntegerEncryptor newEncryptor =
                         new StandardPBEBigIntegerEncryptor();
 
-                newEncryptor.setPassword(EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.PASSWORD));
+                newEncryptor.setPassword(EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                if (EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.ALGORITHM));
+                if (EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                    newEncryptor.setAlgorithm(EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
                 }
 
-                if (EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null) {
+                if (EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
                     newEncryptor.setKeyObtentionIterations(
-                            EncryptedBigInteger.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS));
+                            EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
                 }
 
                 newEncryptor.initialize();

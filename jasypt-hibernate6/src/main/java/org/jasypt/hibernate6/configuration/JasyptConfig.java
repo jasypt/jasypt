@@ -34,7 +34,7 @@ public class JasyptConfig extends Configuration {
     }
 
     private void storeDecrypted(String propertyName, Properties props) {
-        final String encryptorRegisteredName = props.getProperty(ParameterNaming.ENCRYPTOR_REGISTERED_NAME);
+        final String encryptorRegisteredName = props.getProperty(ConfigurationParameters.ENCRYPTOR_REGISTERED_NAME);
         final HibernatePBEEncryptorRegistry encryptorRegistry =
                 HibernatePBEEncryptorRegistry.getInstance();
         final PBEStringEncryptor encryptor = encryptorRegistry.getPBEStringEncryptor(encryptorRegisteredName);

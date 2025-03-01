@@ -58,12 +58,12 @@ public final class EncryptedBigDecimal extends JasyptConverter<BigDecimal, BigDe
                         HibernatePBEEncryptorRegistry.getInstance();
                 final PBEBigDecimalEncryptor pbeEncryptor =
                         registry.getPBEBigDecimalEncryptor(
-                                EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME));
+                                EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big decimal encryptor registered for hibernate " +
                                     "with name \"" +
-                                    EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME)
+                                    EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
                                     + "\"");
                 }
                 this.encryptor = pbeEncryptor;
@@ -73,14 +73,14 @@ public final class EncryptedBigDecimal extends JasyptConverter<BigDecimal, BigDe
                 final StandardPBEBigDecimalEncryptor newEncryptor =
                         new StandardPBEBigDecimalEncryptor();
 
-                newEncryptor.setPassword(EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.PASSWORD));
+                newEncryptor.setPassword(EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                if (EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.ALGORITHM));
+                if (EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                    newEncryptor.setAlgorithm(EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
                 }
 
-                if (EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null) {
-                    newEncryptor.setKeyObtentionIterations(EncryptedBigDecimal.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS));
+                if (EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                    newEncryptor.setKeyObtentionIterations(EncryptedBigDecimal.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
                 }
 
                 newEncryptor.initialize();
@@ -103,7 +103,7 @@ public final class EncryptedBigDecimal extends JasyptConverter<BigDecimal, BigDe
             final BigDecimal scaledValue =
                     bigDecimal.setScale(
                             EncryptedBigDecimal.converterConfig.getProperty(
-                                    ParameterNaming.DECIMAL_SCALE
+                                    EncryptionParameters.DECIMAL_SCALE
                             ), RoundingMode.DOWN);
             return this.encryptor.encrypt(scaledValue);
         }
@@ -117,7 +117,7 @@ public final class EncryptedBigDecimal extends JasyptConverter<BigDecimal, BigDe
         final BigDecimal scaledEncryptedMessage =
                 bigDecimal.setScale(
                         EncryptedBigDecimal.converterConfig.getProperty(
-                                ParameterNaming.DECIMAL_SCALE
+                                EncryptionParameters.DECIMAL_SCALE
                         ), RoundingMode.UNNECESSARY);
         return this.encryptor.decrypt(scaledEncryptedMessage);
     }

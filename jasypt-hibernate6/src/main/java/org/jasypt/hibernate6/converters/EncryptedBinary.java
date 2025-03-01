@@ -36,12 +36,12 @@ public class EncryptedBinary extends JasyptConverter<byte[], byte[]> {
                         HibernatePBEEncryptorRegistry.getInstance();
                 final PBEByteEncryptor pbeEncryptor =
                         registry.getPBEByteEncryptor(
-                                EncryptedBinary.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME));
+                                EncryptedBinary.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big integer encryptor registered for hibernate " +
                                     "with name \"" +
-                                    EncryptedBinary.converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME)
+                                    EncryptedBinary.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
                                     + "\"");
                 }
                 this.encryptor = pbeEncryptor;
@@ -51,15 +51,15 @@ public class EncryptedBinary extends JasyptConverter<byte[], byte[]> {
                 final StandardPBEByteEncryptor newEncryptor =
                         new StandardPBEByteEncryptor();
 
-                newEncryptor.setPassword(EncryptedBinary.converterConfig.getProperty(ParameterNaming.PASSWORD));
+                newEncryptor.setPassword(EncryptedBinary.converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                if (EncryptedBinary.converterConfig.getProperty(ParameterNaming.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBinary.converterConfig.getProperty(ParameterNaming.ALGORITHM));
+                if (EncryptedBinary.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                    newEncryptor.setAlgorithm(EncryptedBinary.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
                 }
 
-                if (EncryptedBinary.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null) {
+                if (EncryptedBinary.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
                     newEncryptor.setKeyObtentionIterations(
-                            EncryptedBinary.converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS));
+                            EncryptedBinary.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
                 }
 
                 newEncryptor.initialize();

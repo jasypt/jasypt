@@ -27,11 +27,11 @@ public class EncryptedString extends JasyptConverter<String, String> {
                     final HibernatePBEEncryptorRegistry registry =
                             HibernatePBEEncryptorRegistry.getInstance();
                     final PBEStringEncryptor pbeEncryptor =
-                            registry.getPBEStringEncryptor(converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME));
+                            registry.getPBEStringEncryptor(converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                     if (pbeEncryptor == null) {
                         throw new EncryptionInitializationException(
                                 "No string encryptor registered for hibernate " +
-                                        "with name \"" + converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME) + "\"");
+                                        "with name \"" + converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
                     }
                     this.encryptor = pbeEncryptor;
 
@@ -39,19 +39,19 @@ public class EncryptedString extends JasyptConverter<String, String> {
 
                     final StandardPBEStringEncryptor newEncryptor = new StandardPBEStringEncryptor();
 
-                    newEncryptor.setPassword(converterConfig.getProperty(ParameterNaming.PASSWORD));
+                    newEncryptor.setPassword(converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                    if (converterConfig.getProperty(ParameterNaming.ALGORITHM) != null)
-                        newEncryptor.setAlgorithm(converterConfig.getProperty(ParameterNaming.ALGORITHM));
+                    if (converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null)
+                        newEncryptor.setAlgorithm(converterConfig.getProperty(EncryptionParameters.ALGORITHM));
 
-                    if (converterConfig.getProperty(ParameterNaming.PROVIDER_NAME) != null)
-                        newEncryptor.setProviderName(converterConfig.getProperty(ParameterNaming.PROVIDER_NAME));
+                    if (converterConfig.getProperty(EncryptionParameters.PROVIDER_NAME) != null)
+                        newEncryptor.setProviderName(converterConfig.getProperty(EncryptionParameters.PROVIDER_NAME));
 
-                    if (converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null)
-                        newEncryptor.setKeyObtentionIterations(converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS));
+                    if (converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null)
+                        newEncryptor.setKeyObtentionIterations(converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
 
-                    if (converterConfig.getProperty(ParameterNaming.STRING_OUTPUT_TYPE) != null)
-                        newEncryptor.setStringOutputType(converterConfig.getProperty(ParameterNaming.STRING_OUTPUT_TYPE));
+                    if (converterConfig.getProperty(EncryptionParameters.STRING_OUTPUT_TYPE) != null)
+                        newEncryptor.setStringOutputType(converterConfig.getProperty(EncryptionParameters.STRING_OUTPUT_TYPE));
 
                     newEncryptor.initialize();
 
