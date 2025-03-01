@@ -102,7 +102,7 @@ import org.jasypt.salt.SaltGenerator;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedStringType">
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedString">
  *      &lt;param name="encryptorRegisteredName"><b>myHibernateStringEncryptor</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>
@@ -124,8 +124,8 @@ import org.jasypt.salt.SaltGenerator;
 public final class HibernatePBEStringEncryptor {
 
     private String registeredName = null;
-    private PBEStringEncryptor encryptor = null;
-    private boolean encryptorSet = false;
+    private PBEStringEncryptor encryptor;
+    private boolean encryptorSet;
     
     
     

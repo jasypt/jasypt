@@ -1,5 +1,4 @@
-1.9.3
+2.0.0
 =====
 
-- Created new jasypt-hibernate5 module for Hibernate 5 integration.
-- Created additional tests
+- Created new jasypt-hibernate6 module for Hibernate 6 integration.

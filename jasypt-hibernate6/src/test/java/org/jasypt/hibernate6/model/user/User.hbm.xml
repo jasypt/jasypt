@@ -2,19 +2,19 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <typedef name="encryptedString" class="org.jasypt.hibernate6.type.EncryptedStringType">
+    <typedef name="encryptedString" class="org.jasypt.hibernate6.converters.EncryptedString">
       <param name="encryptorRegisteredName">hibernateStringEncryptor</param>
     </typedef>
-    <typedef name="encryptedCalendarAsString" class="org.jasypt.hibernate6.type.EncryptedCalendarAsStringType">
+    <typedef name="encryptedCalendarAsString" class="org.jasypt.hibernate6.converters.EncryptedCalendarAsString">
       <param name="encryptorRegisteredName">hibernateStringEncryptor</param>
     </typedef>
-    <typedef name="encryptedBinary" class="org.jasypt.hibernate6.type.EncryptedBinaryType">
+    <typedef name="encryptedBinary" class="org.jasypt.hibernate6.converters.EncryptedBinary">
       <param name="encryptorRegisteredName">hibernateByteEncryptor</param>
     </typedef>
-    <typedef name="encryptedBigInteger" class="org.jasypt.hibernate6.type.EncryptedBigIntegerType">
+    <typedef name="encryptedBigInteger" class="org.jasypt.hibernate6.converters.EncryptedBigInteger">
       <param name="encryptorRegisteredName">hibernateBigIntegerEncryptor</param>
     </typedef>
-    <typedef name="encryptedBigDecimal" class="org.jasypt.hibernate6.type.EncryptedBigDecimalType">
+    <typedef name="encryptedBigDecimal" class="org.jasypt.hibernate6.converters.EncryptedBigDecimalType">
       <param name="encryptorRegisteredName">hibernateBigDecimalEncryptor</param>
       <param name="decimalScale">2</param>
     </typedef>

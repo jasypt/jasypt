@@ -17,7 +17,7 @@
  * 
  * =============================================================================
  */
-package org.jasypt.hibernate6.type;
+package org.jasypt.hibernate6.converters;
 
 /**
  * <p>
