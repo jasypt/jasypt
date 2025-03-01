@@ -1,15 +1,83 @@
 package org.jasypt.hibernate6.converters;
 
-public class EncryptedFloatAsString extends AbstractEncryptedAsString {
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-    @Override
-    protected Object convertToObject(String string) {
-        return Float.parseFloat(string);
+public class EncryptedFloatAsString extends JasyptConverter<Float, String> {
+
+    protected PBEStringEncryptor encryptor = null;
+
+    public static ConverterConfig converterConfig;
+
+    public static void setConverterConfig(final ConverterConfig converterConfig) {
+        EncryptedFloatAsString.converterConfig = converterConfig;
     }
 
     @Override
-    protected String convertToString(Object object) {
-        return object.toString();
+    protected void checkInitialized() {
+        if (!this.initialized) {
+            if (converterConfig == null) {
+                this.encryptor = new StandardPBEStringEncryptor();
+            } else {
+
+                if (converterConfig.useEncryptorName) {
+
+                    final HibernatePBEEncryptorRegistry registry =
+                            HibernatePBEEncryptorRegistry.getInstance();
+                    final PBEStringEncryptor pbeEncryptor =
+                            registry.getPBEStringEncryptor(converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME));
+                    if (pbeEncryptor == null) {
+                        throw new EncryptionInitializationException(
+                                "No string encryptor registered for hibernate " +
+                                        "with name \"" + converterConfig.getProperty(ParameterNaming.ENCRYPTOR_NAME) + "\"");
+                    }
+                    this.encryptor = pbeEncryptor;
+
+                } else {
+
+                    final StandardPBEStringEncryptor newEncryptor = new StandardPBEStringEncryptor();
+
+                    newEncryptor.setPassword(converterConfig.getProperty(ParameterNaming.PASSWORD));
+
+                    if (converterConfig.getProperty(ParameterNaming.ALGORITHM) != null)
+                        newEncryptor.setAlgorithm(converterConfig.getProperty(ParameterNaming.ALGORITHM));
+
+                    if (converterConfig.getProperty(ParameterNaming.PROVIDER_NAME) != null)
+                        newEncryptor.setProviderName(converterConfig.getProperty(ParameterNaming.PROVIDER_NAME));
+
+                    if (converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS) != null)
+                        newEncryptor.setKeyObtentionIterations(converterConfig.getProperty(ParameterNaming.KEY_OBTENTION_ITERATIONS));
+
+                    if (converterConfig.getProperty(ParameterNaming.STRING_OUTPUT_TYPE) != null)
+                        newEncryptor.setStringOutputType(converterConfig.getProperty(ParameterNaming.STRING_OUTPUT_TYPE));
+
+                    newEncryptor.initialize();
+
+                    this.encryptor = newEncryptor;
+
+                }
+            }
+            this.initialized = true;
+        }
     }
 
+    @Override
+    public String convertToDatabaseColumn(Float value) {
+        checkInitialized();
+        if (value == null) {
+            return null;
+        }
+        return encryptor.encrypt(value.toString());
+    }
+
+    @Override
+    public Float convertToEntityAttribute(String s) {
+        checkInitialized();
+        if (s == null) {
+            return null;
+        }
+        return Float.parseFloat(encryptor.decrypt(s));
+    }
 }

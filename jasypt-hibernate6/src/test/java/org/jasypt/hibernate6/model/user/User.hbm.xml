@@ -14,7 +14,7 @@
     <typedef name="encryptedBigInteger" class="org.jasypt.hibernate6.converters.EncryptedBigInteger">
       <param name="encryptorRegisteredName">hibernateBigIntegerEncryptor</param>
     </typedef>
-    <typedef name="encryptedBigDecimal" class="org.jasypt.hibernate6.converters.EncryptedBigDecimalType">
+    <typedef name="encryptedBigDecimal" class="org.jasypt.hibernate6.converters.EncryptedBigDecimal">
       <param name="encryptorRegisteredName">hibernateBigDecimalEncryptor</param>
       <param name="decimalScale">2</param>
     </typedef>

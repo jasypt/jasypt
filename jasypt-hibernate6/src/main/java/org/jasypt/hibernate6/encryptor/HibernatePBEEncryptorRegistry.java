@@ -225,7 +225,7 @@ public final class HibernatePBEEncryptorRegistry {
 
     /**
      * Registers a <tt>PBEBigDecimalEncryptor</tt> object with the specified
-     * name.
+     * name.xz
      * 
      * @since 1.6
      * 

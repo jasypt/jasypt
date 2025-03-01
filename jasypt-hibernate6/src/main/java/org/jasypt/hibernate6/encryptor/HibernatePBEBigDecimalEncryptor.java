@@ -100,7 +100,7 @@ import org.jasypt.salt.SaltGenerator;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBigDecimalType">
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedBigDecimal">
  *      &lt;param name="encryptorRegisteredName"><b>myHibernateBigDecimalEncryptor</b>&lt;/param>
  *      &lt;param name="decimalScale"><b>2</b>&lt;/param>
  *    &lt;/typedef>
