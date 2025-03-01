@@ -20,7 +20,8 @@ To use you must:
 
 Example:
 
-```
+```java
+
 // register encryption modules
 StandardPBEStringEncryptor stringEnryptor = new StandardPBEStringEncryptor();
 stringEncryptor.setAlgorithm("PBEWithMD5AndDES");
@@ -52,6 +53,6 @@ class Example {
     String exampleString = "";
 
 }
-}
+
 ```
      
