@@ -32,7 +32,7 @@ Example:
  
  // tell the EncryptedString converter which encryptor to use
  Properties props = new Properties();
- props.setProperty(ParameterNaming.ENCRYPTOR_NAME, "hibernateStringEncryptor");
+ props.setProperty(EncryptionParameters.ENCRYPTOR_NAME, "hibernateStringEncryptor");
  EncryptedString.setConverterConfig(new ConverterConfig(props));
  
  JasyptConfig jConfig = new JasyptConfig()
