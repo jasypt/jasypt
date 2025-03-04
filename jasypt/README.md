@@ -9,4 +9,6 @@
  
 This project is a Fork of the official Jasypt. It included BouncyCastle 1.81-beta build for fixes related to IV, and Hibernate 6 support.
 
-     
+For the BC fix, you will need to include the ``jasypt-2.0.0.jar`` in your dependencies
+
+For Hibernate 6 support, you will need to include ``jasypt-hibernate6-2.0.0.jar`` in your dependencies.
