@@ -19,6 +19,7 @@
  */
 package org.jasypt.hibernate6;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -60,7 +61,7 @@ public class User {
 	private BigInteger bigIntegerAsString;
 
 	@Column
-	@Convert(converter = EncryptedBinaryConverter.class)
+	@Convert(converter = EncryptedBytesAsBlobConverter.class)
 	private byte[] binary;
 
 
@@ -68,6 +69,14 @@ public class User {
 	@Convert(converter = EncryptedByteAsStringConverter.class)
 	private byte byteAsString;
 
+
+	@Column
+	@Convert(converter = EncryptedBytesAsBlobConverter.class)
+	private byte[] byteBlob;
+
+	@Column
+	@Convert(converter = EncryptedBytesConverter.class)
+	private byte[] bytes;
 
 	@Column(columnDefinition = "VARCHAR(255)")
 	@Convert(converter = EncryptedCalendarAsStringConverter.class)
@@ -89,6 +98,12 @@ public class User {
 	private float floatAsString;
 
 
+	@Lob
+	@Column(length = 10485760) // 10 MB (adjust as needed)
+	@Convert(converter = EncryptedInputStreamAsBytesConverter.class)
+	private InputStream inputStream;
+
+
 	@Column(columnDefinition = "VARCHAR(255)")
 	@Convert(converter = EncryptedIntegerAsStringConverter.class)
 	private int integerAsString;
@@ -103,10 +118,11 @@ public class User {
 	@Convert(converter = EncryptedShortAsStringConverter.class)
 	private short shortAsString;
 
-	public User(String name, BigDecimal decimal, BigDecimal decimalAsString, BigInteger bigInteger, BigInteger bigIntegerAsString,
-				byte[] binary, byte byteAsString, Calendar calendar, Date date, double doubleAsString,
-				float floatAsString, int integerAsString, long longAsString, short shortAsString) {
-		super();
+
+	public User(String name, BigDecimal decimal, BigDecimal decimalAsString, BigInteger bigInteger,
+				BigInteger bigIntegerAsString, byte[] binary, byte byteAsString, byte[] byteBlob, byte[] bytes,
+				Calendar calendar, Date date, double doubleAsString, float floatAsString, InputStream inputStream,
+				int integerAsString, long longAsString, short shortAsString) {
 		this.name = name;
 		this.decimal = decimal;
 		this.decimalAsString = decimalAsString;
@@ -114,14 +130,18 @@ public class User {
 		this.bigIntegerAsString = bigIntegerAsString;
 		this.binary = binary;
 		this.byteAsString = byteAsString;
+		this.byteBlob = byteBlob;
+		this.bytes = bytes;
 		this.calendar = calendar;
 		this.date = date;
 		this.doubleAsString = doubleAsString;
 		this.floatAsString = floatAsString;
+		this.inputStream = inputStream;
 		this.integerAsString = integerAsString;
 		this.longAsString = longAsString;
 		this.shortAsString = shortAsString;
 	}
+
 
 	public User() {
 		super();
@@ -256,5 +276,29 @@ public class User {
 
 	public void setShortAsString(short shortAsString) {
 		this.shortAsString = shortAsString;
+	}
+
+	public byte[] getByteBlob() {
+		return byteBlob;
+	}
+
+	public void setByteBlob(byte[] byteBlob) {
+		this.byteBlob = byteBlob;
+	}
+
+	public byte[] getBytes() {
+		return bytes;
+	}
+
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
 	}
 }

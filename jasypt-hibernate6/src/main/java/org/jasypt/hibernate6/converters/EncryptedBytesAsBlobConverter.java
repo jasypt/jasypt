@@ -15,7 +15,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 
 @Converter
-public class EncryptedBinaryConverter extends JasyptConverter<byte[], Blob> {
+public class EncryptedBytesAsBlobConverter extends JasyptConverter<byte[], Blob> {
 
     private static final int BLOCK_SIZE = 2048;
     private PBEByteEncryptor encryptor = null;
@@ -23,7 +23,7 @@ public class EncryptedBinaryConverter extends JasyptConverter<byte[], Blob> {
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedBinaryConverter.converterConfig = converterConfig;
+        EncryptedBytesAsBlobConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -31,41 +31,46 @@ public class EncryptedBinaryConverter extends JasyptConverter<byte[], Blob> {
 
         if (!this.initialized) {
 
-            if (EncryptedBinaryConverter.converterConfig.useEncryptorName) {
-
-                final HibernatePBEEncryptorRegistry registry =
-                        HibernatePBEEncryptorRegistry.getInstance();
-                final PBEByteEncryptor pbeEncryptor =
-                        registry.getPBEByteEncryptor(
-                                EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
-                if (pbeEncryptor == null) {
-                    throw new EncryptionInitializationException(
-                            "No big integer encryptor registered for hibernate " +
-                                    "with name \"" +
-                                    EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
-                                    + "\"");
-                }
-                this.encryptor = pbeEncryptor;
-
+            if (converterConfig == null) {
+                encryptor = new StandardPBEByteEncryptor();
             } else {
 
-                final StandardPBEByteEncryptor newEncryptor = new StandardPBEByteEncryptor();
+                if (converterConfig.useEncryptorName) {
 
-                newEncryptor.setPassword(EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                    final HibernatePBEEncryptorRegistry registry =
+                            HibernatePBEEncryptorRegistry.getInstance();
+                    final PBEByteEncryptor pbeEncryptor =
+                            registry.getPBEByteEncryptor(
+                                    converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                    if (pbeEncryptor == null) {
+                        throw new EncryptionInitializationException(
+                                "No big integer encryptor registered for hibernate " +
+                                        "with name \"" +
+                                        converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
+                                        + "\"");
+                    }
+                    this.encryptor = pbeEncryptor;
 
-                if (EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                } else {
+
+                    final StandardPBEByteEncryptor newEncryptor = new StandardPBEByteEncryptor();
+
+                    newEncryptor.setPassword(converterConfig.getProperty(EncryptionParameters.PASSWORD));
+
+                    if (converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                        newEncryptor.setAlgorithm(converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                    }
+
+                    if (converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                        newEncryptor.setKeyObtentionIterations(
+                                converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
+                    }
+
+                    newEncryptor.initialize();
+
+                    this.encryptor = newEncryptor;
+
                 }
-
-                if (EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
-                    newEncryptor.setKeyObtentionIterations(
-                            EncryptedBinaryConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
-                }
-
-                newEncryptor.initialize();
-
-                this.encryptor = newEncryptor;
-
             }
 
             this.initialized = true;

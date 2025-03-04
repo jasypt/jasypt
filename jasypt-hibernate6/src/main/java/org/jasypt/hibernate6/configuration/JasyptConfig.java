@@ -40,7 +40,7 @@ public class JasyptConfig extends Configuration {
         addAnnotatedClass(EncryptedBigDecimalConverter.class);
         addAnnotatedClass(EncryptedBigIntegerAsStringConverter.class);
         addAnnotatedClass(EncryptedBigIntegerConverter.class);
-        addAnnotatedClass(EncryptedBinaryConverter.class);
+        addAnnotatedClass(EncryptedBytesAsBlobConverter.class);
         addAnnotatedClass(EncryptedByteAsStringConverter.class);
         addAnnotatedClass(EncryptedCalendarAsStringConverter.class);
         addAnnotatedClass(EncryptedDateAsStringConverter.class);
