@@ -32,7 +32,7 @@ public class EncryptedBytesAsBlobConverter extends JasyptConverter<byte[], Blob>
         if (!this.initialized) {
 
             if (converterConfig == null) {
-                encryptor = new StandardPBEByteEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBytesAsBlobConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {

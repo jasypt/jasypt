@@ -23,7 +23,7 @@ public class EncryptedBytesConverter extends JasyptConverter<byte[], byte[]> {
         if (!this.initialized) {
 
             if (converterConfig == null) {
-                encryptor = new StandardPBEByteEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBytesConverter");
             } else {
 
                 if (EncryptedBytesAsBlobConverter.converterConfig.useEncryptorName) {

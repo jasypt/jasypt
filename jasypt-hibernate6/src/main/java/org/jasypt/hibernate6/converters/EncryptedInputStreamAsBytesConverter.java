@@ -28,7 +28,7 @@ public class EncryptedInputStreamAsBytesConverter extends JasyptConverter<InputS
         if (!this.initialized) {
 
             if (converterConfig == null) {
-                encryptor = new StandardPBEByteEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedInputStreamAsBytesConverter");
             } else {
                 if (EncryptedBytesAsBlobConverter.converterConfig.useEncryptorName) {
                     HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();

@@ -23,7 +23,7 @@ public class EncryptedBigIntegerConverter extends JasyptConverter<BigInteger, Bi
         if (!this.initialized) {
 
             if (converterConfig == null) {
-                encryptor = new StandardPBEBigIntegerEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBigIntegerConverter");
             } else {
 
                 if (EncryptedBigIntegerConverter.converterConfig.useEncryptorName) {

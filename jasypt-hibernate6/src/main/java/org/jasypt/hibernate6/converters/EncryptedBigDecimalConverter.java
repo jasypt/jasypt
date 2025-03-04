@@ -53,7 +53,7 @@ public final class EncryptedBigDecimalConverter extends JasyptConverter<BigDecim
         if (!this.initialized) {
 
             if (converterConfig == null) {
-                encryptor = new StandardPBEBigDecimalEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBigDecimalConverter");
             } else {
 
                 if (EncryptedBigDecimalConverter.converterConfig.useEncryptorName) {

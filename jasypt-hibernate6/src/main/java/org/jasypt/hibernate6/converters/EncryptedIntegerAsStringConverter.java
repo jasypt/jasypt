@@ -19,7 +19,7 @@ public class EncryptedIntegerAsStringConverter extends JasyptConverter<Integer, 
     protected void checkInitialized() {
         if (!this.initialized) {
             if (converterConfig == null) {
-                this.encryptor = new StandardPBEStringEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedIntegerAsStringConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {

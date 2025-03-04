@@ -25,7 +25,7 @@ public class EncryptedCalendarAsStringConverter extends JasyptConverter<Calendar
     protected void checkInitialized() {
         if (!this.initialized) {
             if (converterConfig == null) {
-                this.encryptor = new StandardPBEStringEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedCalendarAsStringConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {

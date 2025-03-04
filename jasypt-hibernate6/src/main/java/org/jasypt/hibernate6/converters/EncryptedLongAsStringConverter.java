@@ -19,7 +19,7 @@ public class EncryptedLongAsStringConverter extends JasyptConverter<Long, String
     protected void checkInitialized() {
         if (!this.initialized) {
             if (converterConfig == null) {
-                this.encryptor = new StandardPBEStringEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedLongAsStringConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {

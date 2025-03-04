@@ -21,7 +21,7 @@ public class EncryptedBigIntegerAsStringConverter extends JasyptConverter<BigInt
     protected void checkInitialized() {
         if (!this.initialized) {
             if (converterConfig == null) {
-                this.encryptor = new StandardPBEStringEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBigIntegerAsStringConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {
