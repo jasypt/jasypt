@@ -106,7 +106,6 @@ public class TestHibernateTypes extends TestCase {
             .setProperty(Environment.PASS, "")
             .setProperty(Environment.POOL_SIZE, "10")
             .buildSessionFactory(serviceRegistry);
-		session = sessionFactory.openSession();
 	    
 		initDB();		
 		

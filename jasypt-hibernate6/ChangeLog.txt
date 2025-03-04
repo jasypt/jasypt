@@ -1,0 +1,8 @@
+2.0.0
+=====
+
+- Created new jasypt-hibernate6 module for Hibernate 6 integration.
+- Updated from TypeDef to Hibernate 6 Converter methodology
+- Because of Hibernate 6 stricter type checking on Boolean, BooleanEncryptor is now removed
+- Introduced ConverterConfig and JasyptConverter for configuration of Jasypt encryption converters and encryptor configuration
+- Fixed JUnit tests
