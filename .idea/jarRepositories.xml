@@ -32,6 +32,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="local-repo" />
+      <option name="name" value="local-repo" />
+      <option name="url" value="file://$PROJECT_DIR$/jasypt/lib" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="org.springframework.maven.milestone" />
       <option name="name" value="Maven Central Compatible Spring Milestone Repository" />
       <option name="url" value="http://maven.springframework.org/milestone" />
