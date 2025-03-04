@@ -7,8 +7,6 @@
  minimum effort, and without the need of having deep knowledge on how 
  cryptography works.
  
- To learn more and download latest version:
- 
-     http://www.jasypt.org
+This project is a Fork of the official Jasypt. It included BouncyCastle 1.81-beta build for fixes related to IV, and Hibernate 6 support.
 
      
