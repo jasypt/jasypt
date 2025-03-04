@@ -18,8 +18,10 @@
 <!--                                                                         -->
 <!-- ======================================================================= -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jasypt</groupId>
   <artifactId>jasypt</artifactId>
@@ -29,8 +31,6 @@
   <url>http://www.jasypt.org</url>
 
   <description>Java library which enables encryption in java apps with minimum effort.</description>
-
-
 
   <licenses>
     <license>
@@ -44,14 +44,14 @@
     <name>The JASYPT team</name>
     <url>http://www.jasypt.org</url>
   </organization>
-  
+
   <scm>
     <url>scm:git:git@github.com:jasypt/jasypt.git</url>
     <connection>scm:git:git@github.com:jasypt/jasypt.git</connection>
     <developerConnection>scm:git:git@github.com:jasypt/jasypt.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  
+
   <developers>
     <developer>
       <id>dfernandez</id>
@@ -62,7 +62,7 @@
       </roles>
     </developer>
   </developers>
-  
+
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
@@ -78,6 +78,11 @@
 
   <repositories>
     <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+
+    <repository>
       <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Nexus Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -87,132 +92,34 @@
     </repository>
   </repositories>
 
-
   <build>
-
     <resources>
-    
       <resource>
         <directory>src/main/resources</directory>
       </resource>
-    
+
       <resource>
-          <directory>.</directory>
-          <targetPath>META-INF</targetPath>
-          <includes>
-              <include>LICENSE.txt</include>
-              <include>NOTICE.txt</include>
-          </includes>
+        <directory>.</directory>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>LICENSE.txt</include>
+          <include>NOTICE.txt</include>
+        </includes>
       </resource>
-      
     </resources>
-    
+
     <testResources>
       <testResource>
         <directory>src/test/resources</directory>
       </testResource>
     </testResources>
-    
+
     <plugins>
-    
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>2.1</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>US-ASCII</encoding>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <encoding>US-ASCII</encoding>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.1</version>
-        <configuration>
-          <doclint>none</doclint>
-          <show>protected</show>
-          <noqualifier>java.lang</noqualifier>
-          <excludePackageNames>org.jasypt.contrib.*</excludePackageNames>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-       
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <descriptors>
-            <descriptor>src/assembly/lite.xml</descriptor>
-          </descriptors>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly-deps</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-        <configuration>
-          <localCheckout>true</localCheckout>
-        </configuration>
-      </plugin>
-
-
+      <!-- Plugin configurations go here (e.g., maven-compiler-plugin, maven-site-plugin, etc.) -->
     </plugins>
-    
   </build>
 
-
-
   <dependencies>
-    
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>
@@ -228,30 +135,26 @@
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
-    
+
     <dependency>
-      <groupId>bouncycastle</groupId>
-      <artifactId>bcprov-jdk12</artifactId>
-      <version>140</version>
-      <scope>test</scope>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk18on</artifactId>
+      <version>1.80</version>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-  
+
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.1</version>
       <scope>test</scope>
     </dependency>
-    
-    
   </dependencies>
 
-  
 </project>

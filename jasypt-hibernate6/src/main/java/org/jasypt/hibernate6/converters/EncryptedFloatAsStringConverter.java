@@ -5,14 +5,14 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-public class EncryptedLongAsString extends JasyptConverter<Long, String> {
+public class EncryptedFloatAsStringConverter extends JasyptConverter<Float, String> {
 
     protected PBEStringEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedLongAsString.converterConfig = converterConfig;
+        EncryptedFloatAsStringConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class EncryptedLongAsString extends JasyptConverter<Long, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(Long value) {
+    public String convertToDatabaseColumn(Float value) {
         checkInitialized();
         if (value == null) {
             return null;
@@ -73,12 +73,11 @@ public class EncryptedLongAsString extends JasyptConverter<Long, String> {
     }
 
     @Override
-    public Long convertToEntityAttribute(String s) {
+    public Float convertToEntityAttribute(String s) {
         checkInitialized();
         if (s == null) {
             return null;
         }
-        return Long.parseLong(encryptor.decrypt(s));
+        return Float.parseFloat(encryptor.decrypt(s));
     }
 }
-

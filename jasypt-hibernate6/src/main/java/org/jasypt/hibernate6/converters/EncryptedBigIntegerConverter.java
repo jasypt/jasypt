@@ -7,14 +7,14 @@ import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
 import java.math.BigInteger;
 
-public class EncryptedBigInteger extends JasyptConverter<BigInteger, BigInteger> {
+public class EncryptedBigIntegerConverter extends JasyptConverter<BigInteger, BigInteger> {
 
     private PBEBigIntegerEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedBigInteger.converterConfig = converterConfig;
+        EncryptedBigIntegerConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -22,17 +22,17 @@ public class EncryptedBigInteger extends JasyptConverter<BigInteger, BigInteger>
 
         if (!this.initialized) {
 
-            if (EncryptedBigInteger.converterConfig.useEncryptorName) {
+            if (EncryptedBigIntegerConverter.converterConfig.useEncryptorName) {
 
                 final HibernatePBEEncryptorRegistry registry =
                         HibernatePBEEncryptorRegistry.getInstance();
                 final PBEBigIntegerEncryptor pbeEncryptor =
                         registry.getPBEBigIntegerEncryptor(
-                                EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                                EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                 if (pbeEncryptor == null) {
                     throw new EncryptionInitializationException(
                             "No big integer encryptor registered for hibernate " +
-                                    "with name \"" + EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
+                                    "with name \"" + EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
                 }
                 this.encryptor = pbeEncryptor;
 
@@ -41,15 +41,15 @@ public class EncryptedBigInteger extends JasyptConverter<BigInteger, BigInteger>
                 final StandardPBEBigIntegerEncryptor newEncryptor =
                         new StandardPBEBigIntegerEncryptor();
 
-                newEncryptor.setPassword(EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                newEncryptor.setPassword(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                if (EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                    newEncryptor.setAlgorithm(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
                 }
 
-                if (EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
                     newEncryptor.setKeyObtentionIterations(
-                            EncryptedBigInteger.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
+                            EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
                 }
 
                 newEncryptor.initialize();

@@ -5,14 +5,14 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-public class EncryptedDoubleAsString extends JasyptConverter<Double, String> {
+public class EncryptedStringConverter extends JasyptConverter<String, String> {
 
     protected PBEStringEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedDoubleAsString.converterConfig = converterConfig;
+        EncryptedStringConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -64,20 +64,20 @@ public class EncryptedDoubleAsString extends JasyptConverter<Double, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(Double value) {
+    public String convertToDatabaseColumn(String value) {
         checkInitialized();
         if (value == null) {
             return null;
         }
-        return encryptor.encrypt(value.toString());
+        return encryptor.encrypt(value);
     }
 
     @Override
-    public Double convertToEntityAttribute(String s) {
+    public String convertToEntityAttribute(String s) {
         checkInitialized();
         if (s == null) {
             return null;
         }
-        return Double.parseDouble(encryptor.decrypt(s));
+        return encryptor.decrypt(s);
     }
 }

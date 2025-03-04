@@ -5,14 +5,16 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-public class EncryptedByteAsString extends JasyptConverter<Byte, String> {
+import java.math.BigInteger;
+
+public class EncryptedBigIntegerAsStringConverter extends JasyptConverter<BigInteger, String> {
 
     protected PBEStringEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedByteAsString.converterConfig = converterConfig;
+        EncryptedBigIntegerAsStringConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class EncryptedByteAsString extends JasyptConverter<Byte, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(Byte value) {
+    public String convertToDatabaseColumn(BigInteger value) {
         checkInitialized();
         if (value == null) {
             return null;
@@ -73,12 +75,11 @@ public class EncryptedByteAsString extends JasyptConverter<Byte, String> {
     }
 
     @Override
-    public Byte convertToEntityAttribute(String s) {
+    public BigInteger convertToEntityAttribute(String s) {
         checkInitialized();
         if (s == null) {
             return null;
         }
-        return Byte.parseByte(encryptor.decrypt(s));
+        return new BigInteger(encryptor.decrypt(s));
     }
 }
-

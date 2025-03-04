@@ -5,26 +5,14 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-import java.util.Date;
-
-public class EncryptedDateAsString extends JasyptConverter<Date, String> {
+public class EncryptedIntegerAsStringConverter extends JasyptConverter<Integer, String> {
 
     protected PBEStringEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedDateAsString.converterConfig = converterConfig;
-    }
-
-    protected Date convertToObject(String string) {
-        final long timeMillis = Long.parseLong(string);
-        return new Date(timeMillis);
-    }
-
-    protected String convertToString(Object object) {
-        final long timeMillis = ((Date) object).getTime();
-        return String.valueOf(timeMillis);
+        EncryptedIntegerAsStringConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -76,21 +64,21 @@ public class EncryptedDateAsString extends JasyptConverter<Date, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(Date value) {
+    public String convertToDatabaseColumn(Integer value) {
         checkInitialized();
         if (value == null) {
             return null;
         }
-        return encryptor.encrypt(convertToString(value));
+        return encryptor.encrypt(value.toString());
     }
 
     @Override
-    public Date convertToEntityAttribute(String s) {
+    public Integer convertToEntityAttribute(String s) {
         checkInitialized();
         if (s == null) {
             return null;
         }
-        return convertToObject(encryptor.decrypt(s));
+        return Integer.parseInt(encryptor.decrypt(s));
     }
-    
 }
+

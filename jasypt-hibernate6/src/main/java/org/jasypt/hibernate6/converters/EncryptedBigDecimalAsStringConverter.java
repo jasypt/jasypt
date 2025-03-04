@@ -5,14 +5,16 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionInitializationException;
 import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
 
-public class EncryptedFloatAsString extends JasyptConverter<Float, String> {
+import java.math.BigDecimal;
+
+public class EncryptedBigDecimalAsStringConverter extends JasyptConverter<BigDecimal, String> {
 
     protected PBEStringEncryptor encryptor = null;
 
     public static ConverterConfig converterConfig;
 
     public static void setConverterConfig(final ConverterConfig converterConfig) {
-        EncryptedFloatAsString.converterConfig = converterConfig;
+        EncryptedBigDecimalAsStringConverter.converterConfig = converterConfig;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class EncryptedFloatAsString extends JasyptConverter<Float, String> {
     }
 
     @Override
-    public String convertToDatabaseColumn(Float value) {
+    public String convertToDatabaseColumn(BigDecimal value) {
         checkInitialized();
         if (value == null) {
             return null;
@@ -73,11 +75,11 @@ public class EncryptedFloatAsString extends JasyptConverter<Float, String> {
     }
 
     @Override
-    public Float convertToEntityAttribute(String s) {
+    public BigDecimal convertToEntityAttribute(String s) {
         checkInitialized();
         if (s == null) {
             return null;
         }
-        return Float.parseFloat(encryptor.decrypt(s));
+        return new BigDecimal(encryptor.decrypt(s));
     }
 }

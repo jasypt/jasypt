@@ -102,7 +102,7 @@ import org.jasypt.salt.SaltGenerator;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedString">
+ *    &lt;typedef name="encrypted" class="org.jasypt.hibernate.type.EncryptedStringConverter">
  *      &lt;param name="encryptorRegisteredName"><b>myHibernateStringEncryptor</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>

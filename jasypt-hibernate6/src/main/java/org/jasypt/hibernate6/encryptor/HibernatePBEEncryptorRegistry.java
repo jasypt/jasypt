@@ -70,7 +70,7 @@ import org.jasypt.encryption.pbe.PBEStringEncryptor;
  * </p>
  * <p>
  * <pre>
- *    &lt;typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedString">
+ *    &lt;typedef name="encryptedString" class="org.jasypt.hibernate.type.EncryptedStringConverter">
  *      &lt;param name="encryptorRegisteredName"><b>myHibernateEncryptor</b>&lt;/param>
  *    &lt;/typedef>
  * </pre>
