@@ -52,41 +52,46 @@ public final class EncryptedBigDecimalConverter extends JasyptConverter<BigDecim
 
         if (!this.initialized) {
 
-            if (EncryptedBigDecimalConverter.converterConfig.useEncryptorName) {
-
-                final HibernatePBEEncryptorRegistry registry =
-                        HibernatePBEEncryptorRegistry.getInstance();
-                final PBEBigDecimalEncryptor pbeEncryptor =
-                        registry.getPBEBigDecimalEncryptor(
-                                EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
-                if (pbeEncryptor == null) {
-                    throw new EncryptionInitializationException(
-                            "No big decimal encryptor registered for hibernate " +
-                                    "with name \"" +
-                                    EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
-                                    + "\"");
-                }
-                this.encryptor = pbeEncryptor;
-
+            if (converterConfig == null) {
+                encryptor = new StandardPBEBigDecimalEncryptor();
             } else {
 
-                final StandardPBEBigDecimalEncryptor newEncryptor =
-                        new StandardPBEBigDecimalEncryptor();
+                if (EncryptedBigDecimalConverter.converterConfig.useEncryptorName) {
 
-                newEncryptor.setPassword(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                    final HibernatePBEEncryptorRegistry registry =
+                            HibernatePBEEncryptorRegistry.getInstance();
+                    final PBEBigDecimalEncryptor pbeEncryptor =
+                            registry.getPBEBigDecimalEncryptor(
+                                    EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                    if (pbeEncryptor == null) {
+                        throw new EncryptionInitializationException(
+                                "No big decimal encryptor registered for hibernate " +
+                                        "with name \"" +
+                                        EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
+                                        + "\"");
+                    }
+                    this.encryptor = pbeEncryptor;
 
-                if (EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                } else {
+
+                    final StandardPBEBigDecimalEncryptor newEncryptor =
+                            new StandardPBEBigDecimalEncryptor();
+
+                    newEncryptor.setPassword(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+
+                    if (EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                        newEncryptor.setAlgorithm(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                    }
+
+                    if (EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                        newEncryptor.setKeyObtentionIterations(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
+                    }
+
+                    newEncryptor.initialize();
+
+                    this.encryptor = newEncryptor;
+
                 }
-
-                if (EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
-                    newEncryptor.setKeyObtentionIterations(EncryptedBigDecimalConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
-                }
-
-                newEncryptor.initialize();
-
-                this.encryptor = newEncryptor;
-
             }
 
             this.initialized = true;

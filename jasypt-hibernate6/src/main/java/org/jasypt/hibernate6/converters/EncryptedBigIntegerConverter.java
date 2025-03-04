@@ -22,40 +22,45 @@ public class EncryptedBigIntegerConverter extends JasyptConverter<BigInteger, Bi
 
         if (!this.initialized) {
 
-            if (EncryptedBigIntegerConverter.converterConfig.useEncryptorName) {
-
-                final HibernatePBEEncryptorRegistry registry =
-                        HibernatePBEEncryptorRegistry.getInstance();
-                final PBEBigIntegerEncryptor pbeEncryptor =
-                        registry.getPBEBigIntegerEncryptor(
-                                EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
-                if (pbeEncryptor == null) {
-                    throw new EncryptionInitializationException(
-                            "No big integer encryptor registered for hibernate " +
-                                    "with name \"" + EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
-                }
-                this.encryptor = pbeEncryptor;
-
+            if (converterConfig == null) {
+                encryptor = new StandardPBEBigIntegerEncryptor();
             } else {
 
-                final StandardPBEBigIntegerEncryptor newEncryptor =
-                        new StandardPBEBigIntegerEncryptor();
+                if (EncryptedBigIntegerConverter.converterConfig.useEncryptorName) {
 
-                newEncryptor.setPassword(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                    final HibernatePBEEncryptorRegistry registry =
+                            HibernatePBEEncryptorRegistry.getInstance();
+                    final PBEBigIntegerEncryptor pbeEncryptor =
+                            registry.getPBEBigIntegerEncryptor(
+                                    EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                    if (pbeEncryptor == null) {
+                        throw new EncryptionInitializationException(
+                                "No big integer encryptor registered for hibernate " +
+                                        "with name \"" + EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME) + "\"");
+                    }
+                    this.encryptor = pbeEncryptor;
 
-                if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
-                    newEncryptor.setAlgorithm(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                } else {
+
+                    final StandardPBEBigIntegerEncryptor newEncryptor =
+                            new StandardPBEBigIntegerEncryptor();
+
+                    newEncryptor.setPassword(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+
+                    if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                        newEncryptor.setAlgorithm(EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                    }
+
+                    if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                        newEncryptor.setKeyObtentionIterations(
+                                EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
+                    }
+
+                    newEncryptor.initialize();
+
+                    this.encryptor = newEncryptor;
+
                 }
-
-                if (EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
-                    newEncryptor.setKeyObtentionIterations(
-                            EncryptedBigIntegerConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
-                }
-
-                newEncryptor.initialize();
-
-                this.encryptor = newEncryptor;
-
             }
 
             this.initialized = true;
