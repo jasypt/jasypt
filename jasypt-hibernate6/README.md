@@ -61,6 +61,7 @@ _____________
 **Key Notes/Breaking Changes**
 
 - Because of Hibernate 6 stricter type checking on Boolean columns, the boolean converter is now removed. If you wish to encrypt Booleans, you will need to store it as an integer, and use the ``EncryptedIntegerAsStringConverter``, parsing it into a Boolean in your code.
-- It is recommended if you run into sizing issues (especially with BigDecimal) to use: ``@Column(precision = 64)`` or some larger value
-- To avoid issues with long strings (encryption can make some very long strings), use: ``@Column(columnDefinition = "VARCHAR(255)")`` or ``@Column(length=LONG32)``
+- It is recommended if you run into sizing issues (especially with BigDecimal) to use: ``@Column(precision = 64)`` or some larger value.
+- To avoid issues with long strings (encryption can make some very long strings), use: ``@Column(columnDefinition = "VARCHAR(255)")`` or ``@Column(length=LONG32)``.
+- To use the ``EncryptedInputStreamAsBytesConverter``, you will need to use: ``@Lob`` and ``@Column(length = 10485760) // 10 MB (adjust as needed)`` to support large input streams.
 - If you are unsure how to use this library, please see the ``HibernateConverterTest`` class in ``src/test/java``. There is a fully working example with all possible converters.

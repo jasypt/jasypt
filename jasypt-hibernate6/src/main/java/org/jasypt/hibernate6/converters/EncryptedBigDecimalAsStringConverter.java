@@ -21,7 +21,7 @@ public class EncryptedBigDecimalAsStringConverter extends JasyptConverter<BigDec
     protected void checkInitialized() {
         if (!this.initialized) {
             if (converterConfig == null) {
-                this.encryptor = new StandardPBEStringEncryptor();
+                throw new ConverterInitializationException("Converter config is null for EncryptedBigDecimalAsStringConverter");
             } else {
 
                 if (converterConfig.useEncryptorName) {
