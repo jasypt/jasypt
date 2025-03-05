@@ -30,17 +30,17 @@ public class EncryptedInputStreamAsBytesConverter extends JasyptConverter<InputS
             if (converterConfig == null) {
                 throw new ConverterInitializationException("Converter config is null for EncryptedInputStreamAsBytesConverter");
             } else {
-                if (EncryptedBytesAsBlobConverter.converterConfig.useEncryptorName) {
+                if (converterConfig.useEncryptorName) {
                     HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
                     PBEByteEncryptor pbeEncryptor = registry.getPBEByteEncryptor(
-                            EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                            converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                     if (pbeEncryptor == null) {
                         throw new EncryptionInitializationException("No encryptor registered with given name");
                     }
                     this.encryptor = pbeEncryptor;
                 } else {
                     StandardPBEByteEncryptor newEncryptor = new StandardPBEByteEncryptor();
-                    newEncryptor.setPassword(EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                    newEncryptor.setPassword(converterConfig.getProperty(EncryptionParameters.PASSWORD));
                     newEncryptor.initialize();
                     this.encryptor = newEncryptor;
                 }

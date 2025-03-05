@@ -26,18 +26,18 @@ public class EncryptedBytesConverter extends JasyptConverter<byte[], byte[]> {
                 throw new ConverterInitializationException("Converter config is null for EncryptedBytesConverter");
             } else {
 
-                if (EncryptedBytesAsBlobConverter.converterConfig.useEncryptorName) {
+                if (converterConfig.useEncryptorName) {
 
                     final HibernatePBEEncryptorRegistry registry =
                             HibernatePBEEncryptorRegistry.getInstance();
                     final PBEByteEncryptor pbeEncryptor =
                             registry.getPBEByteEncryptor(
-                                    EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
+                                    converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME));
                     if (pbeEncryptor == null) {
                         throw new EncryptionInitializationException(
                                 "No big integer encryptor registered for hibernate " +
                                         "with name \"" +
-                                        EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
+                                        converterConfig.getProperty(EncryptionParameters.ENCRYPTOR_NAME)
                                         + "\"");
                     }
                     this.encryptor = pbeEncryptor;
@@ -46,15 +46,15 @@ public class EncryptedBytesConverter extends JasyptConverter<byte[], byte[]> {
 
                     final StandardPBEByteEncryptor newEncryptor = new StandardPBEByteEncryptor();
 
-                    newEncryptor.setPassword(EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.PASSWORD));
+                    newEncryptor.setPassword(converterConfig.getProperty(EncryptionParameters.PASSWORD));
 
-                    if (EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
-                        newEncryptor.setAlgorithm(EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.ALGORITHM));
+                    if (converterConfig.getProperty(EncryptionParameters.ALGORITHM) != null) {
+                        newEncryptor.setAlgorithm(converterConfig.getProperty(EncryptionParameters.ALGORITHM));
                     }
 
-                    if (EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
+                    if (converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS) != null) {
                         newEncryptor.setKeyObtentionIterations(
-                                EncryptedBytesAsBlobConverter.converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
+                                converterConfig.getProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS));
                     }
 
                     newEncryptor.initialize();
