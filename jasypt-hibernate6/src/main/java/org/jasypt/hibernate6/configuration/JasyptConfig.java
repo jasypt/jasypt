@@ -51,6 +51,7 @@ public class JasyptConfig extends Configuration {
         addAnnotatedClass(EncryptedLongAsStringConverter.class);
         addAnnotatedClass(EncryptedShortAsStringConverter.class);
         addAnnotatedClass(EncryptedStringConverter.class);
+        addAnnotatedClass(EncryptedInputStreamConverter.class);
     }
 
     @Override

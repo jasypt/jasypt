@@ -95,6 +95,7 @@ public final class HibernatePBEEncryptorRegistry {
     private final HashMap bigIntegerEncryptors = new HashMap();
     private final HashMap bigDecimalEncryptors = new HashMap();
     private final HashMap byteEncryptors = new HashMap();
+    private final HashMap inputEncryptors = new HashMap();
     
     
     /**
@@ -297,8 +298,18 @@ public final class HibernatePBEEncryptorRegistry {
         this.byteEncryptors.put(registeredName, hibernateEncryptor);
     }
 
-    
 
+    synchronized void registerHibernatePBEInputStreamEncryptor(
+            final HibernatePBEInputStreamEncryptor hibernatePBEInputStreamEncryptor) {
+        this.inputEncryptors.put(
+                hibernatePBEInputStreamEncryptor.getRegisteredName(),
+                hibernatePBEInputStreamEncryptor
+        );
+    }
+
+    synchronized void unregisterHibernatePBEInputStreamEncryptor(final String name) {
+        this.inputEncryptors.remove(name);
+    }
 
     
     // Not public: this is used from 
@@ -335,6 +346,11 @@ public final class HibernatePBEEncryptorRegistry {
             return null;
         }
         return hibernateEncryptor.getEncryptor();
+    }
+
+    public synchronized HibernatePBEInputStreamEncryptor getPBEInputStreamEncryptor(
+            final String registeredName) {
+        return (HibernatePBEInputStreamEncryptor) this.inputEncryptors.get(registeredName);
     }
     
 }

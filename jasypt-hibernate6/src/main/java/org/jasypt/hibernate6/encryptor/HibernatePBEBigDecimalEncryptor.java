@@ -20,11 +20,15 @@
 package org.jasypt.hibernate6.encryptor;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Properties;
 
 import org.jasypt.encryption.pbe.PBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.hibernate6.converters.ConverterConfig;
+import org.jasypt.hibernate6.converters.EncryptionParameters;
 import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
@@ -125,7 +129,10 @@ public final class HibernatePBEBigDecimalEncryptor {
     private String registeredName = null;
     private PBEBigDecimalEncryptor encryptor = null;
     private boolean encryptorSet = false;
-    
+    private int keyObtentionIterations = -1;
+    private String algorithm = null;
+    private String password = null;
+    private int decimalScale = 0;
     
     
     /**
@@ -186,6 +193,7 @@ public final class HibernatePBEBigDecimalEncryptor {
      * @param password the password to be set for the internal encryptor
      */
     public void setPassword(final String password) {
+        this.password = password;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -205,6 +213,7 @@ public final class HibernatePBEBigDecimalEncryptor {
      * @param password the password to be set for the internal encryptor
      */
     public void setPasswordCharArray(final char[] password) {
+        this.password = String.valueOf(password);
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -215,6 +224,9 @@ public final class HibernatePBEBigDecimalEncryptor {
         standardPBEBigDecimalEncryptor.setPasswordCharArray(password);
     }
 
+    public void setDecimalScale(int decimalScale) {
+        this.decimalScale = decimalScale;
+    }
 
     /**
      * Sets the algorithm to be used by the internal encryptor, if a specific
@@ -223,6 +235,7 @@ public final class HibernatePBEBigDecimalEncryptor {
      * @param algorithm the algorithm to be set for the internal encryptor
      */
     public void setAlgorithm(final String algorithm) {
+        this.algorithm = algorithm;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -241,6 +254,7 @@ public final class HibernatePBEBigDecimalEncryptor {
      * @param keyObtentionIterations to be set for the internal encryptor
      */
     public void setKeyObtentionIterations(final int keyObtentionIterations) {
+        this.keyObtentionIterations = keyObtentionIterations;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -355,6 +369,21 @@ public final class HibernatePBEBigDecimalEncryptor {
         this.registeredName = registeredName;
         HibernatePBEEncryptorRegistry.getInstance().
                 registerHibernatePBEBigDecimalEncryptor(this);
+    }
+
+    public ConverterConfig generateConverterConfig() {
+        Properties configProps = new Properties();
+        if (this.registeredName != null) {
+            configProps.setProperty(EncryptionParameters.ENCRYPTOR_NAME, this.registeredName);
+        } else {
+            configProps.setProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS, String.valueOf(keyObtentionIterations));
+            configProps.setProperty(EncryptionParameters.ALGORITHM, algorithm);
+            configProps.setProperty(EncryptionParameters.PASSWORD, password);
+        }
+
+        configProps.setProperty(EncryptionParameters.DECIMAL_SCALE, String.valueOf(decimalScale));
+
+        return new ConverterConfig(configProps);
     }
 
     /**

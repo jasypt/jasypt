@@ -20,11 +20,14 @@
 package org.jasypt.hibernate6.encryptor;
 
 import java.security.Provider;
+import java.util.Properties;
 
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.exceptions.EncryptionInitializationException;
+import org.jasypt.hibernate6.converters.ConverterConfig;
+import org.jasypt.hibernate6.converters.EncryptionParameters;
 import org.jasypt.iv.IvGenerator;
 import org.jasypt.salt.SaltGenerator;
 
@@ -126,6 +129,9 @@ public final class HibernatePBEStringEncryptor {
     private String registeredName = null;
     private PBEStringEncryptor encryptor;
     private boolean encryptorSet;
+    private int keyObtentionIterations = -1;
+    private String algorithm = null;
+    private String password = null;
     
     
     
@@ -187,6 +193,7 @@ public final class HibernatePBEStringEncryptor {
      * @param password the password to be set for the internal encryptor
      */
     public void setPassword(final String password) {
+        this.password = password;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -206,6 +213,7 @@ public final class HibernatePBEStringEncryptor {
      * @param password the password to be set for the internal encryptor
      */
     public void setPasswordCharArray(final char[] password) {
+        this.password = String.valueOf(password);
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -224,6 +232,7 @@ public final class HibernatePBEStringEncryptor {
      * @param algorithm the algorithm to be set for the internal encryptor
      */
     public void setAlgorithm(final String algorithm) {
+        this.algorithm = algorithm;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -242,6 +251,7 @@ public final class HibernatePBEStringEncryptor {
      * @param keyObtentionIterations to be set for the internal encryptor
      */
     public void setKeyObtentionIterations(final int keyObtentionIterations) {
+        this.keyObtentionIterations = keyObtentionIterations;
         if (this.encryptorSet) {
             throw new EncryptionInitializationException(
                     "An encryptor has been already set: no " +
@@ -415,6 +425,19 @@ public final class HibernatePBEStringEncryptor {
         this.registeredName = registeredName;
         HibernatePBEEncryptorRegistry.getInstance().
                 registerHibernatePBEStringEncryptor(this);
+    }
+
+    public ConverterConfig generateConverterConfig() {
+        Properties configProps = new Properties();
+        if (this.registeredName != null) {
+            configProps.setProperty(EncryptionParameters.ENCRYPTOR_NAME, this.registeredName);
+        } else {
+            configProps.setProperty(EncryptionParameters.KEY_OBTENTION_ITERATIONS, String.valueOf(keyObtentionIterations));
+            configProps.setProperty(EncryptionParameters.ALGORITHM, algorithm);
+            configProps.setProperty(EncryptionParameters.PASSWORD, password);
+        }
+
+        return new ConverterConfig(configProps);
     }
 
     /**

@@ -1,23 +1,24 @@
 package org.jasypt.hibernate6;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Properties;
+import java.util.List;
 import java.util.Random;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.jasypt.encryption.pbe.StandardPBEBigDecimalEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEBigIntegerEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEByteEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.hibernate6.configuration.JasyptConfig;
 import org.jasypt.hibernate6.converters.*;
-import org.jasypt.hibernate6.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.hibernate6.encryptor.*;
 
 import org.junit.Before;
 import org.junit.After;
@@ -31,6 +32,8 @@ public class HibernateConvertersTest {
 	private static SessionFactory sessionFactory;
 	private Session session;
 	private User createdUser;
+
+	private final int BUFFER_SIZE = 4096; // Size of the chunks to read
 
 	@Before
 	public void setUp() {
@@ -58,37 +61,40 @@ public class HibernateConvertersTest {
 	}
 
 	@Test
-	public void testCreateAndReadUser() {
+	public void testCreateAndReadUser() throws IOException {
 		createUser();
 		readUser();
 	}
 
 	private void registerEncryptors() {
-		StandardPBEStringEncryptor stringEncryptor = new StandardPBEStringEncryptor();
+		HibernatePBEStringEncryptor stringEncryptor = new HibernatePBEStringEncryptor();
 		stringEncryptor.setAlgorithm("PBEWithMD5AndDES");
 		stringEncryptor.setPassword("jasypt-hibernate6-test");
+		stringEncryptor.setRegisteredName("hibernateStringEncryptor");
 
-		StandardPBEByteEncryptor byteEncryptor = new StandardPBEByteEncryptor();
+		HibernatePBEByteEncryptor byteEncryptor = new HibernatePBEByteEncryptor();
 		byteEncryptor.setAlgorithm("PBEWithMD5AndDES");
 		byteEncryptor.setPassword("jasypt-hibernate6-test");
+		byteEncryptor.setRegisteredName("hibernateByteEncryptor");
 
-		StandardPBEBigIntegerEncryptor bigIntegerEncryptor = new StandardPBEBigIntegerEncryptor();
+		HibernatePBEBigIntegerEncryptor bigIntegerEncryptor = new HibernatePBEBigIntegerEncryptor();
 		bigIntegerEncryptor.setAlgorithm("PBEWithMD5AndDES");
 		bigIntegerEncryptor.setPassword("jasypt-hibernate6-test");
+		bigIntegerEncryptor.setRegisteredName("hibernateBigIntegerEncryptor");
 
-		StandardPBEBigDecimalEncryptor bigDecimalEncryptor = new StandardPBEBigDecimalEncryptor();
+		HibernatePBEBigDecimalEncryptor bigDecimalEncryptor = new HibernatePBEBigDecimalEncryptor();
 		bigDecimalEncryptor.setAlgorithm("PBEWithMD5AndDES");
 		bigDecimalEncryptor.setPassword("jasypt-hibernate6-test");
+		bigDecimalEncryptor.setRegisteredName("hibernateBigDecimalEncryptor");
+		bigDecimalEncryptor.setDecimalScale(1);
 
-		HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
-		registry.registerPBEStringEncryptor("hibernateStringEncryptor", stringEncryptor);
-		registry.registerPBEByteEncryptor("hibernateByteEncryptor", byteEncryptor);
-		registry.registerPBEBigIntegerEncryptor("hibernateBigIntegerEncryptor", bigIntegerEncryptor);
-		registry.registerPBEBigDecimalEncryptor("hibernateBigDecimalEncryptor", bigDecimalEncryptor);
+		HibernatePBEInputStreamEncryptor inputStreamEncryptor = new HibernatePBEInputStreamEncryptor();
+		inputStreamEncryptor.setAlgorithm("PBEWithMD5AndDES");
+		inputStreamEncryptor.setPassword("jasypt-hibernate6-test");
+		inputStreamEncryptor.setRegisteredName("hibernateInputStreamEncryptor");
+		inputStreamEncryptor.setBlockSize(128 * 1024 * 1024); // 128MB Buffer
 
-		Properties stringProperties = new Properties();
-		stringProperties.setProperty(EncryptionParameters.ENCRYPTOR_NAME, "hibernateStringEncryptor");
-		ConverterConfig stringConverterConfig = new ConverterConfig(stringProperties);
+		ConverterConfig stringConverterConfig = stringEncryptor.generateConverterConfig();
 
 		EncryptedBigDecimalAsStringConverter.setConverterConfig(stringConverterConfig);
 		EncryptedBigIntegerAsStringConverter.setConverterConfig(stringConverterConfig);
@@ -102,23 +108,18 @@ public class HibernateConvertersTest {
 		EncryptedShortAsStringConverter.setConverterConfig(stringConverterConfig);
 		EncryptedStringConverter.setConverterConfig(stringConverterConfig);
 
-		Properties bigDecimalProperties = new Properties();
-		bigDecimalProperties.setProperty(EncryptionParameters.ENCRYPTOR_NAME, "hibernateBigDecimalEncryptor");
-		bigDecimalProperties.setProperty(EncryptionParameters.DECIMAL_SCALE, "1");
-		ConverterConfig bigDecimalConverterConfig = new ConverterConfig(bigDecimalProperties);
+		ConverterConfig bigDecimalConverterConfig = bigDecimalEncryptor.generateConverterConfig();
 		EncryptedBigDecimalConverter.setConverterConfig(bigDecimalConverterConfig);
 
-		Properties bigIntegerProperties = new Properties();
-		bigIntegerProperties.setProperty(EncryptionParameters.ENCRYPTOR_NAME, "hibernateBigIntegerEncryptor");
-		ConverterConfig bigIntegerConverterConfig = new ConverterConfig(bigIntegerProperties);
+		ConverterConfig bigIntegerConverterConfig = bigIntegerEncryptor.generateConverterConfig();
 		EncryptedBigIntegerConverter.setConverterConfig(bigIntegerConverterConfig);
 
-		Properties byteProperties = new Properties();
-		byteProperties.setProperty(EncryptionParameters.ENCRYPTOR_NAME, "hibernateByteEncryptor");
-		ConverterConfig byteConverterConfig = new ConverterConfig(byteProperties);
+		ConverterConfig byteConverterConfig = byteEncryptor.generateConverterConfig();
 		EncryptedBytesAsBlobConverter.setConverterConfig(byteConverterConfig);
 		EncryptedBytesConverter.setConverterConfig(byteConverterConfig);
-		EncryptedInputStreamAsBytesConverter.setConverterConfig(byteConverterConfig);
+
+		ConverterConfig inputStreamConverterconfig = inputStreamEncryptor.generateConverterConfig();
+		EncryptedInputStreamConverter.setConverterConfig(inputStreamConverterconfig);
 	}
 
 	private byte[] generateRandomBytes(Random random) {
@@ -130,13 +131,14 @@ public class HibernateConvertersTest {
 	private void createUser() {
 		Random random = new Random();
 
-		InputStream fileStream = ClassLoader.getSystemResourceAsStream("test_file.txt");
+		InputStream inputStream = ClassLoader.getSystemResourceAsStream("test_file.txt");
 
 		createdUser = new User("test_name", BigDecimal.valueOf(random.nextDouble()), BigDecimal.valueOf(random.nextDouble()),
 				new BigInteger(256, random), new BigInteger(256, random), generateRandomBytes(random),
 				(byte) random.nextInt(256), generateRandomBytes(random), generateRandomBytes(random),
-				Calendar.getInstance(), new Date(), random.nextDouble(), random.nextFloat(), fileStream,
-				random.nextInt(), random.nextLong(), (short) random.nextInt(Short.MAX_VALUE + 1));
+				Calendar.getInstance(), new Date(), random.nextDouble(), random.nextFloat(), inputStream,
+				"test_file.txt", random.nextInt(), random.nextLong(),
+				(short) random.nextInt(Short.MAX_VALUE + 1));
 
 		Transaction transaction = session.beginTransaction();
 		session.persist(createdUser);
@@ -145,10 +147,16 @@ public class HibernateConvertersTest {
 		assertNotNull(createdUser);
 	}
 
-	private void readUser() {
+	private void readUser() throws IOException {
 		Transaction transaction = session.beginTransaction();
-		User user = session.byId(User.class).load("test_name");
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+		Root<User> root = criteriaQuery.from(User.class);
+		criteriaQuery.select(root);
+		List<User> users = session.createQuery(criteriaQuery).getResultList();
 		transaction.commit();
+
+		User user = users.get(0);
 
 		assertNotNull(user);
 		assertEquals("test_name", user.getName());
@@ -167,6 +175,49 @@ public class HibernateConvertersTest {
 		assertEquals(createdUser.getShortAsString(), user.getShortAsString());
 		assertEquals(createdUser.getBytes(), user.getBytes());
 		assertEquals(createdUser.getByteBlob(), user.getByteBlob());
-		assertEquals(createdUser.getInputStream(), user.getInputStream());
+		assertTrue(areStreamsEqual(createdUser.getInputStream(), user.getInputStream()));
 	}
+
+	public boolean areStreamsEqual(InputStream stream1, InputStream stream2) throws IOException {
+		byte[] buffer1 = new byte[BUFFER_SIZE];
+		byte[] buffer2 = new byte[BUFFER_SIZE];
+
+		int bytesRead1, bytesRead2;
+
+		// Read and compare chunks from both streams
+		while ((bytesRead1 = stream1.read(buffer1)) != -1) {
+			bytesRead2 = stream2.read(buffer2);
+
+			// If one stream ends before the other, the streams are different
+			if (bytesRead2 == -1) {
+				return false;
+			}
+
+			// Compare the bytes read from both streams
+			if (bytesRead1 != bytesRead2 || !equals(buffer1, buffer2, bytesRead1)) {
+				return false; // Mismatch found
+			}
+		}
+
+		// If stream1 ended, stream2 must also end at the same time
+		return stream2.read() == -1;
+	}
+
+	// Helper method to compare two byte arrays up to a given length
+	private boolean equals(byte[] array1, byte[] array2, int length) {
+		for (int i = 0; i < length; i++) {
+			if (array1[i] != array2[i]) {
+				return false; // Mismatch found
+			}
+		}
+		return true;
+	}
+
+	public static void main(String[] args) throws IOException {
+		HibernateConvertersTest hibernateConvertersTest = new HibernateConvertersTest();
+		hibernateConvertersTest.setUp();
+		hibernateConvertersTest.testCreateAndReadUser();
+		hibernateConvertersTest.tearDown();
+	}
+
 }

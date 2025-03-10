@@ -56,7 +56,9 @@ public class ConverterConfig {
                     case "java.lang.Short":
                         mappedProperties.put(propertyName, Short.valueOf(properties.getProperty(propertyName)));
                         break;
-
+                    case "java.lang.Byte[]":
+                        mappedProperties.put(propertyName, Byte[].class.cast(properties.getProperty(propertyName)));
+                        break;
                 }
             } catch (Exception e) {
                 throw new EncryptionInitializationException("Failed to convert property " + propertyName, e);
@@ -90,8 +92,8 @@ public class ConverterConfig {
         }
     }
 
-    public <T> T getProperty (String propertyName) {
-        return (T)mappedProperties.get(propertyName);
+    public <T> T getProperty(String propertyName) {
+        return (T) mappedProperties.get(propertyName);
     }
 
 }

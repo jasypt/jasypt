@@ -121,7 +121,6 @@ public final class EncryptionParameters {
         "storeTimeZone";
     
     
-    
     private EncryptionParameters() {
         super();
     }
