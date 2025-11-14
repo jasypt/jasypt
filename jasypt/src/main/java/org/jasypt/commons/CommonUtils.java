@@ -19,9 +19,17 @@
  */
 package org.jasypt.commons;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
@@ -288,6 +296,71 @@ public final class CommonUtils {
         
         return result;
         
+    }
+    
+    public static String getFileAsString(final String filePath) throws IOException {
+        BufferedReader bufferedReader = null;
+        FileReader fileReader = null;
+        StringBuilder stringBuilder = null;
+        try {
+            fileReader = new FileReader(filePath);
+            bufferedReader = new BufferedReader(fileReader);
+            
+            stringBuilder = new StringBuilder();
+            
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            if(fileReader != null) fileReader.close();
+            if(bufferedReader != null) bufferedReader.close();
+        }
+        
+        return stringBuilder.toString();
+    }
+    
+    public static void writeStringToFile(final String filePath, final String contents) throws IOException {
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+        
+        try {
+            fileWriter = new FileWriter(filePath);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            
+            bufferedWriter.write(contents);
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            if(bufferedWriter != null) bufferedWriter.close();
+            if(fileWriter != null) fileWriter.close();
+        }
+    }
+    
+    public static void deleteFile(final String filePath) {
+        if(filePath==null) {
+            System.err.println("Null filepath passed! Nothing to delete.");
+            return;
+        }
+        File file = new File(filePath);
+        file.delete();
+    }
+    
+    /**
+     * This method quotes all regex special characters in a string.
+     * 
+     * @param s The string in which we want to quote regex special characters.
+     * @return String with regex special characters quoted in the input string.
+     */
+    public static String quoteRegExSpecialChars(final String s) {
+        String regExSpecialChars = "<([{\\^-=$!|]})?*+.>";
+        String regExSpecialCharsRE = regExSpecialChars.replaceAll(".", "\\\\$0");
+        Pattern reCharsREP = Pattern.compile("[" + regExSpecialCharsRE + "]");
+        Matcher m = reCharsREP.matcher(s);
+        return m.replaceAll("\\\\$0");
     }
     
     
