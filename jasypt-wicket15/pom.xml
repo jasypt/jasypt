@@ -214,7 +214,7 @@
     <dependency>
       <groupId>org.apache.wicket</groupId>
       <artifactId>wicket-core</artifactId>
-      <version>1.5.0</version>
+      <version>7.17.0</version>
       <scope>provided</scope>
       <optional>true</optional>
     </dependency>
